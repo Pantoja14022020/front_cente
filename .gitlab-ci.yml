@@ -1,0 +1,29 @@
+stages:
+  - build
+  - deploy
+build_project:
+  stage: build
+  image: node:20
+  script:
+    - npm install
+    - npm run build
+    - ls -la dist/
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+deploy_to_s3:
+  stage: deploy
+  image: amazonlinux:2
+  script:
+    - yum install -y unzip curl
+    - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    - unzip awscliv2.zip
+    - ./aws/install --update
+    - aws --version
+    - ls -la dist/
+    - aws s3 sync dist/ s3://panel-control-centenario --region us-east-1 --delete
+  dependencies:
+    - build_project
+  only:
+    - tags

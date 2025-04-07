@@ -1,0 +1,6 @@
+var URL_SERVER = "http://localhost:8080"
+var REALM = "centenario"
+var CLIENTE_ID = "centenario-cliente"
+var ONLOAD = "login-required"
+var URI_FAIL_KEYCLOAK = "http://localhost:8081/"
+var URI_LOGOUT_KEYCLOAK = "http://localhost:8081/"
