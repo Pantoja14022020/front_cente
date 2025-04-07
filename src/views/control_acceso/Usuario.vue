@@ -363,8 +363,8 @@
 </template>
 
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from '../../components/control_acceso/401.vue'
+    import n403 from '../../components/control_acceso/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -503,7 +503,7 @@
                 let header = { "Authorization": "Bearer " + this.$store.state.token };
                 let configuracion = { headers: header };
                 try {
-                    let usuariosResponse = await axios.get('api/Usuarios/Listar', configuracion);
+                    let usuariosResponse = await this.$controlacceso.get('api/Usuarios/Listar', configuracion);
                     me.contador = usuariosResponse.data.length;
                     console.log(me.contador);
 
@@ -719,7 +719,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var panelArray=[]; 
-                axios.get('api/PanelUsuarios/ListarAsignados/' + me.idUsuario, configuracion).then(function(response){ 
+                me.$controlacceso.get('api/PanelUsuarios/ListarAsignados/' + me.idUsuario, configuracion).then(function(response){ 
                  
                     panelArray = response.data;
                     panelArray.map(function(x){
@@ -742,7 +742,7 @@
 
                 if(me.distritoActual === me.idDistritoPach)
                 {
-                    axios.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
+                    this.$controlacceso.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
                         if(me.panel.length==0)
                         {
                             me.addPanel=false;
@@ -751,7 +751,7 @@
                           debugger
                           for(var i=0;i<me.panel.length;i++){ 
                             
-                                axios.post('api/PanelUsuarios/Crear',{ 
+                                this.$controlacceso.post('api/PanelUsuarios/Crear',{ 
                                     'usuarioId':me.idUsuario, 
                                     'panelControlId': me.panel[i],  
                                 }, configuracion).then(function(response){  
@@ -797,7 +797,7 @@
                 }
                 else{
                     console.log('aqui')
-                    axios.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
+                        this.$controlacceso.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
                         if(me.panel.length==0)
                         {
                             // me.addPanel=false;
@@ -806,7 +806,7 @@
                           debugger
                           for(var i=0;i<me.panel.length;i++){ 
                             console.log('aqui')
-                                axios.post('api/PanelUsuarios/Crear',{ 
+                                this.$controlacceso.post('api/PanelUsuarios/Crear',{ 
                                     'usuarioId':me.idUsuario, 
                                     'panelControlId': me.panel[i],  
                                 }, configuracion).then(function(response){  
@@ -833,7 +833,7 @@
                             for(var i=0;i<me.panel.length;i++)
                             { 
                                 console.log('aqui')
-                                axios.post('api/PanelUsuarios/ClonarSoloPanel',{
+                                    this.$controlacceso.post('api/PanelUsuarios/ClonarSoloPanel',{
                                         'UsuarioId':me.idUsuario,
                                         'idDistrito':me.distritoActual,
                                         'panelControlId': me.panel[i],
@@ -888,7 +888,7 @@
                 var rolesArray=[]; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Rols/Listar', configuracion).then(function(response){
+                this.$controlacceso.get('api/Rols/Listar', configuracion).then(function(response){
                     rolesArray=response.data;
                     rolesArray.map(function(x){
                         me.roles.push({text: x.nombre,value:x.idrol});
@@ -983,7 +983,7 @@
                             if(me.distritoActual == me.idDistritoPach && me.distrito == me.idDistritoPach)
                             {
                                 console.log('son en el mismo distrito')
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1024,7 +1024,7 @@
                             else if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach){
                                 console.log('va de pachuca a otro distrito')
 
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1039,7 +1039,7 @@
                                             'act_password':me.actPassword                        
                                         }, configuracion).then(function(response){
                                             
-                                            axios.post('api/Usuarios/ClonarUsuario',{
+                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
                                                 'idusuario':me.idUsuario,
                                                 'rolId':me.idrol,
                                                 'moduloservicioId': me.idModuloServicio, 
@@ -1060,7 +1060,7 @@
                                                 // me.listar();
                                                 // me.limpiar(); 
 
-                                                axios.post('api/PanelUsuarios/ClonarPanel',{
+                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
                                                     'UsuarioId':me.idUsuario,
                                                     'idDistrito':me.me.distrito,
                                                     'caso': 2,
@@ -1129,7 +1129,7 @@
                             }
                             else if((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)){
                                 console.log('todos diferentes')
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1144,7 +1144,7 @@
                                             'act_password':me.actPassword                        
                                         }, configuracion).then(function(response){
                                             console.log(response)
-                                            axios.post('api/Usuarios/ClonarUsuario',{
+                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
                                                 'idusuario':me.idUsuario,
                                                 'rolId':me.idrol,
                                                 'moduloservicioId': me.idModuloServicio, 
@@ -1165,7 +1165,7 @@
                                                 // me.$notify('La información se actualizo correctamente !!!','success') 
                                                 // me.listar();
                                                 // me.limpiar(); 
-                                                axios.post('api/PanelUsuarios/ClonarPanel',{
+                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
                                                     'UsuarioId':me.idUsuario,
                                                     'idDistritoD':me.distrito,
                                                     'caso': 3,
@@ -1240,7 +1240,7 @@
                         } else { 
                     
                             let me=this;
-                            axios.post('api/Usuarios/Crear',{
+                            this.$controlacceso.post('api/Usuarios/Crear',{
                                 'rolId':me.idrol,
                                 'moduloservicioId': me.idModuloServicio, 
                                 'puesto': me.puesto, 
@@ -1320,7 +1320,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Usuarios/Activar/'+ me.adId,{},configuracion).then(function(response){
+                this.$controlacceso.put('api/Usuarios/Activar/'+ me.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
@@ -1348,7 +1348,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
+                this.$controlacceso.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";

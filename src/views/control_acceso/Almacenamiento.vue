@@ -125,8 +125,8 @@
     </v-layout>
 </template>
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from '../../components/control_acceso/401.vue'
+    import n403 from '../../components/control_acceso/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -222,7 +222,7 @@
                 let me=this;  
                  let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Almacenamientoes/Listar', configuracion).then(function(response){
+                this.$controlacceso.get('api/Almacenamientoes/Listar', configuracion).then(function(response){
                     //console.log(response);
                     me.dispositivos=response.data;
                 }).catch(err => { 
@@ -280,7 +280,7 @@
                         if (me.editedIndex > -1) {
                             //Código para editar 
                            
-                            axios.put('api/Almacenamientoes/Actualizar',{
+                            this.$controlacceso.put('api/Almacenamientoes/Actualizar',{
                                 'idAlmacenamiento':me.idAlmacenamiento, 
                                 'statusActivo':me.statusActivo, 
                             }, configuracion).then(function(response){
@@ -307,13 +307,13 @@
                             });
                         } else {
                             //Código para guardar
-                             axios.get('api/DriveInfos/'+ me.nombre, configuracion).then(function(response){
+                            this.$controlacceso.get('api/DriveInfos/'+ me.nombre, configuracion).then(function(response){
                           
                              me.rutaFisica = response.data.nu + "Carpetas";
                              me.espacioDisponible = response.data.ed;
                              me.espacioTotal = response.data.et;
                              me.espacioUtilizado = response.data.et - response.data.ed ; 
-                             axios.post('api/Almacenamientoes/Crear',{ 
+                             this.$controlacceso.post('api/Almacenamientoes/Crear',{ 
                                 'nombre': me.nombre,
                                 'rutaFisica': me.rutaFisica,
                                 'statusActivo': false,
