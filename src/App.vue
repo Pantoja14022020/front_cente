@@ -46,8 +46,22 @@
 
     components: {},
     
-    data: () => ({ horas: 0, minutos: 0, segundos: 0 }),
+    data: () => ({ horas: 0, minutos: 0, segundos: 0, error: null }),
     
+    mounted() {
+      this.error=null;
+      this.$controlacceso.post('/api/Usuarios/Login',{usuario: this.$usuario, ClaveP: this.$ClaveP})
+        .then(response => {
+          return response.data
+        })
+        .then(data => {
+          this.$store.dispatch("guardarToken", data.token)
+        })
+        .catch(error => {
+          this.error=err.response.data;
+        });
+    },
+
     created() 
     {
       var self = this;

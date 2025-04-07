@@ -111,8 +111,8 @@
     </v-layout>
 </template>
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from '../../components/control_acceso/401.vue'
+    import n403 from '../../components/control_acceso/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -176,7 +176,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Rols/Listar', configuracion).then(function(response){
+                this.$controlacceso.get('api/Rols/Listar', configuracion).then(function(response){
                     console.log(response);
                     me.roles=response.data;
                 }).catch(err => { 
@@ -234,7 +234,7 @@
                         let configuracion= {headers : header};
                         if (this.editedIndex > -1) { 
                             let me=this;
-                            axios.put('api/Rols/Actualizar',{
+                            this.$controlacceso.put('api/Rols/Actualizar',{
                                 'idrol':me.idrol, 
                                 'nombre': me.nombre,
                                 'descripcion': me.descripcion,
@@ -266,7 +266,7 @@
                         } else {
                             //Código para guardar
                             let me=this;
-                            axios.post('api/Rols/Crear',{ 
+                            this.$controlacceso.post('api/Rols/Crear',{ 
                                 'nombre': me.nombre,
                                 'descripcion': me.descripcion,
                                 'condicion': me.condicion,

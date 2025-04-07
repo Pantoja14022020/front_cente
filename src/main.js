@@ -4,12 +4,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store' 
 import axios from 'axios'   
+import VeeValidate from 'vee-validate'  
+import WebCam from 'vue-web-cam'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'typeface-roboto/index.css';
 import keycloak from './auth/keycloak'
 
 //Estilos CSS
 import './styles/panel_control/index.css'
+import './styles/control_acceso/index.css'
 
 
 Vue.config.productionTip = false
@@ -55,7 +58,9 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
             .then(response => {
               controlaccesoInstance.post('api/Usuarios/PerteneceAlDistrito',{ usuario: username })
                 .then(response => {
-                  new Vue({ router, store, render: h => h(App) }).$mount('#app')
+                  Vue.prototype.$usuario = username;  
+                  Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
+                  new Vue({ router, store, VeeValidate, WebCam, render: h => h(App) }).$mount('#app')
                 })
                 .catch(error => {
                   alert("El usuario no se encuentra en este distrito")
