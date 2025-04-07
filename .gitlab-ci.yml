@@ -23,6 +23,7 @@ deploy_to_s3:
     - aws --version
     - ls -la dist/
     - aws s3 sync dist/ s3://panel-control-centenario --region us-east-1 --delete
+    - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
   dependencies:
     - build_project
   only:
