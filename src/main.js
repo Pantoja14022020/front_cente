@@ -36,7 +36,11 @@ Vue.prototype.$cat = catInstance
 
 
 const panelInstance = axios.create({baseURL:  'http://3.95.38.176:5006/'}) 
-Vue.prototype.$panel = panelInstance 
+Vue.prototype.$panel = panelInstance
+
+const justiciarestaurativaInstance = axios.create({baseURL:  'https://justicia-restaurativa.serveo.net'})
+Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
+
 
 
 

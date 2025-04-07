@@ -1,7 +1,7 @@
 <template>
 
   <v-app class="app-fontstyle">
-    <v-toolbar app class="elevation-2 d-flex align-center" style="height: 100px; box-shadow: none !important; background-color: #641529;" >
+    <v-toolbar app class="elevation-2 d-flex align-center" style="box-shadow: none !important; background-color: #641529;" >
       <v-toolbar-title class="headline text-uppercase">
         <span style="letter-spacing: 0.12rem; color: white; font-weight: 300;">SISTEMA CENTENARIO</span>
       </v-toolbar-title>

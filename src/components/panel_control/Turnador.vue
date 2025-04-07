@@ -1,8 +1,8 @@
-<template> 
+<template class="accent">
   <v-container fluid>
         <v-layout row> 
         <v-flex xs12 order-md1 order-xs3>
-          <v-card dark tile flat color="primary">
+          <v-card dark tile flat color="white">
             <div  class="text-xl-center text-md-center text-xs-center my-1">
                 <img src="@/assets/LogoHGO.png"  height="185px"  alt="">  
             </div> 
