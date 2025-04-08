@@ -4,9 +4,9 @@
 
 <template>
   <v-app class="app-fontstyle">
-    <v-navigation-drawer class="accent"  app>
+    <v-navigation-drawer class="primary"  app>
       <div class="text-xl-center text-md-center text-xs-center my-4">
-        <img src="@/assets/LogoHGO.png" height="110px" alt="">
+        <img src="@/assets/Logo.png" height="110px" alt="">
       </div>
       <v-list dense dark class="pt-0 primary" >
         <template  >
@@ -1051,6 +1051,7 @@
 
 <script>
 import Loader from './modulo/_loader'
+
 export default {
   name: 'App',
   components:{Loader},

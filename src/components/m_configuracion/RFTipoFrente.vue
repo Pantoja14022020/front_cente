@@ -96,10 +96,13 @@
     import n401 from './401.vue'
     import n403 from './403.vue'
     import { error } from 'util';
+    import NavDrawer from './ConfiguracionNavDrawer.vue'
+
     export default {
         components: {      
             n401,
-            n403
+            n403,
+            NavDrawer,
         },
         data(){
             return {

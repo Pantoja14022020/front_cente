@@ -1,5 +1,6 @@
 <template>
     <v-layout align-start>
+      <NavDrawer></NavDrawer>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
@@ -104,10 +105,13 @@
     import n401 from './401.vue'
     import n403 from './403.vue'
     import { error } from 'util';
+    import NavDrawer from './ConfiguracionNavDrawer.vue'
+
     export default {
         components: {      
             n401,
-            n403
+            n403,
+            NavDrawer
         },
         data(){
             return {
