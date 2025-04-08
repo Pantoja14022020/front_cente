@@ -63,6 +63,7 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
                 })
             })
             .catch(error => {
+              console.log(error, "este es el error")
               alert("El usuario no se encuentra registrado en Centenario")
               keycloak.logout({redirectUri: URI_FAIL_KEYCLOAK})
             });
