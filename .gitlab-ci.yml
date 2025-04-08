@@ -27,4 +27,4 @@ deploy_to_s3:
   dependencies:
     - build_project
   only:
-    - tags
+    - daniel
