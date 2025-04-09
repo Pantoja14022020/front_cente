@@ -174,7 +174,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/Lenguas/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Lenguas/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.lenguas=response.data;
                 }).catch(err => { 
@@ -221,7 +221,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Lenguas/Actualizar',{
+                            this.$conf.put('api/Lenguas/Actualizar',{
                                 'idLengua':me.idLengua, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -252,7 +252,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Lenguas/Crear',{
+                            this.$conf.post('api/Lenguas/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

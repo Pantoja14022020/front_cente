@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Largo_de_Cabello/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Largo_de_Cabello/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Largo_de_Cabello/Actualizar',{
+                            this.$conf.put('api/Largo_de_Cabello/Actualizar',{
                                 'IdLargoCabello':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Largo_de_Cabello/Crear',{
+                            this.$conf.post('api/Largo_de_Cabello/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

@@ -222,7 +222,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
-                axios.get('api/DependeciasDerivacions/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/DependeciasDerivacions/Listar',configuracion).then(function(response){
                     me.dderivacion=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -247,7 +247,7 @@
                 var distritosArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     distritosArray=response.data;
                     distritosArray.map(function(x){
                         me.distritos.push({text: x.nombre,value:x.idDistrito});
@@ -304,7 +304,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/DependeciasDerivacions/Actualizar',{
+                            this.$conf.put('api/DependeciasDerivacions/Actualizar',{
                                 'idDDerivacion':me.idDDerivacion, 
                                 'distritoId':me.distritoId,
                                 'nombre': me.nombre,
@@ -338,7 +338,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/DependeciasDerivacions/Crear',{  
+                            this.$conf.post('api/DependeciasDerivacions/Crear',{
                                 'distritoId': me.distritoId,
                                 'nombre': me.nombre,
                                 'direccion': me.direccion,

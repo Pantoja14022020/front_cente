@@ -606,7 +606,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
-                axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
+                this.$conf.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){
 
                     me.fechaINUC = response.data.fechaElevaNuc
                     me.agenciaid = response.data.agenciaid                 
@@ -639,7 +639,7 @@
              let me=this;  
                  let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Terminacion/DeterminacionArchivoListarPorhecho/'+ me.rHechoId,configuracion).then(function(response){
+                this.$conf.get('api/Terminacion/DeterminacionArchivoListarPorhecho/'+ me.rHechoId,configuracion).then(function(response){
                     me.determinacionarchivo=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -690,7 +690,7 @@
             let configuracion= {headers : header};
             var contador=0;
             var personasArray=[];
-            axios.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
+            this.$conf.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data)
                 me.personas =response.data;
                 }).catch(err => { 
@@ -716,7 +716,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
             var delitosArray=[];
-            axios.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
+            this.$conf.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
                 //console.log(response.data)
                 me.delitos = response.data;                   
                     }).catch(err => { 
@@ -741,7 +741,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/DireccionDelitoes/ListarPoridHecho/' +me.rHechoId,configuracion).then(function(response){  
+                this.$conf.get('api/DireccionDelitoes/ListarPoridHecho/' +me.rHechoId,configuracion).then(function(response){
                    
                     me.direccionsuceso = response.data
                 }).catch(err => { 
@@ -777,7 +777,7 @@
             let configuracion= {headers : header}; 
                 me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar la información ',           
                 function(){
-                    axios.put('api/Determinacion/Guardar',{ 
+                    this.$conf.put('api/Determinacion/Guardar',{
                         'idNuc': me.idNuc,
                         'statusNUC': "nose",  
                     },configuracion).then(function(response){  

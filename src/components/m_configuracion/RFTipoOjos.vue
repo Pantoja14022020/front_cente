@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/TipoOjos/Listar',configuracion).then(function(response){
+                this.$conf.get('api/TipoOjos/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/TipoOjos/Actualizar',{
+                            this.$conf.put('api/TipoOjos/Actualizar',{
                                 'IdTipoOjos':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/TipoOjos/Crear',{
+                            this.$conf.post('api/TipoOjos/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

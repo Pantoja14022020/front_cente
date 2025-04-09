@@ -175,7 +175,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/MarcaArma/Listar',configuracion).then(function(response){
+                this.$conf.get('api/MarcaArma/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.armas=response.data;
                 }).catch(err => { 
@@ -221,7 +221,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/MarcaArma/Actualizar',{
+                            this.$conf.put('api/MarcaArma/Actualizar',{
                                 'IdMarcaArma':me.IdMarcaArma, 
                                 'nombre': me.arma 
                             },configuracion).then(function(response){
@@ -252,7 +252,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/MarcaArma/Crear',{
+                            this.$conf.post('api/MarcaArma/Crear',{
                                 'Nombre': me.arma, 
                             },configuracion).then(function(response){
                                 me.close();

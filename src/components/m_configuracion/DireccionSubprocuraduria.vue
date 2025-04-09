@@ -330,7 +330,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/DSPs/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/DSPs/Listar',configuracion).then(function(response){
                     me.dsps=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -355,7 +355,7 @@
                 var distritosArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     distritosArray=response.data;
                     distritosArray.map(function(x){
                         me.distritos.push({text: x.nombre,value:x.idDistrito});
@@ -418,7 +418,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/DSPs/Actualizar',{
+                            this.$conf.put('api/DSPs/Actualizar',{
                                 'idDSP':me.idDSP, 
                                 'distritoId': me.distritoId,
                                 'clave': me.clave,
@@ -455,7 +455,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/DSPs/Crear',{  
+                            this.$conf.post('api/DSPs/Crear',{
                                 'distritoId': me.distritoId,
                                 'clave': me.clave,
                                 'nombreSubDir': me.nombreDir, 
@@ -508,7 +508,7 @@
 
                 if (this.statusDSP) {
                     
-                    axios.put('api/DSPs/DesactivarDSP/'+this.idDSP,{},configuracion).then(function(response){
+                    this.$conf.put('api/DSPs/DesactivarDSP/'+this.idDSP,{},configuracion).then(function(response){
                         me.modalActDesDSP = false;
                         me.dspNombre = "";
                         me.distritoNombre = "";
@@ -535,7 +535,7 @@
                 }
                 else
                 {
-                    axios.put('api/DSPs/ActivarDSP/'+this.idDSP,{},configuracion).then(function(response){
+                    this.$conf.put('api/DSPs/ActivarDSP/'+this.idDSP,{},configuracion).then(function(response){
                         me.modalActDesDSP = false;
                         me.dspNombre = "";
                         me.distritoNombre = "";

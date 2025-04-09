@@ -173,7 +173,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tratamientos_Quimicos_Cabellos/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tratamientos_Quimicos_Cabellos/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -219,7 +219,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tratamientos_Quimicos_Cabellos/Actualizar',{
+                            this.$conf.put('api/Tratamientos_Quimicos_Cabellos/Actualizar',{
                                 'IdTratamientos_Quimicos_Cabello':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -250,7 +250,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tratamientos_Quimicos_Cabellos/Crear',{
+                            this.$conf.post('api/Tratamientos_Quimicos_Cabellos/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

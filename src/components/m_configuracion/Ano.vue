@@ -176,7 +176,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Ano/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Ano/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.anos=response.data;
                 }).catch(err => { 
@@ -222,7 +222,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Ano/Actualizar',{
+                            this.$conf.put('api/Ano/Actualizar',{
                                 'idAno':me.idAno, 
                                 'dato': me.ano 
                             },configuracion).then(function(response){
@@ -253,7 +253,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Ano/Crear',{
+                            this.$conf.post('api/Ano/Crear',{
                                 'dato': me.ano, 
                             },configuracion).then(function(response){
                                 me.close();

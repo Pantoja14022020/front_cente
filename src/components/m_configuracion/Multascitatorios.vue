@@ -184,7 +184,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/MultasCitatorios/Listar/',configuracion).then(function(response){
+                this.$conf.get('api/MultasCitatorios/Listar/',configuracion).then(function(response){
                     //console.log(response);
                     me.instituciones=response.data;
                 }).catch(err => { 
@@ -233,7 +233,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/MultasCitatorios/Actualizar',{
+                            this.$conf.put('api/MultasCitatorios/Actualizar',{
                                 'IdMultaCitatorio': me.idMultaCitatorio, 
                                 'Dato': me.multa, 
                                 'Descripcion': me.descripcion,
@@ -265,7 +265,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/MultasCitatorios/Crear',{
+                            this.$conf.post('api/MultasCitatorios/Crear',{
                                 'Dato': me.multa,
                                 'Descripcion': me.descripcion,
                                 

@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tamano_Dentals/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tamano_Dentals/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tamano_Dentals/Actualizar',{
+                            this.$conf.put('api/Tamano_Dentals/Actualizar',{
                                 'IdTamano_Dental':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tamano_Dentals/Crear',{
+                            this.$conf.post('api/Tamano_Dentals/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

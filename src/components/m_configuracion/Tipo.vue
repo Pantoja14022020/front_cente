@@ -149,7 +149,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
-                axios.get('api/Tipoes/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Tipoes/Listar',configuracion).then(function(response){
                     me.datos=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -195,7 +195,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tipoes/Actualizar',{
+                            this.$conf.put('api/Tipoes/Actualizar',{
                                 'idTipo':me.idTipo, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -226,7 +226,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tipoes/Crear',{ 
+                            this.$conf.post('api/Tipoes/Crear',{
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
                                 me.close();

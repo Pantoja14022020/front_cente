@@ -239,7 +239,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.distritos=response.data;
                 }).catch(err => { 
@@ -297,7 +297,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Distritoes/Actualizar',{
+                            this.$conf.put('api/Distritoes/Actualizar',{
                                 'idDistrito':me.idDistrito,
                                 'nombre': me.nombre,
                                 'clave': me.clave,
@@ -334,7 +334,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Distritoes/Crear',{ 
+                            this.$conf.post('api/Distritoes/Crear',{
                                 'nombre': me.nombre,
                                 'clave': me.clave,
                                 'direccion': me.direccion,

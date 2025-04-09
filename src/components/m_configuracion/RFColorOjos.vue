@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Color_Ojos/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Color_Ojos/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Color_Ojos/Actualizar',{
+                            this.$conf.put('api/Color_Ojos/Actualizar',{
                                 'IdColorOjos':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Color_Ojos/Crear',{
+                            this.$conf.post('api/Color_Ojos/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

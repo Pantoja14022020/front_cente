@@ -177,7 +177,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Religions/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Religions/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.religions=response.data;
                 }).catch(err => { 
@@ -224,7 +224,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Religions/Actualizar',{
+                            this.$conf.put('api/Religions/Actualizar',{
                                 'idReligion':me.idReligion, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -255,7 +255,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Religions/Crear',{
+                            this.$conf.post('api/Religions/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

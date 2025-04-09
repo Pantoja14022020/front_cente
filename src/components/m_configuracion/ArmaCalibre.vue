@@ -175,7 +175,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Calibre/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Calibre/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.calibres=response.data;
                 }).catch(err => { 
@@ -221,7 +221,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Calibre/Actualizar',{
+                            this.$conf.put('api/Calibre/Actualizar',{
                                 'IdCalibre':me.IdCalibre, 
                                 'Numero': me.calibre 
                             },configuracion).then(function(response){
@@ -252,7 +252,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Calibre/Crear',{
+                            this.$conf.post('api/Calibre/Crear',{
                                 'Numero': me.calibre, 
                             },configuracion).then(function(response){
                                 me.close();

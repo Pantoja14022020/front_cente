@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Grosor_de_labios/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Grosor_de_labios/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Grosor_de_labios/Actualizar',{
+                            this.$conf.put('api/Grosor_de_labios/Actualizar',{
                                 'IdGrosorLabios':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Grosor_de_labios/Crear',{
+                            this.$conf.post('api/Grosor_de_labios/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

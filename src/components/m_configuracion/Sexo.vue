@@ -182,7 +182,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Sexoes/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Sexoes/Listar',configuracion).then(function(response){
                     me.sexos=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -230,7 +230,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Sexoes/Actualizar',{
+                            this.$conf.put('api/Sexoes/Actualizar',{
                                 'idSexo':me.idSexo,
                                 'clave': me.clave, 
                                 'nombre': me.nombre 
@@ -261,7 +261,7 @@
                             //Código para guardar
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Sexoes/Crear',{
+                            this.$conf.post('api/Sexoes/Crear',{
                                 'clave': me.clave, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){

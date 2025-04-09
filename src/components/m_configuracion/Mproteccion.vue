@@ -194,7 +194,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/MedidasProteccionC/Listar',configuracion).then(function(response){
+                this.$conf.get('api/MedidasProteccionC/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -245,7 +245,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/MedidasProteccionC/Actualizar',{
+                            this.$conf.put('api/MedidasProteccionC/Actualizar',{
                                 'IdMedidasProteccionC':me.IdMedidasProteccionC, 
                                 'Clave': me.clave,
                                 'Clasificacion': me.clasificacion,
@@ -278,7 +278,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/MedidasProteccionC/Crear',{
+                            this.$conf.post('api/MedidasProteccionC/Crear',{
                                 'Clave': me.clave, 
                                 'Clasificacion': me.clasificacion, 
                                 'Descripcion': me.mproteccion, 

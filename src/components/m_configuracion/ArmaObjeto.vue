@@ -191,7 +191,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ArmaObjeto/Listar',configuracion).then(function(response){
+                this.$conf.get('api/ArmaObjeto/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.armaobjetos=response.data;
                }).catch(err => { 
@@ -270,7 +270,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ArmaObjeto/Actualizar',{
+                            this.$conf.put('api/ArmaObjeto/Actualizar',{
                                 'idArmaObjeto':me.idarmaobjeto, 
                                 'nombreAO': me.nombrearma,
                                 'clasificacionArmaId' : me.clasificacion
@@ -302,7 +302,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ArmaObjeto/Crear',{
+                            this.$conf.post('api/ArmaObjeto/Crear',{
                                 'nombreAO': me.nombrearma,
                                 'clasificacionArmaId': me.clasificacion
                             },configuracion).then(function(response){

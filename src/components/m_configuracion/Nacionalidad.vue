@@ -182,7 +182,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/Nacionalidads/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Nacionalidads/Listar',configuracion).then(function(response){
                     me.nacionalidades=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -230,7 +230,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Nacionalidads/Actualizar',{
+                            this.$conf.put('api/Nacionalidads/Actualizar',{
                                 'idNacionalidad':me.idNacionalidad,
                                 'clave': me.clave, 
                                 'nombre': me.nombre 
@@ -262,7 +262,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Nacionalidads/Crear',{
+                            this.$conf.post('api/Nacionalidads/Crear',{
                                 'clave': me.clave, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){

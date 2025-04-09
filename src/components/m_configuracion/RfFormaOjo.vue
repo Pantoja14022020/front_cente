@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Forma_De_Ojos/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Forma_De_Ojos/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Forma_De_Ojos/Actualizar',{
+                            this.$conf.put('api/Forma_De_Ojos/Actualizar',{
                                 'idForma_de_ojo':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Forma_De_Ojos/Crear',{
+                            this.$conf.post('api/Forma_De_Ojos/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

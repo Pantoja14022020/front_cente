@@ -223,7 +223,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Delitoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Delitoes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.delitos=response.data;
                 }).catch(err => { 
@@ -283,7 +283,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Delitoes/Actualizar',{
+                            this.$conf.put('api/Delitoes/Actualizar',{
                                 'idDelito':me.idDelito, 
                                 'nombre': me.nombre, 
                                 'suceptibleMASC': me.suceptibleMASC,
@@ -318,7 +318,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Delitoes/Crear',{
+                            this.$conf.post('api/Delitoes/Crear',{
                                 'nombre': me.nombre, 
                                 'suceptibleMASC': me.suceptibleMASC,
                                 'tipoMontoRobo': me.tipoMontoRobo,

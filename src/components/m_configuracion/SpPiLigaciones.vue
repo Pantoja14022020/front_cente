@@ -212,7 +212,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/SpPiLigaciones/Listar',configuracion).then(function(response){
+                this.$conf.get('api/SpPiLigaciones/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -263,7 +263,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/SpPiLigaciones/Actualizar',{
+                            this.$conf.put('api/SpPiLigaciones/Actualizar',{
                                 'IdSPPiligaciones':me.IdSPPiligaciones, 
                                 'PanelControlId': me.panel,
                                 'DSPId': me.dsp,
@@ -296,7 +296,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/SpPiLigaciones/Crear',{
+                            this.$conf.post('api/SpPiLigaciones/Crear',{
                                 'PanelControlId': me.panel, 
                                 'DSPId': me.dsp, 
                                 'Direccion': me.direccion, 
@@ -331,7 +331,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var dspArray=[];
-                axios.get('api/DSPs/ListarPISP',configuracion).then(function(response){
+                this.$conf.get('api/DSPs/ListarPISP',configuracion).then(function(response){
                     dspArray=response.data;
                     dspArray.map(function(x){
                         me.dsps.push({text: x.nombreSubDir + "(" + x.nombreDistrito + ")",value:x.idDSP});

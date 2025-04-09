@@ -92,7 +92,7 @@
     </v-layout>
 </template>
 <script>
-    import axios from 'axios' 
+    import axios from 'axios'
     import VeeValidate from 'vee-validate'
     import n401 from './401.vue'
     import n403 from './403.vue'
@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tamaño_de_Boca/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tamaño_de_Boca/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tamaño_de_Boca/Actualizar',{
+                            this.$conf.put('api/Tamaño_de_Boca/Actualizar',{
                                 'IdTamañoBoca':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tamaño_de_Boca/Crear',{
+                            this.$conf.post('api/Tamaño_de_Boca/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

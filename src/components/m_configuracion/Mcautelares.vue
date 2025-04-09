@@ -194,7 +194,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/MedidasCautelaresC/Listar',configuracion).then(function(response){
+                this.$conf.get('api/MedidasCautelaresC/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -245,7 +245,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/MedidasCautelaresC/Actualizar',{
+                            this.$conf.put('api/MedidasCautelaresC/Actualizar',{
                                 'IdMedidasCautelaresC':me.IdMedidasCautelaresC, 
                                 'Clave': me.clave,
                                 'Clasificacion': me.clasificacion,
@@ -278,7 +278,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/MedidasCautelaresC/Crear',{
+                            this.$conf.post('api/MedidasCautelaresC/Crear',{
                                 'Clave': me.clave, 
                                 'Clasificacion': me.clasificacion, 
                                 'Descripcion': me.mcautealar, 

@@ -185,7 +185,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/StatusNUCs/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/StatusNUCs/Listar',configuracion).then(function(response){
                     me.datos=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -210,7 +210,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var etapaarray=[];
-                axios.get('api/Etapa/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Etapa/Listar',configuracion).then(function(response){
                     etapaarray=response.data;
                     etapaarray.map(function(x){
                         me.etapas.push({text: x.nombre,value:x.nombre});
@@ -261,7 +261,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/StatusNUCs/Actualizar',{
+                            this.$conf.put('api/StatusNUCs/Actualizar',{
                                 'idStatusNuc':me.idStatusNuc, 
                                 'nombreStatus': me.nombreStatus,
                                 'etapa': me.etapa
@@ -293,7 +293,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/StatusNUCs/Crear',{ 
+                            this.$conf.post('api/StatusNUCs/Crear',{
                                 'nombreStatus': me.nombreStatus,
                                 'etapa': me.etapa 
                             },configuracion).then(function(response){

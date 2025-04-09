@@ -249,7 +249,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ServicioPericials/Listar',configuracion).then(function(response){
+                this.$conf.get('api/ServicioPericials/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.servicios=response.data;
                 }).catch(err => { 
@@ -308,7 +308,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ServicioPericials/Actualizar',{
+                            this.$conf.put('api/ServicioPericials/Actualizar',{
                                 'idServicioPericial':me.idServicioPericial,
                                 'codigo': me.codigo,
                                 'servicio': me.servicio,
@@ -345,7 +345,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ServicioPericials/Crear',{
+                            this.$conf.post('api/ServicioPericials/Crear',{
                                 'codigo': me.codigo,
                                 'servicio': me.servicio,
                                 'descripcion': me.descripcion,

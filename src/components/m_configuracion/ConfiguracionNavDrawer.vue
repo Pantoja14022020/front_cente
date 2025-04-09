@@ -4,7 +4,7 @@
 
 <template>
   <v-app class="app-fontstyle">
-    <v-navigation-drawer class="primary"  app>
+    <v-navigation-drawer class="primary" permanent app>
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <img src="@/assets/Logo.png" height="110px" alt="">
       </div>

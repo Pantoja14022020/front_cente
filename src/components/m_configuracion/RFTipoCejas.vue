@@ -92,7 +92,7 @@
     </v-layout>
 </template>
 <script>
-    import axios from 'axios' 
+    import axios from 'axios'
     import VeeValidate from 'vee-validate'
     import n401 from './401.vue'
     import n403 from './403.vue'
@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tipo_de_Cejas/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tipo_de_Cejas/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tipo_de_Cejas/Actualizar',{
+                            this.$conf.put('api/Tipo_de_Cejas/Actualizar',{
                                 'IdFormaCejas':me.idRepresentante, 
                                 'Dato': me.representante 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tipo_de_Cejas/Crear',{
+                            this.$conf.post('api/Tipo_de_Cejas/Crear',{
                                 'Dato': me.representante, 
                             },configuracion).then(function(response){
                                 me.close();

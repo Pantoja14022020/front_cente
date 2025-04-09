@@ -176,7 +176,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
-                axios.get('api/Ocupacions/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Ocupacions/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.ocupacions=response.data;
                 }).catch(err => { 
@@ -223,7 +223,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Ocupacions/Actualizar',{
+                            this.$conf.put('api/Ocupacions/Actualizar',{
                                 'idOcupacion':me.idOcupacion, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -254,7 +254,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Ocupacions/Crear',{
+                            this.$conf.post('api/Ocupacions/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

@@ -194,7 +194,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/ClasificacionArma/Listar',configuracion).then(function(response){
+                this.$conf.get('api/ClasificacionArma/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.clasificaciones=response.data;
                         }).catch(err => { 
@@ -242,7 +242,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ClasificacionArma/Actualizar',{
+                            this.$conf.put('api/ClasificacionArma/Actualizar',{
                                 'idClasificacionArma':me.idClasificacion, 
                                 'nombreC': me.clasificacion,
                                 'catalogo': me.catalogo,
@@ -275,7 +275,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ClasificacionArma/Crear',{
+                            this.$conf.post('api/ClasificacionArma/Crear',{
                                 'nombreC': me.clasificacion, 
                                 'catalogo': me.catalogo
                             },configuracion).then(function(response){

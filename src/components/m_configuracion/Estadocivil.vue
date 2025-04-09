@@ -168,7 +168,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
-                axios.get('api/EstadoCivils/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/EstadoCivils/Listar',configuracion).then(function(response){
                     me.estadosciviles=response.data;
                }).catch(err => { 
                     if (err.response.status==400){
@@ -213,7 +213,7 @@
                         let me=this;
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.put('api/EstadoCivils/Actualizar',{
+                        this.$conf.put('api/EstadoCivils/Actualizar',{
                             'idECivil':me.idECivil,
                             'nombre': me.nombre 
                         },configuracion).then(function(response){
@@ -244,7 +244,7 @@
                         let me=this;
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.post('api/EstadoCivils/Crear',{
+                        this.$conf.post('api/EstadoCivils/Crear',{
                             'nombre': me.nombre 
                         },configuracion).then(function(response){
                             me.close();

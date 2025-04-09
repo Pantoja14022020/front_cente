@@ -177,7 +177,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/TipoIndicios/Listar',configuracion).then(function(response){
+                this.$conf.get('api/TipoIndicios/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.indicios=response.data;
                }).catch(err => { 
@@ -224,7 +224,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/TipoIndicios/Actualizar',{
+                            this.$conf.put('api/TipoIndicios/Actualizar',{
                                 'idTipoIndicio':me.idTipoIndicio, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -255,7 +255,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/TipoIndicios/Crear',{
+                            this.$conf.post('api/TipoIndicios/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

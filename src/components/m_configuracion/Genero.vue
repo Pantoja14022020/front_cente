@@ -179,7 +179,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Generoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Generoes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.generos=response.data;
                 }).catch(err => { 
@@ -226,7 +226,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Generoes/Actualizar',{
+                            this.$conf.put('api/Generoes/Actualizar',{
                                 'idGenero':me.idGenero, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -257,7 +257,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Generoes/Crear',{
+                            this.$conf.post('api/Generoes/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

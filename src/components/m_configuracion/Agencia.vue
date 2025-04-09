@@ -298,7 +298,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Agencias/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Agencias/Listar',configuracion).then(function(response){
                     me.agencias=response.data;
                }).catch(err => { 
                     if (err.response.status==400){
@@ -323,7 +323,7 @@
                 var distritosArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     distritosArray=response.data;
                     distritosArray.map(function(x){
                         me.distritos.push({text: x.nombre,value:x.idDistrito});
@@ -361,7 +361,7 @@
                 {
                     iddistrito=me.distritoId.value;
                 }
-                axios.get('api/DSPs/ListarPorDistritoId/' + iddistrito,configuracion).then(function(response){
+                this.$conf.get('api/DSPs/ListarPorDistritoId/' + iddistrito,configuracion).then(function(response){
                     dspArray=response.data;
                     dspArray.map(function(x){
                         me.dsps.push({text: x.nombreSubDir,value:x.idDSP});
@@ -465,7 +465,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Agencias/Actualizar',{
+                            this.$conf.put('api/Agencias/Actualizar',{
                                 'idAgencia':me.idAgencia, 
                                 'dSPId':me.dspId,
                                 'clave': me.clave,
@@ -505,7 +505,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Agencias/Crear',{  
+                            this.$conf.post('api/Agencias/Crear',{
                                 'dSPId': me.dspId,
                                 'clave': me.clave,
                                 'nombre': me.nombre,

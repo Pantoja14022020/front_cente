@@ -173,7 +173,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/TRepresentantes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/TRepresentantes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.representantes=response.data;
                 }).catch(err => { 
@@ -217,7 +217,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/TRepresentantes/ObtenernumeroMaximo',configuracion).then(function(response){
+                this.$conf.get('api/TRepresentantes/ObtenernumeroMaximo',configuracion).then(function(response){
                     me.numeromaximo = response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -245,7 +245,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/TRepresentantes/Actualizar',{
+                            this.$conf.put('api/TRepresentantes/Actualizar',{
                                 'idTipoRepresentantes':me.idRepresentante, 
                                 'tipo': me.representante,
                                 
@@ -278,7 +278,7 @@
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
                             me.numeromaximo.numeroMaximo++
-                            axios.post('api/TRepresentantes/Crear',{
+                            this.$conf.post('api/TRepresentantes/Crear',{
                                 'tipo': me.representante, 
                                 'valor': me.numeromaximo.numeroMaximo
                             },configuracion).then(function(response){

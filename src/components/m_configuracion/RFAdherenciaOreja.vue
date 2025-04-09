@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Adherencia_Orejas/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Adherencia_Orejas/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Adherencia_Orejas/Actualizar',{
+                            this.$conf.put('api/Adherencia_Orejas/Actualizar',{
                                 'IdAdherencia_Oreja':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Adherencia_Orejas/Crear',{
+                            this.$conf.post('api/Adherencia_Orejas/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

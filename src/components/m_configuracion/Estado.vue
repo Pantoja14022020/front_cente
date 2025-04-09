@@ -190,7 +190,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Estadoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.estados=response.data;
                }).catch(err => { 
@@ -239,7 +239,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Estadoes/Actualizar',{
+                            this.$conf.put('api/Estadoes/Actualizar',{
                                 'idEstado':me.idEstado,
                                 'abreviacion': me.abreviacion,
                                 'nombre': me.nombre 
@@ -271,7 +271,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Estadoes/Crear',{
+                            this.$conf.post('api/Estadoes/Crear',{
                                 'nombre': me.nombre,
                                 'abreviacion': me.abreviacion, 
                             },configuracion).then(function(response){

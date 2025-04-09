@@ -177,7 +177,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ClasificacionPersonas/Listar',configuracion).then(function(response){
+                this.$conf.get('api/ClasificacionPersonas/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.tps=response.data;
                     }).catch(err => { 
@@ -224,7 +224,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ClasificacionPersonas/Actualizar',{
+                            this.$conf.put('api/ClasificacionPersonas/Actualizar',{
                                 'IdClasificacionPersona':me.idClasificacionPersona, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -255,7 +255,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ClasificacionPersonas/Crear',{
+                            this.$conf.post('api/ClasificacionPersonas/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

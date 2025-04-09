@@ -183,7 +183,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/DocIdentificacions/Listar',configuracion).then(function(response){
+                this.$conf.get('api/DocIdentificacions/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.dis=response.data;
                 }).catch(err => { 
@@ -230,7 +230,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/DocIdentificacions/Actualizar',{
+                            this.$conf.put('api/DocIdentificacions/Actualizar',{
                                 'idDocIdentificacion':me.idDocIdentificacion, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -261,7 +261,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/DocIdentificacions/Crear',{
+                            this.$conf.post('api/DocIdentificacions/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

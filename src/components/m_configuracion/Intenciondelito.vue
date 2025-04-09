@@ -169,7 +169,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/IntensionDelitoes/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/IntensionDelitoes/Listar',configuracion).then(function(response){
                     me.datos=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -215,7 +215,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/IntensionDelitoes/Actualizar',{
+                            this.$conf.put('api/IntensionDelitoes/Actualizar',{
                                 'idIntensionDelito':me.idIntensionDelito, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -246,7 +246,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/IntensionDelitoes/Crear',{ 
+                            this.$conf.post('api/IntensionDelitoes/Crear',{
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
                                 me.close();

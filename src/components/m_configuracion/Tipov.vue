@@ -176,7 +176,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tipov/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tipov/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.tipovs=response.data;
                 }).catch(err => { 
@@ -220,7 +220,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tipov/Actualizar',{
+                            this.$conf.put('api/Tipov/Actualizar',{
                                 'idTipov':me.idTipov, 
                                 'dato': me.tipov
                             },configuracion).then(function(response){
@@ -251,7 +251,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tipov/Crear',{
+                            this.$conf.post('api/Tipov/Crear',{
                                 'dato': me.tipov, 
                             },configuracion).then(function(response){
                                 me.close();

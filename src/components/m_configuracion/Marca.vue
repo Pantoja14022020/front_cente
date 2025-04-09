@@ -176,7 +176,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Marca/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Marca/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.marcas=response.data;
                 }).catch(err => { 
@@ -220,7 +220,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Marca/Actualizar',{
+                            this.$conf.put('api/Marca/Actualizar',{
                                 'idMarca':me.idMarca, 
                                 'dato': me.marca
                             },configuracion).then(function(response){
@@ -251,7 +251,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Marca/Crear',{
+                            this.$conf.post('api/Marca/Crear',{
                                 'dato': me.marca, 
                             },configuracion).then(function(response){
                                 me.close();

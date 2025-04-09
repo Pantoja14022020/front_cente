@@ -220,7 +220,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/JuzgadosAgencia/Listar/',configuracion).then(function(response){
+                this.$conf.get('api/JuzgadosAgencia/Listar/',configuracion).then(function(response){
                     //console.log(response);
                     me.instituciones=response.data;
                 }).catch(err => { 
@@ -333,7 +333,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/JuzgadosAgencia/Crear',{
+                            this.$conf.post('api/JuzgadosAgencia/Crear',{
                                 'DistritoId': me.distrito.value, 
                                 'Nombre': me.nombre, 
                                 'Direccion': me.direccion,

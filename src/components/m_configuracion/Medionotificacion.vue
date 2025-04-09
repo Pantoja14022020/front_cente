@@ -175,7 +175,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/MedioNotificacions/Listar',configuracion).then(function(response){
+                this.$conf.get('api/MedioNotificacions/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.mi=response.data;
                 }).catch(err => { 
@@ -222,7 +222,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/MedioNotificacions/Actualizar',{
+                            this.$conf.put('api/MedioNotificacions/Actualizar',{
                                 'idMedioNotificacion':me.idMedioNotificacion, 
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
@@ -253,7 +253,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/MedioNotificacions/Crear',{
+                            this.$conf.post('api/MedioNotificacions/Crear',{
                                 'nombre': me.nombre, 
                             },configuracion).then(function(response){
                                 me.close();

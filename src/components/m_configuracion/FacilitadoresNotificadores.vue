@@ -328,7 +328,7 @@
                                 'statusActivo': true,
                             }                                                    
                             
-                            axios.post('api/FacilitadorNotificadors/CrearFacilitadorNotificador',payload, configuracion)
+                            this.$conf.post('api/FacilitadorNotificadors/CrearFacilitadorNotificador',payload, configuracion)
                                 .then(function (response) {
                                     me.close()
                                     me.$notify('La información se guardo correctamente !!!','success')  

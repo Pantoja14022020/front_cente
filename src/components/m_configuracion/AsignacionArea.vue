@@ -231,7 +231,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ASPs/Listar',configuracion).then(function(response){
+                this.$conf.get('api/ASPs/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.asps=response.data;
                     }).catch(err => { 
@@ -257,7 +257,7 @@
                 var array=[]; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     array=response.data;
                     array.map(function(x){
                         me.distritos.push({text: x.nombre ,value:x.idDistrito});
@@ -288,7 +288,7 @@
                 let configuracion= {headers : header};
                 me.dsps = []
                 me.agencias = []
-                axios.get('api/DSPs/ListarSPporDistrito/'+ me.distrito,configuracion).then(function(response){
+                this.$conf.get('api/DSPs/ListarSPporDistrito/'+ me.distrito,configuracion).then(function(response){
                     console.log(response);
                     dspsArray=response.data;
                     dspsArray.map(function(x){
@@ -320,7 +320,7 @@
                 me.agencias.length = 0;  
                 me.agenciaId="";
                 me.agencias=[];
-                axios.get('api/Agencias/ListarPorDirSubStatus/'+ me.dspId,configuracion).then(function(response){
+                this.$conf.get('api/Agencias/ListarPorDirSubStatus/'+ me.dspId,configuracion).then(function(response){
                     agenciasArray=response.data;
                     agenciasArray.map(function(x){
                         me.agencias.push({text: x.nombre ,value:x.idAgencia});
@@ -350,7 +350,7 @@
                 var serviciosArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ServicioPericials/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/ServicioPericials/Listar',configuracion).then(function(response){
                     serviciosArray=response.data;
                     serviciosArray.map(function(x){
                         me.servicios.push({text: x.servicio,value:x.idServicioPericial});
@@ -405,14 +405,14 @@
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
                            var respuesta="";
-                            axios.get('api/ASPs/ValidarRegistro/'+ me.agenciaId + ',' + me.servicioId,configuracion).then(function(response){ 
+                            this.$conf.get('api/ASPs/ValidarRegistro/'+ me.agenciaId + ',' + me.servicioId,configuracion).then(function(response){
                                respuesta= response.data;
                           
                                if (respuesta == "Existe registro") {
                                    me.$notify('Este registro ya fue ingresado','error') 
                                } else {
                                    if (respuesta == "No existe registro") {
-                                        axios.put('api/ASPs/Actualizar',{
+                                        this.$conf.put('api/ASPs/Actualizar',{
                                             'idASP':me.idASP, 
                                             'agenciaId': me.agenciaId,
                                             'servicioPericialId': me.servicioId 
@@ -466,7 +466,7 @@
                             var respuesta="";
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.get('api/ASPs/ValidarRegistro/'+ me.agenciaId + ',' + me.servicioId,configuracion).then(function(response){ 
+                            this.$conf.get('api/ASPs/ValidarRegistro/'+ me.agenciaId + ',' + me.servicioId,configuracion).then(function(response){
                                respuesta= response.data;
                           
                                if (respuesta == "Existe registro") {
@@ -474,7 +474,7 @@
                                } else {
                                    if (respuesta == "No existe registro") {
                               
-                                       axios.post('api/ASPs/Crear',{ 
+                                       this.$conf.post('api/ASPs/Crear',{
                                             'agenciaId': me.agenciaId,
                                             'servicioPericialId': me.servicioId 
                                         },configuracion).then(function(response){

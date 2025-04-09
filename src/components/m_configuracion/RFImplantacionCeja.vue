@@ -172,7 +172,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Implantacion_Cejas/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Implantacion_Cejas/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -218,7 +218,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Implantacion_Cejas/Actualizar',{
+                            this.$conf.put('api/Implantacion_Cejas/Actualizar',{
                                 'IdImplantacion_Ceja':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -249,7 +249,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Implantacion_Cejas/Crear',{
+                            this.$conf.post('api/Implantacion_Cejas/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

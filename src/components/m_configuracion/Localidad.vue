@@ -246,7 +246,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};  
                 var estadosArray=[];
-                axios.get('api/Estadoes/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
                     estadosArray=response.data;
                     estadosArray.map(function(x){
                         me.estados.push({text: x.nombre, value:x.idEstado}); 
@@ -276,7 +276,7 @@
                 let configuracion= {headers : header};
                 var municipiosArray=[];
                 me.municipios.length = 0;
-                axios.get('api/Municipios/ListarPorEstado/'+ me.estadoId,configuracion).then(function(response){
+                this.$conf.get('api/Municipios/ListarPorEstado/'+ me.estadoId,configuracion).then(function(response){
                     municipiosArray=response.data;
                     municipiosArray.map(function(x){
                         me.municipios.push({text: x.nombre,value:x.idMunicipio});
@@ -304,7 +304,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Localidads/MostrarPorMPO/' + me.municipioId,configuracion).then(function(response){
+                this.$conf.get('api/Localidads/MostrarPorMPO/' + me.municipioId,configuracion).then(function(response){
                     me.localidades=response.data;  
                 }).catch(err => { 
                                 if (err.response.status==400){
@@ -350,7 +350,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Localidads/Actualizar',{
+                            this.$conf.put('api/Localidads/Actualizar',{
                                 'idLocalidad':me.idLocalidad, 
                                 'municipioId':me.municipioId,
                                 'nombre': me.nombre,
@@ -384,7 +384,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Localidads/Crear',{  
+                            this.$conf.post('api/Localidads/Crear',{
                                 'municipioId':me.municipioId,
                                 'nombre': me.nombre,
                                 'cp': me.cp,

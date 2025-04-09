@@ -231,7 +231,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/FiscaliaOestado/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/FiscaliaOestado/Listar',configuracion).then(function(response){
                     me.fiscaliasoestados=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -256,7 +256,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var estadosArray=[];
-                axios.get('api/Estadoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
                     estadosArray=response.data;
                     estadosArray.map(function(x){
                         me.estados.push({text: x.nombre,value:x.nombre,value2:x.idEstado});
@@ -285,7 +285,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var municipiosArray=[];
-                axios.get('api/Municipios/ListarPorEstado/'+ me.estado.value2,configuracion).then(function(response){
+                this.$conf.get('api/Municipios/ListarPorEstado/'+ me.estado.value2,configuracion).then(function(response){
                     municipiosArray=response.data;
                     municipiosArray.map(function(x){
                         me.municipios.push({text: x.nombre,value:x.nombre,value2:x.idMunicipio});
@@ -349,7 +349,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/FiscaliaOestado/Actualizar',{
+                            this.$conf.put('api/FiscaliaOestado/Actualizar',{
                                 'IdFiscaliaOestado':me.IdFiscaliaOestado, 
                                 'EstadoId':me.estado.value2,
                                 'MunicipioId': me.municipio.value2,
@@ -384,7 +384,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/FiscaliaOestado/Crear',{  
+                            this.$conf.post('api/FiscaliaOestado/Crear',{
                                 'EstadoId':me.estado.value2,
                                 'MunicipioId': me.municipio.value2,
                                 'Nombre': me.nombre,

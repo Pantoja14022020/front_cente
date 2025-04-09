@@ -171,7 +171,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tipo_Dentaduras/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tipo_Dentaduras/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -217,7 +217,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tipo_Dentaduras/Actualizar',{
+                            this.$conf.put('api/Tipo_Dentaduras/Actualizar',{
                                 'IdTipo_Dentadura':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -248,7 +248,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tipo_Dentaduras/Crear',{
+                            this.$conf.post('api/Tipo_Dentaduras/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

@@ -171,7 +171,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Tipo_De_Mentons/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Tipo_De_Mentons/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.datos=response.data;
                 }).catch(err => { 
@@ -217,7 +217,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Tipo_De_Mentons/Actualizar',{
+                            this.$conf.put('api/Tipo_De_Mentons/Actualizar',{
                                 'IdTipo_de_Menton':me.iddato, 
                                 'Dato': me.dato 
                             },configuracion).then(function(response){
@@ -248,7 +248,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Tipo_De_Mentons/Crear',{
+                            this.$conf.post('api/Tipo_De_Mentons/Crear',{
                                 'Dato': me.dato, 
                             },configuracion).then(function(response){
                                 me.close();

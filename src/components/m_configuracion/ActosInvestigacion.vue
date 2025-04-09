@@ -205,7 +205,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ActoInvestigacion/ListarTodos',configuracion).then(function(response){
+                this.$conf.get('api/ActoInvestigacion/ListarTodos',configuracion).then(function(response){
                     //console.log(response);
                     me.actoinvestigacion=response.data;
                  }).catch(err => {
@@ -257,7 +257,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ActoInvestigacion/Actualizar',{
+                            this.$conf.put('api/ActoInvestigacion/Actualizar',{
                                 'idActonvestigacion': me.idActoInvestigacion, 
                                 'nombre': me.nombre, 
                                 'nomenclatura': me.nomenclatura,
@@ -292,7 +292,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ActoInvestigacion/Crear',{
+                            this.$conf.post('api/ActoInvestigacion/Crear',{
                                 'nombre': me.nombre,
                                 'nomenclatura': me.nomenclatura,
                                 'descripcion': me.descripcion,

@@ -327,7 +327,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/ModuloServicios/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/ModuloServicios/Listar',configuracion).then(function(response){
                     me.modulos=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -352,7 +352,7 @@
                 var distritosArray=[];
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Distritoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     distritosArray=response.data;
                     distritosArray.map(function(x){
                         me.distritos.push({text: x.nombre,value:x.idDistrito});
@@ -391,7 +391,7 @@
                 {
                     iddistrito=me.distritoId.value;
                 }
-                axios.get('api/DSPs/ListarPorDistritoId/' + iddistrito,configuracion).then(function(response){
+                this.$conf.get('api/DSPs/ListarPorDistritoId/' + iddistrito,configuracion).then(function(response){
                     dspArray=response.data;
                     dspArray.map(function(x){
                         me.dsps.push({text: x.nombreSubDir,value:x.idDSP});
@@ -429,7 +429,7 @@
                     dspid=me.dspId.value;
                 }
                 me.agencias=[];
-                axios.get('api/Agencias/ListarPorDirSub/' + dspid,configuracion).then(function(response){
+                this.$conf.get('api/Agencias/ListarPorDirSub/' + dspid,configuracion).then(function(response){
                     agenciasArray=response.data;
                     agenciasArray.map(function(x){
                         me.agencias.push({text: x.nombre,value:x.idAgencia});
@@ -489,7 +489,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/ModuloServicios/Actualizar',{
+                            this.$conf.put('api/ModuloServicios/Actualizar',{
                                 'idModuloServicio': me.idModuloServicio,
                                 'clave': me.clave,
                                 'agenciaId': me.agenciaId,
@@ -523,7 +523,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/ModuloServicios/Crear',{  
+                            this.$conf.post('api/ModuloServicios/Crear',{
                                 'agenciaId': me.agenciaId,
                                 'clave': me.clave,
                                 'tipo': me.tipo,
@@ -573,7 +573,7 @@
 
                 if (this.condicion) {
                     
-                    axios.put('api/ModuloServicios/DesactivarModulo/'+this.idModulo,{},configuracion).then(function(response){
+                    this.$conf.put('api/ModuloServicios/DesactivarModulo/'+this.idModulo,{},configuracion).then(function(response){
                         me.modalModActDes = false;
                         me.moduloNombre = "";
                         me.agenciaNombre = "";
@@ -600,7 +600,7 @@
                 }
                 else
                 {
-                    axios.put('api/ModuloServicios/ActivarModulo/'+this.idModulo,{},configuracion).then(function(response){
+                    this.$conf.put('api/ModuloServicios/ActivarModulo/'+this.idModulo,{},configuracion).then(function(response){
                         me.modalModActDes = false;
                         me.moduloNombre = "";
                         me.agenciaNombre = "";

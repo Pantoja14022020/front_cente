@@ -176,7 +176,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Color/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Color/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.colores=response.data;
                         }).catch(err => { 
@@ -222,7 +222,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Color/Actualizar',{
+                            this.$conf.put('api/Color/Actualizar',{
                                 'idColor':me.idColor, 
                                 'dato': me.color
                             },configuracion).then(function(response){
@@ -253,7 +253,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Color/Crear',{
+                            this.$conf.post('api/Color/Crear',{
                                 'dato': me.color, 
                             },configuracion).then(function(response){
                                 me.close();

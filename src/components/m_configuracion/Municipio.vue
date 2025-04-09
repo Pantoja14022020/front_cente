@@ -187,7 +187,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Municipios/Listar',configuracion).then(function(response){ 
+                this.$conf.get('api/Municipios/Listar',configuracion).then(function(response){
                     me.municipios=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -212,7 +212,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var estadosArray=[];
-                axios.get('api/Estadoes/Listar',configuracion).then(function(response){
+                this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
                     estadosArray=response.data;
                     estadosArray.map(function(x){
                         me.estados.push({text: x.nombre,value:x.idEstado});
@@ -263,7 +263,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Municipios/Actualizar',{
+                            this.$conf.put('api/Municipios/Actualizar',{
                                 'idMunicipio':me.idMunicipio, 
                                 'estadoId':me.estadoId,
                                 'nombre': me.nombre 
@@ -294,7 +294,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Municipios/Crear',{  
+                            this.$conf.post('api/Municipios/Crear',{
                                 'estadoId':me.estadoId,
                                 'nombre': me.nombre 
                             },configuracion).then(function(response){
