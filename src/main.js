@@ -19,31 +19,33 @@ Vue.config.productionTip = false
 
 
 
-axios.defaults.baseURL =  'http://3.95.38.176:5006/'
+axios.defaults.baseURL =  'http://98.80.66.107:5006/'
 
 
 
-const controlaccesoInstance = axios.create({ baseURL:  'http://18.233.164.30:5000/' }) 
+const controlaccesoInstance = axios.create({ baseURL:  'http://13.217.131.100:5000/' })
 Vue.prototype.$controlacceso = controlaccesoInstance 
 
 
 
-const confInstance = axios.create({baseURL:  'http://54.242.228.50:5002/'}) 
-Vue.prototype.$conf = confInstance 
+const confInstance = axios.create({baseURL:  'http://34.224.63.224:5002/'})
+Vue.prototype.$conf = confInstance
 
 
-
-const catInstance = axios.create({baseURL:  'http://52.87.216.188:5001/'}) 
+const catInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'})
 Vue.prototype.$cat = catInstance
 
+const SPInstance = axios.create({baseURL:  'https://44.203.26.217:5008/'})
+Vue.prototype.$SP = SPInstance
 
-
-const panelInstance = axios.create({baseURL:  'http://3.95.38.176:5006/'}) 
+const panelInstance = axios.create({baseURL:  'http://98.80.66.107:5006/'})
 Vue.prototype.$panel = panelInstance
 
-const justiciarestaurativaInstance = axios.create({baseURL:  'https://justicia-restaurativa.serveo.net'})
+const justiciarestaurativaInstance = axios.create({baseURL:  'https://18.233.64.114:5005/'})
 Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 
+const ILInstance = axios.create({baseURL:  'https://54.90.102.37:5004/'})
+Vue.prototype.$IL = ILInstance
 
 
 

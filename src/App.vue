@@ -14,6 +14,7 @@
     </v-toolbar>
 
     <v-content>
+      <component :is="currentDrawer"/>
       <router-view></router-view>
     </v-content>
     
@@ -39,12 +40,15 @@
   import moment from "moment";
   import "moment/locale/es";
   import keycloak from './auth/keycloak'
-  
+  import umixtaNavDrawer from "@/components/m_umixta/umixtaNavDrawer.vue";
+  import ConfiguracionNavDrawer from "@/components/m_configuracion/ConfiguracionNavDrawer.vue";
   export default 
   {
     name: "App",
 
-    components: {},
+    components: {
+
+    },
     
     data: () => ({ horas: 0, minutos: 0, segundos: 0, error: null }),
     
@@ -58,7 +62,7 @@
           this.$store.dispatch("guardarToken", data.token)
         })
         .catch(error => {
-          this.error=err.response.data;
+          this.error=error.response.data;
         });
     },
 
@@ -91,6 +95,17 @@
 
     computed: 
     {
+      currentDrawer() {
+        const path = this.$route.path
+
+        if (path.startsWith('/umixta')) {
+          return umixtaNavDrawer
+        } else if (path.startsWith('/Configuracion')) {
+          return ConfiguracionNavDrawer
+        } else {
+          return null
+        }
+      },
       gethora() {
         var dia = moment().format("dddd LL");
         function capitalizarFrase(frase) { return frase.split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ") }

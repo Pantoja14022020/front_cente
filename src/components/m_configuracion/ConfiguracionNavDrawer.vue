@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-app class="app-fontstyle">
+
     <v-navigation-drawer class="primary" permanent app>
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <img src="@/assets/Logo.png" height="110px" alt="">
@@ -1046,14 +1046,13 @@
       </v-list>
     </v-navigation-drawer>
 
-  </v-app>
 </template>
 
 <script>
 import Loader from './modulo/_loader'
 
 export default {
-  name: 'App',
+  name: 'ConfiguracionNavDrawer',
   components:{Loader},
   data () {
     return {

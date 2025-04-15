@@ -1,6 +1,6 @@
 <template>
     <v-layout align-start>
-      <NavDrawer></NavDrawer>
+
 
       <n401 v-if="e401" />
         <n403 v-if="e403" />

@@ -1,6 +1,5 @@
  <template>
   <v-layout row wrap  auto-grow>
-    <NavDrawer></NavDrawer>
     <v-flex elevation-0>
         <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
             
