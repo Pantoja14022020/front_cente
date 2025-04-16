@@ -1,6 +1,111 @@
 <template>
 
     <v-layout align-start>
+        <v-navigation-drawer v-model="this.drawer" app  class="primary"  >
+            <div class="text-xl-center text-md-center text-xs-center my-4">
+                <img src="@/assets/Logo.png" height="110px" alt=""> 
+            </div>
+  
+            <v-list dense dark class="pt-0 primary" >
+                <template v-if="esAdministrador">
+                    <v-list-tile  :to="{name:'control-acceso'}">
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">home</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                    </v-list-tile>
+                </template>  
+         
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-panel-control' == '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">view_module</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Configuracion del panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">security</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                        Gestión de usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    
+                    </v-list-group>
+                </template> 
+          
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Almacenamiento
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">storage</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Administración de discos duros
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+            </v-list>
+        </v-navigation-drawer>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
@@ -157,7 +262,7 @@
                 search: '',
                 rowsPerPageItems: [10, 20, 30, 40, 50],
                 pagination: {
-                rowsPerPage: 50
+                rowsPerPage: 10
                 },
                 editedIndex: -1,
                 panel:[],
@@ -170,14 +275,26 @@
             }
         },
         computed: {
-           formTitle () {
-                return this.editedIndex === -1 ? 'Nuevo modulo' : 'Actualizar modulo'
+            formTitle () {return this.editedIndex === -1 ? 'Nuevo modulo' : 'Actualizar modulo'},
+            formIcon () { return this.editedIndex === -1 ? 'add' : 'edit' },
+
+            //ESTO LO COLOCAMOS PORQUE LO REQUIERE EL COMPONENTE DE DRAW MENU
+            logueado(){
+                return this.$store.state.usuario;
             },
-              formIcon () {
-                return this.editedIndex === -1 ? 'add' : 'edit'
+            esAdministrador(){ 
+                return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+            },
+            usuario(){
+                return this.$store.state.usuario.usuario;
+            },
+            email(){
+                return this.$store.state.usuario.email;
+            },
+            drawer(){
+                return this.$store.drawer //es para acceder al valor que esta almacenado en el storage
             }
         },
-
 
        watch: {
             dialog (val) {

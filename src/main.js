@@ -10,27 +10,19 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'typeface-roboto/index.css';
 import keycloak from './auth/keycloak'
 
-//Estilos CSS
 import './styles/panel_control/index.css'
 import './styles/control_acceso/index.css'
 
 
 Vue.config.productionTip = false
 
-
-
 axios.defaults.baseURL =  'http://98.80.66.107:5006/'
-
-
 
 const controlaccesoInstance = axios.create({ baseURL:  'http://13.217.131.100:5000/' })
 Vue.prototype.$controlacceso = controlaccesoInstance 
 
-
-
 const confInstance = axios.create({baseURL:  'http://34.224.63.224:5002/'})
 Vue.prototype.$conf = confInstance
-
 
 const catInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'})
 Vue.prototype.$cat = catInstance
@@ -53,7 +45,10 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
       .then( authenticated => 
         {
 
-          if(!authenticated) { keycloak.logout({redirectUri: URI_FAIL_KEYCLOAK}); alert("No fue posible autenticarse") }
+          if(!authenticated) { 
+            keycloak.logout({ redirectUri: URI_FAIL_KEYCLOAK });
+            alert("No fue posible autenticarse") 
+          }
 
           const token = keycloak.token;
           const payload = JSON.parse(atob(token.split('.')[1]));

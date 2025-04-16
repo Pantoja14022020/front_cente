@@ -5,7 +5,6 @@ import Router from 'vue-router'
 /* Modulo. Panel de Control. Vistas */
 import Panel from './views/panel_control/Panel.vue' 
 /* Modulo. Control Acceso. Vistas */
-import ControlAcceso from './views/control_acceso/Index.vue'
 import ControlAccesoHome from './views/control_acceso/Home.vue'
 import ControlAccesoPanelcontrol from './views/control_acceso/Panelcontrol.vue' 
 import ControlAccesoRol from './views/control_acceso/Rol.vue'
@@ -1093,16 +1092,11 @@ export default new Router({
     {
       path: '/control-acceso',
       name: 'control-acceso',
-      component: ControlAcceso
-    },
-    {
-      path: '/control-acceso-home',
-      name: 'control-acceso-home',
       component: ControlAccesoHome
     },
     {
-      path: '/control-acceso-panelcontrol',
-      name: 'control-acceso-panelcontrol',
+      path: '/control-acceso-panel-control',
+      name: 'control-acceso-panel-control',
       component: ControlAccesoPanelcontrol
     },
     {
@@ -1120,7 +1114,5 @@ export default new Router({
       name: 'control-acceso-almacenamiento',
       component: ControlAccesoAlmacenamiento
     }
-
-
   ]
 })

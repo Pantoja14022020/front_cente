@@ -19,7 +19,8 @@ export default new Vuex.Store({
         
         loader:false,
         token: null,
-        usuario: null
+        usuario: null,
+        drawer: true
 
     },
     mutations: 
@@ -38,6 +39,11 @@ export default new Vuex.Store({
         setUsuario (state,usuario)
         {
             state.usuario=usuario
+        },
+
+        setDrawer (state, drawer)
+        {
+            state.drawer = drawer
         }
         
     },
@@ -50,6 +56,12 @@ export default new Vuex.Store({
             localStorage.setItem("token", token)
         },
 
+        //Hacer global la variable de drawer para mostrar u ocultar el menu de navegacion lateral
+        setDrawer({commit}, drawer)
+        {
+            commit("setDrawer", drawer)
+        },
+
         /* Method. Control Acceso */
         autoLoginCA({commit})
         {
@@ -58,7 +70,7 @@ export default new Vuex.Store({
                 commit("setToken", token)
                 commit("setUsuario", decode(token))
             }
-            //router.push({name: 'control-acceso'})
+            router.push({name: 'control-acceso'})
         },
 
         /*salir({commit})
