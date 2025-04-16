@@ -186,8 +186,18 @@ import TableroDireccionD from "./components/m_umixta/tablerodirecciond.vue"
 import DetallesCarpetaTablero from "./components/m_umixta/detallescarpetatablero.vue"
 import DetallesCarpetaTableroA from "./components/m_umixta/detallescarpetatableroa.vue"
 import DetallesCarpetaTableroD from "./components/m_umixta/detallescarpetatablerod.vue"
-
-
+/* Modulo. Captura. Componentes */
+import CapturaHome from './views/m_captura/Home.vue'
+import CapturaRegistro from './components/m_captura/Registro.vue'
+import CapturaListaCarpetas from './components/m_captura/ListaCarpetas.vue'
+import CapturaInformaciongeneral from './components/m_captura/Informaciongeneral.vue'
+import CapturaVictimaImputado from './components/m_captura/VictimaImputado.vue'
+import CapturaVehiculo from './components/m_captura/Vehiculo.vue'
+import CapturaDelito from './components/m_captura/Delito.vue'
+import CapturaJusticiaRestaurativa from './components/m_captura/JusticiaRestaurativa.vue'
+import CapturaMedidasProteccion from './components/m_captura/MedidasProteccion.vue'
+import CapturaMedidasCautelares from './components/m_captura/MedidasCautelares.vue'
+import CapturaResolucion from './components/m_captura/Resolucion.vue'
 
 Vue.use(Router)
 
@@ -195,6 +205,62 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    /*Rutas Captura */
+    {
+      path: '/mcaptura',
+      name: 'mcaptura',
+      component: CapturaHome
+    },   
+    {
+      path: '/mcaptura-registro',
+      name: 'mcaptura-registro',
+      component: CapturaRegistro
+    }, 
+    {
+      path: '/mcaptura-listacarpetas',
+      name: 'mcaptura-listacarpetas',
+      component: CapturaListaCarpetas
+    }, 
+    {
+      path: '/mcaptura-informaciongeneral',
+      name: 'mcaptura-informaciongeneral',
+      component: CapturaInformaciongeneral
+    },   
+    {
+      path: '/mcaptura-victimaimputado',
+      name: 'mcaptura-victimaimputado',
+      component: CapturaVictimaImputado
+    },   
+    {
+      path: '/mcaptura-vehiculo',
+      name: 'mcaptura-vehiculo',
+      component: CapturaVehiculo
+    },   
+    {
+      path: '/mcaptura-delito',
+      name: 'mcaptura-delito',
+      component: CapturaDelito
+    },  
+    {
+      path: '/mcaptura-justiciarestaurativa',
+      name: 'mcaptura-justiciarestaurativa',
+      component: CapturaJusticiaRestaurativa
+    },  
+    {
+      path: '/mcaptura-medidasproteccion',
+      name: 'mcaptura-medidasproteccion',
+      component: CapturaMedidasProteccion
+    }, 
+    {
+      path: '/mcaptura-medidascautelares',
+      name: 'mcaptura-medidascautelares',
+      component: CapturaMedidasCautelares
+    }, 
+    {
+      path: '/mcaptura-resolucion',
+      name: 'mcaptura-resolucion',
+      component: CapturaResolucion
+    },
     /*Rutas Unidad Mixta*/
     {
       path: '/umixta',

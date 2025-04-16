@@ -1174,7 +1174,7 @@ export default {
   },
   methods:{
     salir(){
-      this.$store.dispatch("salir");
+      //this.$store.dispatch("salir");
       this.$controlacceso.get('api/Usuarios/DistrictUser')
           .then(response => {
             window.location.href = response.data.direccion

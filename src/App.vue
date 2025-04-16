@@ -102,7 +102,7 @@
           return umixtaNavDrawer
         } else if (path.startsWith('/Configuracion')) {
           return ConfiguracionNavDrawer
-        } else {
+        }else {
           return null
         }
       },

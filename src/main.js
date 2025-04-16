@@ -5,6 +5,7 @@ import router from './router'
 import store from './store' 
 import axios from 'axios'   
 import VeeValidate from 'vee-validate'  
+import  VueEditor  from "vue2-editor";
 import WebCam from 'vue-web-cam'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'typeface-roboto/index.css';
@@ -61,7 +62,7 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
                 .then(response => {
                   Vue.prototype.$usuario = username;  
                   Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
-                  new Vue({ router, store, VeeValidate, WebCam, render: h => h(App) }).$mount('#app')
+                  new Vue({ router, store, VeeValidate, WebCam, VueEditor, render: h => h(App) }).$mount('#app')
                 })
                 .catch(error => {
                   alert("El usuario no se encuentra en este distrito")
