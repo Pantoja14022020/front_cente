@@ -44,6 +44,11 @@ Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 const ILInstance = axios.create({baseURL:  'https://54.90.102.37:5004/'})
 Vue.prototype.$IL = ILInstance
 
+const PIInstance = axios.create({
+  baseURL:  'http://13.218.126.218:5007/'
+}) 
+Vue.prototype.$PI = PIInstance
+
 const smsInstance = axios.create({
   baseURL: 'https://api.smsmasivos.com.mx/'
 }) 

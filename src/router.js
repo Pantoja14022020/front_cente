@@ -276,7 +276,32 @@ import BOrdenesAprehension from '@/components/m_pi/BOrdenesAprehension.vue'
 import RotacionPersonalPI from '@/components/m_pi/RotacionPersonal.vue'
 import Gmap from '@/components/m_pi/Gmap.vue'
 import BusquedaNUCPI from '@/components/m_pi/BusquedaNUC.vue'
-
+/*Modulo. Servicios Periciales. Componentes */
+import HomeSP from '@/views/m_sp/Home.vue'
+import BandejaEntradaSP from '@/components/m_sp/BandejaEntrada.vue'
+import RadioArea from '@/components/m_sp/RadioArea.vue'
+import ReasignarSP from '@/components/m_sp/Reasignar.vue'
+import BdePeritoSP from '@/components/m_sp/BdePerito.vue'
+import EstadisticasSP from '@/components/m_sp/Estadisticas.vue'
+import EstadisticasAnSP from '@/components/m_sp/EstadisticasAn.vue'
+import EstadisticasMesSP from '@/components/m_sp/EstadisticasMes.vue'
+import BandejaEntradaArea from '@/components/m_sp/BandejaEntradaArea.vue'
+import RecepcionIndicio from '@/components/m_sp/RecepcionIndicio.vue'
+import EntregaInformeSP from '@/components/m_sp/EntregaInforme.vue'
+import AsSolConRegistro from '@/components/m_sp/AsSolConRegistro.vue'
+import AsSolSinRegistro from '@/components/m_sp/AsSolSinRegistro.vue' 
+import BanSolConRegistro from '@/components/m_sp/BanSolConRegistro.vue' 
+import BanSolSinRegistro from '@/components/m_sp/BanSolSinRegistro.vue' 
+import BandejaEntradaf from '@/components/m_sp/BandejaEntradaf.vue'
+import RadioAreaf from '@/components/m_sp/RadioAreaf.vue'
+import Reasignarf from '@/components/m_sp/Reasignarf.vue'
+import BdePeritof from '@/components/m_sp/BdePeritof.vue'
+import Estadisticasf from '@/components/m_sp/Estadisticasf.vue'
+import EstadisticasAnf from '@/components/m_sp/EstadisticasAnf.vue'
+import EstadisticasMesf from '@/components/m_sp/EstadisticasMesf.vue'
+import BandejaEntradaAreaf from '@/components/m_sp/BandejaEntradaAreaf.vue'
+import EntregaInformef from '@/components/m_sp/EntregaInformef.vue'
+import RotacionPersonalSP from '@/components/m_sp/RotacionPersonal.vue'
 
 Vue.use(Router)
 
@@ -284,6 +309,133 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    /*Rutas. SP */
+    {
+      path: '/servicios-periciales',
+      name: 'servicios-periciales',
+      component: HomeSP
+    },
+    {
+      path: '/sp-bandejaentrada',
+      name: 'sp-bandejaentrada',
+      component: BandejaEntradaSP
+    },
+    {
+      path: '/sp-radioarea',
+      name: 'sp-radioarea',
+      component: RadioArea
+    },
+    {
+      path: '/sp-reasignar',
+      name: 'sp-reasignar',
+      component: ReasignarSP
+    },
+    {
+      path: '/sp-bdeperito',
+      name: 'sp-bdeperito',
+      component: BdePeritoSP
+    },
+    {
+      path: '/sp-estadisticas',
+      name: 'sp-estadisticas',
+      component: EstadisticasSP
+    },
+    {
+      path: '/sp-estadisticasan',
+      name: 'sp-estadisticasan',
+      component: EstadisticasAnSP
+    },
+    {
+      path: '/sp-estadisticasmes',
+      name: 'sp-estadisticasmes',
+      component: EstadisticasMesSP
+    },
+    {
+      path: '/sp-bandejaentradaarea',
+      name: 'sp-bandejaentradaarea',
+      component: BandejaEntradaArea
+    },
+    {
+      path: '/sp-recepcionindicio',
+      name: 'sp-recepcionindicio',
+      component: RecepcionIndicio
+    },
+    {
+      path: '/sp-entregainforme',
+      name: 'sp-entregainforme',
+      component: EntregaInformeSP
+    },
+    {
+      path: '/sp-assolconregistro',
+      name: 'sp-assolconregistro',
+      component: AsSolConRegistro
+    },
+    {
+      path: '/sp-assolsinRegistro',
+      name: 'sp-assolsinRegistro',
+      component: AsSolSinRegistro
+    },
+    {
+      path: '/sp-bansolconregistro',
+      name: 'sp-bansolconregistro',
+      component: BanSolConRegistro
+    },
+    {
+      path: '/sp-bansolsinregistro',
+      name: 'sp-bansolsinregistro',
+      component: BanSolSinRegistro
+    },
+    //--------------------
+    {
+      path: '/sp-bandejaentradaf',
+      name: 'sp-bandejaentradaf',
+      component: BandejaEntradaf
+    },
+    {
+      path: '/sp-radioareaf',
+      name: 'sp-radioareaf',
+      component: RadioAreaf
+    },
+    {
+      path: '/sp-reasignarf',
+      name: 'sp-reasignarf',
+      component: Reasignarf
+    },
+    {
+      path: '/sp-bdeperitof',
+      name: 'sp-bdeperitof',
+      component: BdePeritof
+    },
+    {
+      path: '/sp-estadisticasf',
+      name: 'sp-estadisticasf',
+      component: Estadisticasf
+    },
+    {
+      path: '/sp-estadisticasanf',
+      name: 'sp-estadisticasanf',
+      component: EstadisticasAnf
+    },
+    {
+      path: '/sp-estadisticasmesf',
+      name: 'sp-estadisticasmesf',
+      component: EstadisticasMesf
+    },
+    {
+      path: '/sp-bandejaentradaareaf',
+      name: 'sp-bandejaentradaareaf',
+      component: BandejaEntradaAreaf
+    },
+    {
+      path: '/sp-entregainformef',
+      name: 'sp-entregainformef',
+      component: EntregaInformef
+    },
+    {
+      path: '/sp-rotacionpersonal',
+      name: 'sp-rotacionpersonal',
+      component: RotacionPersonalSP
+    },
     /*Rutas. PI */
     {
       path: '/policia-investigadora',

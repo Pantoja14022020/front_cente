@@ -117,7 +117,15 @@ export default new Vuex.Store({
             }
             router.push({name: 'policia-investigadora'})
         },
-
+        
+        autoLoginSP({commit}){
+            let token = localStorage.getItem("token")
+            if (token){
+              commit("setToken", token)
+              commit("setUsuario", decode(token))
+            }
+            router.push({name: 'servicios-periciales'})
+        },
         /*salir({commit})
         {
             commit("setToken", null)
