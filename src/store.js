@@ -14,9 +14,6 @@ Vue.use(Vuex)
 Vue.use(VueAlertify) 
 Vue.use(VeeValidate)
 Vue.use(VueEditor)  
-
-
-
 Vue.use(VueGoogleMaps, {
     load: {
       key: "AIzaSyCq6BIkl3Mch3ZkTT6-8TXbH7oHWPlAnfw",
@@ -110,6 +107,15 @@ export default new Vuex.Store({
               commit("setUsuario", decode(token))
             }
             router.push({name: 'justicia-restaurativa'})
+        },
+
+        autoLoginPI({commit}){
+            let token = localStorage.getItem("token")
+            if (token){
+              commit("setToken", token)
+              commit("setUsuario", decode(token))
+            }
+            router.push({name: 'policia-investigadora'})
         },
 
         /*salir({commit})

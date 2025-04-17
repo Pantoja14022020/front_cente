@@ -231,6 +231,52 @@ import MonitoreoXDistrito from '@/views/m_jr/MonitoreoXDistrito.vue'
 import InformacionExpedienteME from '@/views/m_jr/InformacionExpedienteME.vue' 
 import Registros from '@/views/m_jr/Registros.vue' 
 import HistorialActualizacionesJR from '@/views/m_jr/HistorialActualizaciones.vue'
+/* Modulo. Policia Investigadora. Componentes */
+import HomePI from '@/views/m_pi/Home.vue'
+import BandejaEntrada from '@/components/m_pi/BandejaEntrada.vue'
+import Reasignar from '@/components/m_pi/Reasignar.vue'
+import AutorizacionInteligencia from '@/components/m_pi/AutorizacionInteligencia.vue'
+import BdePerito from '@/components/m_pi/BdePerito.vue'
+import EntregaInforme from '@/components/m_pi/EntregaInforme.vue'
+import SolicitudInteligencia from '@/components/m_pi/SolicitudInteligencia.vue'
+import Estadisticas from '@/components/m_pi/Estadisticas.vue'
+import EstadisticasAn from '@/components/m_pi/EstadisticasAn.vue'
+import EstadisticasMes from '@/components/m_pi/EstadisticasMes.vue'
+import PersonasDetencion from '@/components/m_pi/PersonasDetencion.vue'
+import PersonasDetenidas from '@/components/m_pi/PersonasDetenidas.vue'
+import Visitas from '@/components/m_pi/Visitas.vue'
+import RegistroVisitas from '@/components/m_pi/RegistroVisitas.vue'
+import HistorialPersonaVisitas from '@/components/m_pi/HistorialPersonaVisitas.vue'
+import HistorialDetenidoVisitas from '@/components/m_pi/HistorialDetenidoVisitas.vue'
+import CertificadoMedico from '@/components/m_pi/CertificadoMedico.vue'
+import Comparecencias from '@/components/m_pi/Comparecencias.vue'
+import Arrestos from '@/components/m_pi/Arrestos.vue'
+import Exhortos from '@/components/m_pi/Exhortos.vue'
+import PresentacionesComparecencias from '@/components/m_pi/PresentacionesComparecencias.vue'
+import RequerimientosVarios from '@/components/m_pi/RequerimientosVarios.vue'
+import BusquedaDomicilio from '@/components/m_pi/BusquedaDomicilio.vue'
+import TrasladoCustodia from '@/components/m_pi/TrasladoCustodia.vue'
+import OrdenesAprehension from '@/components/m_pi/OrdenesAprehension.vue'
+import AComparecencias from '@/components/m_pi/AComparecencias.vue'
+import AArrestos from '@/components/m_pi/AArrestos.vue'
+import AExhortos from '@/components/m_pi/AExhortos.vue'
+import APresentacionesComparecencias from '@/components/m_pi/APresentacionesComparecencias.vue'
+import ARequerimientosVarios from '@/components/m_pi/ARequerimientosVarios.vue'
+import ABusquedaDomicilio from '@/components/m_pi/ABusquedaDomicilio.vue'
+import ATrasladoCustodia from '@/components/m_pi/ATrasladoCustodia.vue'
+import AOrdenesAprehension from '@/components/m_pi/AOrdenesAprehension.vue'
+import BComparecencias from '@/components/m_pi/BComparecencias.vue'
+import BArrestos from '@/components/m_pi/BArrestos.vue'
+import BExhortos from '@/components/m_pi/BExhortos.vue'
+import BPresentacionesComparecencias from '@/components/m_pi/BPresentacionesComparecencias.vue'
+import BRequerimientosVarios from '@/components/m_pi/BRequerimientosVarios.vue'
+import BBusquedaDomicilio from '@/components/m_pi/BBusquedaDomicilio.vue'
+import BTrasladoCustodia from '@/components/m_pi/BTrasladoCustodia.vue'
+import BOrdenesAprehension from '@/components/m_pi/BOrdenesAprehension.vue'
+import RotacionPersonalPI from '@/components/m_pi/RotacionPersonal.vue'
+import Gmap from '@/components/m_pi/Gmap.vue'
+import BusquedaNUCPI from '@/components/m_pi/BusquedaNUC.vue'
+
 
 Vue.use(Router)
 
@@ -238,6 +284,227 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    /*Rutas. PI */
+    {
+      path: '/policia-investigadora',
+      name: 'policia-investigadora',
+      component: HomePI
+    },
+    {
+      path: '/pi-bandejaentrada',
+      name: 'pi-bandejaentrada',
+      component: BandejaEntrada
+    },
+    {
+      path: '/pi-reasignar',
+      name: 'pi-reasignar',
+      component: Reasignar
+    },
+    {
+      path: '/pi-bdeperito',
+      name: 'pi-bdeperito',
+      component: BdePerito
+    },
+    {
+      path: '/pi-estadisticas',
+      name: 'pi-estadisticas',
+      component: Estadisticas
+    },
+    {
+      path: '/pi-estadisticasan',
+      name: 'pi-estadisticasan',
+      component: EstadisticasAn
+    },
+    {
+      path: '/pi-estadisticasmes',
+      name: 'pi-estadisticasmes',
+      component: EstadisticasMes
+    },
+    {
+      path: '/pi-entregainforme',
+      name: 'pi-entregainforme',
+      component: EntregaInforme
+    },
+    {
+      path: '/pi-autorizacioninteligencia',
+      name: 'pi-autorizacioninteligencia',
+      component: AutorizacionInteligencia
+    },
+    {
+      path: '/pi-solicitudinteligencia',
+      name: 'pi-solicitudinteligencia',
+      component: SolicitudInteligencia
+    },
+    {
+      path: '/pi-personasdetencion',
+      name: 'pi-personasdetencion',
+      component: PersonasDetencion
+    },
+    {
+      path: '/pi-personasdetenidas',
+      name: 'pi-personasdetenidas',
+      component: PersonasDetenidas
+    },
+    {
+      path: '/pi-visitas',
+      name: 'pi-visitas',
+      component: Visitas
+    },
+    {
+      path: '/pi-registrovisitas',
+      name: 'pi-registrovisitas',
+      component: RegistroVisitas
+    },
+    {
+      path: '/pi-certificadomedico',
+      name: 'pi-certificadomedico',
+      component: CertificadoMedico
+    },
+    {
+      path: '/pi-comparecencias',
+      name: 'pi-comparecencias',
+      component: Comparecencias
+    },   
+    {
+      path: '/pi-arrestos',
+      name: 'pi-arrestos',
+      component: Arrestos
+    }, 
+    {
+      path: '/pi-exhortos',
+      name: 'pi-exhortos',
+      component: Exhortos
+    },   
+    {
+      path: '/pi-presentacionescomparecencias',
+      name: 'pi-presentacionescomparecencias',
+      component: PresentacionesComparecencias
+    },    
+    {
+      path: '/pi-requerimientosvarios',
+      name: 'pi-requerimientosvarios',
+      component: RequerimientosVarios
+    },   
+    {
+      path: '/pi-busquedadomicilio',
+      name: 'pi-busquedadomicilio',
+      component: BusquedaDomicilio
+    },    
+    {
+      path: '/pi-trasladocustodia',
+      name: 'pi-trasladocustodia',
+      component: TrasladoCustodia
+    },    
+    {
+      path: '/pi-ordenesaprehension',
+      name: 'pi-ordenesaprehension',
+      component: OrdenesAprehension
+    },
+    {
+      path: '/pi-acomparecencias',
+      name: 'pi-acomparecencias',
+      component: AComparecencias
+    },   
+    {
+      path: '/pi-aarrestos',
+      name: 'pi-aarrestos',
+      component: AArrestos
+    }, 
+    {
+      path: '/pi-aexhortos',
+      name: 'pi-aexhortos',
+      component: AExhortos
+    },   
+    {
+      path: '/pi-apresentacionescomparecencias',
+      name: 'pi-apresentacionescomparecencias',
+      component: APresentacionesComparecencias
+    },    
+    {
+      path: '/pi-arequerimientosvarios',
+      name: 'pi-arequerimientosvarios',
+      component: ARequerimientosVarios
+    },   
+    {
+      path: '/pi-abusquedadomicilio',
+      name: 'pi-abusquedadomicilio',
+      component: ABusquedaDomicilio
+    },    
+    {
+      path: '/pi-atrasladocustodia',
+      name: 'pi-atrasladocustodia',
+      component: ATrasladoCustodia
+    },    
+    {
+      path: '/pi-aordenesaprehension',
+      name: 'pi-aordenesaprehension',
+      component: AOrdenesAprehension
+    },
+    {
+      path: '/pi-bcomparecencias',
+      name: 'pi-bcomparecencias',
+      component: BComparecencias
+    },   
+    {
+      path: '/pi-barrestos',
+      name: 'pi-barrestos',
+      component: BArrestos
+    }, 
+    {
+      path: '/pi-bexhortos',
+      name: 'pi-bexhortos',
+      component: BExhortos
+    },   
+    {
+      path: '/pi-bpresentacionescomparecencias',
+      name: 'pi-bpresentacionescomparecencias',
+      component: BPresentacionesComparecencias
+    },    
+    {
+      path: '/pi-brequerimientosvarios',
+      name: 'pi-brequerimientosvarios',
+      component: BRequerimientosVarios
+    },   
+    {
+      path: '/pi-bbusquedadomicilio',
+      name: 'pi-bbusquedadomicilio',
+      component: BBusquedaDomicilio
+    },    
+    {
+      path: '/pi-btrasladocustodia',
+      name: 'pi-btrasladocustodia',
+      component: BTrasladoCustodia
+    }, 
+    {
+      path: '/pi-bordenesaprehension',
+      name: 'pi-bordenesaprehension',
+      component: BOrdenesAprehension
+    },
+    {
+      path: '/pi-historialpersonavisitas',
+      name: 'pi-historialpersonavisitas',
+      component: HistorialPersonaVisitas
+    },
+    {
+      path: '/pi-historialhetenidovisitas',
+      name: 'pi-historialdetenidovisitas',
+      component: HistorialDetenidoVisitas
+    },
+    {
+      path: '/pi-gmap',
+      name: 'pi-gmap',
+      component: Gmap
+    },
+    {
+      path:'/pi-rotacionpersonal',
+      name:'pi-rotacionpersonal',
+      component: RotacionPersonalPI
+    },
+    {
+      path: '/pi-busquedanuc',
+      name: 'pi-busquedanuc',
+      component: BusquedaNUCPI
+    },
     /*Rutas. JR */
     {
       path: '/justicia-restaurativa',

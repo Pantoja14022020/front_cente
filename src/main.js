@@ -29,6 +29,9 @@ Vue.prototype.$conf = confInstance
 const catInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'})
 Vue.prototype.$cat = catInstance
 
+const CATInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'}) 
+Vue.prototype.$CAT = CATInstance
+
 const SPInstance = axios.create({baseURL:  'https://44.203.26.217:5008/'})
 Vue.prototype.$SP = SPInstance
 
