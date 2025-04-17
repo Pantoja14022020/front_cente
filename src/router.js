@@ -3,17 +3,17 @@ import Router from 'vue-router'
 
 
 /* Modulo. Panel de Control. Vistas */
-import Panel from './views/panel_control/Panel.vue' 
+import Panel from '@/views/panel_control/Panel.vue' 
 /* Modulo. Control Acceso. Vistas */
-import ControlAccesoHome from './views/control_acceso/Home.vue'
-import ControlAccesoPanelcontrol from './views/control_acceso/Panelcontrol.vue' 
-import ControlAccesoRol from './views/control_acceso/Rol.vue'
-import ControlAccesoUsuario from './views/control_acceso/Usuario.vue' 
-import ControlAccesoAlmacenamiento from './views/control_acceso/Almacenamiento.vue'
+import ControlAccesoHome from '@/views/control_acceso/Home.vue'
+import ControlAccesoPanelcontrol from '@/views/control_acceso/Panelcontrol.vue' 
+import ControlAccesoRol from '@/views/control_acceso/Rol.vue'
+import ControlAccesoUsuario from '@/views/control_acceso/Usuario.vue' 
+import ControlAccesoAlmacenamiento from '@/views/control_acceso/Almacenamiento.vue'
 /* Modulo. Panel de Control. Componentes */
-import Turnador from './components/panel_control/Turnador.vue'
-import Entrevista from './components/panel_control/Entrevista.vue'
-import Offline from './components/panel_control/Offline.vue'
+import Turnador from '@/components/panel_control/Turnador.vue'
+import Entrevista from '@/components/panel_control/Entrevista.vue'
+import Offline from '@/components/panel_control/Offline.vue'
 /* Modulo. Configuracion. Componentes */
 import HomeConfiguracion from './views/m_configuracion/Home.vue'
 import Distrito from "@/components/m_configuracion/Distrito.vue";
@@ -170,34 +170,67 @@ import HistorialEventos from "@/components/m_umixta/HistorialEventos.vue";
 import RotacionPersonal from "@/components/m_umixta/RotacionPersonal.vue";
 import HistorialActualizaciones from "@/components/m_umixta/HistorialActualizaciones.vue";
 import BusquedaNUC from "@/components/m_umixta/BusquedaNUC.vue";
-import UmixtaEntrevista from "./components/m_umixta/Entrevista.vue"
-import UmixtaDelito from "./components/m_umixta/Delito.vue"
-import Terminacion from "./components/m_umixta/Terminacion.vue"
-import UmixtaRepresentantes from "./components/m_umixta/Representantes.vue"
-import EstadisticasCinicioAño from "./components/m_umixta/EstadisticasCinicioAño.vue"
-import EstadisticasCinicioAños from "./components/m_umixta/EstadisticasCinicioAños.vue"
-import EstadisticasEnvioJrAño from "./components/m_umixta/EstadisticasEnvioJrAño.vue"
-import EstadisticasEnvioJrAños from "./components/m_umixta/EstadisticasEnvioJrAños.vue"
-import EstadisticasCIEJRAño from "./components/m_umixta/EstadisticasCIEJRAño.vue"
-import EstadisticasCIEJRAños from "./components/m_umixta/EstadisticasCIEJRAños.vue"
-import TableroDireccionM from "./components/m_umixta/tablerodireccionm.vue"
-import TableroDireccionA from "./components/m_umixta/tablerodirecciona.vue"
-import TableroDireccionD from "./components/m_umixta/tablerodirecciond.vue"
-import DetallesCarpetaTablero from "./components/m_umixta/detallescarpetatablero.vue"
-import DetallesCarpetaTableroA from "./components/m_umixta/detallescarpetatableroa.vue"
-import DetallesCarpetaTableroD from "./components/m_umixta/detallescarpetatablerod.vue"
+import UmixtaEntrevista from "@/components/m_umixta/Entrevista.vue"
+import UmixtaDelito from "@/components/m_umixta/Delito.vue"
+import Terminacion from "@/components/m_umixta/Terminacion.vue"
+import UmixtaRepresentantes from "@/components/m_umixta/Representantes.vue"
+import EstadisticasCinicioAño from "@/components/m_umixta/EstadisticasCinicioAño.vue"
+import EstadisticasCinicioAños from "@/components/m_umixta/EstadisticasCinicioAños.vue"
+import EstadisticasEnvioJrAño from "@/components/m_umixta/EstadisticasEnvioJrAño.vue"
+import EstadisticasEnvioJrAños from "@/components/m_umixta/EstadisticasEnvioJrAños.vue"
+import EstadisticasCIEJRAño from "@/components/m_umixta/EstadisticasCIEJRAño.vue"
+import EstadisticasCIEJRAños from "@/components/m_umixta/EstadisticasCIEJRAños.vue"
+import TableroDireccionM from "@/components/m_umixta/tablerodireccionm.vue"
+import TableroDireccionA from "@/components/m_umixta/tablerodirecciona.vue"
+import TableroDireccionD from "@/components/m_umixta/tablerodirecciond.vue"
+import DetallesCarpetaTablero from "@/components/m_umixta/detallescarpetatablero.vue"
+import DetallesCarpetaTableroA from "@/components/m_umixta/detallescarpetatableroa.vue"
+import DetallesCarpetaTableroD from "@/components/m_umixta/detallescarpetatablerod.vue"
 /* Modulo. Captura. Componentes */
-import CapturaHome from './views/m_captura/Home.vue'
-import CapturaRegistro from './components/m_captura/Registro.vue'
-import CapturaListaCarpetas from './components/m_captura/ListaCarpetas.vue'
-import CapturaInformaciongeneral from './components/m_captura/Informaciongeneral.vue'
-import CapturaVictimaImputado from './components/m_captura/VictimaImputado.vue'
-import CapturaVehiculo from './components/m_captura/Vehiculo.vue'
-import CapturaDelito from './components/m_captura/Delito.vue'
-import CapturaJusticiaRestaurativa from './components/m_captura/JusticiaRestaurativa.vue'
-import CapturaMedidasProteccion from './components/m_captura/MedidasProteccion.vue'
-import CapturaMedidasCautelares from './components/m_captura/MedidasCautelares.vue'
-import CapturaResolucion from './components/m_captura/Resolucion.vue'
+import CapturaHome from '@/views/m_captura/Home.vue'
+import CapturaRegistro from '@/components/m_captura/Registro.vue'
+import CapturaListaCarpetas from '@/components/m_captura/ListaCarpetas.vue'
+import CapturaInformaciongeneral from '@/components/m_captura/Informaciongeneral.vue'
+import CapturaVictimaImputado from '@/components/m_captura/VictimaImputado.vue'
+import CapturaVehiculo from '@/components/m_captura/Vehiculo.vue'
+import CapturaDelito from '@/components/m_captura/Delito.vue'
+import CapturaJusticiaRestaurativa from '@/components/m_captura/JusticiaRestaurativa.vue'
+import CapturaMedidasProteccion from '@/components/m_captura/MedidasProteccion.vue'
+import CapturaMedidasCautelares from '@/components/m_captura/MedidasCautelares.vue'
+import CapturaResolucion from '@/components/m_captura/Resolucion.vue'
+/* Modulo. Justicia Restaurativa. Componentes */
+import HomeJR from '@/views/m_jr/Home.vue'
+import ExpedientesSolicitados from '@/views/m_jr/ExpedientesSolicitados.vue'
+import AsignacionExpediente from '@/views/m_jr/Asignacionexpediente.vue'
+import ReasignacionExpediente from '@/views/m_jr/ReasignacionExpediente.vue'
+import Derivaciones from '@/views/m_jr/Derivaciones.vue'
+import ConsultarExpediente from '@/views/m_jr/ConsultarExpediente.vue' 
+import Rezago from '@/views/m_jr/Rezago.vue'
+import CoordinadorJuridico from '@/views/m_jr/CoordinadorJuridico.vue'
+import Expedientesaceptados from '@/views/m_jr/Expedientesaceptados.vue'
+import MisExpedientes from '@/views/m_jr/MisExpedientes.vue'
+import Listacitatorios from '@/views/m_jr/Listacitatorios.vue'
+import InformacionExpediente from '@/views/m_jr/InformacionExpediente.vue'
+import CitatoriosRecordatorios from '@/views/m_jr/CitatoriosRecordatorios.vue'
+import Sesiones from '@/views/m_jr/Sesiones.vue'
+import AcuerdoReparatorio from '@/views/m_jr/AcuerdoReparatorio.vue'
+import SeguimientoCumplimiento from '@/views/m_jr/SeguimientoCumplimiento.vue'
+import RegistroConclusion from '@/views/m_jr/RegistroConclusion.vue'
+import InformarAMPO from '@/views/m_jr/InformarAMPO.vue'
+import FacilitadoresNotificadoresJR from '@/views/m_jr/FacilitadoresNotificadores.vue'
+import Agenda from '@/views/m_jr/Agenda.vue' 
+import Agendaglobal from '@/views/m_jr/Agendaglobal.vue' 
+import Agendaseguimientos from '@/views/m_jr/Agendaseguimientos.vue'
+import Gestionseguimiento from '@/views/m_jr/Gestionseguimiento.vue'
+import Asistencia from '@/views/m_jr/Asistencia.vue'
+import Entregas from '@/views/m_jr/Entregas.vue'
+import EInforme from '@/views/m_jr/EInforme.vue'
+import Informefacilitador from '@/views/m_jr/Informefacilitador.vue' 
+import AcuerdosporCoordinacion from '@/views/m_jr/AcuerdosporCoordinacion.vue'
+import MonitoreoXDistrito from '@/views/m_jr/MonitoreoXDistrito.vue' 
+import InformacionExpedienteME from '@/views/m_jr/InformacionExpedienteME.vue' 
+import Registros from '@/views/m_jr/Registros.vue' 
+import HistorialActualizacionesJR from '@/views/m_jr/HistorialActualizaciones.vue'
 
 Vue.use(Router)
 
@@ -205,6 +238,170 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    /*Rutas. JR */
+    {
+      path: '/justicia-restaurativa',
+      name: 'justicia-restaurativa',
+      component: HomeJR
+    },
+    {
+      path: '/jr-expedientessolicitados',
+      name: 'jr-expedientessolicitados',
+      component: ExpedientesSolicitados
+    },
+    {
+      path: '/jr-asignacionexpediente',
+      name: 'jr-asignacionexpediente',
+      component: AsignacionExpediente
+    },
+    {
+      path: '/jr-reasignacionexpediente',
+      name: 'jr-reasignacionexpediente',
+      component: ReasignacionExpediente
+    },
+   
+    {
+      path: '/jr-derivaciones',
+      name: 'jr-derivaciones',
+      component: Derivaciones
+    }, 
+    {
+      path: '/jr-consultarExpediente',
+      name: 'jr-consultarExpediente',
+      component: ConsultarExpediente
+    }, 
+    {
+      path: '/jr-rezago',
+      name: 'jr-rezago',
+      component: Rezago
+    },
+    {
+      path: '/jr-expedientesaceptados',
+      name: 'jr-expedientesaceptados',
+      component: Expedientesaceptados
+    },
+    {
+      path: '/jr-misexpedientes',
+      name: 'jr-misexpedientes',
+      component: MisExpedientes
+    },
+    
+    {
+      path: '/jr-informacionexpediente',
+      name: 'jr-informacionexpediente',
+      component: InformacionExpediente
+    },
+    {
+      path: '/jr-citatoriosrecordatorios',
+      name: 'jr-citatoriosrecordatorios',
+      component: CitatoriosRecordatorios
+    },
+    {
+      path: '/jr-sesiones',
+      name: 'jr-sesiones',
+      component: Sesiones
+    },
+    {
+      path: '/jr-listacitatorios',
+      name: 'jr-listacitatorios',
+      component: Listacitatorios
+    },
+    {
+      path: '/jr-agenda',
+      name: 'jr-agenda',
+      component: Agenda
+    },
+    {
+      path: '/jr-agendaglobal',
+      name: 'jr-agendaglobal',
+      component: Agendaglobal
+    },
+    {
+      path: '/jr-agendaseguimientos',
+      name: 'jr-agendaseguimientos',
+      component: Agendaseguimientos
+    },
+    {
+      path: '/jr-gestionseguimiento',
+      name: 'jr-gestionseguimiento',
+      component: Gestionseguimiento
+    },
+    {
+      path: '/jr-acuerdoreparatorio',
+      name: 'jr-acuerdoreparatorio',
+      component: AcuerdoReparatorio
+    },
+    {
+      path: '/jr-informarAMPO',
+      name: 'jr-informarAMPO',
+      component: InformarAMPO
+    },
+    {
+      path: '/jr-seguimientocumplimiento',
+      name: 'jr-seguimientocumplimiento',
+      component: SeguimientoCumplimiento
+    },
+   
+    {
+      path: '/jr-registroconclusion',
+      name: 'jr-registroconclusion',
+      component:  RegistroConclusion
+    },
+    {
+      path: '/jr-coordinadorJuridico',
+      name: 'jr-coordinadorJuridico',
+      component: CoordinadorJuridico
+    },
+    {
+      path: '/jr-facilitadoresnotificadores',
+      name: 'jr-facilitadoresnotificadores',
+      component: FacilitadoresNotificadoresJR
+    },
+    {
+      path: '/jr-asistencia',
+      name: 'jr-asistencia',
+      component: Asistencia
+    },
+    {
+      path:'/jr-entregas',
+      name:'jr-entregas',
+      component: Entregas
+    },
+    {
+      path:'/jr-einforme',
+      name:'jr-einforme',
+      component: EInforme
+    },
+    {
+      path: '/jr-informefacilitador',
+      name: 'jr-informefacilitador',
+      component: Informefacilitador
+    }, 
+    {
+      path: '/jr-acuerdosporCoordinacion',
+      name: 'acuerdosporCoordinacion',
+      component: AcuerdosporCoordinacion
+    }, 
+    {
+      path: '/jr-monitoreoxdistrito',
+      name: 'jr-monitoreoxdistrito',
+      component: MonitoreoXDistrito
+    }, 
+    {
+      path: '/jr-informacionExpedienteme',
+      name: 'jr-informacionExpedienteme',
+      component: InformacionExpedienteME
+    }, 
+    {
+      path: '/jr-registros',
+      name: 'jr-registros',
+      component: Registros
+    }, 
+    {
+      path: '/jr-historialactualizaciones',
+      name: 'jr-historialactualizaciones',
+      component: HistorialActualizacionesJR
+    },
     /*Rutas Captura */
     {
       path: '/mcaptura',

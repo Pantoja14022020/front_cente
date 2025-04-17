@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '@babel/polyfill'
 import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
@@ -39,6 +40,11 @@ Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 
 const ILInstance = axios.create({baseURL:  'https://54.90.102.37:5004/'})
 Vue.prototype.$IL = ILInstance
+
+const smsInstance = axios.create({
+  baseURL: 'https://api.smsmasivos.com.mx/'
+}) 
+Vue.prototype.$sms = smsInstance
 
 
 
