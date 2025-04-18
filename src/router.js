@@ -302,6 +302,27 @@ import EstadisticasMesf from '@/components/m_sp/EstadisticasMesf.vue'
 import BandejaEntradaAreaf from '@/components/m_sp/BandejaEntradaAreaf.vue'
 import EntregaInformef from '@/components/m_sp/EntregaInformef.vue'
 import RotacionPersonalSP from '@/components/m_sp/RotacionPersonal.vue'
+/*Modulo. Tools. Vistas */
+import HomeTools from '@/views/m_tools/Inicio.vue'
+import nuc from '@/views/m_tools/nuc.vue'
+import rac from '@/views/m_tools/rac.vue'
+import personas from '@/views/m_tools/personas.vue'
+import copiarnuc from '@/views/m_tools/copiarnuc.vue'
+import entrevista from '@/views/m_tools/entrevista.vue'
+import delito from '@/views/m_tools/delito.vue'
+import oficioc5 from '@/views/m_tools/oficioc5.vue'
+import oficio from '@/views/m_tools/oficio.vue'
+import diligencia from '@/views/m_tools/diligencia.vue'
+import bitacora from '@/views/m_tools/bitacora.vue'
+import actosInvestigacion from '@/views/m_tools/actosInvestigacion.vue'
+import vehiculo from '@/views/m_tools/vehiculo.vue'
+import notificacion from '@/views/m_tools/notificacion.vue'
+import archivo from '@/views/m_tools/archivo.vue'
+import representante from '@/views/m_tools/representante.vue'
+import mproteccion from '@/views/m_tools/mproteccion.vue'
+import personadesaparecida from '@/views/m_tools/personadesaparecida.vue'
+import remision from '@/views/m_tools/remision.vue'
+import derivacion from '@/views/m_tools/derivacion.vue'
 
 Vue.use(Router)
 
@@ -309,6 +330,107 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    /*Rutas. Tools */
+    {
+      path: '/tools',
+      name: 'tools',
+      component: HomeTools
+    },
+    {
+      path: '/tools-nuc',
+      name: 'tools-nuc',
+      component: nuc
+    },
+    {
+      path: '/tools-rac',
+      name: 'tools-rac',
+      component: rac
+    },
+    {
+      path: '/tools-entrevista',
+      name: 'tools-entrevista',
+      component: entrevista
+    },
+    {
+      path: '/tools-copiarnuc',
+      name: 'tools-copiarnuc',
+      component: copiarnuc
+    },
+    {
+      path:'/tools-personas',
+      name: 'tools-personas',
+      component:personas
+    },
+    {
+      path:'/tools-delitos',
+      name: 'tools-delitos',
+      component:delito
+    },
+    {
+      path:'/tools-oficioc5',
+      name: 'tools-oficioc5',
+      component:oficioc5
+    },
+    {
+      path:'/tools-oficio',
+      name: 'tools-oficio',
+      component:oficio
+    },
+    {
+      path:'/tools-diligencia',
+      name: 'tools-diligencia',
+      component:diligencia
+    },
+    {
+      path:'/tools-bitacora',
+      name: 'tools-bitacora',
+      component:bitacora
+    },
+    {
+      path:'/tools-actosInvestigacion',
+      name: 'tools-actosInvestigacion',
+      component:actosInvestigacion
+    },    
+    {
+      path:'/tools-vehiculo',
+      name: 'tools-vehiculo',
+      component:vehiculo
+    },
+    {
+      path:'/tools-notificacion',
+      name: 'tools-notificacion',
+      component:notificacion
+    },        
+    {
+      path:'/tools-archivo',
+      name: 'tools-archivo',
+      component:archivo
+    },        
+    {
+      path:'/tools-representante',
+      name: 'tools-representante',
+      component:representante
+    },        
+    {
+      path:'/tools-mproteccion',
+      name: 'tools-mproteccion',
+      component:mproteccion
+    },        
+    {
+      path:'/tools-personadesaparecida',
+      name: 'tools-personadesaparecida',
+      component:personadesaparecida
+    },        
+    {
+      path:'/tools-remision',
+      name: 'tools-remision',
+      component:remision
+    },
+    {
+      path:'/tools-derivacion',
+      name: 'tools-derivacion',
+      component:derivacion
+    },
     /*Rutas. SP */
     {
       path: '/servicios-periciales',

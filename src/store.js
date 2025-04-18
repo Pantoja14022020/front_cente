@@ -30,13 +30,14 @@ export default new Vuex.Store({
         token: null,
         usuario: null,
         drawer: true,
+        menu:null,
         idExpediente:null,
         idEnvio:null,
         idrhecho:null,
         noExpediente:null,
         tipoModulo:null,
-        select_moduloServicioId:null
-
+        select_moduloServicioId:null,
+        distrito: null
     },
     mutations: 
     {
@@ -55,7 +56,9 @@ export default new Vuex.Store({
         {
             state.usuario=usuario
         },
-
+        setMenu (state,menu){
+            state.menu=menu;
+        },
         setDrawer (state, drawer)
         {
             state.drawer = drawer
@@ -69,6 +72,13 @@ export default new Vuex.Store({
             commit("setToken", token)
             commit("setUsuario", decode(token))
             localStorage.setItem("token", token)
+        },
+
+        guardarMenu({commit},menu)
+        {
+            commit("setMenu",menu);
+            console.log('JSON LOCAL:'+JSON.stringify (menu))
+            localStorage.setItem("menu",JSON.stringify (menu));
         },
 
         //Hacer global la variable de drawer para mostrar u ocultar el menu de navegacion lateral
@@ -125,6 +135,17 @@ export default new Vuex.Store({
               commit("setUsuario", decode(token))
             }
             router.push({name: 'servicios-periciales'})
+        },
+
+        autoLoginTools({commit}){
+            let token = localStorage.getItem("token")
+            let menu = localStorage.getItem("menu");
+            if (token){
+                commit("setToken", token)
+                commit("setMenu", JSON.parse(menu))
+                commit("setUsuario", decode(token))
+            }
+            router.push({name: 'tools'})
         },
         /*salir({commit})
         {
