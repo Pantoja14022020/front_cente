@@ -80,114 +80,113 @@
   
   
       </v-toolbar>-->
-  
-      <v-navigation-drawer v-model="this.drawer" app  class="primary"  >
-        <div class="text-xl-center text-md-center text-xs-center my-4">
-          <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
-        </div>
-  
-        <v-list dense dark class="pt-0 primary" >
+
+      <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+      <div class="text-xl-center text-md-center text-xs-center my-4">
+        <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+      </div>
+
+      <v-list dense dark class="pt-0 primary" >
+         <template v-if="esAdministrador">
+          <v-list-tile  :to="{name:'control-acceso'}">
+            <v-list-tile-action>
+              <v-icon class="centenarioMenuIcon">home</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+          </v-list-tile>
+        </template>  
+       
           <template v-if="esAdministrador">
-            <v-list-tile  :to="{name:'control-acceso'}">
-              <v-list-tile-action>
-                <v-icon class="centenarioMenuIcon">home</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+          <v-list-group>
+            <v-list-tile slot="activator"> 
+              <v-list-tile-content >
+                <v-list-tile-title class="centenarioMenuAreas">
+                 Panel de control
+                </v-list-tile-title>
+              </v-list-tile-content>
             </v-list-tile>
-          </template>  
-         
-          <template v-if="esAdministrador">
-            <v-list-group>
-              <v-list-tile slot="activator"> 
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Panel de control
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'control-acceso-panel-control' == '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">view_module</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Configuracion del panel de control
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-            </v-list-group>
-          </template>
-  
-          <template v-if="esAdministrador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Roles
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">security</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Roles
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-            </v-list-group>
-          </template>
-  
-           <template v-if="esAdministrador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Usuarios
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">account_circle</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                   Gestión de usuarios
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-             
-            </v-list-group>
-          </template> 
-          
-          <template v-if="esAdministrador">
-            <v-list-group>
-              <v-list-tile slot="activator"> 
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Almacenamiento
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">storage</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Administración de discos duros
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-            </v-list-group>
-          </template>
-          
-        </v-list>
-  
-      </v-navigation-drawer>
+            <v-list-tile :to="{ name: 'control-acceso-panel-control'== '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
+              <v-list-tile-action>
+                 <v-icon class="centenarioMenuIcon">view_module</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Configuracion del panel de control
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> 
+          </v-list-group>
+        </template>
+        <template v-if="esAdministrador">
+          <v-list-group>
+            <v-list-tile slot="activator">   
+              <v-list-tile-content >
+                <v-list-tile-title class="centenarioMenuAreas">
+                 Roles
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
+              <v-list-tile-action>
+                 <v-icon class="centenarioMenuIcon">security</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Roles
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> 
+          </v-list-group>
+        </template>
+         <template v-if="esAdministrador">
+          <v-list-group>
+            <v-list-tile slot="activator">   
+              <v-list-tile-content >
+                <v-list-tile-title class="centenarioMenuAreas">
+                 Usuarios
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
+              <v-list-tile-action>
+                 <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                 Gestión de usuarios
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> 
+           
+          </v-list-group>
+        </template> 
+        <template v-if="esAdministrador">
+          <v-list-group>
+            <v-list-tile slot="activator"> 
+              <v-list-tile-content >
+                <v-list-tile-title class="centenarioMenuAreas">
+                 Almacenamiento
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
+              <v-list-tile-action>
+                 <v-icon class="centenarioMenuIcon">storage</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Administración de discos duros
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> 
+          </v-list-group>
+        </template>
+      </v-list>
+
+    </v-navigation-drawer>
+
+
+
       
       <v-content class="grey lighten-4" style="padding: 0;">
         <v-container fluid>
