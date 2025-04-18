@@ -626,7 +626,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var imputadosArray=[];
-            axios.get('api/RAPs/ListarImputados/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarImputados/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data);
                 imputadosArray=response.data;
                 imputadosArray.map(function(x){
@@ -654,7 +654,7 @@
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};  
-            axios.get('api/MedidasCautelares/ListarPorRHecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/MedidasCautelares/ListarPorRHecho/'+ me.rHechoId,configuracion).then(function(response){
                 //console.log(response.data);
                 me.v_listamcautelares=response.data; 
                 }).catch(err => { 
@@ -686,7 +686,7 @@
                       //Código para editar   
                        me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas actualizar información.', 
                       function(){
-                      axios.put('api/MedidasCautelares/Actualizar',{
+                        me.$cat.put('api/MedidasCautelares/Actualizar',{
                           'idMedCautelares': me.idMedCautelares,
                           'personaId': me.v_imputado,
                           'rHechoId': me.rHechoId,
@@ -735,7 +735,7 @@
                       //Código para guardar
                       me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información.', 
                       function(){   
-                        axios.post('api/MedidasCautelares/Crear',{ 
+                        me.$cat.post('api/MedidasCautelares/Crear',{ 
                             'personaId': me.v_imputado,
                             'rHechoId': me.rHechoId,
                             'medidaCautelar': me.v_mcautelar.value != 'Otra' ?  me.v_mcautelar.text :"INEGI-" + me.otras,

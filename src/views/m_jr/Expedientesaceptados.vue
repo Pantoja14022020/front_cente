@@ -830,7 +830,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
               
-                axios.get('api/Envios/ListarDerivacionesFiltro/' +  me.u_iddistrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" + "/"+ me.status, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/ListarDerivacionesFiltro/' +  me.u_iddistrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" + "/"+ me.status, configuracion).then(function(response){ 
                     me.derivaciones=response.data;
                     me.filtros=false;
                     me.contador = response.data.length;

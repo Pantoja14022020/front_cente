@@ -841,7 +841,7 @@ import { computed } from 'vue';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
               
-                axios.get('api/Envios/InformeGeneralInmediatos/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/InformeGeneralInmediatos/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
                     me.inmediatos=response.data;
                   
                   
@@ -867,7 +867,7 @@ import { computed } from 'vue';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
               
-                axios.get('api/Envios/InformeGeneraldiferidos/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/InformeGeneraldiferidos/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
                     me.diferidos=response.data; 
                     
                 }).catch(function(error){
@@ -889,7 +889,7 @@ import { computed } from 'vue';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
               
-                axios.get('api/Envios/InformeGeneralAT/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/InformeGeneralAT/'+ me.año.value + '/' + item, configuracion).then(function(response){ 
                     me.atotales=response.data; 
                     
                 }).catch(function(error){
@@ -955,7 +955,7 @@ import { computed } from 'vue';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
               
-                axios.get('api/Envios/InformeGeneral/'+ me.año.value + '/', configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/InformeGeneral/'+ me.año.value + '/', configuracion).then(function(response){ 
                     me.registros=response.data;
                     
                     

@@ -941,7 +941,7 @@ export default {
             me.registros=[];  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarARInformeAño/'+ me.u_iddistrito + '/' + me.año.value, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarARInformeAño/'+ me.u_iddistrito + '/' + me.año.value, configuracion).then(function(response){ 
                 me.registros=response.data;
                 me.loadGrafica();    
             }).catch(err => {   
@@ -968,7 +968,7 @@ export default {
             me.registros=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarARInformeMes/'+ me.u_iddistrito + '/' + me.año + '/' + me.mes.value, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarARInformeMes/'+ me.u_iddistrito + '/' + me.año + '/' + me.mes.value, configuracion).then(function(response){ 
                 me.registros=response.data;  
                 me.loadGrafica();
             }).catch(err => {   
@@ -996,7 +996,7 @@ export default {
             me.registros=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarARInformeDia/'+ me.u_iddistrito + '/' + me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarARInformeDia/'+ me.u_iddistrito + '/' + me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
                 me.registros=response.data; 
                 me.loadGrafica();
             }).catch(err => {   

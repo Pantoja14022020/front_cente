@@ -548,7 +548,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};  
-                axios.get('api/Resolucion/Listar/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/Resolucion/Listar/'+ me.rHechoId,configuracion).then(function(response){
                     //console.log(response);
                     me.oficios=response.data;
                 }).catch(err => { 
@@ -584,7 +584,7 @@
                     else
                         fechare = "0001-01-01"
                 
-                    axios.post('api/Resolucion/Crear',{  
+                        me.$cat.post('api/Resolucion/Crear',{  
                     
                     'RHechoId': me.rHechoId,
                     'Victimas': "",  

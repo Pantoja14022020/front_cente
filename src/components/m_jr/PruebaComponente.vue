@@ -108,7 +108,7 @@
         listar(){
             let me=this; 
             me.envioId=4;
-            axios.get('api/SolicitanteRequeridoes/Listar/'+ me.envioId).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/Listar/'+ me.envioId).then(function(response){ 
                 me.personas=response.data;
             }).catch(function(error){
                if (err.response.status==400){

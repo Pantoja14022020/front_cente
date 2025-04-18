@@ -920,7 +920,7 @@
           let configuracion= {headers : header};
       
           var eventsarray=[];  
-          axios.get('api/CitatorioRecordatorios/ListarMisCR/'+ me.u_idmoduloservicio, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarMisCR/'+ me.u_idmoduloservicio, configuracion).then(function(response){ 
              
               eventsarray=response.data;
               eventsarray.map(function(x){ 
@@ -964,7 +964,7 @@
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header}; 
           var eventsarray=[];  
-          axios.get('api/CitatorioRecordatorios/ListarMisCRStatus/'+ me.u_idmoduloservicio + '/'+ status.titulo, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarMisCRStatus/'+ me.u_idmoduloservicio + '/'+ status.titulo, configuracion).then(function(response){ 
              
               eventsarray=response.data;
               eventsarray.map(function(x){ 
@@ -1062,7 +1062,7 @@
           let configuracion= {headers : header};
           var sesionId = event.sesion;
           var listaCitasarray=[];  
-          axios.get('api/CitatorioRecordatorios/ListarC/'+ me.u_idmoduloservicio+ "/"+ sesionId, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarC/'+ me.u_idmoduloservicio+ "/"+ sesionId, configuracion).then(function(response){ 
              
               listaCitasarray=response.data;
               listaCitasarray.map(function(x){

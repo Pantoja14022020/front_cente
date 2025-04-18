@@ -1434,6 +1434,7 @@
       me.listarSede()
       me.informacionagencia()
       me.listarLogo()
+
       // INTERCEPTOR MODULO DE JUSTICIA RESTAURATIVA
       axios.interceptors.request.use((config) => {
         me.$store.commit('LOADER', true)
@@ -1498,7 +1499,7 @@
     },
     drawer(){
       return this.$store.drawer 
-    }
+    },
     },
     watch: {
         qrCode(val) {
@@ -1613,7 +1614,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/Expedientes/ListarStatus/' +  me.u_iddistrito, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/Expedientes/ListarStatus/' +  me.u_iddistrito, configuracion).then(function(response){
                me.derivaciones=response.data;
                
             }).catch(function(error){
@@ -1636,7 +1637,7 @@
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response){
                
                  if (response.data.length > 0 && response.data[0].validacion === "verdadero")
                 {
@@ -1675,7 +1676,7 @@
               let header={"Authorization" : "Bearer " + this.$store.state.token};
               let configuracion= {headers : header};
 
-              axios.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) 
+              me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) 
               {
 
                   //En caso de validar que no existe un acuerdo, se guarda el valor positivo para no hacer la insercion en la tabla JR_ACUERDOS_CONJUNTOS
@@ -1691,19 +1692,19 @@
 
                   }
                   //La siguiente es la existencia de sesiones
-                  axios.get('api/Sesions/ListarPorEnvio/' + me.envioId, configuracion).then(function(response) 
+                  me.$justiciarestaurativa.get('api/Sesions/ListarPorEnvio/' + me.envioId, configuracion).then(function(response) 
                   {
                       //Teniendolos en u arreglo posteriormente hago la insersion
                       me.sesiones = response.data;
 
                       //Siguiente punto es traer lña informacion personal de los involuicrados que por ser no conjuntos no se repiten
-                      axios.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
+                      me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
                       {
                           me.personasC = response.data;
 
                           if(response.data && response.data.length > 0)
                           {
-                            axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
+                            me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
                             {
 
                                 me.delitosC = response.data;
@@ -1903,7 +1904,7 @@
                 if(solicitadosC != '' && requeridosC != '' && delitosC != '')
                 {
                     //Iniciamos el proceso de insersiones por la creacion del registro de conjuntos
-                    axios.post('api/Expedientes/CrearConjunto',
+                    me.$justiciarestaurativa.post('api/Expedientes/CrearConjunto',
                     {
                         'EnvioId': me.envioId,
                         'SolicitadosC': solicitadosC,
@@ -1932,7 +1933,7 @@
                         var arraySolRequ = SolReq.split("; ");
                         for (var i = 0; i < arraySolRequ.length; i++) 
                         {
-                            axios.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
+                          me.$justiciarestaurativa.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
                             {
                                 'idRSolicitanteRequerido':arraySolRequ[i], 
                                 'conjuntoDerivacionesId': idConjuntoNew,
@@ -1964,7 +1965,7 @@
                         var arrayDelDe = DelDer.split("; ");
                         for (var i = 0; i < arrayDelDe.length; i++) 
                         {
-                            axios.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
+                          me.$justiciarestaurativa.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
                             {
                                 'IdDelitoDerivado':arrayDelDe[i], 
                                 'conjuntoDerivacionesId': idConjuntoNew,
@@ -2035,7 +2036,7 @@
               let header={"Authorization" : "Bearer" + this.$store.state.token};
               let configuracion= {headers : header};
 
-              axios.get('api/SolicitanteRequeridoes/NomSolReq/' + me.envioId, configuracion).then(function(response){
+              me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/NomSolReq/' + me.envioId, configuracion).then(function(response){
                 me.ArraySolReql = response.data;              
                 me.ArraySolReql.map(function (x){
                   me.infoSolReq.push({text: x.nombreCompleto, value: x.personaId});
@@ -2060,7 +2061,7 @@
            let me=this;
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-          axios.get('api/SolicitanteRequeridoes/InfoPerSolReq/' +  me.SolReque + '/' + me.envioId, configuracion).then(function(response){
+          me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/InfoPerSolReq/' +  me.SolReque + '/' + me.envioId, configuracion).then(function(response){
            let PersonasSolReq = response.data[0];
                 me.nomSolReq = PersonasSolReq.nombreCompleto;
                 me.alias = PersonasSolReq.alias;
@@ -2273,7 +2274,7 @@
               let me = this;
               let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-          axios.get('api/Delitoes/InfoDelitos/' +  me.Delitos + '/' + me.envioId, configuracion).then(function(response){
+          me.$justiciarestaurativa.get('api/Delitoes/InfoDelitos/' +  me.Delitos + '/' + me.envioId, configuracion).then(function(response){
            let DelitoConj = response.data[0];
                 me.delitoC = DelitoConj.nombreDelito;
                 me.delitoEspecificoD = DelitoConj.delitoEspecifico;
@@ -2531,7 +2532,7 @@
 
                axios.all([
                     me.$cat.get('api/DireccionDelitoes/ListarPoridHecho/'+ me.hechoid, configuracion),
-                    axios.get('api/Envios/ListaEnviosPorExpedienteNoDerivacion/'+ me.expedienteId + "/" + me.noDerivacion, configuracion),
+                    me.$justiciarestaurativa.get('api/Envios/ListaEnviosPorExpedienteNoDerivacion/'+ me.expedienteId + "/" + me.noDerivacion, configuracion),
                     me.$cat.get('api/AmpDecs/ListarEntrevistaInicial/'+ me.hechoid,configuracion)
                 ]).then(responseArr => 
                 {
@@ -3187,13 +3188,13 @@
 
                                 }, configuracion).then(function(response){
 
-                                     axios.put('api/Expedientes/StatusAcepRech',{
+                                  me.$justiciarestaurativa.put('api/Expedientes/StatusAcepRech',{
                                         'idExpediente': me.expedienteId,
                                         'statusAcepRech': "No procedente",
                                          'informacionstatus': me.informacionStatus + "<br><p>" + me.usuarioActual + ": </p><p>" + moment(new Date).format('DD/MM/YYYY hh:mm:ss a') + "</p>" + me.motivo + me.tipo,                                        
                                     },configuracion).then(function(response){
                                             //ELIMINAMOS LOS REGISTROS DE DELITOS Y SOLICITANTES REQUERIDOS
-                                            axios.put('api/Envios/StatusModuloRespuesta',{
+                                            me.$justiciarestaurativa.put('api/Envios/StatusModuloRespuesta',{
                                                 'idExpediente': me.expedienteId,
                                                 'idEnvio': me.envioId,
                                                 'statusGeneralEnvio': "No procedente",
@@ -3201,9 +3202,9 @@
                                                 'Cosecutivo':0,
                                                'distritoOrigen': me.idDistritoOrigen 
                                             }, configuracion).then(function(response){
-                                                axios.delete('api/Delitoes/EliminarEnvio/'+ me.envioId, configuracion).then(function(response)
+                                              me.$justiciarestaurativa.delete('api/Delitoes/EliminarEnvio/'+ me.envioId, configuracion).then(function(response)
                                                 {
-                                                  axios.post("api/Registros/CrearRegistro",
+                                                  me.$justiciarestaurativa.post("api/Registros/CrearRegistro",
                                                   {
                                                       //***************************** PERSONA*/
                                                       EnvioId: me.envioId,
@@ -3344,7 +3345,7 @@
             let configuracion= {headers : header};
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios',
                 function(){
-                axios.put('api/Envios/StatusModuloRespuesta',{
+                  me.$justiciarestaurativa.put('api/Envios/StatusModuloRespuesta',{
                     'idExpediente': me.expedienteId,
                     'idEnvio': me.envioId,
                     'statusGeneralEnvio': "Procedente",
@@ -3358,7 +3359,7 @@
 
                         me.noExpediente = response.data.noe;
 
-                        axios.put('api/Expedientes/StatusAcepRech',{
+                        me.$justiciarestaurativa.put('api/Expedientes/StatusAcepRech',{
                             'idExpediente': me.expedienteId,
                             'statusAcepRech': "Procedente",
                             'informacionStatus' :  me.informacionStatus + "<br><p>"+ me.usuarioActual +"</p><p>" + moment(new Date).format('DD/MM/YYYY hh:mm:ss a') +"</p><p>La derivación  fue aceptada y se registro con el número de expediente: </p><b>" + me.noExpediente + "<b>"
@@ -3407,7 +3408,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var facilitadoresarray=[];
-            axios.get('api/FacilitadorNotificadors/ListarFacilitadores/' + me.u_iddistrito, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarFacilitadores/' + me.u_iddistrito, configuracion).then(function(response){
 
                 facilitadoresarray=response.data;
                 facilitadoresarray.map(function(x){
@@ -3424,7 +3425,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var notificadoresarray=[];
-            axios.get('api/FacilitadorNotificadors/ListarNotificadores/' + me.u_iddistrito, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarNotificadores/' + me.u_iddistrito, configuracion).then(function(response){
 
                 notificadoresarray=response.data;
                 notificadoresarray.map(function(x){
@@ -3441,7 +3442,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var arrayDelito=[];
-            axios.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){
 
                 arrayDelito= response.data;
                 arrayDelito.map(function(x){

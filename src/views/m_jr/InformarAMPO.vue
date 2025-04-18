@@ -916,7 +916,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};  
             
-            axios.get('api/RegistroConclusions/ListarRegistros/'+ me.v_envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/RegistroConclusions/ListarRegistros/'+ me.v_envioId, configuracion).then(function(response){
 
                 var respuesta = 0
                 respuesta = response.data.ner;
@@ -942,7 +942,7 @@
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información.', 
                 function(){   
                     
-                            axios.put('api/Envios/StatusAMPO',{  
+                  me.$justiciarestaurativa.put('api/Envios/StatusAMPO',{  
                                     'idEnvio': me.v_envioId, 
                                     'statusAMPO': "Contestado",  
                                     'infoAMPO':  me.v_textoLibre,
@@ -1006,7 +1006,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
              
-            axios.get('api/Envios/InformacionStatusAMPO/ '+ me.v_expedienteId+ '/' + me.v_envioId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/Envios/InformacionStatusAMPO/ '+ me.v_expedienteId+ '/' + me.v_envioId, configuracion).then(function(response){ 
                   
            
                     me.v_nuc= response.data.nuc;
@@ -1070,7 +1070,7 @@
          let header={"Authorization" : "Bearer " + this.$store.state.token};
          let configuracion= {headers : header};
           
-         axios.get('api/Envios/InformacionFirmaAMPO/ '+ me.v_envioId, configuracion).then(function(response){ 
+         me.$justiciarestaurativa.get('api/Envios/InformacionFirmaAMPO/ '+ me.v_envioId, configuracion).then(function(response){ 
                me.firma = response.data;         
                 me.nomVoBo = response.data.firmaInfoAMPO;
                 me.puestoVoBo = response.data.puestoFirmaAMPO;

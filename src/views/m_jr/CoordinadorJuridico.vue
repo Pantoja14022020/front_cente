@@ -1102,7 +1102,7 @@ export default {
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header }; 
 
-            axios.get('api/AcuerdoReparatorios/ListarValidacion', configuracion)
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarValidacion', configuracion)
                 .then(function (response) {                  
                     me.acuerdos = response.data;
                 })
@@ -1325,7 +1325,7 @@ export default {
 
             me.v_tipodocumento = item.tipoDocumento
 
-            axios.get(`api/AcuerdoReparatorios/ListarConjuntoxAcuerdo/${item.idAcuerdoReparatorio}/${enlace}`)
+            me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListarConjuntoxAcuerdo/${item.idAcuerdoReparatorio}/${enlace}`)
                 .then(response => {        
                     me.printConjunt = response.data                   
                     me.textoQR = `Registro de ${me.v_tipodocumento}\nExpediente ${item.noExpediente}\nFirmado por ${response.data[0].uf_Nombre} ${response.data[0].uf_Puesto}`       
@@ -1401,7 +1401,7 @@ export default {
                         let me=this;
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.put('api/AcuerdoReparatorios/ActualizarRespuestaL',{
+                        me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarRespuestaL',{
                             'idAcuerdoReparatorio': me.v_idAcuerdoReparatorio,
                             'statusRespuestaCoordinadorJuridico': me.v_statusValidacion, 
                             'respuestaCoordinadorJuridico': me.v_respuesta,
@@ -2039,7 +2039,7 @@ export default {
             me.v_representantes = []
 
             me.v_idsSRR.map(uid => {
-                axios.get(`api/Responsablejrs/RepresentanteAllActive/${uid.trim()}`, configuracion)
+                me.$justiciarestaurativa.get(`api/Responsablejrs/RepresentanteAllActive/${uid.trim()}`, configuracion)
                     .then(responseJR => {             
                         if (responseJR.data.idResponsable) {                                                    
                         me.v_representantes.push(responseJR.data)  

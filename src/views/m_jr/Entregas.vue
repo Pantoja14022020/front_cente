@@ -1085,7 +1085,7 @@ export default {
             
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/CitatorioRecordatorios/ListarEntregasAno/' + valor, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarEntregasAno/' + valor, configuracion).then(function(response){ 
                
                if (response.data.length != 0)
                 { 
@@ -1252,7 +1252,7 @@ export default {
             me.entregas=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/CitatorioRecordatorios/ListarEntregasMesAno/'+ valor +'/'+ me.año, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarEntregasMesAno/'+ valor +'/'+ me.año, configuracion).then(function(response){ 
                
                if (response.data.length != 0)
                 { 
@@ -1419,7 +1419,7 @@ export default {
             me.entregas=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/CitatorioRecordatorios/ListarEntregasDia/'+ me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarEntregasDia/'+ me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
               
                if (response.data.length != 0)
                 { 

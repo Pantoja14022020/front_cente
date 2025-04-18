@@ -1472,8 +1472,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var modulosarray = [];
-      axios
-        .get(
+      me.$justiciarestaurativa.get(
           "api/FacilitadorNotificadors/ListarM/" +
             me.u_iddistrito +
             "/" +
@@ -1500,7 +1499,7 @@ export default {
       const header = { Authorization: "Bearer " + this.$store.state.token };
       const configuracion = { headers: header };
       try {
-        const response = await axios.get(`api/SesionsConjunto/ListarSRD/${idSesion}`, configuracion);
+        const response = await me.$justiciarestaurativa.get(`api/SesionsConjunto/ListarSRD/${idSesion}`, configuracion);
         return response.data; // Suponiendo que la respuesta contiene el arreglo de conjuntos de IDs
       } catch (error) {        
         return [];
@@ -1518,7 +1517,7 @@ export default {
         const me = this;
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(url + "/" + id, configuracion);
+        const response = await me.$justiciarestaurativa.get(url + "/" + id, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -1555,7 +1554,7 @@ export default {
       try {
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(urlBase + "/" + ids, configuracion);
+        const response = await me.$justiciarestaurativa.get(urlBase + "/" + ids, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -1573,7 +1572,7 @@ export default {
         const me = this;
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(url + "/" + id, configuracion);
+        const response = await me.$justiciarestaurativa.get(url + "/" + id, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -2669,7 +2668,7 @@ export default {
       me.requeridoC = []
 
       try {
-        let response = await axios.get(`api/SesionsConjunto/ListarSRD/${sesionid}`,configuracion);
+        let response = await me.$justiciarestaurativa.get(`api/SesionsConjunto/ListarSRD/${sesionid}`,configuracion);
         let s = response.data;
         me.derivacion = s;        
         
@@ -2679,7 +2678,7 @@ export default {
         
         await Promise.all(
           solicitanteResponse.data.map(async (dd) => {
-            let repreResponse = await axios.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
+            let repreResponse = await me.$justiciarestaurativa.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
             
             me.solicitanteC.push({
               value: dd.idPersona,
@@ -2708,7 +2707,7 @@ export default {
 
         await Promise.all(
           requeridoResponse.data.map(async (dd) => {
-            let repreRResponse = await axios.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
+            let repreRResponse = await me.$justiciarestaurativa.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
             
             me.requeridoC.push({
               value: dd.idPersona,
@@ -2784,8 +2783,8 @@ export default {
 
           try 
           {
-            me.citatoriosrecordatorios = await axios.get(`api/CitatorioRecordatorios/ListarCRConjunto/${a.value}`,configuracion);
-            let arrayDelito = await axios.get(`api/Delitoes/ListarDelitoConjunto/${a.value}`,configuracion);
+            me.citatoriosrecordatorios = await me.$justiciarestaurativa.get(`api/CitatorioRecordatorios/ListarCRConjunto/${a.value}`,configuracion);
+            let arrayDelito = await me.$justiciarestaurativa.get(`api/Delitoes/ListarDelitoConjunto/${a.value}`,configuracion);
             
             for (const [index, x] of arrayDelito.data.entries()) 
             {
@@ -2835,7 +2834,7 @@ export default {
         let configuracion = { headers: header };
 
         try {
-          const response = await axios.get(
+          const response = await me.$justiciarestaurativa.get(
             "api/CitatorioRecordatorios/ListarCREnvio/" + me.envioId,
             configuracion
           );
@@ -4366,7 +4365,7 @@ export default {
           //Inicia nuevo proceso de guardado
 
           //Primero creo la asignacion
-          axios.put('api/Envios/ActualizarStatusEnvio',
+          me.$justiciarestaurativa.put('api/Envios/ActualizarStatusEnvio',
           {    
             idExpediente: me.expedienteId,
             idEnvio: me.envioId,
@@ -4378,7 +4377,7 @@ export default {
             me.$notify('Informacion actualizada!!','success');
 
             //Una vez guardado la asignacion, guardo su informacion general correspondientes
-            axios.post('api/AsignacionEnvios/AsignarFacilitadorNotificador',
+            me.$justiciarestaurativa.post('api/AsignacionEnvios/AsignarFacilitadorNotificador',
             {    
               'EnvioId': me.envioId,  
               'ModuloServicioIdFacilitadorNotificador': arrayAsignacion,
@@ -4391,7 +4390,7 @@ export default {
                 // Crear un array de promesas para manejar las solicitudes en paralelo
                 let promesas = me.conjunto.map
                 ((item) =>
-                  axios.post("api/Sesions/CrearSesionesRecordatorios",
+                me.$justiciarestaurativa.post("api/Sesions/CrearSesionesRecordatorios",
                   {
                     envioId: me.envioId,
                     moduloServicioId: me.v_facilitador.value2,
@@ -4493,7 +4492,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/Envios/ListarDerivacionesProcedentesInicial/" + me.u_iddistrito,
           configuracion
@@ -4529,7 +4528,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       //busqueda listado por fecha
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/Envios/ListarDerivacionesProcedentes/" +
             me.v_fechaI +
@@ -4580,7 +4579,7 @@ export default {
 
       me.direccionDelito();
 
-      axios.get("api/Envios/ListaEnviosPorExpedienteNoDerivacion/" + me.expedienteId + "/" + me.noDerivacion, configuracion).then(function (response) 
+      me.$justiciarestaurativa.get("api/Envios/ListaEnviosPorExpedienteNoDerivacion/" + me.expedienteId + "/" + me.noDerivacion, configuracion).then(function (response) 
       {
         me.envioId = response.data.idEnvio;
         me.$store.state.idEnvio = response.data.idEnvio;
@@ -4628,13 +4627,13 @@ export default {
         me.arrayRepresentantes = arrayTemporal
 
         //*********************************************************** Traer si es conjunto o no y su informacion ************************************************** */
-        axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response)
+        me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response)
         {
 
           if (response.data.length > 0 && response.data[0].validacion === "verdadero")
           {
             //Acciones despues de concluir
-            axios.get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion).then(function (response) 
+            me.$justiciarestaurativa.get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion).then(function (response) 
             {
               me.vali = response.data[0].sec;
 
@@ -4659,14 +4658,14 @@ export default {
           else 
           {
 
-            axios.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
             {
               me.personasC = response.data;
 
               //Evaluo la existencia de personas en el expediente, por alguna razon hay expedientes sin solicitantes ni requeridos
               if(response.data && response.data.length > 0)
               {
-                axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
+                me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
                 {
 
                   me.delitosC = response.data;
@@ -4779,7 +4778,7 @@ export default {
                   if(solicitadosC != '' && requeridosC != '' && delitosC != '')
                   {
                     //Iniciamos el proceso de insersiones por la creacion del registro de conjuntos
-                    axios.post('api/Expedientes/CrearConjunto',
+                    me.$justiciarestaurativa.post('api/Expedientes/CrearConjunto',
                     {
                         'EnvioId': me.envioId,
                         'SolicitadosC': solicitadosC,
@@ -4808,7 +4807,7 @@ export default {
                         var arraySolRequ = SolReq.split("; ");
                         for (var i = 0; i < arraySolRequ.length; i++) 
                         {
-                            axios.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
+                          me.$justiciarestaurativa.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
                             {
                                 'idRSolicitanteRequerido':arraySolRequ[i], 
                                 'conjuntoDerivacionesId': idConjuntoNew,
@@ -4840,7 +4839,7 @@ export default {
                         var arrayDelDe = DelDer.split("; ");
                         for (var i = 0; i < arrayDelDe.length; i++) 
                         {
-                            axios.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
+                          me.$justiciarestaurativa.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
                             {
                                 'IdDelitoDerivado':arrayDelDe[i], 
                                 'conjuntoDerivacionesId': idConjuntoNew,
@@ -4868,7 +4867,7 @@ export default {
                         }
 
                         //Acciones despues de concluir
-                        axios.get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion).then(function (response) 
+                        me.$justiciarestaurativa.get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion).then(function (response) 
                         {
 
                           me.vali = response.data[0].sec;
@@ -5003,7 +5002,7 @@ export default {
       var facilitadoresarray = [];
       me.v_facilitadores = [];
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/FacilitadorNotificadors/ListarFacilitadores2/" +
             me.u_iddistrito +
@@ -5034,7 +5033,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var notificadoresarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/FacilitadorNotificadors/ListarNotificadores/" + me.u_iddistrito,
           configuracion
@@ -5097,7 +5096,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/CitatorioRecordatorios/ListarCREnvio/" + envio, configuracion)
         .then(function (response) {
           me.citatoriosrecordatorios = response.data;
@@ -5173,7 +5172,7 @@ export default {
       let configuracion = { headers: header };
       for (var i = 0; i < data.length; i++) {
         var idFacNot = data[i].idFacilitadorNotificador;
-        axios
+        me.$justiciarestaurativa
           .put(
             "api/FacilitadorNotificadors/StatusReAsignacionFacilitador",
             {
@@ -5204,7 +5203,7 @@ export default {
       let configuracion = { headers: header };
       for (var i = 0; i < data.length; i++) {
         var idFacNot = data[i].idFacilitadorNotificador;
-        axios
+        me.$justiciarestaurativa
           .put(
             "api/FacilitadorNotificadors/StatusReAsignacionNotificador",
             {
@@ -5233,7 +5232,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/" +
             me.envioId +
@@ -5256,7 +5255,7 @@ export default {
       let configuracion = { headers: header };
 
       var eventsarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/ListaFiltroCR/" +
             me.v_facilitadorFiltro.value,
@@ -5301,7 +5300,7 @@ export default {
       let configuracion = { headers: header };
       var sesionId = event.sesion;
       var listaCitasarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/ListarC/" +
             me.u_idmoduloservicio +
@@ -5384,7 +5383,7 @@ export default {
             .then((responseArr) => {
               //***************************************************************** */
 
-              axios
+              me.$justiciarestaurativa
                 .put(
                   "api/Envios/StatusModuloRespuesta",
                   {
@@ -5398,7 +5397,7 @@ export default {
                   configuracion
                 )
                 .then(function (response) {
-                  axios
+                  me.$justiciarestaurativa
                     .post(
                       "api/AsignacionEnvios/CrearAsingacion2",
                       {
@@ -6404,7 +6403,7 @@ export default {
         let configuracion = { headers: header };
         me.v_facilitadores = [];
 
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/FacilitadorNotificadors/ListarPorFecha/" +
               me.modulos +

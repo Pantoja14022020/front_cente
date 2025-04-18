@@ -1634,7 +1634,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion)
         .then(function (response) {
           me.vali = response.data[0].sec; //? EN LA VARIABLE LOCAL VALI, SE GUARDA LA VALIDACION SI ES CONJUNTO O NO, TRUE ES CONJUNTO FALSE ES SIN CONJUNTO
@@ -1762,7 +1762,7 @@ export default {
                 }
               }
             ); //Final de map
-            axios
+            me.$justiciarestaurativa
               .get("api/Sesions/ListarDDPorEnvio/" + me.envioId, configuracion)
               .then(function (response) {
                 //? CON ESTA API TRAEREMOS LOS DELITOS POR EL ENVIO CUANDO NO H7YA CONJUNTO
@@ -1807,7 +1807,7 @@ export default {
       me.qrCode = ''
       me.docRemision = 'Citatorio'
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/ListarCRConjunto/" + me.idconjuntos,
           configuracion
@@ -1846,7 +1846,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/ListarCREnvio/" + me.envioId,
           configuracion
@@ -2579,7 +2579,7 @@ export default {
         const me = this;
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(url + "/" + id, configuracion);
+        const response = await me.$justiciarestaurativa.get(url + "/" + id, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -2589,7 +2589,7 @@ export default {
       const header = { Authorization: "Bearer " + this.$store.state.token };
       const configuracion = { headers: header };
       try {
-        const response = await axios.get(`api/SesionsConjunto/ListarSRDConjunto/${idConjunto}`, configuracion);
+        const response = await me.$justiciarestaurativa.get(`api/SesionsConjunto/ListarSRDConjunto/${idConjunto}`, configuracion);
         return response.data; // Suponiendo que la respuesta contiene el arreglo de conjuntos de IDs
       } catch (error) {        
         return [];
@@ -2607,7 +2607,7 @@ export default {
         const me = this;
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(url + "/" + id, configuracion);
+        const response = await me.$justiciarestaurativa.get(url + "/" + id, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -2644,7 +2644,7 @@ export default {
       try {
         const header = { Authorization: "Bearer " + this.$store.state.token };
         const configuracion = { headers: header };
-        const response = await axios.get(urlBase + "/" + ids, configuracion);
+        const response = await me.$justiciarestaurativa.get(urlBase + "/" + ids, configuracion);
         return response.data;
       } catch (error) {        
         return null;
@@ -2654,7 +2654,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/Envios/InformacionExpediente/" +
             me.expedienteId +
@@ -2668,7 +2668,7 @@ export default {
           me.fechaDerivacion = responseArr.data.fechaDerivacion;
           me.fechaExpediente = responseArr.data.fechaRegistroExpediente;
           if (me.noderivacion !== "") {
-            axios
+            me.$justiciarestaurativa
               .get(
                 "api/Envios/ListaEnviosPorExpedienteNoDerivacion/" +
                   me.expedienteId +
@@ -2679,7 +2679,7 @@ export default {
               .then(function (response) {
                 me.autoridadqueDeriva = response.data.autoridadqueDeriva;
               });
-            axios
+              me.$justiciarestaurativa
               .get("api/Sesions/ListarPorEnvio/" + me.envioId, configuracion)
               .then(function (response) {
                 me.sesions = response.data[response.data.length - 1].idSesion;
@@ -2726,7 +2726,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var facilitadoresarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/FacilitadorNotificadors/ListarFacilitadores/" + me.u_iddistrito,
           configuracion
@@ -2749,7 +2749,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var notificadoresarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/FacilitadorNotificadors/ListarNotificadores/" + me.u_iddistrito,
           configuracion
@@ -2771,7 +2771,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .post("api/CitatorioRecordatorios/auth", {}, configuracion)
         .then(function (response) {
           if (response.data.success == false) {
@@ -2810,7 +2810,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .post("api/CitatorioRecordatorios/auth", {}, configuracion)
         .then(function (response) {
           if (response.data.success == false) {
@@ -2850,7 +2850,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .post(
           "api/CitatorioRecordatorios/send",
           {
@@ -2886,7 +2886,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .post(
           "api/CitatorioRecordatorios/send",
           {
@@ -2922,7 +2922,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .put(
           "api/CitatorioRecordatorios/ContadorSMSS",
           {
@@ -2945,7 +2945,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .put(
           "api/CitatorioRecordatorios/ContadorSMSS",
           {
@@ -3035,7 +3035,7 @@ export default {
       var arrayDelito = [];
       me.v_delitos = [];
       if (me.vali == true) {
-        axios
+        me.$justiciarestaurativa
           .get("api/Delitoes/ListarDelitoConjunto/" + me.idconjuntos)
           .then(function (response) {
             arrayDelito = response.data;
@@ -3071,7 +3071,7 @@ export default {
             }
           });
       } else {
-        axios
+        me.$justiciarestaurativa
           .get("api/Delitoes/ListarDelitos/" + me.envioId, configuracion)
           .then(function (response) {
             arrayDelito = response.data;
@@ -3114,7 +3114,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/SesionsConjunto/ListarSRD/" + sesionid, configuracion)
         .then(function (response) {
           let s = response.data;
@@ -4093,7 +4093,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/SesionsConjunto/ListarSRD/" + sesionid, configuracion)
         .then(function (response) {
           let s = response.data;
@@ -4106,7 +4106,7 @@ export default {
               me.solicitanteC = [];              
               Promise.all(
                 s.map(async (dd) => {
-                  let repreResponse = await axios.get(
+                  let repreResponse = await me.$justiciarestaurativa.get(
                     "api/Responsablejrs/ResponsaableXPersona/" + dd.idPersona,
                     configuracion
                   );
@@ -4143,7 +4143,7 @@ export default {
 
                   Promise.all(
                     s.map(async (dd) => {
-                      let repreResponseR = await axios.get(
+                      let repreResponseR = await me.$justiciarestaurativa.get(
                         "api/Responsablejrs/ResponsaableXPersona/" +
                           dd.idPersona,
                         configuracion
@@ -5242,7 +5242,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/FiltrarNoCIta/" + me.noExpediente,
           configuracion
@@ -5270,7 +5270,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .put(
           "api/CitatorioRecordatorios/StatusAsistencia",
           {

@@ -881,7 +881,7 @@ import { normalize } from 'path'
             let configuracion= {headers : header};
        
 
-             axios.get('api/AsignacionEnvios/ListarTodosAgrupar/'+ me.u_iddistrito , configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarTodosAgrupar/'+ me.u_iddistrito , configuracion).then(function(response){ 
                me.expedientes=response.data;
             }, configuracion).catch(function(error){
                 if (error.response.status==401){ 
@@ -981,8 +981,8 @@ import { normalize } from 'path'
             var notificadoresarray=[];
 
             axios.all([ 
-                    axios.get('api/FacilitadorNotificadors/ListarFacilitadores/' + me.u_iddistrito, configuracion), 
-                    axios.get('api/FacilitadorNotificadors/ListarNotificadores/' + me.u_iddistrito, configuracion)
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarFacilitadores/' + me.u_iddistrito, configuracion), 
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarNotificadores/' + me.u_iddistrito, configuracion)
                 ]).then(responseArr => { 
                     facilitadoresarray=responseArr[0].data;
                     facilitadoresarray.map(function(x){
@@ -1056,12 +1056,12 @@ import { normalize } from 'path'
                         
 
  
-                                axios.put('api/AsignacionEnvios/Reasignacion',{ 
+                            me.$justiciarestaurativa.put('api/AsignacionEnvios/Reasignacion',{ 
                                         'idAsingacionEnvio': asignacion,
                                         'moduloServicioId':modulo, 
                                     },configuracion).then(function(response){  
  
-                                        axios.get('api/Sesions/ListarPorEnvio/'+  me.envioId, configuracion).then(function(response){ 
+                                      me.$justiciarestaurativa.get('api/Sesions/ListarPorEnvio/'+  me.envioId, configuracion).then(function(response){ 
                                             me.sesions=response.data;
                                             var sesionId = 0;
 
@@ -1069,12 +1069,12 @@ import { normalize } from 'path'
                                                 for(var i=0;i<me.sesions.length;i++){ 
                                                         sesionId = me.sesions[i].idSesion;
                                                
-                                                        axios.put('api/Sesions/ActualizarReasignacion',{ 
+                                                        me.$justiciarestaurativa.put('api/Sesions/ActualizarReasignacion',{ 
                                                             'idSesion': sesionId,
                                                             'moduloServicioId':moduloSesion, 
                                                         },configuracion).then(function(response){
                                                          
-                                                            axios.put('api/CitatorioRecordatorios/Notificador',{ 
+                                                          me.$justiciarestaurativa.put('api/CitatorioRecordatorios/Notificador',{ 
                                                                 'idSesion': sesionId,
                                                                 'un_Modulo': moduloNot,  
                                                             },configuracion).then(function(response){  

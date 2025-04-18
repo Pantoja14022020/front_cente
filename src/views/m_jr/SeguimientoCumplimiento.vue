@@ -1247,7 +1247,7 @@ export default {
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             
-            axios.get('api/Sesions/ObtenerUltimaSeseion/'+ me.envioId + '/' + me.conjuntoId
+            me.$justiciarestaurativa.get('api/Sesions/ObtenerUltimaSeseion/'+ me.envioId + '/' + me.conjuntoId
             , configuracion).then(function(response){ 
                 if (response.data.notSesion  != 1)
                 { 
@@ -1308,7 +1308,7 @@ export default {
             let configuracion= {headers : header};
             me.conjuntoderivacionesSeguimiento = [];
 
-            axios.get('api/SeguimientoCumplimientoes/ObtenerExistenciaConjunto/'+me.envioId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ObtenerExistenciaConjunto/'+me.envioId, configuracion).then(function(response){ 
 
                 if (response.data.noHayAR != 1)
                 { 
@@ -1385,9 +1385,9 @@ export default {
 
 
             //Dependiendo el acuerdo ya generado mostrara el seguimiento del mismo
-            axios.get('api/SeguimientoCumplimientoes/ListarSeguimiento/'+   me.acuerdoreparatorioid2, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarSeguimiento/'+   me.acuerdoreparatorioid2, configuracion).then(function(response){ 
 
-                axios.get(`api/Sesions/ValidateSessionToA/${me.acuerdoreparatorioid2}`, configuracion)
+                me.$justiciarestaurativa.get(`api/Sesions/ValidateSessionToA/${me.acuerdoreparatorioid2}`, configuracion)
                     .then(response2 => {                        
                         if (response2.data.status) {
                             me.$alert(
@@ -1399,14 +1399,14 @@ export default {
                             
                             me.detallesSeguimiento = false;
                         } else {
-                            axios.get(`api/Sesions/ValidateSessionWA/${me.acuerdoreparatorioid2}`, configuracion)
+                            me.$justiciarestaurativa.get(`api/Sesions/ValidateSessionWA/${me.acuerdoreparatorioid2}`, configuracion)
                                 .then((response3) => {                            
                                     if (response3.data.exists) {                                
-                                    axios.get(`api/AcuerdoReparatorios/ExistsAN/${me.acuerdoreparatorioid2}`, configuracion)
+                                        me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ExistsAN/${me.acuerdoreparatorioid2}`, configuracion)
                                         .then(response4 => {
                                             if (response4.data.status && response3.data.cantidad == response4.data.cantidad) {
 
-                                                axios.get(`api/SeguimientoCumplimientoes/ValidateCJMMP/${me.acuerdoreparatorioid2}`, configuracion)
+                                                me.$justiciarestaurativa.get(`api/SeguimientoCumplimientoes/ValidateCJMMP/${me.acuerdoreparatorioid2}`, configuracion)
                                                     .then(response5 => {                                                        
                                                         if (response5.data.status) {
                                                             //Response para mostrar en tabla
@@ -1496,7 +1496,7 @@ export default {
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/AcuerdoReparatorios/ListaARSeguimiento/'+ me.envioId + '/'+ acuerdoreparatorioid, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListaARSeguimiento/'+ me.envioId + '/'+ acuerdoreparatorioid, configuracion).then(function(response){ 
 
                 if (response.data.statusRespuestaCoordinadorJuridico != 'Autorizado')
                 {
@@ -1580,7 +1580,7 @@ export default {
                     //Se coloca la variable de fecha null ya que es el valor de la columna fechaHoraCita que solo es cuando se crea la cita en caso de incumplir un pago
                     var fecha=null;
 
-                    axios.put('api/SeguimientoCumplimientoes/Actualizar',{   
+                    me.$justiciarestaurativa.put('api/SeguimientoCumplimientoes/Actualizar',{   
                         'idSeguimientoCumplimiento': me.v_idSeguimientoCumplimiento,
                         'statusPago':me.statusPago,
                         'titulo':me.asunto, 
@@ -1677,7 +1677,7 @@ export default {
                         me.un_nombre=response2.data.nombre;
                         me.un_puesto = response2.data.puesto;                        
                         //Envio de post para la creacion de sesiones
-                        axios.post('api/Sesions/CrearSC',
+                        me.$justiciarestaurativa.post('api/Sesions/CrearSC',
                         {   
                             'envioId': me.envioId,  
                             'moduloServicioId':   me.u_idmoduloservicio, 
@@ -1828,7 +1828,7 @@ export default {
                 else if (me.statusPago=="Prorroga")
                 {
                     //se guarda solo la fecha de la prorroga como un datos informativo en la tabla del seguimiento
-                    axios.put('api/SeguimientoCumplimientoes/ActualizarSP',{   
+                    me.$justiciarestaurativa.put('api/SeguimientoCumplimientoes/ActualizarSP',{   
                         'idSeguimientoCumplimiento': me.v_idSeguimientoCumplimiento,
                         'statusPago':me.statusPago,
                         'fechaProrroga': me.v_fechaP,
@@ -1864,7 +1864,7 @@ export default {
                     if (me.existsAttached) {
                         for(var i=0;i<me.seguimientosAnexo.length;i++)
                         {
-                            axios.put('api/SeguimientoCumplimientoes/Actualizar',{   
+                            me.$justiciarestaurativa.put('api/SeguimientoCumplimientoes/Actualizar',{   
                             'idSeguimientoCumplimiento': me.seguimientosAnexo[i].idSeguimientoCumplimiento,
                             'statusPago':'Pagado',
                             'titulo':me.asunto, 
@@ -1905,7 +1905,7 @@ export default {
                         //Actualiza cada registro del seguimiento de cumplimiento como pagado
                         for(var i=0;i<me.seguimientos.length;i++)
                         {
-                            axios.put('api/SeguimientoCumplimientoes/Actualizar',{   
+                            me.$justiciarestaurativa.put('api/SeguimientoCumplimientoes/Actualizar',{   
                             'idSeguimientoCumplimiento': me.seguimientos[i].idSeguimientoCumplimiento,
                             'statusPago':'Pagado',
                             'titulo':me.asunto, 
@@ -1966,7 +1966,7 @@ export default {
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.put('api/AcuerdoReparatorios/ActualizarStatuscumplimineto',
+            me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarStatuscumplimineto',
                     {   
                         'idAcuerdo': me.acuerdoreparatorioid2,
                         'statusCumplimiento': 'Cumplido',
@@ -2094,7 +2094,7 @@ export default {
 
             me.Annexes = []
 
-            axios.get(`api/SeguimientoCumplimientoes/ListAttached/${acuerdo}`, configuracion)
+            me.$justiciarestaurativa.get(`api/SeguimientoCumplimientoes/ListAttached/${acuerdo}`, configuracion)
                 .then(response => {                    
                     if (response.data != null && response.data.length > 0) {
                         me.existsAttached = true
@@ -2127,7 +2127,7 @@ export default {
 
             if (me.panelStates[panel] != false) {
                 if (me.seguimientosAnexo = []) {
-                    axios.get(`api/SeguimientoCumplimientoes/ListarSeguimiento/${acuerdo.idAcuerdoReparatorio}`, configuracion)
+                    me.$justiciarestaurativa.get(`api/SeguimientoCumplimientoes/ListarSeguimiento/${acuerdo.idAcuerdoReparatorio}`, configuracion)
                         .then(response => {                    
                             me.seguimientosAnexo = response.data       
                             me.ultimoNum = response.data.length                             
@@ -2553,7 +2553,7 @@ export default {
             me.generarQR(me.docRemision,me.nuc,me.u_nombre,fechaQR,me.v_idSeguimientoCumplimiento);  
             me.vistaPreviaTF = false        
 
-                axios.get('api/SeguimientoCumplimientoes/Seguimiento/'+ me.v_idSeguimientoCumplimiento , configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/Seguimiento/'+ me.v_idSeguimientoCumplimiento , configuracion).then(function(response){ 
                 if (response.data.noHayS != 1)
                 {
  
@@ -2866,7 +2866,7 @@ export default {
                         listatipopagoL= listatipopagoL + " " + me.v_tipopago[i]
                     }
                     
-                     axios.post('api/SeguimientoCumplimientoes/Crear',{    
+                    me.$justiciarestaurativa.post('api/SeguimientoCumplimientoes/Crear',{    
                                         'acuerdoReparatorioId': me.v_idAcuerdoReparatorio,  
                                         'tipoPago':listatipopagoL,
                                         'noParcialidad':me.noparcialidad,       
@@ -2915,7 +2915,7 @@ export default {
                 function(){  
                   
                   
-                          axios.put('api/AcuerdoReparatorios/ActualizarStatuscumplimineto',{   
+                    me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarStatuscumplimineto',{   
                                 'idAcuerdo': me.v_idAcuerdoReparatorio,
                                 'statusCumplimiento':me.v_SF,
                                  //************************************ */
@@ -2954,7 +2954,7 @@ export default {
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};   
 
-                axios.get('api/SeguimientoCumplimientoes/SeguimientoStatus/'+  me.v_idAcuerdoReparatorio, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/SeguimientoStatus/'+  me.v_idAcuerdoReparatorio, configuracion).then(function(response){ 
                 if (response.data.noHayPendiente == 0)
                 {
                     me.v_statusAR=0;

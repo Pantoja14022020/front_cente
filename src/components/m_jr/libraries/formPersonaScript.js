@@ -650,7 +650,7 @@ selectEFederativa: function(val)
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/Personas/BuscarPersonaNombreApellidoPa/' + me.nombres + '/' + me.apaterno ,configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/Personas/BuscarPersonaNombreApellidoPa/' + me.nombres + '/' + me.apaterno ,configuracion).then(function(response){
                 console.log(response.data)
                 me.idPersona = response.data.personaId;
                 me.medionotificacion= response.data.medionotificacion;

@@ -984,8 +984,8 @@
 
 
                 axios.all([ 
-                    axios.get('api/SeguimientoCumplimientoes/ListarSeguimientoDistrito/'+ me.u_distrito+ '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" +'/'+ me.statusConclusion, configuracion), 
-                    axios.get('api/SeguimientoCumplimientoes/ListarSeguimientoDistritoGrupo/'+ me.u_distrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59"+'/'+ me.statusConclusion, configuracion)
+                me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarSeguimientoDistrito/'+ me.u_distrito+ '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" +'/'+ me.statusConclusion, configuracion), 
+                me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarSeguimientoDistritoGrupo/'+ me.u_distrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59"+'/'+ me.statusConclusion, configuracion)
                 ]).then(responseArr => {
                     me.seguimientos = responseArr[0].data;
                     me.gruposeguimientos =responseArr[1].data;

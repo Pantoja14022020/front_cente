@@ -948,7 +948,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};  
-            axios.get('api/RHechoes/InfodelRhecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/RHechoes/InfodelRhecho/'+ me.rHechoId,configuracion).then(function(response){
                 me.inforhecho=response.data;
             }).catch(err => { 
                 if (err.response.status==400){
@@ -1051,7 +1051,7 @@
             me.delitosderivados=[]; 
             //************************************************ */
             var delitosarray=[];
-            axios.get('api/RDHs/ListarPorHechoMASC/'+ me.rHechoId,configuracion).then(function(response){ 
+            me.$cat.get('api/RDHs/ListarPorHechoMASC/'+ me.rHechoId,configuracion).then(function(response){ 
                 delitosarray=response.data; 
                 delitosarray.map(function(x){
                     me.delitos.push({text: x.nombreDelito,value: x.idRDH,IdDelito: x.idRDH, Nombre: x.nombreDelito});  
@@ -1081,14 +1081,14 @@
             let configuracion= {headers : header};
             var contador=0
             var personasArray=[];
-            axios.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
 
                 personasArray=response.data;               
                 personasArray.map(function(x){
                     me.victimas.push({text: x.nombreCompleto,value:x.personaId,PersonaId:x.personaId,Clasificacion: x.clasificacionPersona, Nombre: x.nombreCompleto});
                 });
 
-                axios.get('api/RAPs/ListarTodosImp/'+ me.rAtencionId,configuracion).then(function(response){
+                me.$cat.get('api/RAPs/ListarTodosImp/'+ me.rAtencionId,configuracion).then(function(response){
 
                     personasArray=response.data;                                      
                     personasArray.map(function(x){

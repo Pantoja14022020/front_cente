@@ -1035,7 +1035,7 @@
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header }; 
             me.acuerdos = [];
-            axios.get('api/AcuerdoReparatorios/Acuerdosxdistrito/'+ me.DistritosP, configuracion).then(function(response) {  
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/Acuerdosxdistrito/'+ me.DistritosP, configuracion).then(function(response) {  
                 me.acuerdos = response.data;
             }).catch(function(error) {
                 me.$alert('Notificación', 'Fallo la conexión a internet, favor de intentar mas tarde.', 
@@ -1184,7 +1184,7 @@
                         let me=this;
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.put('api/AcuerdoReparatorios/ActualizarRespuesta/' + me.DistritosP,{
+                        me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarRespuesta/' + me.DistritosP,{
                             'idAcuerdoReparatorio': me.v_idAcuerdoReparatorio,
                             'statusRespuestaCoordinadorJuridico': me.v_statusValidacion, 
                             'respuestaCoordinadorJuridico': me.v_respuesta,
@@ -1808,7 +1808,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};   
-            axios.get('api/AcuerdoReparatorios/ListarSolicitantesRequeridosxDis/'+ me.DistritosP + '/'+me.v_envioId+'/'+SolReq, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarSolicitantesRequeridosxDis/'+ me.DistritosP + '/'+me.v_envioId+'/'+SolReq, configuracion).then(function(response)
             { 
                 if(SolReq=="Requerido")
                 {
@@ -1937,7 +1937,7 @@
             let header={"Authorization" : "Bearer" + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/AcuerdoReparatorios/DistritoC/' + me.u_idusuario, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/DistritoC/' + me.u_idusuario, configuracion).then(function(response){
               me.ArrayDistritos = response.data;
               me.ArrayDistritos.map(function (x){
                 me.CoorDis.push({text: x.nombreDis, value: x.distritoId});

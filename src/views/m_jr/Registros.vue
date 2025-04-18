@@ -874,7 +874,7 @@
              let header={"Authorization" : "Bearer " + this.$store.state.token};
              let configuracion= {headers : header};  
              //Los expedientes son de todo el expediente, por eso solo lista conm respecto del id del envio
-             axios.get('api/Registros/ListarRegistros/'+ me.v_envioId, configuracion).then(function(response){
+             me.$justiciarestaurativa.get('api/Registros/ListarRegistros/'+ me.v_envioId, configuracion).then(function(response){
                  
                 me.registros = response.data;
 
@@ -1210,7 +1210,7 @@
             "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
             function () 
             {
-                axios.post("api/Registros/CrearRegistro",
+              me.$justiciarestaurativa.post("api/Registros/CrearRegistro",
                 {
                     //***************************** PERSONA*/
                     EnvioId: me.v_envioId,

@@ -936,7 +936,7 @@
 
 
                
-                axios.get('api/Expedientes/ListarTodasFiltro/' +  me.u_iddistrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59"+'/'+me.statusSelected, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Expedientes/ListarTodasFiltro/' +  me.u_iddistrito + '/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59"+'/'+me.statusSelected, configuracion).then(function(response){ 
                     me.derivaciones=response.data;
                     me.filtros=false;
                     me.contador = response.data.length;  
@@ -1033,7 +1033,7 @@
                 let configuracion= {headers : header};
 
                 //Nueva api en back que trae la informacion del registro
-                axios.get('api/Registros/ListarRegistroEspecifico/'+item.idExpediente, configuracion).then(function(response)
+                me.$justiciarestaurativa.get('api/Registros/ListarRegistroEspecifico/'+item.idExpediente, configuracion).then(function(response)
                 { 
 
                     //Een caso de existir registro se guarda la informacion general en variables globales para su impresion
@@ -1107,7 +1107,7 @@
                     "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
                     function () 
                     {
-                        axios.post("api/Registros/CrearRegistro",
+                      me.$justiciarestaurativa.post("api/Registros/CrearRegistro",
                         {
                             //***************************** PERSONA*/
                             EnvioId: me.v_envioId,

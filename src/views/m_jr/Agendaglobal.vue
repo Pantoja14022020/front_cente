@@ -1024,7 +1024,7 @@
                     if (response.data.idDistrito == '7f662ec1-6705-406e-bcd0-f56ade7bcae2')
                     {
                       var eventsarray=[];  
-                      axios.get('api/CitatorioRecordatorios/ListarAgendaGlobal1/'+ me.distritoId, configuracion).then(function(response){ 
+                      me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarAgendaGlobal1/'+ me.distritoId, configuracion).then(function(response){ 
                         
                           eventsarray=response.data;
                           eventsarray.map(function(x){ 
@@ -1059,7 +1059,7 @@
                     else
                     {
                         var eventsarray=[];  
-                        axios.get('api/CitatorioRecordatorios/ListarAgendaGlobal2/'+ me.distritoId, configuracion).then(function(response){ 
+                        me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarAgendaGlobal2/'+ me.distritoId, configuracion).then(function(response){ 
                           
                             eventsarray=response.data;
                             eventsarray.map(function(x){ 
@@ -1151,7 +1151,7 @@
                     if (response.data.idDistrito == '7f662ec1-6705-406e-bcd0-f56ade7bcae2')
                     {
                         var eventsarray=[];  
-                        axios.get('api/CitatorioRecordatorios/ListarCRStatusglobal/'+ me.distritoId.value + '/'+ status.titulo, configuracion).then(function(response){ 
+                        me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarCRStatusglobal/'+ me.distritoId.value + '/'+ status.titulo, configuracion).then(function(response){ 
                           
                             eventsarray=response.data;
                             eventsarray.map(function(x){ 
@@ -1175,7 +1175,7 @@
                     else
                     {
                       var eventsarray=[];  
-                      axios.get('api/CitatorioRecordatorios/ListarCRStatusglobal/'+ me.distritoId.value + '/'+ status.titulo, configuracion).then(function(response){ 
+                      me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarCRStatusglobal/'+ me.distritoId.value + '/'+ status.titulo, configuracion).then(function(response){ 
                         
                           eventsarray=response.data;
                           eventsarray.map(function(x){ 
@@ -1291,7 +1291,7 @@
           let configuracion= {headers : header};
           var sesionId = event.sesion;
           var listaCitasarray=[];  
-          axios.get('api/CitatorioRecordatorios/ListarC/'+ me.u_idmoduloservicio+ "/"+ sesionId, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarC/'+ me.u_idmoduloservicio+ "/"+ sesionId, configuracion).then(function(response){ 
              
               listaCitasarray=response.data;
               listaCitasarray.map(function(x){

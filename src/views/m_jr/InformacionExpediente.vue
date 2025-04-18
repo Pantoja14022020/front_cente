@@ -1727,14 +1727,14 @@ import { generarQRCodeBase64 } from './crearQR';
               nombreNuevo = "",
               nomSincomas = [];
           //Consultamos la tabla conjuntos por si ha ocurrido un cambio en los nombres de los Sol/Req
-            axios.get('api/SolicitanteRequeridoes/ListarNomConjuntos/' + me.envioId, configuracion).then(function(response){
+          me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarNomConjuntos/' + me.envioId, configuracion).then(function(response){
                 me.nombresModificados = response.data;
               
                 //Guardamos el resultado de las dos columnas en un mismo arreeglo 
                 me.nomCambiadosC = me.nombresModificados.map(item => ({NombreR: item.nombreR, NombreS: item.nombreS}));             
                
                 //consultamos las personas de CAT
-                axios.get('api/SolicitanteRequeridoes/ListarPersonRepre/' + me.envioId, configuracion).then(function(response){
+                me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarPersonRepre/' + me.envioId, configuracion).then(function(response){
                     me.perRe = response.data;
                         
                     nomConjuntos = me.nomCambiadosC.flatMap(persona => [persona.NombreR, persona.NombreS]);
@@ -1797,7 +1797,7 @@ import { generarQRCodeBase64 } from './crearQR';
         me.$validator.validate().then(result => {
             if (result) {
 
-                    axios.post('api/Responsablejrs/Crear',{
+                me.$justiciarestaurativa.post('api/Responsablejrs/Crear',{
                     'personaId':me.PersonaRepresentada, 
                     'nombre': me.nombres,
                     'apellidoPa': me.apaterno,
@@ -1859,7 +1859,7 @@ import { generarQRCodeBase64 } from './crearQR';
         let header={"Authorization" : "Bearer " + this.$store.state.token};
         let configuracion= {headers : header}; 
           
-        axios.get('api/Responsablejrs/MostrarPersonaJR/'+ me.PersonaRepresentada, configuracion).then(function(response){
+        me.$justiciarestaurativa.get('api/Responsablejrs/MostrarPersonaJR/'+ me.PersonaRepresentada, configuracion).then(function(response){
             me.repreJr = response.data.ner;
             
             if (me.repreJr !== 1) {
@@ -1926,7 +1926,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 //Código para editar 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Responsablejrs/Actualizar',{
+                me.$justiciarestaurativa.put('api/Responsablejrs/Actualizar',{
                     'personaId':me.PersonaRepresentada,
                     'idResponsable':me.idResponsable,  
                     'nombre': me.nombres,
@@ -2003,7 +2003,7 @@ import { generarQRCodeBase64 } from './crearQR';
             me.arraynombreS='';
             me.arraynombreR='';
 
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosC/' +  me.envioId, configuracion).then(function(response)
             {
             
                 if (response.data.length > 0 && response.data[0].validacion === "verdadero")
@@ -2096,7 +2096,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 requeridosC = [];
 
             //Consultamos la tabla conjuntos por si ha ocurrido un cambio en los nombres de los Sol/Req
-            axios.get('api/SolicitanteRequeridoes/ListarNomConjuntos/' + me.envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarNomConjuntos/' + me.envioId, configuracion).then(function(response){
             me.infoSolReq = response.data;
 
             me.infoSolReq.forEach(item => {
@@ -2156,7 +2156,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
             me.docRemision = 'Registro de Información detallada de persona'
             
-          axios.get('api/SolicitanteRequeridoes/InfoPerSolReq/' +  me.SolReque + '/' + me.envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/InfoPerSolReq/' +  me.SolReque + '/' + me.envioId, configuracion).then(function(response){
            let PersonasSolReq = response.data[0];
                 me.nomSolReq = fil[0].nombre;
                 me.alias = PersonasSolReq.alias;
@@ -2371,7 +2371,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var arrayDelito=[];
-            axios.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){
 
                 arrayDelito= response.data;
                 arrayDelito.map(function(x){
@@ -2399,7 +2399,7 @@ import { generarQRCodeBase64 } from './crearQR';
               let me = this;
               let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-          axios.get('api/Delitoes/InfoDelitos/' +  me.Delitos + '/' + me.envioId, configuracion).then(function(response){
+          me.$justiciarestaurativa.get('api/Delitoes/InfoDelitos/' +  me.Delitos + '/' + me.envioId, configuracion).then(function(response){
               let DelitoConj = response.data[0];
                 me.idDelito = DelitoConj.idDelitoDerivado
                 me.delitoC = DelitoConj.nombreDelito;
@@ -2603,7 +2603,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
             var modulosarray = [];
-            axios.get('api/FacilitadorNotificadors/ListarM/'+me.u_iddistrito+'/'+me.u_idagencia, configuracion).then(function (response) {
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarM/'+me.u_iddistrito+'/'+me.u_idagencia, configuracion).then(function (response) {
 
             modulosarray = response.data;
             modulosarray.map(function (x) {
@@ -2631,7 +2631,7 @@ import { generarQRCodeBase64 } from './crearQR';
     let configuracion = { headers: header };
     var facilitadoresarray = [];
      me.v_facilitadores = [];
-    axios.get('api/FacilitadorNotificadors/ListarFacilitadores2/'+me.u_iddistrito+'/'+me.u_idagencia+'/'+me.modulos, configuracion).then(function (response) {
+     me.$justiciarestaurativa.get('api/FacilitadorNotificadors/ListarFacilitadores2/'+me.u_iddistrito+'/'+me.u_idagencia+'/'+me.modulos, configuracion).then(function (response) {
 
         facilitadoresarray = response.data;
         facilitadoresarray.map(function (x) {
@@ -2659,7 +2659,7 @@ import { generarQRCodeBase64 } from './crearQR';
         me.IdmoduloServicio = me.v_facilitador.value2;
         let header={"Authorization" : "Bearer " + this.$store.state.token};
         let configuracion= {headers : header};
-        axios.put('api/Responsablejrs/Reasignar',{
+        me.$justiciarestaurativa.put('api/Responsablejrs/Reasignar',{
             'asignacionEnvioId':me.asignacionEnvioId, 
             'moduloServicioId': me.IdmoduloServicio
 
@@ -2724,7 +2724,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let configuracion= {headers : header};
              axios.all([ 
                 
-                    axios.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion),  
+             me.$justiciarestaurativa.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion),  
                     me.$cat.get('api/AmpDecs/ListarEntrevistaInicial/'+ me.rHechoId,configuracion)
              ]).then(responseArr => {
                  
@@ -3526,7 +3526,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 var item = nuevaListaS[i];
                 var itemR = nuevaListaR[i];
 
-                axios.put('api/SolicitanteRequeridoes/EditarNombresC',
+                me.$justiciarestaurativa.put('api/SolicitanteRequeridoes/EditarNombresC',
                 {
                     'idConjuntoDerivaciones':item.idConjuntoDerivaciones, 
                     'nombreS': item.nombreS,
@@ -3574,7 +3574,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) 
             {
 
                 //En caso de validar que no existe un acuerdo, se guarda el valor positivo para no hacer la insercion en la tabla JR_ACUERDOS_CONJUNTOS
@@ -3590,17 +3590,17 @@ import { generarQRCodeBase64 } from './crearQR';
 
                 }
                 //La siguiente es la existencia de sesiones
-                axios.get('api/Sesions/ListarPorEnvio/' + me.envioId, configuracion).then(function(response) 
+                me.$justiciarestaurativa.get('api/Sesions/ListarPorEnvio/' + me.envioId, configuracion).then(function(response) 
                 {
                     //Teniendolos en u arreglo posteriormente hago la insersion
                     me.sesiones = response.data;
 
                     //Siguiente punto es traer lña informacion personal de los involuicrados que por ser no conjuntos no se repiten
-                    axios.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
+                    me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarTodos/' + me.envioId, configuracion).then(function(response) 
                     {
                         me.personas = response.data;
 
-                        axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
+                        me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) 
                         {
 
                             me.delitos = response.data;
@@ -3804,7 +3804,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
 
                 //Iniciamos el proceso de insersiones por la creacion del registro de conjuntos
-                axios.post('api/Expedientes/CrearConjunto',
+                me.$justiciarestaurativa.post('api/Expedientes/CrearConjunto',
                 {
                     'EnvioId': me.envioId,
                     'SolicitadosC': solicitadosC,
@@ -3833,7 +3833,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     var arraySolRequ = SolReq.split("; ");
                     for (var i = 0; i < arraySolRequ.length; i++) 
                     {
-                        axios.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
+                        me.$justiciarestaurativa.put('api/SolicitanteRequeridoes/EditarConjuntoIdSolicitantesRequeridos',
                         {
                             'idRSolicitanteRequerido':arraySolRequ[i], 
                             'conjuntoDerivacionesId': idConjuntoNew,
@@ -3865,7 +3865,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     var arrayDelDe = DelDer.split("; ");
                     for (var i = 0; i < arrayDelDe.length; i++) 
                     {
-                        axios.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
+                        me.$justiciarestaurativa.put('api/Delitoes/EditarConjuntoIdDelitosDerivados',
                         {
                             'IdDelitoDerivado':arrayDelDe[i], 
                             'conjuntoDerivacionesId': idConjuntoNew,
@@ -3896,7 +3896,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     var arraySesiones = sesions.split("; ");
                     for (var i = 0; i < arraySesiones.length; i++) 
                     {
-                        axios.post('api/Sesions/CrearSesionConjunto',
+                        me.$justiciarestaurativa.post('api/Sesions/CrearSesionConjunto',
                         {
                             'SesionId': arraySesiones[i],
                             'ConjuntoDerivacionesId': idConjuntoNew,
@@ -3930,7 +3930,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     //Por ultimo, en caso de existir el acuerdo, se crea el registro intermedio
                     if(me.NoHayAR != 1)
                     {
-                        axios.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',
+                        me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',
                         {
                             'AcuerdoReparatorioId': me.idAcuerdoReparatorio,
                             'ConjuntoDerivacionesId': idConjuntoNew,
@@ -4180,7 +4180,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
 
-            axios.get('api/Responsablejrs/SaveautoRepresentantes/'+ me.envioId, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/Responsablejrs/SaveautoRepresentantes/'+ me.envioId, configuracion).then(function(response)
             { 
                 me.autoRepresentante = response.data;
                 
@@ -4212,7 +4212,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
 
 
-            axios.post('api/Responsablejrs/Crear',{
+              me.$justiciarestaurativa.post('api/Responsablejrs/Crear',{
                 'personaId':item.personaId, 
                 'nombre':item.nombre,
                 'apellidoPa':item.apellidoPa,
@@ -4277,7 +4277,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
             var modulosarray = [];
-            axios.get('api/AsignacionEnvios/ListarFacilitadorEnv/'+me.envioId, configuracion).then(function (response) {
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarFacilitadorEnv/'+me.envioId, configuracion).then(function (response) {
 
                 me.asignacionenv = response.data;
                 for(let i = 0; i < me.asignacionenv.length; i++){

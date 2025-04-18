@@ -1240,7 +1240,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             me.personaSR = [];
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosCXDistrito/'+ me.distritoId+ '/' +  me.envioId  , configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosCXDistrito/'+ me.distritoId+ '/' +  me.envioId  , configuracion).then(function(response)
             {
                 //Consiciona la forma en que se guardas el respose data, ya que cada uno es para que liste correectamente, esto pasa por la forma en que retirna la api
                 if (response.data.length > 0 && response.data[0].validacion === "verdadero")
@@ -1277,7 +1277,7 @@
             let configuracion= {headers : header};
             me.conjuntoderivacionesSeguimiento = [];
 
-            axios.get('api/SeguimientoCumplimientoes/ObtenerExistenciaConjuntoXDistrito/'+me.envioId + '/' + me.distritoId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ObtenerExistenciaConjuntoXDistrito/'+me.envioId + '/' + me.distritoId, configuracion).then(function(response){ 
 
                 if (response.data.noHayAR != 1)
                 { 
@@ -1328,7 +1328,7 @@
             
 
             //Dependiendo el acuerdo ya generado mostrara el seguimiento del mismo
-            axios.get('api/SeguimientoCumplimientoes/ListarSeguimientoXDistrito/'+   me.acuerdoreparatorioid2 + '/' + me.distritoId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarSeguimientoXDistrito/'+   me.acuerdoreparatorioid2 + '/' + me.distritoId, configuracion).then(function(response){ 
 
                //Response para mostrar en tabla
                me.seguimientos=response.data;
@@ -1372,7 +1372,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/Envios/InformacionExpedienteXDistrito/'+ me.expedienteId + "/" + me.envioId + "/" + me.distritoId, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/Envios/InformacionExpedienteXDistrito/'+ me.expedienteId + "/" + me.envioId + "/" + me.distritoId, configuracion).then(function(response)
             {
             
                 //Se guardan en variables especificas, en caso de requerir mas datos revisar response de la api en consola

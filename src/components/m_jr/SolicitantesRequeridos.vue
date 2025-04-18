@@ -381,7 +381,7 @@ import { DEFAULT_ENCODING } from 'crypto'
             let configuracion= {headers : header};
             me.envioId=me.$store.state.idEnvio;
             //console.log("desde Requeridos");
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/'+ me.envioId+'/'+me.sSolReq, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/'+ me.envioId+'/'+me.sSolReq, configuracion).then(function(response){ 
                 me.personas=response.data;
             }).catch(function(error){
                 if (err.response.status==400){
@@ -453,7 +453,7 @@ import { DEFAULT_ENCODING } from 'crypto'
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             
-            axios.get('api/Responsablejrs/SelectIdPersona/'+ me.personaId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/Responsablejrs/SelectIdPersona/'+ me.personaId, configuracion).then(function(response){ 
        
                 me.rnombre= response.data.nombreCompleto;
                 me.rnacionalidad= response.data.nacionalidad;
@@ -488,7 +488,7 @@ import { DEFAULT_ENCODING } from 'crypto'
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.put('api/Responsablejrs/Actualizar',{
+                            me.$justiciarestaurativa.put('api/Responsablejrs/Actualizar',{
                                 'idResponsable':me.ridresponsable, 
                                 'personaId':me.personaId, 
                                 'nombreCompleto': me.rnombre,
@@ -529,7 +529,7 @@ import { DEFAULT_ENCODING } from 'crypto'
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Responsablejrs/Crear',{
+                            me.$justiciarestaurativa.post('api/Responsablejrs/Crear',{
                                 'personaId':me.personaId, 
                                 'nombreCompleto': me.rnombre,
                                 'edad': me.redad,
@@ -969,10 +969,5 @@ import { DEFAULT_ENCODING } from 'crypto'
                 }
 		    } 
         },
-  }
-</script>
-    
-    }
-    
   }
 </script>

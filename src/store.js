@@ -55,6 +55,7 @@ export default new Vuex.Store({
         setUsuario (state,usuario)
         {
             state.usuario=usuario
+            console.log("uiser: ",state.usuario)
         },
         setMenu (state,menu){
             state.menu=menu;

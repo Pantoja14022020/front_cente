@@ -127,7 +127,7 @@
                 let configuracion = { headers : header };
                 me.envioId = me.$store.state.idEnvio;
                 //console.log(me.envioId)
-                axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) {
+                me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) {
                     me.delitos = response.data;
                 }).catch(err => {  
                     if (err.response.status == 400) {

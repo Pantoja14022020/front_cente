@@ -908,7 +908,7 @@ import { generarQRCodeBase64 } from './crearQR';
             me.vistaPreviaTF = false
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información.', 
                 function() {
-                    axios.post('api/RegistroConclusions/Crear',{   
+                  me.$justiciarestaurativa.post('api/RegistroConclusions/Crear',{   
                         'envioId': me.envioId,
                         'conclusion':me.statusAR.text ,
                         'asunto':me.asunto,
@@ -956,7 +956,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers : header };
             debugger
-            axios.get('api/Sesions/ListarPorEnvioUltimaSeseion/' + me.envioId, configuracion).then(function(response) { 
+            me.$justiciarestaurativa.get('api/Sesions/ListarPorEnvioUltimaSeseion/' + me.envioId, configuracion).then(function(response) { 
                 debugger
                 if (response.data.noHayAR != 1) {
                     me.v_solicitantesL = response.data.solicitates;
@@ -996,7 +996,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me = this;
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = {headers : header };
-            axios.get('api/RegistroConclusions/ListarRegistros/' + me.envioId, configuracion).then(function(response) { 
+            me.$justiciarestaurativa.get('api/RegistroConclusions/ListarRegistros/' + me.envioId, configuracion).then(function(response) { 
                 debugger
                 if (response.data.ner != 1) {
                     let temporalStatus = me.listarregistrosConclusion.filter(status => status.text == response.data.conclusion)
@@ -1035,7 +1035,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me = this;
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = {headers : header };
-            axios.get('api/AcuerdoReparatorios/ListarConjuntosCA/' + me.envioId, configuracion).then(function(response) { 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarConjuntosCA/' + me.envioId, configuracion).then(function(response) { 
                 me.acuerdosReparatorios = response.data;
 
                 me.nuc = response.data[0].nuc
@@ -1501,7 +1501,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me = this; 
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers : header }; 
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantes/' + me.envioId, configuracion).then(function(response) { 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantes/' + me.envioId, configuracion).then(function(response) { 
                 me.v_solicitantes = response.data;  
             }).catch(function(error) {
                 me.$notify(error.message,'error')    
@@ -1512,9 +1512,9 @@ import { generarQRCodeBase64 } from './crearQR';
             let me = this; 
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers : header };   
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosDistint/' + me.envioId + '/' + SolReq, configuracion)
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridosDistint/' + me.envioId + '/' + SolReq, configuracion)
                 .then(function (response) { 
-                    axios.get(`api/SolicitanteRequeridoes/ListarNomConjuntos/${me.envioId}`, configuracion)
+                  me.$justiciarestaurativa.get(`api/SolicitanteRequeridoes/ListarNomConjuntos/${me.envioId}`, configuracion)
                         .then(responseNom => {                                                        
                             let personasGenerales = []
                             responseNom.data.map(pp => {

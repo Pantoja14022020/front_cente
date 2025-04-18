@@ -937,7 +937,7 @@
                 function(){  
 
                     
-                     axios.post('api/RegistroNotificacions/Crear',{   
+                  me.$justiciarestaurativa.post('api/RegistroNotificacions/Crear',{   
                                 'expedienteId': me.expedienteId,
                                 'asunto':me.asunto,
                                 'texto':me.v_textoFijo, 
@@ -953,7 +953,7 @@
                                 //************************************ */
                             }, configuracion).then(function(response){   
                                 
-                                    axios.put('api/Expedientes/InformacionStatus',{ 
+                              me.$justiciarestaurativa.put('api/Expedientes/InformacionStatus',{ 
                                         'idExpediente': me.expedienteId, 
                                         'informacionStatus': me.statusAR,  
                                     }, configuracion).then(function(response){ 
@@ -1029,7 +1029,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
              
-            axios.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion).then(function(response){ 
                 me.noDerivacion = response.data.noDerivacion;
                 me.fechaExpediente= response.data.fechaRegistroExpediente ;
                 me.fechaHoraSuceso=response.data.fechaHoraSuceso;
@@ -1074,7 +1074,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
              
-            axios.get('api/RegistroNotificacions/ListarRegistros/'+ me.expedienteId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/RegistroNotificacions/ListarRegistros/'+ me.expedienteId, configuracion).then(function(response){ 
                 
                 me.asunto=response.data.asunto;
                 me.v_textoFijo=response.data.texto;
@@ -1175,7 +1175,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantes/'+ me.envioId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantes/'+ me.envioId, configuracion).then(function(response){ 
                     me.v_solicitantes=response.data;  
             }).catch(function(error){
                 me.$notify(error.message,'error')    
@@ -1186,7 +1186,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};   
-            axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/'+ me.envioId+'/'+SolReq, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/'+ me.envioId+'/'+SolReq, configuracion).then(function(response){ 
                     if(SolReq=="Requerido")
                         me.v_requeridos=response.data;
                     else

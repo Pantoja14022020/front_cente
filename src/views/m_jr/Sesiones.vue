@@ -1553,7 +1553,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/Sesions/ListarSCpC/" + me.idconjuntod, configuracion)
         .then(function (response) {
           me.sesionsss = response.data;
@@ -1577,7 +1577,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/Sesions/ListarConjuntoPorEnvio/" + me.envioId, configuracion)
         .then(function (response) {
           me.vali = response.data[0].sec;
@@ -1672,7 +1672,7 @@ export default {
               }
             }); //Final de map
 
-            axios
+            me.$justiciarestaurativa
               .get("api/Sesions/ListarDDPorEnvio/" + me.envioId, configuracion)
               .then(function (response) {
                 response.data.map((d) => {
@@ -1712,7 +1712,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var requeridosarray = [];
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/" +
             me.envioId +
@@ -1805,7 +1805,7 @@ export default {
 
               for (var i = 0; i < me.v_requeridos.length; i++) {
                 if (me.v_requeridos[i].seleccion == true) {
-                  axios
+                  me.$justiciarestaurativa
                     .post(
                       "api/CitatorioRecordatorios/CrearCR",
                       {
@@ -1887,12 +1887,12 @@ export default {
 
           if (me.vali == true) 
           {
-            axios.get("api/Sesions/ListarPorConjuntoUltimaSesion/" + me.idconjuntod,configuracion).then(function (response) {
+            me.$justiciarestaurativa.get("api/Sesions/ListarPorConjuntoUltimaSesion/" + me.idconjuntod,configuracion).then(function (response) {
                 me.statusSesion = response.data.statusSesion;
                 if (response.data.noHaySesion == 1) {
                   me.$confirm("Esperando confirmación","Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                     function () {
-                      axios.post("api/Sesions/CrearSconC",
+                      me.$justiciarestaurativa.post("api/Sesions/CrearSconC",
                           {
                             //***************************** PERSONA*/
                             envioId: me.envioId,
@@ -1911,7 +1911,7 @@ export default {
                             //************************************ */
                           },configuracion).then(function (response) {
                           me.SesionSe = response.data;
-                          axios.post("api/CitatorioRecordatorios/CrearCR",
+                          me.$justiciarestaurativa.post("api/CitatorioRecordatorios/CrearCR",
                               {
                                 //***************************** CITATORIO*/
                                 sesionId: me.SesionSe.idSesion,
@@ -1940,7 +1940,7 @@ export default {
                                 //************************************ */
                               },configuracion).then(function (response) {
                               if (response.data.fhnd == 1) {
-                                axios.delete("api/Sesions/EliminarSesion/" +me.SesionSe.idSesion,configuracion).then(function (response) {
+                                me.$justiciarestaurativa.delete("api/Sesions/EliminarSesion/" +me.SesionSe.idSesion,configuracion).then(function (response) {
 
                                 }).catch((err) => {
                                     if (err.response.status == 400) {
@@ -1978,7 +1978,7 @@ export default {
                                   "error"
                                 );
                               } else {
-                                axios
+                                me.$justiciarestaurativa
                                   .post(
                                     "api/Sesions/CrearSesionConjunto",
                                     {
@@ -2056,7 +2056,7 @@ export default {
                   } else {
                     me.$confirm("Esperando confirmación", "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                       function () {
-                        axios.post("api/Sesions/CrearSconC",
+                        me.$justiciarestaurativa.post("api/Sesions/CrearSconC",
                             {
                               //***************************** PERSONA*/
                               envioId: me.envioId,
@@ -2076,7 +2076,7 @@ export default {
                             }, configuracion).then(function (response) {
                             me.SesionSe = response.data;
 
-                            axios
+                            me.$justiciarestaurativa
                               .post(
                                 "api/CitatorioRecordatorios/CrearCR",
                                 {
@@ -2114,7 +2114,7 @@ export default {
                               )
                               .then(function (response) {
                                 if (response.data.fhnd == 1) {
-                                  axios
+                                  me.$justiciarestaurativa
                                     .delete(
                                       "api/Sesions/EliminarSesion/" +
                                         me.SesionSe.idSesion,
@@ -2157,7 +2157,7 @@ export default {
                                     "error"
                                   );
                                 } else {
-                                  axios
+                                  me.$justiciarestaurativa
                                     .post(
                                       "api/Sesions/CrearSesionConjunto",
                                       {
@@ -2243,7 +2243,7 @@ export default {
                 }
               });
           } else {
-            axios
+            me.$justiciarestaurativa
               .get(
                 "api/Sesions/ListarPorEnvioUltimaSeseion/" + me.envioId,
                 configuracion
@@ -2255,7 +2255,7 @@ export default {
                     "Esperando confirmación",
                     "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                     function () {
-                      axios
+                      me.$justiciarestaurativa
                         .post(
                           "api/Sesions/Crear",
                           {
@@ -2280,7 +2280,7 @@ export default {
                             tesol += me.TelSoli[a];
                           }
                           for (i = 0; i < me.AllReq.length; i++) {}
-                          axios
+                          me.$justiciarestaurativa
                             .post(
                               "api/CitatorioRecordatorios/CrearCR",
                               {
@@ -2385,7 +2385,7 @@ export default {
                       "Esperando confirmación",
                       "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                       function () {
-                        axios
+                        me.$justiciarestaurativa
                           .post(
                             "api/Sesions/Crear",
                             {
@@ -2427,7 +2427,7 @@ export default {
                                   ? `, ${me.AllReq[i].valor2}`
                                   : me.AllReq[i].valor2;
                             }
-                            axios
+                            me.$justiciarestaurativa
                               .post(
                                 "api/CitatorioRecordatorios/CrearCR",
                                 {
@@ -2539,7 +2539,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/Sesions/ListarPorEnvioUltimaSeseion/" + me.envioId,
           configuracion
@@ -2550,7 +2550,7 @@ export default {
               "Esperando confirmación",
               "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
               function () {
-                axios
+                me.$justiciarestaurativa
                   .post(
                     "api/Sesions/Crear",
                     {
@@ -2600,7 +2600,7 @@ export default {
                 "Esperando confirmación",
                 "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                 function () {
-                  axios
+                  me.$justiciarestaurativa
                     .post(
                       "api/Sesions/Crear",
                       {
@@ -2699,7 +2699,7 @@ export default {
       let header = { Authorization: "Bearer " + me.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/Sesions/ListarPorSesion/" + sesion, configuracion)
         .then(function (response) {
           me.sesionu = response.data[0].descripcionSesion;
@@ -2723,7 +2723,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/Sesions/ListarPorEnvio/" + me.envioId, configuracion)
         .then(function (response) {
           me.sesions = response.data;
@@ -2746,7 +2746,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get(
           "api/CitatorioRecordatorios/ListarSCPorEnvio/" + me.envioId,
           configuracion
@@ -2772,7 +2772,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/AsignacionEnvios/ListarIdEnvio/" + me.envioId, configuracion)
         .then(function (response1) {
           me.un_modulo = response1.data.un_Modulo;
@@ -2788,7 +2788,7 @@ export default {
       let header = { Authorization: "Bearer " + me.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$justiciarestaurativa
         .get("api/CitatorioRecordatorios/ListarCR/" + sesion, configuracion)
         .then(function (response) {
           me.citatoriosrecordatorios = response.data;
@@ -2880,7 +2880,7 @@ export default {
       me.obtenerNocitatorio();
 
       if (me.vali == true) {
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/Sesions/ListarPorConjuntoUltimaSesion/" + me.idconjuntod,
             configuracion
@@ -2939,7 +2939,7 @@ export default {
             }
           });
       } else {
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/Sesions/ListarPorEnvioUltimaSeseion/" + me.envioId,
             configuracion
@@ -3016,7 +3016,7 @@ export default {
       me.docRemision = ''
 
       // Petición para conocer si e
-      axios.get('api/AcuerdoReparatorios/AcuerdoPorConjunto/' + me.idconjuntod, configuracion)
+      me.$justiciarestaurativa.get('api/AcuerdoReparatorios/AcuerdoPorConjunto/' + me.idconjuntod, configuracion)
         .then(response => {          
 
           var options = []
@@ -3043,7 +3043,7 @@ export default {
         });
 
       if (me.vali == true) {
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/Sesions/ListarPorConjuntoUltimaSesion/" + me.idconjuntod,
             configuracion
@@ -3085,7 +3085,7 @@ export default {
         me.vali == undefined ||
         me.vali == ""
       ) {
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/Sesions/ListarPorEnvioUltimaSeseion/" + me.envioId,
             configuracion
@@ -3136,7 +3136,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var arrayDelito = [];
-      axios
+      me.$justiciarestaurativa
         .get("api/Delitoes/ListarDelitos/" + me.envioId, configuracion)
         .then(function (response) {
           arrayDelito = response.data;
@@ -4331,7 +4331,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .get("api/AsignacionEnvios/ListarIdEnvio/" + me.envioId, configuracion)
         .then(function (response1) {
           me.un_modulo = response1.data.un_Modulo;
@@ -4370,7 +4370,7 @@ export default {
       let configuracion = { headers: header };
       debugger;
       if (me.vali == true) {
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/CitatorioRecordatorios/FiltrarNoCItaC/" + me.idconjuntod,
             configuracion
@@ -4388,7 +4388,7 @@ export default {
       }
       if (me.vali == false || me.vali == undefined || me.vali == null) {
         var expedienteHex = me.hexa(me.noExpediente);
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/CitatorioRecordatorios/FiltrarNoCIta/" + expedienteHex,
             configuracion
@@ -4419,7 +4419,7 @@ export default {
       let configuracion = { headers: header };
       me.vistaPreviaTF = false
       if (me.vali == true) {
-        axios.patch("api/Sesions/ActualizarStatusSesion",
+        me.$justiciarestaurativa.patch("api/Sesions/ActualizarStatusSesion",
             {
               idSesion: me.sessionSeleccionada,
               statusSesion: me.statussesion,
@@ -4429,7 +4429,7 @@ export default {
           .then(function (response) {
 
             if (me.anexo) {
-              axios.put(`api/SeguimientoCumplimientoes/ActualizarSPMyR/${me.idconjuntod}`, configuracion)
+              me.$justiciarestaurativa.put(`api/SeguimientoCumplimientoes/ActualizarSPMyR/${me.idconjuntod}`, configuracion)
                 .then(responsese => {                                    
                 })
                 .catch(function (error) {
@@ -4489,7 +4489,7 @@ export default {
             }
           });
       } else if (me.vali == null || me.vali == undefined || me.vali == "" || me.vali == false) {
-        axios
+        me.$justiciarestaurativa
           .patch(
             "api/Sesions/ActualizarStatusSesion",
             {
@@ -4555,7 +4555,7 @@ export default {
       ) {
         //En caso de no existir un conjunto, solo puede haber un acuerdo, por tal motivo aqui solo se requiere en IdEnvio
 
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/SeguimientoCumplimientoes/ObtenerIdseguimientoSinConjunto/" +
               me.envioId,
@@ -4582,7 +4582,7 @@ export default {
           });
       } else {
         // //Asi cuando hay conjunto hay que traer el id del seguimiento por medio del conjunto a travez de un get
-        axios
+        me.$justiciarestaurativa
           .get(
             "api/SeguimientoCumplimientoes/ObtenerIdseguimientoConjunto/" +
               me.idconjuntod,
@@ -4614,7 +4614,7 @@ export default {
       let configuracion = { headers: header };      
       me.vistaPreviaTF = false
       //se guarda solo la fecha de la prorroga como un datos informativo en la tabla del seguimiento
-      axios
+      me.$justiciarestaurativa
         .put(
           "api/SeguimientoCumplimientoes/ActualizarSP",
           {
@@ -4659,7 +4659,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$justiciarestaurativa
         .put(
           "api/CitatorioRecordatorios/StatusAsistencia",
           {

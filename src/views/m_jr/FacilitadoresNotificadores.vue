@@ -847,7 +847,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             
-            axios.get('api/FacilitadorNotificadors/Listar/' + me.u_iddistrito, configuracion).then(function(response){  
+            me.$justiciarestaurativa.get('api/FacilitadorNotificadors/Listar/' + me.u_iddistrito, configuracion).then(function(response){  
                me.modulos = response.data;
             }).catch(function(error){
       
@@ -925,7 +925,7 @@
                         let me=this;
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.post('api/FacilitadorNotificadors/CrearFacilitadorNotificador',{
+                        me.$justiciarestaurativa.post('api/FacilitadorNotificadors/CrearFacilitadorNotificador',{
                             'moduloServicioId': me.moduloservicio,
                             'statusAsignado ': false, 
                             'statusActivo': true,
@@ -946,7 +946,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
 
-                axios.put('api/FacilitadorNotificadors/StatusActivarDesactivar',{ 
+                me.$justiciarestaurativa.put('api/FacilitadorNotificadors/StatusActivarDesactivar',{ 
                             'idFacilitadorNotificador': me.idFacilitadorNotificador, 
                             'statusActivo': true,  
                         }, configuracion).then(function(response){    
@@ -979,7 +979,7 @@
                 let configuracion= {headers : header};
 
 
-                axios.put('api/FacilitadorNotificadors/StatusActivarDesactivar',{ 
+                me.$justiciarestaurativa.put('api/FacilitadorNotificadors/StatusActivarDesactivar',{ 
                             'idFacilitadorNotificador': me.idFacilitadorNotificador, 
                             'statusActivo': false,  
                         }, configuracion).then(function(response){    

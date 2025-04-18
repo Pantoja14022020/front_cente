@@ -1151,7 +1151,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             
-            axios.get('api/CitatorioRecordatorios/ListarCitatoriosModulo/' + me.u_modulo + '/' + me.u_tipomodulo + '/' + me.u_nombre, configuracion).then(function (response) {                 
+            me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarCitatoriosModulo/' + me.u_modulo + '/' + me.u_tipomodulo + '/' + me.u_nombre, configuracion).then(function (response) {                 
                me.citatoriosrecordatorios=response.data;
                 me.contador = response.data.length; 
                me.close();
@@ -1177,7 +1177,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me = this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};  
-            axios.get('api/CitatorioRecordatorios/ListarCitatoriosModuloFiltros/'+ me.u_modulo +'/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" + '/'+ me.v_statusEntrega, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/CitatorioRecordatorios/ListarCitatoriosModuloFiltros/'+ me.u_modulo +'/'+ me.v_fechaI +" 00:00:00"+'/'+me.v_fechaF+" 23:59:59" + '/'+ me.v_statusEntrega, configuracion).then(function(response){ 
                me.citatoriosrecordatorios=response.data;
             me.contador = response.data.length; 
                me.close();
@@ -1203,7 +1203,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-             axios.post('api/CitatorioRecordatorios/auth',{}, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.post('api/CitatorioRecordatorios/auth',{}, configuracion).then(function(response){ 
                     if (response.data.success== false)
                     {                        
                          me.$notify(response.data.message,'error')     
@@ -1244,7 +1244,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-             axios.post('api/CitatorioRecordatorios/send',{  
+            me.$justiciarestaurativa.post('api/CitatorioRecordatorios/send',{  
                                 //***************************** PERSONA*/  
                                 'token': me.tokensms,   
                                 'texto': me.mensagesms,  
@@ -1283,7 +1283,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.put('api/CitatorioRecordatorios/ContadorSMSR',{ 
+            me.$justiciarestaurativa.put('api/CitatorioRecordatorios/ContadorSMSR',{ 
                     'idRCitatoriosRecordatorios': me.citatoriorecordatorioId, 
                 },configuracion).then(function(response){  
                     me.listar();
@@ -1839,7 +1839,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.put('api/CitatorioRecordatorios/StatusEntrega',{ 
+            me.$justiciarestaurativa.put('api/CitatorioRecordatorios/StatusEntrega',{ 
                     'idRCitatoriosRecordatorios': me.citatoriorecordatorioId,
                     'statusEntrega': me.v_statusEntrega,  
                 },configuracion).then(function(response){ 
@@ -1876,7 +1876,7 @@ import { generarQRCodeBase64 } from './crearQR';
             
             me.sesionId = item.sesionId
                     
-            axios.get('api/AsignacionEnvios/ListarMisEnviosME/'+ me.u_idmoduloservicio+ '/'+ me.envioId, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarMisEnviosME/'+ me.u_idmoduloservicio+ '/'+ me.envioId, configuracion).then(function(response){ 
                me.nuc = response.data.nuc;                 
                 me.noExpediente= item.noExpediente;             
                 me.oficio= item.textooficio,
@@ -1894,12 +1894,12 @@ import { generarQRCodeBase64 } from './crearQR';
                 me.fechaHoraCita=item.fechaHoraCita;                           
             }, configuracion)
             .then((response) => {
-                axios.get('api/Sesions/ListarConjuntoPorEnvio/' + item.envioId, configuracion)
+              me.$justiciarestaurativa.get('api/Sesions/ListarConjuntoPorEnvio/' + item.envioId, configuracion)
                     .then(function (response){                
                         me.vali = response.data[0].sec
                     })
                     .then(() => {
-                        axios.get('api/SesionsConjunto/ListarSRD/' + item.sesionId, configuracion)
+                      me.$justiciarestaurativa.get('api/SesionsConjunto/ListarSRD/' + item.sesionId, configuracion)
                             .then(function (response){                
                                 me.idconjuntos = response.data[0].idConjuntoDerivaciones                
                             })
@@ -1968,14 +1968,14 @@ import { generarQRCodeBase64 } from './crearQR';
             let configuracion = { headers: header };
 
             try {
-                let response = await axios.get(`api/SesionsConjunto/ListarSRD/${sesionid}`,configuracion);
+                let response = await me.$justiciarestaurativa.get(`api/SesionsConjunto/ListarSRD/${sesionid}`,configuracion);
                 let s = response.data;  
                     let soli = s[0].solicitadosC.replace(/;\s*/g, ",");
 
                 let solicitanteResponse = await me.$cat.get(`api/RAPs/ListarPersonaPDF/${soli}`, configuracion);
                 await Promise.all(
                     solicitanteResponse.data.map(async (dd) => {
-                        let repreResponse = await axios.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);                        
+                        let repreResponse = await me.$justiciarestaurativa.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);                        
                         if (repreResponse.data != undefined) {
                             me.solicitanteC = []                            
                             me.solicitanteC.push({                                
@@ -2006,7 +2006,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
                     await Promise.all(
                     requeridoResponse.data.map(async (dd) => {
-                        let repreRResponse = await axios.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
+                        let repreRResponse = await me.$justiciarestaurativa.get(`api/Responsablejrs/ResponsaableXPersona/${dd.idPersona}`, configuracion);
                         me.requeridoC = []
                         me.requeridoC.push({
                         value: dd.idPersona,
@@ -2106,7 +2106,7 @@ import { generarQRCodeBase64 } from './crearQR';
                         
             if(me.vali == true)
             {
-                axios.get('api/Delitoes/ListarDelitoConjunto/' + me.idconjuntos).then(function(response){                
+              me.$justiciarestaurativa.get('api/Delitoes/ListarDelitoConjunto/' + me.idconjuntos).then(function(response){                
                     arrayDelito = response.data;
                 me.v_delitos = []
                 arrayDelito.map(function(x){
@@ -2131,7 +2131,7 @@ import { generarQRCodeBase64 } from './crearQR';
             });
             }
             else{
-                axios.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){                
+              me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/'+ me.envioId, configuracion).then(function(response){                
                 arrayDelito = response.data;
                 arrayDelito.map(function(x){
                     me.v_delitos.push({text: x.nombreDelito, valor1: x.intensionDelito, valor2: x.violenciaSinViolencia, valor3: x.armaBlanca, valor4: x.armaFuego, valor5: x.conAlgunaParteCuerpo, valor6: x.conotroElemento});

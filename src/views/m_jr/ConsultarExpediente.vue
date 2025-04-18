@@ -928,7 +928,7 @@ import { computed } from 'vue';
                 me.$conf.get('api/Distritoes/StatusAsignado', configuracion).then(function(response){ 
                     if (response.data.idDistrito == '7f662ec1-6705-406e-bcd0-f56ade7bcae2')
                     {
-                         axios.get('api/SolicitanteRequeridoes/ListarBusquedaGeneral1/' +   me.nuc +'/'+expedienteHex+'/'+me.nombres+'/'+ me.apaterno+'/'+me.amaterno, configuracion).then(function(response){ 
+                      me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarBusquedaGeneral1/' +   me.nuc +'/'+expedienteHex+'/'+me.nombres+'/'+ me.apaterno+'/'+me.amaterno, configuracion).then(function(response){ 
                             me.derivaciones=response.data;
                             me.filtros=false;
                             me.contador = response.data.length;
@@ -954,7 +954,7 @@ import { computed } from 'vue';
                     }
                     else
                     {
-                         axios.get('api/SolicitanteRequeridoes/ListarBusquedaGeneral2/' + me.nuc +'/'+expedienteHex+'/'+me.nombres+'/'+ me.apaterno+'/'+me.amaterno, configuracion).then(function(response){ 
+                      me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarBusquedaGeneral2/' + me.nuc +'/'+expedienteHex+'/'+me.nombres+'/'+ me.apaterno+'/'+me.amaterno, configuracion).then(function(response){ 
                             me.derivaciones=response.data;
                             me.filtros=false;
                             me.contador = response.data.length;
@@ -1017,7 +1017,7 @@ import { computed } from 'vue';
                 let configuracion= {headers : header};
                 me.noExpediente=item.noExpediente;
     
-                axios.get('api/AsignacionEnvios/ListarIdEnvioAll/' +  item.idEnvio, configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarIdEnvioAll/' +  item.idEnvio, configuracion).then(function(response){ 
                    
                      me.modulo1= response.data[0].modulo1;
                      me.modulo2=response.data[0].modulo2;

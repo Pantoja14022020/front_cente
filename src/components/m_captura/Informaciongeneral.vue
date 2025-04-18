@@ -821,7 +821,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
+                me.$cat.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
                     console.log(response.data);
 
                     me.aux2 = response.data
@@ -901,7 +901,7 @@
                 let configuracion= {headers : header};
                
                 
-                axios.get('api/RAPs/Listar/' +me.rAtencionId,configuracion).then(function(response){  
+                me.$cat.get('api/RAPs/Listar/' +me.rAtencionId,configuracion).then(function(response){  
 
                     me.rac= response.data.rac;
                     me.personaId = response.data.personaId;
@@ -954,7 +954,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/RAPs/ListarDP/' +me.personaId,configuracion).then(function(response){  
+                me.$cat.get('api/RAPs/ListarDP/' +me.personaId,configuracion).then(function(response){  
                     
                     me.direccion = response.data.calle + " " +response.data.noint + " " +response.data.noext   + " " + response.data.localidad + " " +response.data.municipio + " " +response.data.estado + " " +response.data.pais + " " +response.data.cp
                 }).catch(err => { 
@@ -979,7 +979,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/DireccionDelitoes/ListarPoridHecho/' +me.rHechoId,configuracion).then(function(response){  
+                me.$cat.get('api/DireccionDelitoes/ListarPoridHecho/' +me.rHechoId,configuracion).then(function(response){  
 
                     me.direccionsuceso =  response.data.localidad + " " +response.data.municipio + " " +response.data.estado + " " +response.data.pais 
 
@@ -1046,7 +1046,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Nucs/Actualizar',{
+                me.$cat.put('api/Nucs/Actualizar',{
 
                     'idNuc': me.idNuc,
                     'statusNUC': me.status,
@@ -1056,7 +1056,7 @@
                 },configuracion).then(function(){   
                     me.$notify('La información se actualizo correctamente !!!','success') 
 
-                    axios.post('api/Historialcarpeta/CrearModuloCaptura',{  
+                    me.$cat.post('api/Historialcarpeta/CrearModuloCaptura',{  
 
                         'RHechoId': me.rHechoId,
                         'Detalle':  me.status,
@@ -1130,7 +1130,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Historialcarpeta/Listar/' + me.rHechoId,configuracion).then(function(response){
+                me.$cat.get('api/Historialcarpeta/Listar/' + me.rHechoId,configuracion).then(function(response){
                     me.historialc=response.data;
                     me.dialogohistorial = true
                 }).catch(err => { 

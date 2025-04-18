@@ -774,8 +774,8 @@ export default {
           let URL1 = 'api/AsignacionEnvios/ContadorRegistrados/'+ me.anoantepenultimo
           let URL2 = 'api/AcuerdoReparatorios/ContadorRegistrados/'+ me.anoantepenultimo
 
-          const promise1 = axios.get(URL1);
-          const promise2 = axios.get(URL2); 
+          const promise1 = me.$justiciarestaurativa.get(URL1);
+          const promise2 = me.$justiciarestaurativa.get(URL2); 
 
           Promise.all([promise1, promise2], configuracion).then(function(values) {
              me.registrados1= (values[0].data);
@@ -965,8 +965,8 @@ export default {
           let URL1 = 'api/AsignacionEnvios/ContadorRegistrados/'+ me.anopenultimo
           let URL2 = 'api/AcuerdoReparatorios/ContadorRegistrados/'+ me.anopenultimo
 
-          const promise1 = axios.get(URL1);
-          const promise2 = axios.get(URL2); 
+          const promise1 = me.$justiciarestaurativa.get(URL1);
+          const promise2 = me.$justiciarestaurativa.get(URL2); 
 
           Promise.all([promise1, promise2], configuracion).then(function(values) {
              me.registrados2= (values[0].data);
@@ -1156,8 +1156,8 @@ export default {
           let URL1 = 'api/AsignacionEnvios/ContadorRegistrados/'+ me.anoactual
           let URL2 = 'api/AcuerdoReparatorios/ContadorRegistrados/'+ me.anoactual
 
-          const promise1 = axios.get(URL1);
-          const promise2 = axios.get(URL2); 
+          const promise1 = me.$justiciarestaurativa.get(URL1);
+          const promise2 = me.$justiciarestaurativa.get(URL2); 
 
           Promise.all([promise1, promise2], configuracion).then(function(values) {
              me.registrados3= (values[0].data);

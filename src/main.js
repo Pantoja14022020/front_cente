@@ -20,9 +20,7 @@ Vue.config.productionTip = false
 
 axios.defaults.baseURL =  'http://98.80.66.107:5006/'
 
-const jrInstance = axios.create({
-  baseURL:  'https://18.233.64.114:5005/'
-}) 
+const jrInstance = axios.create({ baseURL:  'http://18.233.64.114:5005/' }) 
 Vue.prototype.$jr = jrInstance 
 
 const controlaccesoInstance = axios.create({ baseURL:  'http://13.217.131.100:5000/' })
@@ -37,16 +35,16 @@ Vue.prototype.$cat = catInstance
 const CATInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'}) 
 Vue.prototype.$CAT = CATInstance
 
-const SPInstance = axios.create({baseURL:  'https://44.203.26.217:5008/'})
+const SPInstance = axios.create({baseURL:  'http://44.203.26.217:5008/'})
 Vue.prototype.$SP = SPInstance
 
 const panelInstance = axios.create({baseURL:  'http://98.80.66.107:5006/'})
 Vue.prototype.$panel = panelInstance
 
-const justiciarestaurativaInstance = axios.create({baseURL:  'https://18.233.64.114:5005/'})
+const justiciarestaurativaInstance = axios.create({baseURL:  'http://18.233.64.114:5005/'})
 Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 
-const ILInstance = axios.create({baseURL:  'https://54.90.102.37:5004/'})
+const ILInstance = axios.create({baseURL:  'http://54.90.102.37:5004/'})
 Vue.prototype.$IL = ILInstance
 
 const PIInstance = axios.create({

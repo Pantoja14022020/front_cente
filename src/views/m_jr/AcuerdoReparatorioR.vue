@@ -1674,7 +1674,7 @@
                 let me = this;
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
-                axios.put('api/AcuerdoReparatorios/Actualizarsise', {
+                me.$justiciarestaurativa.put('api/AcuerdoReparatorios/Actualizarsise', {
                     'idAcuerdoReparatorio': me.v_idAcuerdoReparatorio,
                     'nosise': me.v_nosise,
                 }, configuracion).then(function(response) {
@@ -1709,7 +1709,7 @@
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers: header };
                 
-                axios.get('api/Sesions/ListarPorEnvioUltimaSeseion/' + me.envioId, configuracion).then(function(response) {                    
+                me.$justiciarestaurativa.get('api/Sesions/ListarPorEnvioUltimaSeseion/' + me.envioId, configuracion).then(function(response) {                    
                     if (response.data.statusSesion !== "Se realiza sesión con acuerdo reparatorio" || response.data.statusSesion !== "Se realiza sesión con acuerdo reparatorio") {
                         me.$alert('Notificación', 'No es posible celebrar un Acuerdo reparatorio ni un Plan de Reparación ya que aun no ha concluido una sesión satisfactoria.',
                             function () {
@@ -1731,7 +1731,7 @@
                         me.$notify(error.message,'error')
                     }
                 });
-                axios.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) {
+                me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListaAR/' + me.envioId, configuracion).then(function(response) {
                     if (response.data.noHayAR != 1) {                        
                         debugger
                         me.AuxBtn = false
@@ -1801,7 +1801,7 @@
                 me.conjuntos = []
                 me.conjuntosV = []                
                 me.ARC = []                
-                axios.get(`api/AcuerdoReparatorios/ListarConjuntosCA/${me.envioId}`, configuracion)
+                me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListarConjuntosCA/${me.envioId}`, configuracion)
                     .then((response) => {
                         if (response.data.length == 0) {
                             me.listarAcuerdoReparatorio();
@@ -1810,7 +1810,7 @@
                             me.listardelitos();
                         } else {
                             response.data.map((b) => {
-                                axios.get(`api/AcuerdoReparatorios/ListaARC/${b.idConjuntoDerivaciones}`, configuracion)
+                                me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListaARC/${b.idConjuntoDerivaciones}`, configuracion)
                                     .then((rr) => {
                                         if (rr.data.length != 0) {
                                             me.conjuntos.push({ b, 'acuerdo': rr.data })
@@ -1823,7 +1823,7 @@
                                         }      
                                         console.log(`conjunto con su acuerdo:`)
                                         console.log(me.conjuntos[0])                                  
-                                        axios.get(`api/AcuerdoReparatorios/ListarConjuntos/${me.envioId}`, configuracion)
+                                        me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListarConjuntos/${me.envioId}`, configuracion)
                                             .then((resC) => {
                                                 me.conjuntosV = resC.data
                                                 console.log(`conjuntosV: ${resC.data.length} \n conjuntos: ${response.data.length}`)
@@ -1924,9 +1924,9 @@
                                 'statusConclusion': me.v_statusconclusion
                             }                           
                     if (me.editedIndex == -1) {                        
-                        axios.post('api/AcuerdoReparatorios/CrearAcuerdoReparatorio', dataPsylod, configuracion).then(function(response) {                               
+                        me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CrearAcuerdoReparatorio', dataPsylod, configuracion).then(function(response) {                               
                                 if(me.conjuntosV.length != 0){
-                                    axios.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',{
+                                    me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',{
                                         'AcuerdoReparatorioId': response.data.idAcuerdoR,
                                         'ConjuntoDerivacionesId': me.SCon 
                                     })                            
@@ -2170,7 +2170,7 @@
                 let me = this;
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
-                axios.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion).then(function(response) {
+                me.$justiciarestaurativa.get('api/Envios/InformacionExpediente/'+ me.expedienteId + "/" + me.envioId , configuracion).then(function(response) {
                     me.noDerivacion = response.data.noDerivacion;
                     me.fechaExpediente = response.data.fechaRegistroExpediente ;
                     me.fechaHoraSuceso = response.data.fechaHoraSuceso;
@@ -3266,7 +3266,7 @@
                 let me = this;
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
-                axios.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/' + me.envioId + '/' + SolReq, configuracion).then(function (response) {                     
+                me.$justiciarestaurativa.get('api/SolicitanteRequeridoes/ListarSolicitantesRequeridos/' + me.envioId + '/' + SolReq, configuracion).then(function (response) {                     
                     if (SolReq == "Requerido") {
                         console.log(`desde aqui el requerido: ${response.data[0].nombreCompleto}`)
                         console.log(`la variable requeridosL: ${me.v_requeridosL}`)
@@ -3301,7 +3301,7 @@
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
                 var arrayDelito = [];
-                axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) {
+                me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion).then(function(response) {
                     me.v_delitos = response.data;
                 }).catch(function(error) {
                 if (error.response.status == 400) {
@@ -3334,7 +3334,7 @@
                     if (persona.edad < 18) {
                         axios.all([
                             me.$cat.get('api/RAPs/ListarDP/'+ persona.personaId, configuracion),
-                            axios.get('api/Responsablejrs/SelectIdPersona/'+ persona.personaId, configuracion)
+                            me.$justiciarestaurativa.get('api/Responsablejrs/SelectIdPersona/'+ persona.personaId, configuracion)
                         ]).then(responseArr => {
                             me.v_direccion = (responseArr[0].data.calle + " " + responseArr[0].data.noint + " " + responseArr[0].data.noext + " " + responseArr[0].data.localidad
                             + " " + responseArr[0].data.municipio + " " + responseArr[0].data.estado + " " + responseArr[0].data.pais + " " + responseArr[0].data.cp);
@@ -3412,7 +3412,7 @@
                     if (persona.edad < 18) {
                         axios.all([
                             me.$cat.get('api/RAPs/ListarDP/' + persona.personaId, configuracion),
-                            axios.get('api/Responsablejrs/SelectIdPersona/' + persona.personaId, configuracion)
+                            me.$justiciarestaurativa.get('api/Responsablejrs/SelectIdPersona/' + persona.personaId, configuracion)
                         ]).then(responseArr => {
                             me.v_direccion = (responseArr[0].data.calle + " " + responseArr[0].data.noint + " " + responseArr[0].data.noext + " " + 
                             responseArr[0].data.localidad + " " + responseArr[0].data.municipio + " " + responseArr[0].data.estado + " " + 

@@ -687,6 +687,7 @@ export default {
         }
       },
      created: function() {  
+
             axios.interceptors.request.use( (config)=> {
               this.$store.commit('LOADER',true);
               return config;

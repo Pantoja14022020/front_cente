@@ -2477,7 +2477,7 @@ export default {
             let me = this;
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
-            axios.get('api/Envios/InformacionExpediente/' + me.expedienteId + "/" + me.envioId, configuracion).then(function (response) {
+            me.$justiciarestaurativa.get('api/Envios/InformacionExpediente/' + me.expedienteId + "/" + me.envioId, configuracion).then(function (response) {
                 me.noDerivacion = response.data.noDerivacion;
                 me.fechaExpediente = response.data.fechaRegistroExpediente;
                 me.fechaHoraSuceso = response.data.fechaHoraSuceso;
@@ -2529,7 +2529,7 @@ export default {
             let me = this
             let header = { "Authorization": "Bearer " + me.$store.state.token }   
             let configuration = { headers: header }
-            axios.get(`api/AcuerdoReparatorios/isTypeConjunt/${me.envioId}`, configuration)
+            me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/isTypeConjunt/${me.envioId}`, configuration)
                 .then((response) => {
                     if (response.data.type) {
                         me.ExistenAcuerdos()
@@ -2564,7 +2564,7 @@ export default {
             let me = this;
             let header = { "Authorization": "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
-            axios.get(`api/AcuerdoReparatorios/ListarConjuntos/${me.envioId}`, configuracion)
+            me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListarConjuntos/${me.envioId}`, configuracion)
                 .then((response) => {                               
                     me.cantidaddeconjuntos = response.data.length
                     me.conjuntosGlobales = response.data                    
@@ -2593,16 +2593,16 @@ export default {
             let header = { "Authorization": "Bearer " + me.$store.state.token }
             let configuration = { headers: header }
 
-            axios.get(`api/AcuerdoReparatorios/CheckSessions/${me.envioId}`, configuration)                    
+            me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/CheckSessions/${me.envioId}`, configuration)                    
                 .then(response => {
                     if (response.data.c) {
                         me.v_Csession = true                                
-                        axios.get(`api/AcuerdoReparatorios/ExistsAR/${me.envioId}`, configuration)
+                        me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ExistsAR/${me.envioId}`, configuration)
                             .then((response) => {
                                 let r = response.data
                                 if (r.status && r.cantidad != 0) {
                                     if(me.istypeconjunt){                                        
-                                        axios.get(`api/AcuerdoReparatorios/ListarConjuntosCA/${me.envioId}`, configuration)
+                                        me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListarConjuntosCA/${me.envioId}`, configuration)
                                         .then(res => {
                                             me.conjuntsWithAgreement = res.data
                                             me.existsagreement = true                                                
@@ -2626,7 +2626,7 @@ export default {
                                         });
                                     }else{
                                         me.existsagreement = true
-                                        axios.get(`api/AcuerdoReparatorios/ListaAR/${me.envioId}`, configuration)
+                                        me.$justiciarestaurativa.get(`api/AcuerdoReparatorios/ListaAR/${me.envioId}`, configuration)
                                             .then(res => {
                                                 me.v_agreement.push(res.data)
                                             })
@@ -2741,7 +2741,7 @@ export default {
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };            
             
-            axios.get(`api/SolicitanteRequeridoes/ListarTodos/${me.envioId}`, configuracion)
+            me.$justiciarestaurativa.get(`api/SolicitanteRequeridoes/ListarTodos/${me.envioId}`, configuracion)
                 .then(function (response) {                     
                     let people = response.data
                     people.map(person => {                        
@@ -2780,7 +2780,7 @@ export default {
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
                         
-            axios.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion)
+            me.$justiciarestaurativa.get('api/Delitoes/ListarDelitos/' + me.envioId, configuracion)
                 .then(function (response) {
                     me.v_delitosF = response.data;
                     me.v_delitosF.map(delito => {
@@ -2924,7 +2924,7 @@ export default {
             let header = { "Authorization" : "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
             
-            axios.put('api/AcuerdoReparatorios/Actualizarsise', {
+            me.$justiciarestaurativa.put('api/AcuerdoReparatorios/Actualizarsise', {
                 'idAcuerdoReparatorio': me.v_idAcuerdoReparatorio,
                 'nosise': me.v_nosise,
             }, configuracion)
@@ -3137,10 +3137,10 @@ export default {
                 }                                   
 
                 if(me.createagreement){
-                    axios.post('api/AcuerdoReparatorios/CrearAcuerdoReparatorio', payloadAR, configuracion)
+                    me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CrearAcuerdoReparatorio', payloadAR, configuracion)
                         .then((response) => {      
                             if(me.istypeconjunt && me.v_createAttached == false) {
-                                axios.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',{
+                                me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CrearAcuerdoConjunto',{
                                     'AcuerdoReparatorioId': response.data.idAcuerdoR,
                                     'ConjuntoDerivacionesId': me.conjuntSelected.idConjuntoDerivaciones
                                 })                            
@@ -3182,13 +3182,13 @@ export default {
                 }
 
                 if (me.editagreement) {
-                    axios.put('api/AcuerdoReparatorios/ActualizarAcuerdoReparatorio', payloadAR, configuracion)
+                    me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarAcuerdoReparatorio', payloadAR, configuracion)
                         .then(response => {
                             if(response.data.update){
-                                axios.delete(`api/AcuerdoReparatorios/Eliminar/${me.v_idAcuerdoReparatorio}`, configuracion)
+                                me.$justiciarestaurativa.delete(`api/AcuerdoReparatorios/Eliminar/${me.v_idAcuerdoReparatorio}`, configuracion)
                                     .then(respo => {
                                         if (respo.data.delete || respo.data.count == 0) {
-                                            axios.post('api/AcuerdoReparatorios/CreateMonitoring', payloadAR, configuracion)
+                                            me.$justiciarestaurativa.post('api/AcuerdoReparatorios/CreateMonitoring', payloadAR, configuracion)
                                                 .then(res => {
                                                     me.fieldsBlank()
                                                     me.framePDF = false
@@ -4472,7 +4472,7 @@ export default {
             me.v_representantes = []
 
             me.v_idsSRR.map(uid => {
-                axios.get(`api/Responsablejrs/RepresentanteAllActive/${uid.trim()}`, configuracion)
+                me.$justiciarestaurativa.get(`api/Responsablejrs/RepresentanteAllActive/${uid.trim()}`, configuracion)
                     .then(responseJR => {             
                         if (responseJR.data.idResponsable) {                                                    
                           me.v_representantes.push(responseJR.data)  

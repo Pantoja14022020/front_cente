@@ -1184,13 +1184,13 @@ import { computed } from 'vue';
                 if (me.consultadenuc && me.nucdisponible) {
                     me.$validator.validate().then(result => {
                         //CREACION DE RAC
-                        axios.post('api/Racs/GenerarRacModuloCaptura', { 
+                        me.$cat.post('api/Racs/GenerarRacModuloCaptura', { 
                             'distritoId': me.distritoinicia.value,
                             'agenciaId': me.agenciainicia.value,  
                             'FechaCreacion': me.fechainicio
                         }, configuracion).then(function(response) { 
                             //CREACION DE RATENCION
-                            axios.post('api/RAtencions/CrearMCaptura',{ 
+                            me.$cat.post('api/RAtencions/CrearMCaptura',{ 
                                 'distritoInicial': me.distritoinicia.text,  
                                 'agenciaInicial': me.agenciainicia.text,
                                 'dirSubProcuInicial': me.subprocinicia.text,
@@ -1204,7 +1204,7 @@ import { computed } from 'vue';
                             }, configuracion).then(function(response) { 
                                 me.rAtencionId = response.data.idRatencion;
                                 //CREACION DE RHECHO
-                                axios.post('api/RHechoes/CrearPI', {  
+                                me.$cat.post('api/RHechoes/CrearPI', {  
                                     'agenciaid': me.integracion ? me.agenciaintegra.value : me.agenciainicia.value,
                                     'ratencionid': response.data.idRatencion,
                                     'moduloServicioId': me.integracion ? me.modulointegra.value : me.moduloinicia.value,
@@ -1213,7 +1213,7 @@ import { computed } from 'vue';
                                     'fechaReporte': me.fechai,
                                 },configuracion).then(function(response) {
                                     me.rHechoId = response.data.idRH
-                                    axios.post('api/Historialcarpeta/CrearModuloCaptura', {  
+                                    me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {  
                                         'RHechoId': response.data.idRH,
                                         'Detalle': "Inicio de la investigación",
                                         'Modulo': me.moduloinicia.text,
@@ -1227,7 +1227,7 @@ import { computed } from 'vue';
                                         'Fechasys': me.fechainicio
                                     }, configuracion).then(function(response) {
                                         //CREACION DEL NUC
-                                        axios.post('api/Nucs/GenerarNucMCaptura', { 
+                                        me.$cat.post('api/Nucs/GenerarNucMCaptura', { 
                                             'distritoId': me.distritoinicia.value,
                                             'agenciaId': me.agenciainicia.value, 
                                             'FechaCreacion': me.fechainicio,
@@ -1237,14 +1237,14 @@ import { computed } from 'vue';
                                             me.$store.state.rhechoid = me.rHechoId;
                                             me.$store.state.nuc = response.data.nuc;
                                             me.$store.state.ratencionid = me.rAtencionId
-                                            axios.put('api/RHechoes/ActualizarNUCMCaptura',{ 
+                                            me.$cat.put('api/RHechoes/ActualizarNUCMCaptura',{ 
                                                 'idrhecho': me.rHechoId,
                                                 'ratencionid': me.rAtencionId, 
                                                 'nucid': response.data.idnuc,
                                                 'FechaElevacion': me.fechainicio
                                             }, configuracion).then(function(response) {
                                                 //CREACION DIRECCION DEL HECHO
-                                                axios.post('api/DireccionDelitoes/Crear', {
+                                                me.$cat.post('api/DireccionDelitoes/Crear', {
                                                     'idrhecho':  me.rHechoId,
                                                     'lugarEspecifico': "",
                                                     'calle': "",
@@ -1262,14 +1262,14 @@ import { computed } from 'vue';
                                                     'lng': "",
                                                 }, configuracion).then(function(response) { 
                                                     //CREACION DE LA HORA, FECHA DEL SUCESO
-                                                    axios.put('api/RHechoes/ActualizarFHS',{ 
+                                                    me.$cat.put('api/RHechoes/ActualizarFHS',{ 
                                                         'idRHecho': me.rHechoId,
                                                         'ratencionid': me.rAtencionId, 
                                                         'fechaHoraSuceso': me.fechahechos + ' ' + me.horas,
                                                     }, configuracion).then(function(response) {
                                                         //GUARDAR HISTORICO DE REMISION UI EN CASO DE SELECCIONAR UNA FECHA DE RADICACCION
                                                         if (me.integracion) {
-                                                            axios.post('api/Historialcarpeta/CrearModuloCaptura', {
+                                                            me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {
                                                                 'RHechoId': me.rHechoId,
                                                                 'Detalle': "Remision UI",
                                                                 'Modulo': me.modulointegra.text,
@@ -1302,7 +1302,7 @@ import { computed } from 'vue';
                                                             });
                                                         }
                                                         if ( me.mediodenuncia == 'Con detenido') {
-                                                            axios.post('api/RAPs/CrearPoliciaModuloCaptura', {                                                    
+                                                            me.$cat.post('api/RAPs/CrearPoliciaModuloCaptura', {                                                    
                                                                 'RAtencionId': me.rAtencionId,
                                                                 'nombre': me.institucionp.text,
                                                                 'apellidoPaterno': "",
@@ -1432,7 +1432,7 @@ import { computed } from 'vue';
                                     }
                                 });
 
-                                axios.patch(`api/RAtencions/modNANDP/${me.rAtencionId}`, {
+                                me.$cat.patch(`api/RAtencions/modNANDP/${me.rAtencionId}`, {
                                     'nombre': me.p_nombre,
                                     'puesto': me.p_puesto
                                 }, configuracion)
@@ -1532,7 +1532,7 @@ import { computed } from 'vue';
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/RHechoes/ValidarNuc/'+ me.nuc,configuracion).then(function(response){
+                me.$cat.get('api/RHechoes/ValidarNuc/'+ me.nuc,configuracion).then(function(response){
                     me.consultadenuc = true
                     if (response.data.nucActivo) {
                         me.$notify('El Nuc se encuentra disponible para su uso', 'success')

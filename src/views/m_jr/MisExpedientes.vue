@@ -779,7 +779,7 @@
             let me = this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-             axios.get('api/AsignacionEnvios/ListarMisEnvios/'+ me.u_idmoduloservicio, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarMisEnvios/'+ me.u_idmoduloservicio, configuracion).then(function(response){
                me.misexpedientes=response.data;
             }, configuracion).catch(function(error){
                 if (error.response.status==401){ 
@@ -803,7 +803,7 @@
             var expedienteHex =""; 
             expedienteHex = me.hexa(me.noExpediente);  
 
-             axios.get('api/Envios/BusquedaExp/'+ me.u_iddistrito + '/' + expedienteHex, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/Envios/BusquedaExp/'+ me.u_iddistrito + '/' + expedienteHex, configuracion).then(function(response){ 
                 debugger
                 me.$store.state.idExpediente= response.data.idExpediente;  
                 me.$store.state.idEnvio = response.data.idEnvio;

@@ -791,7 +791,7 @@
                 }
                 me.$validator.validate().then(result => {
                     if (result) { 
-                        axios.post('api/RDHs/Crear',{  
+                        me.$cat.post('api/RDHs/Crear',{  
                             'rHechoId': me.rHechoId,
                             'delitoId': me.delitoId.value2, 
                             'DelitoEspecifico': me.delitoespecifico,
@@ -868,7 +868,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/RDHs/ListarPorHechoTodos/'+ me.rHechoId,configuracion).then(function(response){ 
+            me.$cat.get('api/RDHs/ListarPorHechoTodos/'+ me.rHechoId,configuracion).then(function(response){ 
                 me.delitoshecho=response.data;
             }).catch(err => { 
                 if (err.response.status==400){
@@ -1165,7 +1165,7 @@
             let configuracion= {headers : header}; 
             var aux;        
             if(item.equiparado){
-                axios.put('api/RDHs/ActualizarEquiparadosDesactivar',{
+                me.$cat.put('api/RDHs/ActualizarEquiparadosDesactivar',{
                     'IdRDH' : item.idRDH,
                     'Equiparado' : false,
 
@@ -1192,7 +1192,7 @@
             }              
             else{
 
-                axios.put('api/RDHs/ActualizarEquiparadosActivar',{
+                me.$cat.put('api/RDHs/ActualizarEquiparadosActivar',{
                 'IdRDH' : item.idRDH,
                 'Equiparado' : true,
 
@@ -1226,7 +1226,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};      
             
-                axios.put('api/RDHs/Actualizar',{
+            me.$cat.put('api/RDHs/Actualizar',{
                     'IdRDH': me.idrdh,
                     'delitoId': me.delitoId.value2, 
                     'tipoFuero': me.tipoFuero,

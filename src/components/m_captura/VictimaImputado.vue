@@ -1848,7 +1848,7 @@
                 me.editedIndex=1;
                 me.modalAdd =1;
 
-            axios.get('api/DocumentosPesonas/Listar/'+ item.personaId,configuracion).then(function(response){
+                me.$cat.get('api/DocumentosPesonas/Listar/'+ item.personaId,configuracion).then(function(response){
                
             
                     me.imageUrl = response.data.ruta;
@@ -1887,7 +1887,7 @@
             let me=this;    
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/RAPs/ListarDP/'+ me.idPersona,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarDP/'+ me.idPersona,configuracion).then(function(response){
                 
                 console.log(response.data);
                 me.calle =response.data.calle;
@@ -1932,7 +1932,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/RAPs/ListarDE/'+ me.rapid,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarDE/'+ me.rapid,configuracion).then(function(response){
                 
                 console.log(response.data);
                 me.de_calle =response.data.calle;
@@ -1991,12 +1991,12 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             me.step = 1;
-            axios.get('api/RAPs/ListarDP/'+ item.personaId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarDP/'+ item.personaId,configuracion).then(function(response){
                 me.infodp = response.data;
 
-                axios.get('api/RAPs/ListarDE/'+ item.idRAP,configuracion).then(function(response){
+                me.$cat.get('api/RAPs/ListarDE/'+ item.idRAP,configuracion).then(function(response){
                         me.infode = response.data;
-                    axios.get('api/DocumentosPesonas/Listar2/' +item.personaId,configuracion).then(function(response){   
+                        me.$cat.get('api/DocumentosPesonas/Listar2/' +item.personaId,configuracion).then(function(response){   
                         me.rutaconsulta = response.data.ruta;
                         me.tdocumento = response.data.tipoDocumento             
                         me.datospersona = item;
@@ -2156,7 +2156,7 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/RAPs/ListarTodosModuloCaptura/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarTodosModuloCaptura/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data);
                 me.raps=response.data;
               
@@ -2320,7 +2320,7 @@
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/Personas/BuscarPersona/' +me.curp,configuracion).then(function(response){  
+            me.$cat.get('api/Personas/BuscarPersona/' +me.curp,configuracion).then(function(response){  
                 
    
 
@@ -2392,7 +2392,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             var aux;        
-            axios.put('api/RAPs/ActualizarClasificacion',{
+            me.$cat.put('api/RAPs/ActualizarClasificacion',{
 
                 'IdRAP' : this.idrapac,
                 'ClasificacionPersona' : this.clasificacionpersona.value,
@@ -2426,7 +2426,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
 
-            axios.put('api/Personas/ActualizarInfoAdicionalDetenido',{
+            me.$cat.put('api/Personas/ActualizarInfoAdicionalDetenido',{
 
                 'PersonaId' : me.idpersona,
                 'CumpleRequisitoLey' : me.cumplerequisitosley,
@@ -2461,14 +2461,14 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var registrosArray=[]; 
-            axios.get('api/RAPs/ListarRegistroPorPersona/'+ me.idPersona,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarRegistroPorPersona/'+ me.idPersona,configuracion).then(function(response){
                 
                 registrosArray=response.data;
  
                 for (let i in registrosArray) {
                     var ratencionid = registrosArray[i].rAtencionId; 
                     var clasificacionpersona = registrosArray[i].clasificacionPersona;
-                     axios.get('api/RHechoes/ListarPorrAtencionId/'+ ratencionid,configuracion).then(function(response){ 
+                    me.$cat.get('api/RHechoes/ListarPorrAtencionId/'+ ratencionid,configuracion).then(function(response){ 
                          
                         
                          me.hechos.push(
@@ -3574,7 +3574,7 @@
 
                 if (this.editedIndex > -1) {
 
-                    axios.put('api/RAPs/Actualizar',{  
+                    me.$cat.put('api/RAPs/Actualizar',{  
 
                         'rapId': me.rapid,
                         'clasificacionpersona': me.clasificacionpersona,
@@ -3651,7 +3651,7 @@
                         
                     },configuracion).then(function(response){ 
                         
-                        axios.put('api/DocumentosPesonas/ActualizarporIdpersona',{  
+                        me.$cat.put('api/DocumentosPesonas/ActualizarporIdpersona',{  
                             'IdDocumentoPersona': me.idDoccumentoPersona,
                             'idpersona': me.idPersona, 
                             'TipoDocumento': me.docidentificacion,
@@ -3715,7 +3715,7 @@
                     if(me.telefono1 == '') me.telefono1 = 0
 
 
-                    axios.post('api/RAPs/CrearModuloCaptura',{  
+                    me.$cat.post('api/RAPs/CrearModuloCaptura',{  
                         
                         //***************************** PERSONA*/ 
                         'rAtencionId': me.rAtencionId, 
@@ -3777,7 +3777,7 @@
                         
                     },configuracion).then(function(response){ 
 
-                        axios.post('api/DocumentosPesonas/Crear',{  
+                        me.$cat.post('api/DocumentosPesonas/Crear',{  
 
                             'PersonaId': response.data.personaid, 
                             'TipoDocumento': me.docidentificacion,

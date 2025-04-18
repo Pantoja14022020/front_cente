@@ -877,7 +877,7 @@
           let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/Vehiculos/Listar/'+ me.rHechoId,configuracion).then(function(response){
+                me.$cat.get('api/Vehiculos/Listar/'+ me.rHechoId,configuracion).then(function(response){
                     //console.log(response);
                     me.vehiculos=response.data;
                 }).catch(err => { 
@@ -955,7 +955,7 @@
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/RAPs/ListarDP/'+ me.denunciante.value2,configuracion).then(function(response){                  
+                me.$cat.get('api/RAPs/ListarDP/'+ me.denunciante.value2,configuracion).then(function(response){                  
                     me.domiciliodenunciante=response.data.calle+", No.Int: "+response.data.noint +
                     ", No.Ext: "+response.data.noext+", CP:"+response.data.cp+", "+response.data.municipio;              
                 }).catch(err => { 
@@ -981,7 +981,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
-                axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
+                me.$cat.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
                     console.log(response.data);
 
                     me.fechahorasuceso = response.data.fechaHoraSuceso;
@@ -1043,7 +1043,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var delitoaray=[];
-            axios.get('api/DireccionDelitoes/ListarPoridHecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/DireccionDelitoes/ListarPoridHecho/'+ me.rHechoId,configuracion).then(function(response){
                 me.direcciondelito = "Calle "+response.data.calle +", No.Int: "+response.data.noint +", No.Ext: "+response.data.noext+", CP:"+response.data.cp;
                 me.municipiodelito = response.data.municipio;
             }).catch(err => { 
@@ -1215,7 +1215,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
             var delitosArray=[];
-            axios.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
                 //console.log(response.data)
                 delitosArray=response.data;
                 delitosArray.map(function(x){
@@ -1245,7 +1245,7 @@
             let configuracion= {headers : header};
             var contador=0
             var personasArray=[];
-            axios.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data)
                 personasArray=response.data;               
                 personasArray.map(function(x){
@@ -1280,7 +1280,7 @@
                 me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información ',           
                 function(){
                     if(me.editedIndex == -1){
-                        axios.post('api/Vehiculos/Crear',{  
+                        me.$cat.post('api/Vehiculos/Crear',{  
                         'rHechoId': me.rHechoId, 
                         'estado': me.estado,
                         'estadoRobado': me.estadorobado,
@@ -1343,7 +1343,7 @@
                     }); 
 
                     }else{
-                        axios.put('api/Vehiculos/Actualizar',{
+                        me.$cat.put('api/Vehiculos/Actualizar',{
                         'IdVehiculo':me.idvehiculo,
                         'estado': me.estado,
                         'estadoRobado': me.estadorobado,
@@ -1459,7 +1459,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/ArchivoVehiculos/Listar/'+ item.idVehiculo,configuracion).then(function(response){
+                    me.$cat.get('api/ArchivoVehiculos/Listar/'+ item.idVehiculo,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 
@@ -1494,7 +1494,7 @@
                     nombreCarpeta = "C" + me.nuc.substr(1);
                         me.GUID = me.generateUUID();
                     
-                    axios.post('api/ArchivosMediaAfiliacion/Post/'+nombreCarpeta+'/'+me.GUID,
+                        me.$cat.post('api/ArchivosMediaAfiliacion/Post/'+nombreCarpeta+'/'+me.GUID,
                         formData,
                         {
                         headers: {
@@ -1504,7 +1504,7 @@
                     ).then(function(response){
                         console.log('SUCCESS!!');
                             console.log(response.data.ruta);
-                            axios.post('api/ArchivoVehiculos/Crear',{  
+                            me.$cat.post('api/ArchivoVehiculos/Crear',{  
 
                                 'VehiculoId' : me.idvehiculo,
                                 'TipoDocumento' : me.tiposdocumento.text,
@@ -1562,7 +1562,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var array;
-            axios.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
                 array=response.data;               
                 array.map(function(x){
                     me.duenos.push({text: x.nombreCompleto,value:x.nombreCompleto});

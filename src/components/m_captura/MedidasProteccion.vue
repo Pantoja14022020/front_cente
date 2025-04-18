@@ -713,7 +713,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             me.nomedida = []
-            axios.get('api/MedidasProteccion/ListarNoMedidas/'+ item.idMProteccion,configuracion).then(function(response){
+            me.$cat.get('api/MedidasProteccion/ListarNoMedidas/'+ item.idMProteccion,configuracion).then(function(response){
                 me.medidasregistro=response.data;
 
                 me.medidasregistro.forEach(function(x){
@@ -769,7 +769,7 @@
             let me=this;   
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
+            me.$cat.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
                 console.log(response.data);
 
                 me.agenciaid = response.data.agenciaid,                 
@@ -925,7 +925,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/MedidasProteccion/Listar/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/MedidasProteccion/Listar/'+ me.rHechoId,configuracion).then(function(response){
                 me.medidasproteccions=response.data;
             }).catch(err => { 
                 if (err.response.status==400){
@@ -958,7 +958,7 @@
             let configuracion= {headers : header};
             var contador=0
             var personasArray=[];
-            axios.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$cat.get('api/RAPs/ListarTodosVic/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data)
                 personasArray=response.data;               
                 personasArray.map(function(x){
@@ -966,7 +966,7 @@
                     contador++;
                 });
 
-                axios.get('api/RAPs/ListarTodosImp/'+ me.rAtencionId,configuracion).then(function(response){
+                me.$cat.get('api/RAPs/ListarTodosImp/'+ me.rAtencionId,configuracion).then(function(response){
                         //console.log(response.data)
                         personasArray=response.data;                                      
                         personasArray.map(function(x){
@@ -1014,7 +1014,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var delitosArray=[];
-            axios.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$cat.get('api/RDHs/ListarPorHecho/'+ me.rHechoId,configuracion).then(function(response){
                 //console.log(response.data)
                 delitosArray=response.data;
                 delitosArray.map(function(x){
@@ -1120,7 +1120,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){                   
+            me.$cat.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){                   
                 me.rBreve = response.data.rBreve;
             }).catch(err => { 
                 if (err.response.status==400){
@@ -1237,7 +1237,7 @@
                     function(){
                         
 
-                    axios.post('api/MedidasProteccion/Crear',{  
+                    me.$cat.post('api/MedidasProteccion/Crear',{  
                         'rHechoId': me.rHechoId, 
                         'victima': victimas,
                         'imputado': imputados,
@@ -1281,7 +1281,7 @@
                         
                         me.nomedida.forEach(function(x){
                         
-                        axios.post('api/MedidasProteccion/CrearNomedida',{   
+                            me.$cat.post('api/MedidasProteccion/CrearNomedida',{   
 
                             'Clave': x.clave,
                             'Descripcion': x.descripcion,
@@ -1343,7 +1343,7 @@
                     function(){    
                         
                         
-                        axios.delete('api/MedidasProteccion/Eliminar/'+ me.idMProteccion, configuracion).then(function(response){
+                        me.$cat.delete('api/MedidasProteccion/Eliminar/'+ me.idMProteccion, configuracion).then(function(response){
                          
                      
                         }).catch(err => { 
@@ -1364,7 +1364,7 @@
                             } 
                         });
 
-                        axios.put('api/MedidasProteccion/Actualizar',{
+                        me.$cat.put('api/MedidasProteccion/Actualizar',{
                             'idMProteccion': me.idMProteccion,
                             'victima': victimas,
                             'imputado': imputados,
@@ -1386,7 +1386,7 @@
 
                             me.nomedida.forEach(function(x){
                                 
-                                axios.post('api/MedidasProteccion/CrearNomedida',{   
+                                me.$cat.post('api/MedidasProteccion/CrearNomedida',{   
                                     'Clave': x.clave,
                                     'Descripcion': x.descripcion,
                                     'MedidasproteccionId': me.idMProteccion,
@@ -1447,7 +1447,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/MedidasProteccion/ListarNoMedidas/'+ item.idMProteccion,configuracion).then(function(response){
+            me.$cat.get('api/MedidasProteccion/ListarNoMedidas/'+ item.idMProteccion,configuracion).then(function(response){
                 me.medidasregistro=response.data;
                 me.diaologomedidas = true;
             }).catch(err => { 

@@ -731,7 +731,7 @@ import { computed } from 'vue';
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                  
-                axios.get('api/Envios/ListarTodosRezago/' + me.u_iddistrito,configuracion).then(function(response){ 
+                me.$justiciarestaurativa.get('api/Envios/ListarTodosRezago/' + me.u_iddistrito,configuracion).then(function(response){ 
 
                     me.expedientes=response.data;
 

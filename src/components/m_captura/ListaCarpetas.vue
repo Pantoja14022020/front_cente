@@ -400,7 +400,7 @@
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/RHechoes/ListarPorNucMC/' + me.nuc,configuracion).then(function(response){ 
+                me.$cat.get('api/RHechoes/ListarPorNucMC/' + me.nuc,configuracion).then(function(response){ 
                     me.carpetas=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){

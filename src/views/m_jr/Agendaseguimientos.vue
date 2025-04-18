@@ -1018,7 +1018,7 @@
           let configuracion= {headers : header};
       
           var eventsarray=[];  
-          axios.get('api/SeguimientoCumplimientoes/ListarTodosDistrito/'+ me.u_distrito, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosDistrito/'+ me.u_distrito, configuracion).then(function(response){ 
              
               eventsarray=response.data;
               eventsarray.map(function(x){ 
@@ -1103,7 +1103,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             var eventsarray=[];  
-            axios.get('api/SeguimientoCumplimientoes/ListarTodosDistritoStatus/'+ me.u_distrito + '/'+ status.titulo, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosDistritoStatus/'+ me.u_distrito + '/'+ status.titulo, configuracion).then(function(response){ 
              
               eventsarray=response.data;
               eventsarray.map(function(x){ 
@@ -1186,7 +1186,7 @@
         var eventsarray=[]; 
         debugger
         var expedienteHex = me.hexa(me.searchexpediente); 
-        axios.get('api/SeguimientoCumplimientoes/ListarTodosDistritoExpediente/'+ me.u_distrito + '/'+ expedienteHex, configuracion).then(function(response){ 
+        me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosDistritoExpediente/'+ me.u_distrito + '/'+ expedienteHex, configuracion).then(function(response){ 
           
           eventsarray=response.data;
           eventsarray.map(function(x){ 
@@ -1334,7 +1334,7 @@
           let configuracion= {headers : header};
           var idseguimiento = event.sesion;
           var listaCitasarray=[];  
-            axios.get('api/SeguimientoCumplimientoes/ListarTodosDistritoIdSeg/'+ me.u_distrito + '/'+ idseguimiento, configuracion).then(function(response){ 
+          me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosDistritoIdSeg/'+ me.u_distrito + '/'+ idseguimiento, configuracion).then(function(response){ 
              
               eventsarray=response.data
               eventsarray.map(function(x){ 

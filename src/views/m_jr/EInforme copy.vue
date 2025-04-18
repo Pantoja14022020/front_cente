@@ -1075,7 +1075,7 @@ export default {
             
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarAREstadisticaAño/' + valor, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarAREstadisticaAño/' + valor, configuracion).then(function(response){ 
                
                if (response.data.length != 0)
                 { 
@@ -1181,7 +1181,7 @@ export default {
             me.acuerdos=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarAREstadisticaMes/'+ valor +'/'+ me.año, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarAREstadisticaMes/'+ valor +'/'+ me.año, configuracion).then(function(response){ 
                
                if (response.data.length != 0)
                 { 
@@ -1284,7 +1284,7 @@ export default {
             me.acuerdos=[]; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            axios.get('api/AcuerdoReparatorios/ListarAREstadisticaDia/'+ me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/AcuerdoReparatorios/ListarAREstadisticaDia/'+ me.v_fechaI + '/'+ me.v_fechaF, configuracion).then(function(response){ 
               
                if (response.data.length != 0)
                 {  

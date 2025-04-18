@@ -1026,7 +1026,7 @@
   
      created () { 
          let me = this   
- 
+          
          me.u_iddistrito=me.$store.state.usuario.iddistrito;
          me.u_distrito=me.$store.state.usuario.distrito;
          me.u_dirSubPro=me.$store.state.usuario.dirSubProc;
@@ -1162,7 +1162,7 @@
             let me = this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/AsignacionEnvios/ListarTodoExpedienteXDistrito/'+ me.distritoId, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarTodoExpedienteXDistrito/'+ me.distritoId, configuracion).then(function(response){
                 
             me.misexpedientes=response.data;
             me.btnCalender = true;
@@ -1187,7 +1187,7 @@
             let me = this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/AsignacionEnvios/ListarMisEnvios/'+ me.u_idmoduloservicio, configuracion).then(function(response){
+            me.$justiciarestaurativa.get('api/AsignacionEnvios/ListarMisEnvios/'+ me.u_idmoduloservicio, configuracion).then(function(response){
 
             me.misexpedientes=response.data;
 
@@ -1212,7 +1212,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var eventsarray=[];  
-            axios.get('api/SeguimientoCumplimientoes/ListarTodosXDistrito/' + me.distritoId, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosXDistrito/' + me.distritoId, configuracion).then(function(response)
             { 
                 eventsarray=response.data;
                 eventsarray.map(function(x)
@@ -1299,7 +1299,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
             var eventsarray=[];  
-            axios.get('api/SeguimientoCumplimientoes/ListarXDistritoStatus/'+ me.distritoId + '/'+ status.titulo, configuracion).then(function(response){ 
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarXDistritoStatus/'+ me.distritoId + '/'+ status.titulo, configuracion).then(function(response){ 
                 
                 eventsarray=response.data;
                 eventsarray.map(function(x){ 
@@ -1383,7 +1383,7 @@
             var eventsarray=[]; 
             debugger
             var expedienteHex = me.hexa(me.searchexpediente); 
-            axios.get('api/SeguimientoCumplimientoes/ListarTodosXDistritoXExpediente/' + me.distritoId + '/' + expedienteHex, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosXDistritoXExpediente/' + me.distritoId + '/' + expedienteHex, configuracion).then(function(response)
             { 
             
                 eventsarray=response.data;
@@ -1468,7 +1468,7 @@
             let configuracion= {headers : header};
             var idseguimiento = event.sesion;
             var listaCitasarray=[];  
-            axios.get('api/SeguimientoCumplimientoes/ListarTodosDistritoIdSeg/'+ me.u_distrito + '/'+ idseguimiento, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/SeguimientoCumplimientoes/ListarTodosDistritoIdSeg/'+ me.u_distrito + '/'+ idseguimiento, configuracion).then(function(response)
             { 
 
                 eventsarray=response.data
@@ -1556,7 +1556,7 @@
             var expedienteHex =""; 
             expedienteHex = me.hexa(me.noExpediente);  
 
-            axios.get('api/Envios/BusquedaExp/'+ me.u_iddistrito + '/' + expedienteHex, configuracion).then(function(response)
+            me.$justiciarestaurativa.get('api/Envios/BusquedaExp/'+ me.u_iddistrito + '/' + expedienteHex, configuracion).then(function(response)
             { 
                 me.$store.state.idExpediente= response.data.idExpediente;  
                 me.$store.state.idEnvio = response.data.idEnvio;
