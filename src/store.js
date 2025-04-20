@@ -17,7 +17,7 @@ Vue.use(VueEditor)
 Vue.use(VueGoogleMaps, {
     load: {
       key: "AIzaSyCq6BIkl3Mch3ZkTT6-8TXbH7oHWPlAnfw",
-      libraries: "places" // necessary for places input
+      libraries: "places"
     }
 });
  
