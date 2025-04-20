@@ -1553,7 +1553,7 @@ export default {
 
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .put(
           "api/RHechoes/ActualizarModuloyAgencia",
           {
@@ -1596,7 +1596,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -1687,7 +1687,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/AmpDecs/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.fechaEntre = response.data[0].fechaS;
@@ -1793,7 +1793,7 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información ",
         function () {
-          axios
+          me.$CAT
             .post(
               "api/RHechoes/ActualizarResenaBreve",
               {
@@ -1841,7 +1841,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
 
@@ -1930,7 +1930,7 @@ export default {
       var textI =
         "No hay registro despues de la implementacion de tablero de inactividad";
       var textC = "La carpeta ha sido concluida o se encuentra suspendida";
-      axios
+      me.$CAT
         .get("api/RegistroTableroI/ListarI/" + me.rHechoId, configuracion)
         .then(function (response) {
           inactividadArray = response.data;
@@ -2007,7 +2007,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .get("api/RAPs/Listar/" + me.rAtencionId, configuracion)
         .then(function (response) {
           me.clasificacionPersona = response.data.clasificacionPersona;
@@ -2786,7 +2786,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           me.direccion =
@@ -2831,7 +2831,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/AcumulacionCarpetas/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.acumulada = response.data[0].nucFusion;
@@ -2861,7 +2861,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,
           configuracion
@@ -2944,7 +2944,7 @@ export default {
       var etapavacia = "";
       var clasificacionvacia = "";
       var delitovacia = "";
-      axios
+      me.$CAT
         .get(
           "api/RHechoes/ComprobarINX/" + me.rHechoId + "/" + me.rAtencionId,
           configuracion
@@ -3110,7 +3110,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .put(
           "api/RHechoes/ActualizarFHS",
           {
@@ -3845,7 +3845,7 @@ export default {
           "Esperando confirmación",
           "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
           function () {
-            axios
+            me.$CAT
               .put(
                 "api/RHechoes/ActualizarNarrativa",
                 {
@@ -3858,7 +3858,7 @@ export default {
               .then(function (response) {
                 //**************************************************** */
                 //ACTUALIZAMOS LA HORA DE CIERRE
-                axios
+                me.$CAT
                   .put(
                     "api/RAtencions/AHCierre",
                     {
@@ -4616,7 +4616,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       if (me.direccionsuceso == "") {
-        axios
+        me.$CAT
           .post(
             "api/DireccionDelitoes/Crear",
             {
@@ -4664,7 +4664,7 @@ export default {
             }
           });
       } else {
-        axios
+        me.$CAT
           .post(
             "api/DireccionDelitoes/Actualizar",
             {
@@ -4974,7 +4974,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .put(
           "api/RHechoes/ActualizarVanabim",
           {
@@ -5025,13 +5025,13 @@ export default {
       let configuracion = { headers: header };
 
       if (me.etapa == "Suspendida" || me.etapa == "Concluida") {
-        axios
+        me.$CAT
           .get(
             "api/Resolucion/ComprobarRegistroResolucion/" + me.rHechoId,
             configuracion
           )
           .then(function (response) {
-            axios
+            me.$CAT
               .put(
                 "api/Nucs/Actualizar",
                 {
@@ -5047,7 +5047,7 @@ export default {
                   "success"
                 );
 
-                axios
+                me.$CAT
                   .post(
                     "api/Historialcarpeta/Crear",
                     {
@@ -5131,7 +5131,7 @@ export default {
             );
           });
       } else {
-        axios
+        me.$CAT
           .put(
             "api/Nucs/Actualizar",
             {
@@ -5147,7 +5147,7 @@ export default {
               "success"
             );
 
-            axios
+            me.$CAT
               .post(
                 "api/Historialcarpeta/Crear",
                 {

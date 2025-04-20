@@ -754,7 +754,7 @@ export default {
       let configuracion = { headers: header };
       var delitosArray = [];
       var contador = 0;
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -802,7 +802,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -862,7 +862,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarVicDEDPRE/" + me.rAtencionId, configuracion)
         .then(function (response) {
           console.log(response.data);
@@ -914,7 +914,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarImpDEDPRE/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data)

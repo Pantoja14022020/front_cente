@@ -1001,7 +1001,7 @@
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
 
-                            axios.post('api/BusquedaDomicilio/Crear',{  
+                            me.$PI.post('api/BusquedaDomicilio/Crear',{  
                                 
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Recepcion' : me.Recepcion,
@@ -1068,7 +1068,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/BusquedaDomicilio/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/BusquedaDomicilio/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.busqueda=response.data;
                 }).catch(err => { 

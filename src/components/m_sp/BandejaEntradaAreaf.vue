@@ -784,7 +784,7 @@
         me.u_rdiligenciaF = item.idRDiligenciasForaneas;
        
       
-      axios.get('api/PeritoAsignadoForaneas/ListarporrdiligenciasForaneas/'+me.u_rdiligenciaF ,configuracion).then(function(response){
+        me.$SP.get('api/PeritoAsignadoForaneas/ListarporrdiligenciasForaneas/'+me.u_rdiligenciaF ,configuracion).then(function(response){
                 
                 me.conclusion2= response.data;
 
@@ -902,7 +902,7 @@
             if (result) { 
                 if(this.editedIndex == -1){
                     
-                        axios.get('api/PeritoAsignadoForaneas/Listar',configuracion).then(function(response){
+                  me.$SP.get('api/PeritoAsignadoForaneas/Listar',configuracion).then(function(response){
                         //console.log(response);
                         me.bdoperito=response.data;
 
@@ -912,7 +912,7 @@
                         }
                         nummax++;
 
-                        axios.post('api/PeritoAsignadoForaneas/Crear',{                         
+                        me.$SP.post('api/PeritoAsignadoForaneas/Crear',{                         
                         'moduloServicioId' : me.modulo.value,
                         'RDiligenciasForaneasId': me.rDiligenciasId,
                         'respuesta': "na",

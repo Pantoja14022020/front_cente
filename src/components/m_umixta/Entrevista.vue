@@ -1253,7 +1253,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/Listar/" + me.rAtencionId, configuracion)
         .then(function (response) {
           me.personaId = response.data.personaId;
@@ -1386,7 +1386,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           console.log(response.data);
@@ -1445,7 +1445,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .put(
           "api/RAPs/ActualizarMC",
           {
@@ -1490,7 +1490,7 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información ",
         function () {
-          axios
+          me.$CAT
             .post(
               "api/ContencionPersonas/Crear",
               {
@@ -1511,7 +1511,7 @@ export default {
                 "La información se guardo correctamente !!!",
                 "success"
               );
-              axios
+              me.$CAT
                 .put(
                   "api/RAPs/ActualizarMC",
                   {
@@ -1587,7 +1587,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/DocumentosPesonas/Listar/" + me.personaId, configuracion)
         .then(function (response) {
           me.ruta = response.data.ruta;
@@ -1708,7 +1708,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RDiligencias/ObtenernumeroMaximoporDistrito/" +
             me.serviciopericialeId.nodistrito,
@@ -1811,7 +1811,7 @@ export default {
                 "Esperando confirmación",
                 "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
                 function () {
-                  axios
+                  me.$CAT
                     .post(
                       "api/RHechoes/CrearPI",
                       {
@@ -1827,7 +1827,7 @@ export default {
                     .then(function (response) {
                       //-------------------------------------------
 
-                      axios
+                      me.$CAT
                         .post(
                           "api/Historialcarpeta/Crear",
                           {
@@ -1970,7 +1970,7 @@ export default {
         //**************************************************** */
         //ACTUALIZAMOS LA HORA DE CIERRE
 
-        axios
+        me.$CAT
           .put(
             "api/RAtencions/AHCierre",
             {
@@ -2007,7 +2007,7 @@ export default {
       }
 
       if (me.switch1 == true || me.switch2 == true) {
-        axios
+        me.$CAT
           .post(
             "api/Nucs/GenerarNuc",
             {
@@ -2022,7 +2022,7 @@ export default {
             var descripcionRegTabI =
               "Registro de nueva carpeta " + response.data.nuc;
 
-            axios
+              me.$CAT
               .put(
                 "api/RHechoes/ActualizarNUC",
                 {
@@ -2033,7 +2033,7 @@ export default {
                 configuracion
               )
               .then(function (response) {
-                axios
+                me.$CAT
                   .post(
                     "api/Historialcarpeta/Crear",
                     {
@@ -2137,7 +2137,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -2221,7 +2221,7 @@ export default {
         function () {
           me.numeromaximo.numeroMaximo++;
 
-          axios
+          me.$CAT
             .post(
               "api/RDiligencias/CrearPI",
               {
@@ -2259,7 +2259,7 @@ export default {
                 "success"
               );
 
-              axios
+              me.$CAT
                 .post(
                   "api/ContencionPersonas/Crear",
                   {
@@ -2281,7 +2281,7 @@ export default {
                     "success"
                   );
 
-                  axios
+                  me.$CAT
                     .put(
                       "api/RAPs/ActualizarMC",
                       {
@@ -2397,7 +2397,7 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
         function () {
-          axios
+          me.$CAT
             .post(
               "api/RDDerivacions/CrearDD",
               {
@@ -2690,7 +2690,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RHechoes/ListarTodosRegistros/" + me.rAtencionId,
           configuracion
@@ -2713,7 +2713,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RHechoes/ListarTodosRegistros/" + me.rAtencionId,
           configuracion

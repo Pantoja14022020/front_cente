@@ -1081,7 +1081,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/RequerimientoVario/Crear',{  
+                            me.$PI.post('api/RequerimientoVario/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Recepcion'  :me.recepcion,
                                 'Oficio' :me.oficio,
@@ -1209,7 +1209,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/RequerimientoVario/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/RequerimientoVario/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.requerimientos=response.data;
                 }).catch(err => { 

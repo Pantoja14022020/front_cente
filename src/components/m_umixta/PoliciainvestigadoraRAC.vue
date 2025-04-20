@@ -595,7 +595,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RActosInvestigacion/ObtenernumeroMaximoporDistrito/" +
             me.u_nodistrito,
@@ -628,7 +628,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RActosInvestigacion/Listarporid/" + me.rHechoId,
           configuracion
@@ -853,7 +853,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorIdRACS/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -947,7 +947,7 @@ export default {
           "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
           function () {
             me.numeromaximo.numeroMaximo++;
-            axios
+            me.$CAT
               .post(
                 "api/RActosInvestigacion/Crear",
                 {
@@ -981,7 +981,7 @@ export default {
                 me.generarQR(me.docActoInv,me.rac,me.u_nombre,now,me.idactoinve);
 
                 for (var i = 0; i < me.actoinvestigacion.length; i++) {
-                  axios
+                  me.$CAT
                     .post(
                       "api/RActosInvestigacion/Creardetalle",
                       {

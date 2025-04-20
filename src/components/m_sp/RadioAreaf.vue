@@ -829,7 +829,7 @@
             if (result) { 
                 if(this.editedIndex == -1){
                     
-                        axios.get('api/PeritoAsignado/Listar',configuracion).then(function(response){
+                  me.$SP.get('api/PeritoAsignado/Listar',configuracion).then(function(response){
                         //console.log(response);
                         me.bdoperito=response.data;
 
@@ -839,7 +839,7 @@
                         }
                         nummax++;
 
-                        axios.post('api/PeritoAsignado/Crear',{                         
+                        me.$SP.post('api/PeritoAsignado/Crear',{                         
                         'moduloServicioId' : me.modulo.value,
                         'RDiligenciasForaneasId': me.rDiligenciasId,
                         'respuesta': "na",

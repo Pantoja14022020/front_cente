@@ -1068,7 +1068,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/TrasladoYCustodias/Crear',{  
+                            me.$PI.post('api/TrasladoYCustodias/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Recepcion'  :me.recepcion,
                                 'Oficio' :me.oficio,
@@ -1196,7 +1196,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/TrasladoYCustodias/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/TrasladoYCustodias/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.trasladoscustodias=response.data;
                 }).catch(err => { 

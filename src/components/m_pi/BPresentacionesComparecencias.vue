@@ -1157,7 +1157,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PresentacionYC/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/PresentacionYC/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 
@@ -1203,7 +1203,7 @@
             me.$validator.validateAll('dialogoactu').then(result => {
             if (result) {
                 if(me.status.value != 4){
-                    axios.put('api/PresentacionYC/ActualizarStatus',{
+                  me.$PI.put('api/PresentacionYC/ActualizarStatus',{
                     'IdPresentacionesYC': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -1231,7 +1231,7 @@
 
             }else{
 
-                axios.put('api/PresentacionYC/ActualizarStatusFinalizado',{
+              me.$PI.put('api/PresentacionYC/ActualizarStatusFinalizado',{
                     'IdPresentacionesYC': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -1326,7 +1326,7 @@
                                 nombreCarpeta = "C" + me.nuc;
                                  me.GUID = me.generateUUID();
                              
-                                axios.post('api/ArchivosColaboraciones/Post/'+nombreCarpeta+'/'+me.GUID,
+                                 me.$PI.post('api/ArchivosColaboraciones/Post/'+nombreCarpeta+'/'+me.GUID,
                                     formData,
                                     {
                                     headers: {
@@ -1336,7 +1336,7 @@
                                 ).then(function(response){
                                     console.log('SUCCESS!!');
                                         console.log(response.data.ruta);
-                                        axios.post('api/ArchivosColaboraciones/CrearPresentacionesComparecencia',{  
+                                        me.$PI.post('api/ArchivosColaboraciones/CrearPresentacionesComparecencia',{  
 
                                             'PresentacionesYCId' : me.PresentacionesYCId,
                                             'TipoDocumento' : me.tiposdocumento.text,
@@ -1387,7 +1387,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/ArchivosColaboraciones/ListarPresentacionesComparecencia/'+ item.idPresentacionesYC,configuracion).then(function(response){
+            me.$PI.get('api/ArchivosColaboraciones/ListarPresentacionesComparecencia/'+ item.idPresentacionesYC,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 

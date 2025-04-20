@@ -1609,7 +1609,7 @@ export default {
       let configuracion = { headers: header };
       var delitosArray = [];
       var contador = 0;
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -1657,7 +1657,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -1717,7 +1717,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarVicDE/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -1732,7 +1732,7 @@ export default {
           me.obtenerRepresentanteLegal();
           me.obtenerRepresentanteJuridico();
           me.representantesactivosVictimas();
-          axios
+          me.$CAT
             .get("api/RAPs/ListarImpDE/" + me.rAtencionId, configuracion)
             .then(function (response) {
               //console.log(response.data)
@@ -1797,7 +1797,7 @@ export default {
       me.representantesl = [];
 
       for (var i = 0; i < me.victimas.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/Representante/RepresentanteslistarporPersonaLegal/" +
               me.victimas[i].value,
@@ -1840,7 +1840,7 @@ export default {
       me.representantesj = [];
 
       for (var i = 0; i < me.victimas.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/Representante/RepresentanteslistarporPersonaJuridico/" +
               me.victimas[i].value,
@@ -1883,7 +1883,7 @@ export default {
       me.representantesp = [];
 
       for (var i = 0; i < me.imputados.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/Representante/RepresentanteslistarporPersonaParticular/" +
               me.imputados[i].value,
@@ -1926,7 +1926,7 @@ export default {
       var aux;
 
       for (var i = 0; i < me.victimas.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/Representante/RepresentantesActivos/" + me.victimas[i].value,
             configuracion
@@ -1962,7 +1962,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + idpersona, configuracion)
         .then(function (response) {
           me.direccionpv.push({
@@ -2010,7 +2010,7 @@ export default {
       var aux;
 
       for (var i = 0; i < me.imputados.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/Representante/RepresentantesActivos/" + me.imputados[i].value,
             configuracion
@@ -2046,7 +2046,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + idpersona, configuracion)
         .then(function (response) {
           me.direccionpi.push({

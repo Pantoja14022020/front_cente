@@ -7,7 +7,7 @@ export const copiarCarpeta = (configuracion,servicios,nombreServicios,posicionSe
     //console.log("Servicio a llamar:"+servicios[posicionServicio]);
     //console.log("Posicion servicio :"+posicionServicio);   
     //console.log(servicios); 
-    axios.post(servicios[posicionServicio],{  
+    me.$CAT.post(servicios[posicionServicio],{  
 
         'IdDistrito': distrito,
         'IdRAtencion': idAtencion,
@@ -53,7 +53,7 @@ export const copiarCarpeta = (configuracion,servicios,nombreServicios,posicionSe
         
     }).catch(err => {
             //Cacheo de errores
-             axios.put('api/RHechoes/ActualizarModuloyAgencia', {
+            me.$CAT.put('api/RHechoes/ActualizarModuloyAgencia', {
                 'IdRHecho': idHecho,
                 'moduloServicioId': moduloac,
                 'agenciaId': agenciaac

@@ -880,7 +880,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                axios.get('api/ComparecenciaElemento/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
+            me.$PI.get('api/ComparecenciaElemento/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 
@@ -940,7 +940,7 @@
             let configuracion= {headers : header};
             me.$validator.validate().then(result => {
             if (result) {
-            axios.put('api/ComparecenciaElemento/AsiganarUnidad',{
+              me.$PI.put('api/ComparecenciaElemento/AsiganarUnidad',{
                     'IdCompElementos': me.idcomparencia,
                     'ModuloServicioId': me.modulo.value                  
                 },configuracion).then(function(response){                            

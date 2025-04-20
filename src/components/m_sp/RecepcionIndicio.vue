@@ -834,7 +834,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             me.limpiar();
-            axios.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
+            me.$SP.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
 
                 arrayindicio = response.data;
                 arrayindicio.map(function(x){
@@ -868,7 +868,7 @@
             let configuracion= {headers : header};
             me.limpiar();
 
-            axios.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
+            me.$SP.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
 
                 arrayindicio = response.data;
                 arrayindicio.map(function(x){
@@ -1008,7 +1008,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PeritoAsignado/Listarporid/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$SP.get('api/PeritoAsignado/Listarporid/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
                 }).catch(err => { 

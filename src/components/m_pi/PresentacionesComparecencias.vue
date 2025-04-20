@@ -1081,7 +1081,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/PresentacionYC/Crear',{  
+                            me.$PI.post('api/PresentacionYC/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Recepcion'  :me.recepcion,
                                 'Oficio' :me.oficio,
@@ -1208,7 +1208,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PresentacionYC/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/PresentacionYC/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.presentaciones=response.data;
                 }).catch(err => { 

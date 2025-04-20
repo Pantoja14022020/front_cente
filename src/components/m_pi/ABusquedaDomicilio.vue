@@ -887,7 +887,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/BusquedaDomicilio/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/BusquedaDomicilio/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.busqueda=response.data;
                 }).catch(err => { 
@@ -947,7 +947,7 @@
             let configuracion= {headers : header};
             me.$validator.validate().then(result => {
             if (result) {
-            axios.put('api/BusquedaDomicilio/AsiganarUnidad',{
+              me.$PI.put('api/BusquedaDomicilio/AsiganarUnidad',{
                     'IdBusquedaDomicilio': me.idbusqueda,
                     'ModuloServicioId': me.modulo.value                  
                 },configuracion).then(function(response){                            

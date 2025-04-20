@@ -786,7 +786,7 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información ",
         function () {
-          axios
+          me.$CAT
             .post(
               "api/RHechoes/ActualizarResenaBreve",
               {
@@ -864,7 +864,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAtencions/Listar", configuracion)
         .then(function (response) {
           me.registros = response.data;
@@ -905,7 +905,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RHechoes/ListarTodosRegistros/" + me.rAtencionId,
           configuracion
@@ -951,7 +951,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/Listar/" + me.rAtencionId, configuracion)
         .then(function (response) {
           me.personaId = response.data.personaId;
@@ -1014,7 +1014,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           me.direccion =
@@ -1060,7 +1060,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RDiligencias/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.diligencias = response.data;
@@ -1113,7 +1113,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RDDerivacions/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.dderivaciones = response.data;

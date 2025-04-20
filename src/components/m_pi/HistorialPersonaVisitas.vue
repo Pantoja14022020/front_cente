@@ -892,7 +892,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Detencion/Crear',{  
+                            me.$PI.post('api/Detencion/Crear',{  
                                 'rHechoId' : me.idrecho ,
                                 'personaId' : me.persona.value ,
                                 'nuc' : me.nuc.text ,
@@ -947,7 +947,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Visita/ListarporIdvisita/'+item.idPIPersonaVisita,configuracion).then(function(response){
+          me.$PI.get('api/Visita/ListarporIdvisita/'+item.idPIPersonaVisita,configuracion).then(function(response){
                     //console.log(response);
                     me.historialvisitas=response.data;
                     me.dialogo = true;
@@ -974,7 +974,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PersonaVisita/Listar',configuracion).then(function(response){
+          me.$PI.get('api/PersonaVisita/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.detenidos=response.data;
                 }).catch(err => { 

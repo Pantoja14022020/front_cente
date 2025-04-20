@@ -778,7 +778,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Detencion/Crear',{  
+                            me.$PI.post('api/Detencion/Crear',{  
                                 'rHechoId' : me.idrecho ,
                                 'personaId' : me.persona.value ,
                                 'nuc' : me.nuc.text ,
@@ -904,7 +904,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/ComparecenciaElemento/Listar',configuracion).then(function(response){
+          me.$PI.get('api/ComparecenciaElemento/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.detenidos=response.data;
                 }).catch(err => { 

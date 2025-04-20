@@ -373,7 +373,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -460,7 +460,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/DatosProtegido/Listar/" + me.rAtencionId, configuracion)
         .then(function (response) {
           me.bitacoras = response.data;

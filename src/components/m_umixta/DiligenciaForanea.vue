@@ -1529,7 +1529,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId.value, configuracion)
         .then(function (response) {
           me.lt = response.data.lat;
@@ -1982,7 +1982,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {

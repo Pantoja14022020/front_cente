@@ -1121,7 +1121,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid),
@@ -1193,7 +1193,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodosVic/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -1206,7 +1206,7 @@ export default {
             contador++;
           });
 
-          axios
+          me.$CAT
             .get("api/RAPs/ListarTodosImp/" + me.rAtencionId, configuracion)
             .then(function (response) {
               //console.log(response.data)
@@ -1406,7 +1406,7 @@ export default {
         nombreCarpeta = "C" + me.nuc.substr(1);
         me.GUID = me.generateUUID();
 
-        axios
+        me.$CAT
           .post(
             "api/Representante/Post/" + nombreCarpeta + "/" + me.GUID,
             formData,
@@ -1420,7 +1420,7 @@ export default {
           .then(function (response) {
             console.log("SUCCESS!!");
 
-            axios
+            me.$CAT
               .post(
                 "api/Representante/CrearDocRepresentante",
                 {
@@ -1497,7 +1497,7 @@ export default {
           nombreCarpeta = "C" + me.nuc.substr(1);
           me.GUID = me.generateUUID();
 
-          axios
+          me.$CAT
             .post(
               "api/Representante/Post/" + nombreCarpeta + "/" + me.GUID,
               formData,
@@ -1530,7 +1530,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var delitosArray = [];
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -1639,7 +1639,7 @@ export default {
       for (var i = 0; i < estados.length; i++)
         if (estados[i].text == me.subtipo) estado = estados[i].value2;
 
-      axios
+        me.$CAT
         .put(
           "api/Resolucion/Actualizar",
           {
@@ -1655,7 +1655,7 @@ export default {
             me.subtipo != "Criterios de oportunidad" &&
             me.status == "Finalizado"
           ) {
-            axios
+            me.$CAT
               .put(
                 "api/Nucs/Actualizar",
                 {
@@ -1670,7 +1670,7 @@ export default {
                   "success"
                 );
 
-                axios
+                me.$CAT
                   .post(
                     "api/Historialcarpeta/Crear",
                     {
@@ -1815,7 +1815,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/Resolucion/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response);
@@ -1915,7 +1915,7 @@ export default {
           };
           console.log(perro);
 
-          axios
+          me.$CAT
             .post(
               "api/Resolucion/Crear",
               {

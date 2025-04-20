@@ -1047,7 +1047,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Arresto/Crear',{  
+                            me.$PI.post('api/Arresto/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'FechaRecibido'  :me.fechar,
                                 'Oficio' :me.oficio,
@@ -1172,7 +1172,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Arresto/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/Arresto/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.arrestos=response.data;
                 }).catch(err => { 

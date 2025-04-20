@@ -1099,7 +1099,7 @@
             if (result) { 
                 if(this.editedIndex == -1){
 
-                        axios.get('api/PeritoAsignadoPI/Listar',configuracion).then(function(response){
+                  me.$PI.get('api/PeritoAsignadoPI/Listar',configuracion).then(function(response){
                         //console.log(response);
                         me.bdoperito=response.data;
 
@@ -1109,7 +1109,7 @@
                         }
                         nummax++;
 
-                        axios.post('api/PeritoAsignadoPI/Crear',{                         
+                        me.$PI.post('api/PeritoAsignadoPI/Crear',{                         
                         'moduloServicioId' : me.modulo.value,
                         'rActoInvestigacionId': me.actosinvestigacionId,
                         'respuesta': "na",

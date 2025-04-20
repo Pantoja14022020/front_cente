@@ -916,7 +916,7 @@
             let configuracion= {headers : header};
             me.limpiar();
 
-            axios.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
+            me.$SP.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
 
                 arrayindicio = response.data;
                 arrayindicio.map(function(x){
@@ -989,7 +989,7 @@
                     if(item.dConIndicio){
 
 
-                        axios.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
+                      me.$SP.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
 
                             arrayindicio = response.data;
                             arrayindicio.map(function(x){
@@ -1026,7 +1026,7 @@
                                 },configuracion).then(function(response){                            
                                     me.$notify('La información se actualizo correctamente !!!','success')
 
-                                            axios.put('api/PeritoAsignado/ActualizarFechaEntregado',{ 
+                                    me.$SP.put('api/PeritoAsignado/ActualizarFechaEntregado',{ 
                                             'idPeritoAsignado': me.fidPeritoAsignado,                                  
                                             'fechaEntregado':me.generarfecha()                                 
                                             
@@ -1102,7 +1102,7 @@
                                 },configuracion).then(function(response){                            
                                     me.$notify('La información se actualizo correctamente !!!','success')
 
-                                            axios.put('api/PeritoAsignado/ActualizarFechaEntregado',{ 
+                                    me.$SP.put('api/PeritoAsignado/ActualizarFechaEntregado',{ 
                                             'idPeritoAsignado': me.fidPeritoAsignado,                                  
                                             'fechaEntregado':me.generarfecha()                                 
                                             
@@ -1207,7 +1207,7 @@
 
 
             if(me.esPerito){
-                axios.get('api/PeritoAsignado/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+              me.$SP.get('api/PeritoAsignado/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
                 }).catch(err => { 
@@ -1230,7 +1230,7 @@
 
             }
             else if(me.esOficialiapartes){
-                axios.get('api/PeritoAsignado/Listarporagencia/'+ me.u_idagencia,configuracion).then(function(response){
+              me.$SP.get('api/PeritoAsignado/Listarporagencia/'+ me.u_idagencia,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
                 }).catch(err => { 

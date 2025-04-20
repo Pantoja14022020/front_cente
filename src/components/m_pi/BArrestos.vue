@@ -889,7 +889,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Arresto/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/Arresto/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.arresto=response.data;
                 }).catch(err => { 
@@ -923,7 +923,7 @@
             me.$validator.validate().then(result => {
             if (result) {
                 if(me.status.value != 4){
-                    axios.put('api/Arresto/ActualizarStatus',{
+                  me.$PI.put('api/Arresto/ActualizarStatus',{
                     'IdArresto': me.idarresto,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -951,7 +951,7 @@
 
             }else{
 
-                axios.put('api/Arresto/ActualizarStatusFinalizado',{
+              me.$PI.put('api/Arresto/ActualizarStatusFinalizado',{
                     'IdArresto': me.idarresto,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            

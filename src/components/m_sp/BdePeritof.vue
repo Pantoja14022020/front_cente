@@ -1406,7 +1406,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PeritoAsignadoForaneas/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$SP.get('api/PeritoAsignadoForaneas/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
 
@@ -1494,7 +1494,7 @@
                                         
                                 me.$notify('La información se actualizo correctamente !!!','success')
                                 
-                                        axios.put('api/PeritoAsignadoForaneas/ActualizarConclu',{ 
+                                me.$SP.put('api/PeritoAsignadoForaneas/ActualizarConclu',{ 
                                         'IdPeritosAsignadoForaneas': me.fidPeritoAsignado, 
                                         'conclusion': me.conclusion,                                                         
                                         'fechaFinalizado':fecha                                
@@ -1579,7 +1579,7 @@
                 'AgenciaEnvia': item.agenciaEnvia            
                 },configuracion).then(function(response){   
                     
-                    axios.put('api/PeritoAsignadoForaneas/Actualizarultimostatus',{
+                    me.$SP.put('api/PeritoAsignadoForaneas/Actualizarultimostatus',{
                         'idPeritosAsignadoForaneas' : item.idPeritosAsignadoForaneas
                     },configuracion).then(function(response){                        
                         me.$notify('La información se actualizo correctamente !!!','success')         
@@ -1659,7 +1659,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/DocsDiligenciasForaneas/Listar/'+ item.rDiligenciasForaneasId,configuracion).then(function(response){
+            me.$SP.get('api/DocsDiligenciasForaneas/Listar/'+ item.rDiligenciasForaneasId,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => {
@@ -1711,7 +1711,7 @@
                     nombreCarpeta = "C" + me.numnuc.value.substr(1);
                     me.GUID = me.generateUUID();
                     //
-                    axios.post('api/DocsDiligenciasForaneas/Post/'+nombreCarpeta+'/'+me.GUID,
+                    me.$SP.post('api/DocsDiligenciasForaneas/Post/'+nombreCarpeta+'/'+me.GUID,
                         formData,
                         {
                         headers: {
@@ -1729,7 +1729,7 @@
                                 servicios += "; ";
                             
                         }
-                        axios.post('api/DocsDiligenciasForaneas/Crear',{    
+                        me.$SP.post('api/DocsDiligenciasForaneas/Crear',{    
                             'tipoDocumento' : me.tiposdocumento.text,
                             'descripcionDocumento' : me.descripciondocumento,
                             'fechaRegistro' : me.generarfecha(),
@@ -1779,7 +1779,7 @@
                     formData.append('file', me.archivoFile);
                     nombreCarpeta = "C" + me.numnuc.value.substr(1);
                     //
-                    axios.post('api/DocsDiligenciasForaneas/Post/'+nombreCarpeta+'/'+me.archivoName,
+                    me.$SP.post('api/DocsDiligenciasForaneas/Post/'+nombreCarpeta+'/'+me.archivoName,
                         formData,
                         {
                         headers: {
@@ -1793,7 +1793,7 @@
                         me.rutarchivo = nombreCarpeta + '/'+me.archivoName;
                         //Inicia generación de firma electronica
                         //
-                        axios.get('api/PeritoAsignado/1', {params: {
+                        me.$SP.get('api/PeritoAsignado/1', {params: {
                             pwdfirma : me.pwdfirma,
                             hashregistro : me.GUID,
                             curp : me.curp,

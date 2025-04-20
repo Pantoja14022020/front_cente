@@ -792,7 +792,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -823,7 +823,7 @@ export default {
       var imputadoarray;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarImpDE/" + me.rAtencionId, configuracion)
         .then(function (response) {
           imputadoarray = response.data;
@@ -861,7 +861,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDE/" + me.persona.value, configuracion)
         .then(function (response) {
           me.direcciones =
@@ -1027,7 +1027,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/ComparecenciaElemento/Listar", configuracion)
         .then(function (response) {
           //console.log(response);

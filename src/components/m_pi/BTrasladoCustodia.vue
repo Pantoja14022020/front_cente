@@ -895,7 +895,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/TrasladoYCustodias/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/TrasladoYCustodias/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 
@@ -929,7 +929,7 @@
             me.$validator.validate().then(result => {
             if (result) {
                 if(me.status.value != 4){
-                    axios.put('api/TrasladoYCustodias/ActualizarStatus',{
+                  me.$PI.put('api/TrasladoYCustodias/ActualizarStatus',{
                     'IdTrasladosYC': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -957,7 +957,7 @@
 
             }else{
 
-                axios.put('api/TrasladoYCustodias/ActualizarStatusFinalizado',{
+              me.$PI.put('api/TrasladoYCustodias/ActualizarStatusFinalizado',{
                     'IdTrasladosYC': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            

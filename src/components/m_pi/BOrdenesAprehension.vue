@@ -1376,7 +1376,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/OrdenAprension/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/OrdenAprension/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 
@@ -1435,7 +1435,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/OAprhensionBitacora/Listar/'+ item.idOrdenAprension,configuracion).then(function(response){
+            me.$PI.get('api/OAprhensionBitacora/Listar/'+ item.idOrdenAprension,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 
@@ -1463,7 +1463,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/OAprhensionBitacora/Crear',{  
+                            me.$PI.post('api/OAprhensionBitacora/Crear',{  
                                 'OrdenAprensionId' : me.idPeritoAsignadoPI,
                                 'Texto'  :me.textoinforme,
                                 'UDistrito' :me.u_distrito,
@@ -1507,7 +1507,7 @@
             me.$validator.validateAll('dialogostatus').then(result => {
             if (result) {
                 if(me.status.value != 4){
-                    axios.put('api/OrdenAprension/ActualizarStatus',{
+                  me.$PI.put('api/OrdenAprension/ActualizarStatus',{
                     'IdOrdenAprension': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -1535,7 +1535,7 @@
 
             }else{
 
-                axios.put('api/OrdenAprension/ActualizarStatusFinalizado',{
+              me.$PI.put('api/OrdenAprension/ActualizarStatusFinalizado',{
                     'IdOrdenAprension': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -1636,7 +1636,7 @@
                                 nombreCarpeta = "C" + me.nuc;
                                  me.GUID = me.generateUUID();
                              
-                                axios.post('api/ArchivosColaboraciones/Post/'+nombreCarpeta+'/'+me.GUID,
+                                 me.$PI.post('api/ArchivosColaboraciones/Post/'+nombreCarpeta+'/'+me.GUID,
                                     formData,
                                     {
                                     headers: {
@@ -1646,7 +1646,7 @@
                                 ).then(function(response){
                                     console.log('SUCCESS!!');
                                         console.log(response.data.ruta);
-                                        axios.post('api/ArchivosColaboraciones/CrearOrdenesAprehension',{  
+                                        me.$PI.post('api/ArchivosColaboraciones/CrearOrdenesAprehension',{  
 
                                             'OrdenAprensionId' : me.IdOrdenAprension,
                                             'TipoDocumento' : me.tiposdocumento.text,
@@ -1697,7 +1697,7 @@
             me.dialogpictures2 = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/ArchivosColaboraciones/ListarOrdenesAprehension/'+ item.idOrdenAprension,configuracion).then(function(response){
+            me.$PI.get('api/ArchivosColaboraciones/ListarOrdenesAprehension/'+ item.idOrdenAprension,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 

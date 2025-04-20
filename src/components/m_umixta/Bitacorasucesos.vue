@@ -443,7 +443,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RBitacoras/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.bitacoras = response.data;
@@ -473,7 +473,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
         .then(function (response) {
           personasArray = response.data;
@@ -770,7 +770,7 @@ export default {
           "Esperando confirmación",
           "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
           function () {
-            axios
+            me.$CAT
               .post(
                 "api/RBitacoras/Crear",
                 {
@@ -856,7 +856,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {

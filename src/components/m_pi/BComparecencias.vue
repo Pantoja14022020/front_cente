@@ -887,7 +887,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/ComparecenciaElemento/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/ComparecenciaElemento/ListarporModulo/'+me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 
@@ -922,7 +922,7 @@
             me.$validator.validate().then(result => {
             if (result) {
                 if(me.status.value != 4){
-                    axios.put('api/ComparecenciaElemento/ActualizarStatus',{
+                  me.$PI.put('api/ComparecenciaElemento/ActualizarStatus',{
                     'IdCompElementos': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            
@@ -950,7 +950,7 @@
 
             }else{
 
-                axios.put('api/ComparecenciaElemento/ActualizarStatusFinalizado',{
+              me.$PI.put('api/ComparecenciaElemento/ActualizarStatusFinalizado',{
                     'IdCompElementos': me.idcomparencia,
                     'Status': me.status.text                  
                 },configuracion).then(function(response){                            

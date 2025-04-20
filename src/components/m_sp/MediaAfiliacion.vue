@@ -2628,7 +2628,7 @@
            let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/MediaAfiliacions/ListarPorRHecho/'+ me.rHechoId,configuracion).then(function(response){
+            me.$SP.get('api/MediaAfiliacions/ListarPorRHecho/'+ me.rHechoId,configuracion).then(function(response){
                 //console.log(response.data);
                me.listaimputados=response.data;
                 
@@ -2663,7 +2663,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var personasArray=[];
-                axios.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
+            me.$SP.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
                 //console.log(response.data);
                 personasArray=response.data;
                 personasArray.map(function(x){
@@ -2734,7 +2734,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/ArchivosMediaAfiliacion/Listar/'+ item.idMediaAfiliacion,configuracion).then(function(response){
+            me.$SP.get('api/ArchivosMediaAfiliacion/Listar/'+ item.idMediaAfiliacion,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 
@@ -2761,7 +2761,7 @@
                 let me=this;   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
+                me.$SP.get('api/RHechoes/ListarPorId/' +me.rHechoId,configuracion).then(function(response){  
                     me.agenciaid = response.data.agenciaid,                 
                     me.informacionagencia();
                 }).catch(err => { 
@@ -2838,7 +2838,7 @@
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información ',    
 
             function(){             
-                        axios.post('api/MediaAfiliacions/Crear',{ 
+                me.$SP.post('api/MediaAfiliacions/Crear',{ 
                             'personaId': me.personaId.value ,
                             'rHechoId': me.rHechoId,
                             'complexion': me.complexion,
@@ -2915,7 +2915,7 @@
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas actualizar la información .',         
             function(){
                 
-                axios.put('api/MediaAfiliacions/Actualizar',{
+                me.$SP.put('api/MediaAfiliacions/Actualizar',{
                           'idMediaAfiliacion': me.idMediaAfiliacion,
                           'personaId': me.personaId.value,
                           'rHechoId': me.rHechoId,
@@ -3520,7 +3520,7 @@
                                 nombreCarpeta = "C" + me.nuc.substr(1);
                                  me.GUID = me.generateUUID();
                              
-                                axios.post('api/ArchivosMediaAfiliacion/Post/'+nombreCarpeta+'/'+me.GUID,
+                                 me.$SP.post('api/ArchivosMediaAfiliacion/Post/'+nombreCarpeta+'/'+me.GUID,
                                     formData,
                                     {
                                     headers: {
@@ -3530,7 +3530,7 @@
                                 ).then(function(response){
                                     console.log('SUCCESS!!');
                                         console.log(response.data.ruta);
-                                        axios.post('api/ArchivosMediaAfiliacion/Crear',{  
+                                        me.$SP.post('api/ArchivosMediaAfiliacion/Crear',{  
 
                                             'MediaAfiliacionid' : me.idmediaAfiliacion,
                                             'tipoDocumento' : me.tiposdocumento.text,

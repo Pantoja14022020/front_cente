@@ -973,7 +973,7 @@
 
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas Actualizar la información .',           
             function(){                          
-                axios.put('api/SolicitudesInteligencia/Actualizar',{ 
+              me.$PI.put('api/SolicitudesInteligencia/Actualizar',{ 
                 
                     'idSolicitudInteligencia': me.solicitudInteligenciaId,
                     'statusAutorizacion': true,
@@ -1028,7 +1028,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/SolicitudesInteligencia/ListarAsignacionesAprovadas/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/SolicitudesInteligencia/ListarAsignacionesAprovadas/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.solicitudes=response.data;
                 }).catch(err => { 

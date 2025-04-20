@@ -652,7 +652,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -820,7 +820,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/C5i/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.c5 = response.data;
@@ -895,7 +895,7 @@ export default {
 
       me.$validator.validate().then((result) => {
         if (result) {
-          axios
+          me.$CAT
             .post(
               "api/C5i/Crear",
               {
@@ -982,7 +982,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {

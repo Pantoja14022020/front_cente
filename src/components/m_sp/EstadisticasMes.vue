@@ -1686,11 +1686,11 @@
                 if(me.fechaInicio.substring(0,4) == me.fechaFin.substring(0,4) && me.fechaInicio.substring(5,7) == me.fechaFin.substring(5,7)){  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                    axios.get('api/PeritoAsignado/Listarporidfecha/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                me.$SP.get('api/PeritoAsignado/Listarporidfecha/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                     me.peritosasignados=response.data;
-                        axios.get('api/PeritoAsignado/PorModulo/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                    me.$SP.get('api/PeritoAsignado/PorModulo/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                         me.peritosasignadosmodulo=response.data;
-                            axios.get('api/PeritoAsignado/PorMes/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                        me.$SP.get('api/PeritoAsignado/PorMes/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                                 me.peritosasignadosfecha=response.data;
                                 
                                     

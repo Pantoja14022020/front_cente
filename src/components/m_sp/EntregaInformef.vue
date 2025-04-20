@@ -690,7 +690,7 @@
             let configuracion= {headers : header};
             me.limpiar();
 
-            axios.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
+            me.$SP.get('api/DiligenciaIndicio/ListarIndicios/'+ item.rDiligenciasId,configuracion).then(function(response){
 
                 arrayindicio = response.data;
                 arrayindicio.map(function(x){
@@ -778,7 +778,7 @@
                 },configuracion).then(function(response){                            
                     me.$notify('La información se actualizo correctamente !!!','success')
 
-                        axios.put('api/PeritoAsignadoForaneas/ActualizarFechaEntregado',{ 
+                    me.$SP.put('api/PeritoAsignadoForaneas/ActualizarFechaEntregado',{ 
                             'IdPeritosAsignadoForaneas': me.fidPeritoAsignado,                                  
                             'fechaEntregado':me.generarfecha()                                 
                             
@@ -873,7 +873,7 @@
 
 
             if(me.esPerito){
-                axios.get('api/PeritoAsignadoForaneas/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+              me.$SP.get('api/PeritoAsignadoForaneas/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
                 }).catch(err => { 
@@ -896,7 +896,7 @@
 
             }
             else if(me.esOficialiapartes||me.esAdministrador){
-                axios.get('api/PeritoAsignadoForaneas/Listarporagencia/'+ me.u_idagencia,configuracion).then(function(response){
+              me.$SP.get('api/PeritoAsignadoForaneas/Listarporagencia/'+ me.u_idagencia,configuracion).then(function(response){
                     //console.log(response);
                     me.bdoperito=response.data;
                 }).catch(err => { 

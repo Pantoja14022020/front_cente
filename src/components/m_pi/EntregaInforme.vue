@@ -895,7 +895,7 @@
                             'status': "Entregado"
                         }, configuracion).then(function(response) {                            
                             me.$notify('La información se actualizo correctamente !!!', 'success')
-                            axios.put('api/PeritoAsignadoPI/ActualizarFechaEntregado',{ 
+                            me.$PI.put('api/PeritoAsignadoPI/ActualizarFechaEntregado',{ 
                                 'idPeritoAsignadoPI': me.idPeritoAsignadoPI,                                  
                                 'fechaEntregado':me.generarfecha()
                             }, configuracion).then(function(response) {
@@ -990,7 +990,7 @@
                 let me = this;  
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
-                axios.get('api/PeritoAsignadoPI/ListarporModulo/'+ me.u_idmoduloservicio,configuracion).then(function(response) {
+                me.$PI.get('api/PeritoAsignadoPI/ListarporModulo/'+ me.u_idmoduloservicio,configuracion).then(function(response) {
                     //console.log(response);
                     me.bdoperito = response.data;
                 }).catch(err => { 

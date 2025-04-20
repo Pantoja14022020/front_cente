@@ -697,7 +697,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -757,7 +757,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -800,7 +800,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       if (me.estadodireccion) {
-        axios
+        me.$CAT
           .get("api/RAPs/ListarDE/" + me.persona.value2, configuracion)
           .then(function (response) {
             me.direccionesc = response.data;
@@ -842,7 +842,7 @@ export default {
             }
           });
       } else {
-        axios
+        me.$CAT
           .get("api/RAPs/ListarDP/" + me.persona.value3, configuracion)
           .then(function (response) {
             me.direccionesc = response.data;
@@ -890,7 +890,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var delitosArray = [];
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -923,7 +923,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/Citatorio_Notificacion/Listar/" + me.rHechoId + "/" + false,
           configuracion
@@ -968,7 +968,7 @@ export default {
         "Estas seguro de  que deseas guardar información ",
         function () {
           if (me.comprobaciondireccionescucha) {
-            axios
+            me.$CAT
               .post(
                 "api/Citatorio_Notificacion/Crear",
                 {
@@ -1066,7 +1066,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -1113,7 +1113,7 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas actualizar la información .",
         function () {
-          axios
+          me.$CAT
             .put(
               "api/Citatorio_Notificacion/Actualizar",
               {

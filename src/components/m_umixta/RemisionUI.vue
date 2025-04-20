@@ -800,7 +800,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RemisionesUI/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {          
           me.oficios = response.data;
@@ -1309,7 +1309,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -1615,7 +1615,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RemisionesUI/ListarFallidos/" + idRemisionUI, configuracion)
         .then(function (response) {          
           me.oficios = response.data;

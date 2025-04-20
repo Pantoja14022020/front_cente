@@ -4539,7 +4539,7 @@ export default {
                 // Si algo falla, y se creó la primera operación, intenta revertirla
                 if (idmediaafiliacion) {
                   try {
-                    await axios.delete('api/MediaAfiliacions/eliminarMFporID/'+ me.idMAD, configuracion);
+                    await me.$CAT.delete('api/MediaAfiliacions/eliminarMFporID/'+ me.idMAD, configuracion);
                     me.modalAdd = 0;
                     me.modaldocumento = false;
                   } catch (deleteError) {

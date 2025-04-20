@@ -1057,14 +1057,14 @@
                             let me=this;                            
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};                          
-                            axios.post('api/SolicitudesInteligencia/CrearAsignacion',{ 
+                            me.$PI.post('api/SolicitudesInteligencia/CrearAsignacion',{ 
                                 'solicitudInteligenciaId' : me.solicitudInteligenciaId,
                                 'moduloServicioId' : me.modulo.value 
                                                                                             
                             },configuracion).then(function(response){  
                                 me.$notify('La información se guardo correctamente !!!','success') 
 
-                                axios.put('api/SolicitudesInteligencia/Actualizar',{ 
+                                me.$PI.put('api/SolicitudesInteligencia/Actualizar',{ 
                                     'idSolicitudInteligencia' : me.solicitudInteligenciaId,
                                     'statusAutorizacion' : true, 
                                     'statusMensaje':'Asignado',
@@ -1120,7 +1120,7 @@
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};                          
                             
-                            axios.put('api/SolicitudesInteligencia/Actualizar',{ 
+                            me.$PI.put('api/SolicitudesInteligencia/Actualizar',{ 
                                 'idSolicitudInteligencia' : me.solicitudInteligenciaId,
                                 'statusAutorizacion' : false, 
                                 'statusMensaje':'Rechazado',
@@ -1175,7 +1175,7 @@
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
 
-            axios.get('api/SolicitudesInteligencia/ListarTodos',configuracion).then(function(response){
+          me.$PI.get('api/SolicitudesInteligencia/ListarTodos',configuracion).then(function(response){
                 //console.log(response);
                 me.solicitudes=response.data;
                 }).catch(err => { 

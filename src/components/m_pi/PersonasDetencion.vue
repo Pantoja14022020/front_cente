@@ -2536,7 +2536,7 @@
                             if(me.de_noInt == ''  || me.de_noInt == undefined)
                                 me.de_noInt = 0
                             
-                            axios.post('api/Detencion/Crear',{  
+                                me.$PI.post('api/Detencion/Crear',{  
                                 'rHechoId' : me.idrecho ,
                                 'personaId' : me.persona.value ,
                                 'nuc' : me.nucbusqueda ,
@@ -2560,7 +2560,7 @@
                                 'Pertenecnias': me.pertenenciasimputado
                             },configuracion).then(function(response){
                                 me.$notify('La información se guardo correctamente !!!','success') 
-                                axios.post('api/HistorialDetencion/CrearEntrada',{ 
+                                me.$PI.post('api/HistorialDetencion/CrearEntrada',{ 
                                         'DetencionId' : response.data.iddetencion,
                                         'StatusPasado': "Toma de datos",
                                         'StatuusNuevo': response.data.status,
@@ -2590,7 +2590,7 @@
                                     } 
                                 });
                                 if(me.tipodetencion.value == 1){
-                                    axios.post('api/EstatusCustodia/Crear',{ 
+                                    me.$PI.post('api/EstatusCustodia/Crear',{ 
                                          
                                         'DetencionId' : response.data.iddetencion,
                                         'Calle': me.de_calle,
@@ -2803,7 +2803,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Detencion/Listar',configuracion).then(function(response){
+          me.$PI.get('api/Detencion/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.detenidos=response.data;
                 }).catch(err => { 

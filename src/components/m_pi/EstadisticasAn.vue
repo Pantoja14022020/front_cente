@@ -2033,7 +2033,7 @@
                 me. entregado=0;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                        axios.get('api/PeritoAsignadoPI/Listarporidfecha/'+me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
+                me.$PI.get('api/PeritoAsignadoPI/Listarporidfecha/'+me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
                             //console.log(response);
                             me.total =0;
                             me.bdoperito=response.data;

@@ -216,7 +216,7 @@ export default {
       let header = { "Authorization": "Bearer " + this.$store.state.token }
       let configuracion = { headers: header }
       me.dialogos.opcionesBusqueda = false;
-      axios.post('api/RHechoes/BuscarCarpetasEnServidor/',
+      me.$CAT.post('api/RHechoes/BuscarCarpetasEnServidor/',
         {
           'distrito': '00000000-0000-0000-0000-000000000000',
           'nucg': me.infoBusqueda.nucg,
@@ -249,7 +249,7 @@ export default {
       console.log(info);
       let header = { "Authorization": "Bearer " + this.$store.state.token }
       let configuracion = { headers: header }
-      axios.post('api/Nucs/Eliminar/',
+      me.$CAT.post('api/Nucs/Eliminar/',
         {
           'infoBorrado': info.idBorrar,
           'tabla': info.tabla,
@@ -474,7 +474,7 @@ export default {
       let header = { "Authorization": "Bearer " + this.$store.state.token }
       let configuracion = { headers: header }
       
-      axios.put('api/RHechoes/ActualizarModuloyAgencia', {
+      me.$CAT.put('api/RHechoes/ActualizarModuloyAgencia', {
 
           'IdRHecho': this.rHechoId,
           'moduloServicioId': me.infoBusqueda.modulo,

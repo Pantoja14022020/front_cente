@@ -977,7 +977,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RDiligencias/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.diligencias = response.data;
@@ -1128,7 +1128,7 @@ export default {
         array.push({ nodistrito: x.nodistrito });
       });
       for (var i = 0; i < array.length; i++) {
-        axios
+        me.$CAT
           .get(
             "api/RDiligencias/ObtenernumeroMaximoporDistrito/" +
               array[i].nodistrito,
@@ -1336,7 +1336,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -1395,7 +1395,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
         .then(function (response) {
           personasArray = response.data;
@@ -1428,7 +1428,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var indiciosArray = [];
-      axios
+      me.$CAT
         .get("api/Indicios/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           indiciosArray = response.data;
@@ -1467,7 +1467,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId.value, configuracion)
         .then(function (response) {
           me.lt = response.data.lat;
@@ -1544,7 +1544,7 @@ export default {
               array.push({ nodistrito: x.nodistrito });
             });
             for (var i = 0; i < me.serviciopericialeId.length; i++) {
-              axios
+              me.$CAT
                 .post(
                   "api/RDiligencias/CrearPI",
                   {
@@ -2045,7 +2045,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {

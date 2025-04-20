@@ -1683,11 +1683,11 @@
             if (result) {   
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                    axios.get('api/PeritoAsignadoForaneas/Listarporidfecha/'+me.u_iddsp+'/'+me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
+                me.$SP.get('api/PeritoAsignadoForaneas/Listarporidfecha/'+me.u_iddsp+'/'+me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
                     me.peritosasignados=response.data;
-                        axios.get('api/PeritoAsignadoForaneas/PorModulo/'+me.u_iddsp+'/'+ me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
+                    me.$SP.get('api/PeritoAsignadoForaneas/PorModulo/'+me.u_iddsp+'/'+ me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
                         me.peritosasignadosmodulo=response.data;
-                            axios.get('api/PeritoAsignadoForaneas/PorAños/'+me.u_iddsp+'/'+ me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
+                        me.$SP.get('api/PeritoAsignadoForaneas/PorAños/'+me.u_iddsp+'/'+ me.fechai+"-01-01 00:00:00.0000000"+'/'+me.fechaf+"-12-31 23:23:59.0000000",configuracion).then(function(response){
                                 me.peritosasignadosfecha=response.data;
                                    
                                     var fin=0

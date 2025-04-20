@@ -1921,7 +1921,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/Informes/ListarporPeritoId/'+ item.idPeritoAsignadoPI,configuracion).then(function(response){
+            me.$PI.get('api/Informes/ListarporPeritoId/'+ item.idPeritoAsignadoPI,configuracion).then(function(response){
                 me.informestotales=response.data;
                 me.dialogoreiminfo = true;
             }).catch(err => { 
@@ -1966,7 +1966,7 @@
                         me.textoInforme2 ="";
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
-                        axios.get('api/Informes/ListarporPeritoIdParciales/'+ me.idPeritoAsignadoPI,configuracion).then(function(response){
+                        me.$PI.get('api/Informes/ListarporPeritoIdParciales/'+ me.idPeritoAsignadoPI,configuracion).then(function(response){
                             me.informes=response.data;
 
                             for(var i =0;i < me.informes.length;i++)
@@ -2004,7 +2004,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
 
-            axios.get('api/SolicitudesInteligencia/ValidarExistencia/'+ item.idPeritoAsignadoPI,configuracion).then(function(response){
+            me.$PI.get('api/SolicitudesInteligencia/ValidarExistencia/'+ item.idPeritoAsignadoPI,configuracion).then(function(response){
 
                 if(response.data.statusfound){
                     me.statusmensajesolicitud = "Consultar Estatus/Mensaje/Respuesta"
@@ -2050,7 +2050,7 @@
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar la información .',           
             function(){
 
-            axios.post('api/SolicitudesInteligencia/Crear',{  
+                me.$PI.post('api/SolicitudesInteligencia/Crear',{  
 
                 'peritoAsignadoPIId' : me.idPeritoAsignadoPI,
                 'mensaje' : me.mensajeapoyo,
@@ -2121,7 +2121,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/PeritoAsignadoPI/ListarporModulo/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/PeritoAsignadoPI/ListarporModulo/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     console.log(response.data);
                     me.bdoperito=response.data;
                 }).catch(err => { 
@@ -2343,7 +2343,7 @@
                                         
                                 me.$notify('La información se actualizo correctamente !!!','success')
                                 
-                                        axios.put('api/PeritoAsignadoPI/ActualizarConclu',{ 
+                                me.$PI.put('api/PeritoAsignadoPI/ActualizarConclu',{ 
                                         'idPeritoAsignadoPI': me.fidPeritoAsignado, 
                                         'conclusion': me.conclusion,          
                                         'respuesta': me.mensaje,             
@@ -2406,7 +2406,7 @@
                         'idRActosInvestigacion': item.rActosInvestigacionId,
                         'status': "Enproceso"                  
                     },configuracion).then(function(response){   
-                            axios.put('api/PeritoAsignadoPI/Actualizarultimostatus',{
+                        me.$PI.put('api/PeritoAsignadoPI/Actualizarultimostatus',{
 
                                 'idPeritoAsignadoPI' : item.idPeritoAsignadoPI
 
@@ -2464,7 +2464,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/Fotos/Listar/'+ item.rActosInvestigacionId,configuracion).then(function(response){
+            me.$PI.get('api/Fotos/Listar/'+ item.rActosInvestigacionId,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 
@@ -2506,7 +2506,7 @@
                                 nombreCarpeta = "C" + me.nuc.substr(1);
                                  me.GUID = me.generateUUID();
                              
-                                axios.post('api/Fotos/Post/'+nombreCarpeta+'/'+me.GUID,
+                                 me.$PI.post('api/Fotos/Post/'+nombreCarpeta+'/'+me.GUID,
                                     formData,
                                     {
                                     headers: {
@@ -2516,7 +2516,7 @@
                                 ).then(function(response){
                                     console.log('SUCCESS!!');
                                         console.log(response.data.ruta);
-                                        axios.post('api/Fotos/Crear',{  
+                                        me.$PI.post('api/Fotos/Crear',{  
 
                                             'rActoInvestigacionId' : me.idRActosInvestigacion,
                                             'tipoDocumento' : me.tiposdocumento.text,
@@ -2577,7 +2577,7 @@
             else
             textinfo = me.textoInforme2;
 
-            axios.post('api/Informes/Crear',{  
+            me.$PI.post('api/Informes/Crear',{  
 
                 'peritoAsignadoPIId' : me.idPeritoAsignadoPI,
                 'tipoInforme' : me.tipoinforme.value,

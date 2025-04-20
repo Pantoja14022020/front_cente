@@ -2046,7 +2046,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.put('api/EstatusCustodia/Actualizarhorallegada',{
+            me.$PI.put('api/EstatusCustodia/Actualizarhorallegada',{
                 'IdEstatusCustodia': me.idestatuscutodia,
                 'Horallegada': me.horallegada                  
             },configuracion).then(function(response){                          
@@ -2096,7 +2096,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             me.limpiar();
-                axios.get('api/EstatusCustodia/Listar/'+item.idDetencion,configuracion).then(function(response){
+            me.$PI.get('api/EstatusCustodia/Listar/'+item.idDetencion,configuracion).then(function(response){
                     //console.log(response);
                     me.statuscustodias = response.data;
                     me.nombredetenido = item.nompersona
@@ -2140,7 +2140,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             me.limpiar();
-                axios.get('api/EgresosTemporal/ListarporidDetencion/'+item.idDetencion,configuracion).then(function(response){
+            me.$PI.get('api/EgresosTemporal/ListarporidDetencion/'+item.idDetencion,configuracion).then(function(response){
                     //console.log(response);
                     me.rmotivo = response.data.motivo;
                     me.rhoraegreso = response.data.horaegreso;
@@ -2173,7 +2173,7 @@
             let configuracion= {headers : header};
             me.nombredetenido = item.nompersona
             me.limpiar();
-                axios.get('api/HistorialDetencion/ListarporIddtencion/'+item.idDetencion,configuracion).then(function(response){
+            me.$PI.get('api/HistorialDetencion/ListarporIddtencion/'+item.idDetencion,configuracion).then(function(response){
                     //console.log(response);
                     me.historialesestatus = response.data;
                     me.dialogohistorial = true;
@@ -2247,7 +2247,7 @@
                                 nombreCarpeta = "C" + me.nuc.substr(1);
                                  me.GUID = me.generateUUID();
                              
-                                axios.post('api/SubirArchivos/Post/'+nombreCarpeta+'/'+me.GUID,
+                                 me.$PI.post('api/SubirArchivos/Post/'+nombreCarpeta+'/'+me.GUID,
                                     formData,
                                     {
                                     headers: {
@@ -2257,7 +2257,7 @@
                                 ).then(function(response){
                                     console.log('SUCCESS!!');
                                         console.log(response.data.ruta);
-                                        axios.post('api/SubirArchivos/Crear',{  
+                                        me.$PI.post('api/SubirArchivos/Crear',{  
 
                                             'DetencionId' : me.idDetencion,
                                             'tipoDocumento' : me.tiposdocumento.text,
@@ -2309,7 +2309,7 @@
             let me = this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                axios.get('api/CMedicoPR/Listarporid/'+ item.personaId,configuracion).then(function(response){
+            me.$PI.get('api/CMedicoPR/Listarporid/'+ item.personaId,configuracion).then(function(response){
                     me.certificados=response.data;
                     me.nombrepersona = item.nompersona;
                     me.dialogocertificados = true;
@@ -2336,7 +2336,7 @@
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/SubirArchivos/Listar/'+ item.idDetencion,configuracion).then(function(response){
+            me.$PI.get('api/SubirArchivos/Listar/'+ item.idDetencion,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => { 
@@ -2379,12 +2379,12 @@
                 if (result) { 
 
                     if(me.status.value == 2){
-                    axios.put('api/Detencion/ActualizarTraslado',{
+                        me.$PI.put('api/Detencion/ActualizarTraslado',{
                             'IdDetencion': me.iddetenido,
                             'Status': me.status.text,
                             'FechaTraslado': me.generarfecha()                 
                         },configuracion).then(function(response){ 
-                            axios.post('api/HistorialDetencion/NuevoStatus',{ 
+                            me.$PI.post('api/HistorialDetencion/NuevoStatus',{ 
                                     'DetencionId' : me.iddetenido,
                                     'StatusPasado': me.statusactual,
                                     'StatuusNuevo': me.status.text,
@@ -2415,7 +2415,7 @@
                             });  
                             
                             
-                            axios.post('api/EstatusCustodia/Crear',{ 
+                            me.$PI.post('api/EstatusCustodia/Crear',{ 
 
                                 'DetencionId' : me.iddetenido,
                                 'Calle': '',
@@ -2497,13 +2497,13 @@
                         });
                     }else if(me.status.value == 9){
                         
-                        axios.put('api/Detencion/ActualizarLiberacion',{
+                        me.$PI.put('api/Detencion/ActualizarLiberacion',{
                             'IdDetencion': me.iddetenido,
                             'Status': me.status.text,
                             'FechaSalida': me.generarfecha(),
                             'AutoridadQO': me.quienordena                 
                         },configuracion).then(function(response){  
-                            axios.post('api/HistorialDetencion/NuevoStatus',{ 
+                            me.$PI.post('api/HistorialDetencion/NuevoStatus',{ 
                                 'DetencionId' : me.iddetenido,
                                 'StatusPasado': me.statusactual,
                                 'StatuusNuevo': me.status.text,
@@ -2557,11 +2557,11 @@
 
                     }else if(me.status.value == 3){
                         
-                        axios.put('api/Detencion/ActualizarStatus',{
+                        me.$PI.put('api/Detencion/ActualizarStatus',{
                             'IdDetencion': me.iddetenido,
                             'Status': me.status.text,                  
                         },configuracion).then(function(response){          
-                            axios.post('api/HistorialDetencion/NuevoStatus',{ 
+                            me.$PI.post('api/HistorialDetencion/NuevoStatus',{ 
                                 'DetencionId' : me.iddetenido,
                                 'StatusPasado': me.statusactual,
                                 'StatuusNuevo': me.status.text,
@@ -2592,7 +2592,7 @@
                             });                                              
                             me.$notify('La información se actualizo correctamente !!!','success')
                             
-                            axios.post('api/EgresosTemporal/Crear',{
+                            me.$PI.post('api/EgresosTemporal/Crear',{
                             'DetencionId': me.iddetenido,
                             'Motivo': me.motivo,
                             'Horaegreso': me.horaegreso,
@@ -2648,12 +2648,12 @@
                         });
 
                     } else if(me.statusactual == "Egreso temporal" && me.status.value == 1){
-                        axios.put('api/Detencion/ActualizarDetencionporegresotemporal',{
+                        me.$PI.put('api/Detencion/ActualizarDetencionporegresotemporal',{
                             'IdDetencion': me.iddetenido,
                             'Status': me.status.text, 
                                              
                         },configuracion).then(function(response){  
-                            axios.post('api/HistorialDetencion/NuevoStatus',{ 
+                            me.$PI.post('api/HistorialDetencion/NuevoStatus',{ 
                                 'DetencionId' : me.iddetenido,
                                 'StatusPasado': me.statusactual,
                                 'StatuusNuevo': me.status.text,
@@ -2706,11 +2706,11 @@
                         });
                     }else { 
                         
-                        axios.put('api/Detencion/ActualizarStatus',{
+                        me.$PI.put('api/Detencion/ActualizarStatus',{
                             'IdDetencion': me.iddetenido,
                             'Status': me.status.text,                  
                         },configuracion).then(function(response){   
-                            axios.post('api/HistorialDetencion/NuevoStatus',{ 
+                            me.$PI.post('api/HistorialDetencion/NuevoStatus',{ 
                                 'DetencionId' : me.iddetenido,
                                 'StatusPasado': me.statusactual,
                                 'StatuusNuevo': me.status.text,
@@ -2804,7 +2804,7 @@
                     me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar la información .',           
                     function(){
                         me.numeromaximo += 1
-                        axios.post('api/CMedicoPR/Crear',{  
+                        me.$PI.post('api/CMedicoPR/Crear',{  
                             'PersonaId' : me.personaid,
                             'Nuc' : me.nuc ,
                             'NOficio' : me.numerooficio,
@@ -2891,7 +2891,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Detencion/Listar',configuracion).then(function(response){
+          me.$PI.get('api/Detencion/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.detenidos=response.data;
                 }).catch(err => { 
@@ -2917,7 +2917,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/CMedicoPSR/ObtenernumeroMaximoporDistritoPr/'+ me.u_nodistrito,configuracion).then(function(response){
+            me.$PI.get('api/CMedicoPSR/ObtenernumeroMaximoporDistritoPr/'+ me.u_nodistrito,configuracion).then(function(response){
                 me.numeromaximo = response.data.numeroMaximo;
             }).catch(err => { 
                 if (err.response.status==400){

@@ -595,7 +595,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RActosInvestigacion/ObtenernumeroMaximoporDistrito/" +
             me.u_nodistrito,
@@ -628,7 +628,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/RActosInvestigacion/Listarporid/" + me.rHechoId,
           configuracion
@@ -817,7 +817,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid), me.informacionagencia();
@@ -966,7 +966,7 @@ export default {
           function () {
             me.numeromaximo.numeroMaximo++;
 
-            axios
+            me.$CAT
               .post(
                 "api/RActosInvestigacion/Crear",
                 {
@@ -996,7 +996,7 @@ export default {
                 me.idactoinve= response.data.idactoinve;
 
                 for (var i = 0; i < me.actoinvestigacion.length; i++) {
-                  axios
+                  me.$CAT
                     .post(
                       "api/RActosInvestigacion/Creardetalle",
                       {
@@ -1107,7 +1107,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {

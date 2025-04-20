@@ -211,7 +211,7 @@ export default {
       let me=this;
       let header={"Authorization" : "Bearer " + this.$store.state.token};
         let configuracion= {headers : header};
-            axios.get('api/PersonaDesap/ListarPorRHecho/'+ me.infoCarpeta.rHechoId,configuracion).then(function(response){
+        me.$CAT.get('api/PersonaDesap/ListarPorRHecho/'+ me.infoCarpeta.rHechoId,configuracion).then(function(response){
                 // console.log(response);
                 me.delitos = response.data;
             }).catch(err => {
@@ -241,7 +241,7 @@ export default {
       console.log(info);
       let header = { "Authorization" : "Bearer " + this.$store.state.token }
       let configuracion = { headers : header }
-      axios.post('api/'+info.servicio ,
+      me.$CAT.post('api/'+info.servicio ,
       { 
         'infoBorrado':info.idBorrar,
         'tabla':info.tabla,

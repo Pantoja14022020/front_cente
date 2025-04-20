@@ -890,7 +890,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/TrasladoYCustodias/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/TrasladoYCustodias/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.traslado=response.data;
                 }).catch(err => { 
@@ -950,7 +950,7 @@
             let configuracion= {headers : header};
             me.$validator.validate().then(result => {
             if (result) {
-            axios.put('api/TrasladoYCustodias/AsiganarUnidad',{
+              me.$PI.put('api/TrasladoYCustodias/AsiganarUnidad',{
                     'IdTrasladosYC': me.idtraslado,
                     'ModuloServicioId': me.modulo.value                  
                 },configuracion).then(function(response){                            

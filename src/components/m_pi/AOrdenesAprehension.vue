@@ -890,7 +890,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/OrdenAprension/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/OrdenAprension/Listar/' + me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.ordenes=response.data;
                 }).catch(err => { 
@@ -950,7 +950,7 @@
             let configuracion= {headers : header};
             me.$validator.validate().then(result => {
             if (result) {
-            axios.put('api/OrdenAprension/AsiganarUnidad',{
+              me.$PI.put('api/OrdenAprension/AsiganarUnidad',{
                     'IdOrdenAprension': me.idordenes,
                     'ModuloServicioId': me.modulo.value                  
                 },configuracion).then(function(response){                            

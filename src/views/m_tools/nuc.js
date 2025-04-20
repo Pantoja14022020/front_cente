@@ -222,7 +222,7 @@ export default {
       let header = { "Authorization" : "Bearer " + this.$store.state.token }
       let configuracion = { headers : header }
       me.dialogos.opcionesBusqueda = false;
-      axios.post('api/RHechoes/BuscarCarpetasPorDistrito/' ,
+      me.$CAT.post('api/RHechoes/BuscarCarpetasPorDistrito/' ,
       { 
         'IdDistrito':me.sesionInfo.u_iddistrito,
         'nucg':me.infoBusqueda.nucg,
@@ -263,7 +263,7 @@ export default {
       console.log(info);
       let header = { "Authorization" : "Bearer " + this.$store.state.token }
       let configuracion = { headers : header }
-      axios.post('api/'+info.servicio,
+      me.$CAT.post('api/'+info.servicio,
       { 
         'infoBorrado':info.idBorrar,
         'tabla':info.tabla,

@@ -1030,7 +1030,7 @@
                             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar la información .',           
                             function(){
                             me.numeromaximo += 1
-                            axios.post('api/CMedicoPSR/Crear',{  
+                            me.$PI.post('api/CMedicoPSR/Crear',{  
                                 'Nombre' : me.Nombre,
                                 'ApellidoP' : me.ApellidoP,
                                 'ApellidoM' : me.ApellidoM,
@@ -1097,7 +1097,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/CMedicoPSR/Listar',configuracion).then(function(response){
+          me.$PI.get('api/CMedicoPSR/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.certificados=response.data;
                 }).catch(err => { 
@@ -1123,7 +1123,7 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/CMedicoPSR/ObtenernumeroMaximoporDistrito/'+ me.u_nodistrito,configuracion).then(function(response){
+            me.$PI.get('api/CMedicoPSR/ObtenernumeroMaximoporDistrito/'+ me.u_nodistrito,configuracion).then(function(response){
                 me.numeromaximo = response.data.numeroMaximo;
             }).catch(err => { 
                 if (err.response.status==400){

@@ -1068,7 +1068,7 @@
                                 autoridadf= me.aunteautoridad.text
                                 else
                                 autoridadf = me.aunteautoridad2
-                            axios.post('api/ComparecenciaElemento/Crear',{  
+                                me.$PI.post('api/ComparecenciaElemento/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Comparecencia'  :me.comparecencia,
                                 'Elemento' :me.elemento,
@@ -1185,7 +1185,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/ComparecenciaElemento/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/ComparecenciaElemento/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.comparecencias=response.data;
                 }).catch(err => { 

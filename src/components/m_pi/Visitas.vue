@@ -1611,7 +1611,7 @@
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/PersonaVisita/Listar',configuracion).then(function(response){
+            me.$PI.get('api/PersonaVisita/Listar',configuracion).then(function(response){
                 me.visitas = response.data;
             }).catch(err => { 
                     if (err.response.status==400){
@@ -1636,7 +1636,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var sexoArray=[];
-            axios.get('api/Representante/DocRepresentanteslistarporid/'+ item.idRepresentante,configuracion).then(function(response){
+            me.$PI.get('api/Representante/DocRepresentanteslistarporid/'+ item.idRepresentante,configuracion).then(function(response){
                me.rutaconsulta =  response.data.ruta    
                me.tipo = response.data.tipoDocumento
                me.dialogimagen = true;            
@@ -1992,7 +1992,7 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var sexoArray=[];
-            axios.get('api/FPersona/Listarporid/'+ item.idPIPersonaVisita,configuracion).then(function(response){
+            me.$PI.get('api/FPersona/Listarporid/'+ item.idPIPersonaVisita,configuracion).then(function(response){
                me.rutaconsulta =  response.data.ruta    
                me.tipo = response.data.tipoDocumento
                me.dialogimagen = true;            
@@ -2164,13 +2164,13 @@
                     nombreCarpeta = "C" + me.nuc.substr(1);
                     me.GUID = me.generateUUID();
                                             
-                    axios.post('api/FPersona/Post/'+nombreCarpeta+'/'+me.GUID,formData,{
+                    me.$PI.post('api/FPersona/Post/'+nombreCarpeta+'/'+me.GUID,formData,{
                         headers: {
                         'Content-Type': 'multipart/form-data'
                             } 
                     },configuracion).then(function(response){
                     console.log('SUCCESS!!');
-                    axios.post('api/FPersona/Crear',{  
+                    me.$PI.post('api/FPersona/Crear',{  
 
                         'PIPersonaVisitaId' : me.idvisita,
                         'tipoDocumento' : me.docidentificacion2,
@@ -2230,7 +2230,7 @@
                         if(this.de_cp == undefined || this.de_cp == '') this.de_cp = 0
                         if(this.de_noInt == undefined || this.de_noInt == '') this.de_noInt = 0
 
-                                axios.post('api/PersonaVisita/Crear',{  
+                        me.$PI.post('api/PersonaVisita/Crear',{  
                                     
                                     //***************************** PERSONA*/ 
                                     'Nombre': me.nombres, 
@@ -2252,7 +2252,7 @@
                                     me.docidentificacion2 = me.docidentificacion;
                                     me.idvisita = response.data.idpersonavisita;
                                     me.$notify('La información se guardo correctamente !!!','success') 
-                                    axios.post('api/Direccion/Crear',{
+                                    me.$PI.post('api/Direccion/Crear',{
 
                                         'PIPersonaVisitaId': me.idvisita,
                                         'Calle': me.de_calle,
@@ -2326,7 +2326,7 @@
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            axios.get('api/Direccion/Listar/'+ item.idPIPersonaVisita,configuracion).then(function(response){  
+            me.$PI.get('api/Direccion/Listar/'+ item.idPIPersonaVisita,configuracion).then(function(response){  
 
                 me.center2.lat = + response.data.latitud
                 me.center2.lng = + response.data.longitud  

@@ -1686,11 +1686,11 @@
                 if((me.fechaInicio.substring(0,4) == me.fechaFin.substring(0,4))){  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                    axios.get('api/PeritoAsignadoForaneas/Listarporidfecha/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                me.$SP.get('api/PeritoAsignadoForaneas/Listarporidfecha/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                     me.peritosasignados=response.data;
-                        axios.get('api/PeritoAsignadoForaneas/PorModulo/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                    me.$SP.get('api/PeritoAsignadoForaneas/PorModulo/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                         me.peritosasignadosmodulo=response.data;
-                            axios.get('api/PeritoAsignadoForaneas/PorAño/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
+                        me.$SP.get('api/PeritoAsignadoForaneas/PorAño/'+me.u_iddsp+'/'+ me.fechaInicio +" 00:00:00"+'/'+me.fechaFin+" 23:59:59",configuracion).then(function(response){
                                 me.peritosasignadosfecha=response.data;
                                    
                                     var fin=0

@@ -726,7 +726,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           (me.agenciaid = response.data.agenciaid),
@@ -787,7 +787,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       console.log(me.rHechoId);
-      axios
+      me.$CAT
         .get(
           "api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,
           configuracion
@@ -836,7 +836,7 @@ export default {
       let configuracion = { headers: header };
       var personasArray = [];
       var edad;
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data);
@@ -879,7 +879,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/Listarpersona/" + me.personaId.value, configuracion)
         .then(function (response) {
           //COMPRUEBA QUE NO PERTENERZA A UN RANGO DE EDAD DE UN MENOR
@@ -922,7 +922,7 @@ export default {
           me.rfc = response.data.rfc;
           me.docacredita = response.data.docPoderNotarial;
           console.log(response.data);
-          axios
+          me.$CAT
             .get("api/RAPs/ListarDP/" + me.personaId.value, configuracion)
             .then(function (response) {
               me.direccionpersonal =
@@ -991,7 +991,7 @@ export default {
       let configuracion = { headers: header };
       var aux = "";
       me.representantesf = "";
-      axios
+      me.$CAT
         .get(
           "api/Representante/idHechoyActivos/" +
             me.rHechoId +
@@ -1316,7 +1316,7 @@ export default {
             let header = { Authorization: "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
             var representante;
-            axios
+            me.$CAT
               .get(
                 "api/Representante/RepresentanteslistarporPersonaParticular/" +
                   me.personaId.value,
@@ -1673,7 +1673,7 @@ export default {
             let header = { Authorization: "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
             var representante;
-            axios
+            me.$CAT
               .get(
                 "api/Representante/Representanteprimero/" + me.personaId.value,
                 configuracion
@@ -1984,7 +1984,7 @@ export default {
             let header = { Authorization: "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
 
-            axios
+            me.$CAT
               .get(
                 "api/Representante/RepresentanteslistarporPersonaCoadyuvante/" +
                   me.personaId.value,
@@ -2264,7 +2264,7 @@ export default {
             let header = { Authorization: "Bearer " + this.$store.state.token };
             let configuracion = { headers: header };
 
-            axios
+            me.$CAT
               .get(
                 "api/Representante/RepresentanteslistarporPersonaCoadyuvante/" +
                   me.personaId.value,
@@ -3460,7 +3460,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/AmpDecs/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           // console.log(response);
@@ -3498,10 +3498,10 @@ export default {
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información ",
         function () {
-          axios
+          me.$CAT
             .get("api/AmpDecs/PrimeraEntrevista/" + me.rHechoId, configuracion)
             .then(function (response) {
-              axios
+              me.$CAT
                 .post(
                   "api/AmpDecs/Crear",
                   {
@@ -3636,7 +3636,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -3688,7 +3688,7 @@ export default {
 
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           console.log(response.data);
@@ -3756,7 +3756,7 @@ export default {
       } else {
         me.rnh1 = true;
       }
-      axios
+      me.$CAT
         .get("api/RAPs/Listarpersona/" + me.idpersona, configuracion)
         .then(function (response) {
           console.log(response.data);
@@ -3825,7 +3825,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,
           configuracion
@@ -3879,7 +3879,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           console.log(response.data);

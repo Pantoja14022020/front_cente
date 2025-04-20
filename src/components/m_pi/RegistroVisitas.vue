@@ -1039,7 +1039,7 @@
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
           var DetenidosArrays;
-                axios.get('api/Detencion/Listar',configuracion).then(function(response){
+          me.$PI.get('api/Detencion/Listar',configuracion).then(function(response){
                         DetenidosArrays = response.data;
                         DetenidosArrays.map(function(x){
                             me.detenidos.push({text: x.nompersona ,value: x.idDetencion, nuc: x.nuc, mpasignado: x.mpAsignado , fechaingreso:x.fechaIngreso, delito:x.delito});
@@ -1067,7 +1067,7 @@
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
           var rvisitasArrays;
-                axios.get('api/PersonaVisita/Listar',configuracion).then(function(response){
+          me.$PI.get('api/PersonaVisita/Listar',configuracion).then(function(response){
                         rvisitasArrays = response.data;
                         rvisitasArrays.map(function(x){
                             me.rvisitas.push({text: x.nombre +" "+ x.apellidoP+" "+ x.apellidoM,value: x.idPIPersonaVisita, edad:x.edad, ocupacion:x.ocupacion,telefono: x.telefono1});
@@ -1096,7 +1096,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/Visita/Crear',{  
+                            me.$PI.post('api/Visita/Crear',{  
                                 'PIPersonaVisitaId' : me.rvisita.value ,
                                 'DetencionId' : me.detenido.value ,
                                 'FechayHora' : me.generarfecha() ,
@@ -1143,7 +1143,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
 
-                axios.put('api/Visita/ActualizarhrSalida',{
+                me.$PI.put('api/Visita/ActualizarhrSalida',{
                         'IdVisita': item.idVisita,
                         'HSLocutorio': me.generarfecha()
 
@@ -1184,7 +1184,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/Visita/Listar',configuracion).then(function(response){
+          me.$PI.get('api/Visita/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.visitas=response.data;
                 }).catch(err => { 

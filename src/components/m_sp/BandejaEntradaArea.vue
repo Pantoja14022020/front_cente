@@ -827,7 +827,7 @@ export default {
             me.u_rdiligencia = item.idRDiligencias;
            
           
-          axios.get('api/PeritoAsignado/Listarporrdiligencias/'+me.u_rdiligencia ,configuracion).then(function(response){
+          me.$SP.get('api/PeritoAsignado/Listarporrdiligencias/'+me.u_rdiligencia ,configuracion).then(function(response){
                     
                     me.conclusion2= response.data;
 
@@ -1131,7 +1131,7 @@ export default {
             if (result) {
                 if(this.editedIndex == -1){
 
-                        axios.get('api/PeritoAsignado/Listar',configuracion).then(function(response){
+                  me.$SP.get('api/PeritoAsignado/Listar',configuracion).then(function(response){
                         //console.log(response);
                         me.bdoperito=response.data;
 
@@ -1141,7 +1141,7 @@ export default {
                         }
                         nummax++;
 
-                        axios.post('api/PeritoAsignado/Crear',{
+                        me.$SP.post('api/PeritoAsignado/Crear',{
                         'moduloServicioId' : me.modulo.value,
                         'rDiligenciasId': me.rDiligenciasId,
                         'respuesta': "na",

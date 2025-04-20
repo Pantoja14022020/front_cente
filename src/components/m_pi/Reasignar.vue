@@ -886,7 +886,7 @@
                 let me = this;  
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
-                axios.get('api/PeritoAsignadoPI/Listarporstatus', configuracion).then(function(response) {
+                me.$PI.get('api/PeritoAsignadoPI/Listarporstatus', configuracion).then(function(response) {
                     //console.log(response.data);
                     me.peritosasignados = response.data;
                 }).catch(err => { 
@@ -945,7 +945,7 @@
                 me.$validator.validate().then(result => {
                     if (result) {
                         if (this.editedIndex == -1) {
-                            axios.put('api/PeritoAsignadoPI/Actualizarmodulo',{  
+                          me.$PI.put('api/PeritoAsignadoPI/Actualizarmodulo',{  
                                 'idPeritoAsignadoPI': me.idPeritoAsignado,
                                 'moduloServicioId' : me.modulo.value,
                                 'Motivo': me.motivoreazignacion

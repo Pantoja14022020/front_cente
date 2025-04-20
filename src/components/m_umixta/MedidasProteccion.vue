@@ -1050,7 +1050,7 @@ export default {
       me.generarQR(me.docMedidasProt,me.nuc,item.usuario,item.fechasys,item.idMProteccion);
 
       me.nomedida = [];
-      axios
+      me.$CAT
         .get(
           "api/MedidasProteccion/ListarNoMedidas/" + item.idMProteccion,
           configuracion
@@ -1110,7 +1110,7 @@ export default {
 
         //API PARA VICTIMAS
         (me.victima = []);
-      axios
+        me.$CAT
         .get(
           "api/RAPs/ListarVictimasM/" +
             me.rAtencionId +
@@ -1147,7 +1147,7 @@ export default {
         }),
         //API PARA IMPUTADOS
         (me.imputado = []);
-      axios
+        me.$CAT
         .get(
           "api/RAPs/ListarInputadosM/" +
             me.rAtencionId +
@@ -1185,7 +1185,7 @@ export default {
         }),
         //API PARA DELITOS
         (me.delito = []);
-      axios
+        me.$CAT
         .get(
           "api/RDHs/ListarPorHechoDE/" + me.rHechoId + "/" + item.idMProteccion,
           configuracion
@@ -1260,7 +1260,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           console.log(response.data);
@@ -2613,7 +2613,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/MedidasProteccion/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.medidasproteccions = response.data;
@@ -2660,7 +2660,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodosVic/" + me.rAtencionId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -2673,7 +2673,7 @@ export default {
             contador++;
           });
 
-          axios
+          me.$CAT
             .get("api/RAPs/ListarTodosImp/" + me.rAtencionId, configuracion)
             .then(function (response) {
               //console.log(response.data)
@@ -2733,7 +2733,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var delitosArray = [];
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -2844,7 +2844,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
           me.rBreve = response.data.rBreve;
@@ -2991,7 +2991,7 @@ export default {
           "Esperando confirmación",
           "Estas seguro de  que deseas guardar la información ",
           function () {
-            axios
+            me.$CAT
               .post(
                 "api/MedidasProteccion/Crear",
                 {
@@ -3046,7 +3046,7 @@ export default {
                 );
 
                 me.nomedida.forEach(function (x) {
-                  axios
+                  me.$CAT
                     .post(
                       "api/MedidasProteccion/CrearNomedida",
                       {
@@ -3245,7 +3245,7 @@ export default {
           "Esperando confirmación",
           "Estas seguro de  que deseas actualizar la información ",
           function () {
-            axios
+            me.$CAT
               .delete(
                 "api/MedidasProteccion/Eliminar/" + me.idMProteccion,
                 configuracion
@@ -3277,7 +3277,7 @@ export default {
                 }
               });
 
-            axios
+              me.$CAT
               .put(
                 "api/MedidasProteccion/Actualizar",
                 {
@@ -3310,7 +3310,7 @@ export default {
                 );
 
                 me.nomedida.forEach(function (x) {
-                  axios
+                  me.$CAT
                     .post(
                       "api/MedidasProteccion/CrearNomedida",
                       {
@@ -3400,7 +3400,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
-      axios
+      me.$CAT
         .post(
           "api/RegistroTableroI/Crear",
           {
@@ -3446,7 +3446,7 @@ export default {
       let configuracion = { headers: header };
       me.$validator.validateAll("datosampliacion").then((result) => {
         if (result) {
-          axios
+          me.$CAT
             .put(
               "api/MedidasProteccion/ActualizarAmpliacion",
               {
@@ -3496,7 +3496,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/MedidasProteccion/ListarNoMedidas/" + item.idMProteccion,
           configuracion
@@ -3529,7 +3529,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get(
           "api/MedidasProteccion/ListarNoMedidas/" + item.idMProteccion,
           configuracion

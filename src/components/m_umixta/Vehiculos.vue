@@ -1590,7 +1590,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/Vehiculos/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response);
@@ -1709,7 +1709,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RAPs/ListarDP/" + me.denunciante.value2, configuracion)
         .then(function (response) {
           me.domiciliodenunciante =
@@ -1751,7 +1751,7 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/RHechoes/ListarPorId/" + me.rHechoId, configuracion)
         .then(function (response) {
 
@@ -1820,7 +1820,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var delitoaray = [];
-      axios
+      me.$CAT
         .get(
           "api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,
           configuracion
@@ -2033,7 +2033,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var delitosArray = [];
-      axios
+      me.$CAT
         .get("api/RDHs/ListarPorHecho/" + me.rHechoId, configuracion)
         .then(function (response) {
           //console.log(response.data)
@@ -2069,7 +2069,7 @@ export default {
       let configuracion = { headers: header };
       var contador = 0;
       var personasArray = [];
-      axios
+      me.$CAT
         .get("api/RAPs/ListarTodosVic/" + me.rAtencionId, configuracion)
         .then(function (response) {
           personasArray = response.data;
@@ -2120,7 +2120,7 @@ export default {
                       }
           if (this.editedIndex == -1) {
 
-            axios
+            me.$CAT
               .post(
                 "api/Vehiculos/Crear",
                 {
@@ -2199,7 +2199,7 @@ export default {
                 }
               });
           } else {
-            axios
+            me.$CAT
               .put(
                 "api/Vehiculos/Actualizar",
                 {
@@ -2329,7 +2329,7 @@ export default {
       me.dialogpictures = true;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      axios
+      me.$CAT
         .get("api/ArchivoVehiculos/Listar/" + item.idVehiculo, configuracion)
         .then(function (response) {
           //console.log(response);
@@ -2368,7 +2368,7 @@ export default {
             nombreCarpeta = "C" + me.nuc.substr(1);
             me.GUID = me.generateUUID();
 
-            axios
+            me.$CAT
               .post(
                 "api/ArchivosMediaAfiliacion/Post/" +
                   nombreCarpeta +
@@ -2385,7 +2385,7 @@ export default {
               .then(function (response) {
                 console.log("SUCCESS!!");
                 console.log(response.data.ruta);
-                axios
+                me.$CAT
                   .post(
                     "api/ArchivoVehiculos/Crear",
                     {

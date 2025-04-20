@@ -202,7 +202,7 @@ export default {
       let me=this;
       let header={"Authorization" : "Bearer " + this.$store.state.token};
         let configuracion= {headers : header};
-            axios.get('api/Raps/ListarTodos/'+ me.infoCarpeta.rAtencionId,configuracion).then(function(response){
+        me.$CAT.get('api/Raps/ListarTodos/'+ me.infoCarpeta.rAtencionId,configuracion).then(function(response){
                 me.carpetas = response.data;
             }).catch(err => {
                 if (err.response.status==400){
@@ -230,7 +230,7 @@ export default {
       console.log(info);
       let header = { "Authorization" : "Bearer " + this.$store.state.token }
       let configuracion = { headers : header }
-      axios.post('api/'+info.servicio ,
+      me.$CAT.post('api/'+info.servicio ,
       { 
         'infoBorrado':info.idBorrar,
         'tabla':info.tabla,

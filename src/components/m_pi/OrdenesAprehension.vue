@@ -1051,7 +1051,7 @@
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            axios.post('api/OrdenAprension/Crear',{  
+                            me.$PI.post('api/OrdenAprension/Crear',{  
                                 'ModuloServicioId' :me.u_idmoduloservicio,
                                 'Juzgado'  :me.juzgado.text,
                                 'OficialiaDPartes' :me.oficialiapartesdirecta,
@@ -1126,7 +1126,7 @@
           let me=this;  
           let header={"Authorization" : "Bearer " + this.$store.state.token};
           let configuracion= {headers : header};
-                axios.get('api/OrdenAprension/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$PI.get('api/OrdenAprension/Listar/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     //console.log(response);
                     me.OrdenAprension=response.data;
                 }).catch(err => { 

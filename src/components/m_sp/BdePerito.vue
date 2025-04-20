@@ -1423,7 +1423,7 @@ import pdf from 'vue-pdf'
           let configuracion= {headers : header};
           me.nucf = [];
        
-                axios.get('api/PeritoAsignado/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
+          me.$SP.get('api/PeritoAsignado/Listarporid2/'+ me.u_idmoduloservicio,configuracion).then(function(response){
                     console.log(response);
                     me.bdoperito=response.data;
 
@@ -1528,7 +1528,7 @@ import pdf from 'vue-pdf'
                             fecha = "na";
                         } else fecha = me.generarfecha();
                         me.$notify('La información se actualizo correctamente !!!', 'success')
-                            axios.put('api/PeritoAsignado/ActualizarConclu', {
+                        me.$SP.put('api/PeritoAsignado/ActualizarConclu', {
                             'idPeritoAsignado': me.fidPeritoAsignado,
                             'conclusion': me.conclusion,
                             'fechaFinalizado':fecha
@@ -1585,7 +1585,7 @@ import pdf from 'vue-pdf'
                         'idRDiligencias': item.rDiligenciasId,
                         'statusRespuesta': "Enproceso"
                     },configuracion).then(function(response){
-                            axios.put('api/PeritoAsignado/Actualizarultimostatus',{
+                        me.$SP.put('api/PeritoAsignado/Actualizarultimostatus',{
                                 'idPeritoAsignado' : item.idPeritoAsignado
                             },configuracion).then(function(response){
                                 me.$notify('La información se actualizó correctamente !!!','success')
@@ -1667,7 +1667,7 @@ import pdf from 'vue-pdf'
             me.dialogpictures = true;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-                    axios.get('api/DocsDiligencias/Listar/'+ item.rDiligenciasId,configuracion).then(function(response){
+            me.$SP.get('api/DocsDiligencias/Listar/'+ item.rDiligenciasId,configuracion).then(function(response){
                         //console.log(response);
                         me.archivos=response.data;
                     }).catch(err => {
@@ -1719,7 +1719,7 @@ import pdf from 'vue-pdf'
                     nombreCarpeta = "C" + me.numnuc.value.substr(1);
                     me.GUID = me.generateUUID();
                     //
-                    axios.post('api/DocsDiligencias/Post/'+nombreCarpeta+'/'+me.GUID,
+                    me.$SP.post('api/DocsDiligencias/Post/'+nombreCarpeta+'/'+me.GUID,
                         formData,
                         {
                         headers: {
@@ -1737,7 +1737,7 @@ import pdf from 'vue-pdf'
                                 servicios += "; ";
                             
                         }
-                        axios.post('api/DocsDiligencias/Crear',{    
+                        me.$SP.post('api/DocsDiligencias/Crear',{    
                             'tipoDocumento' : me.tiposdocumento.text,
                             'descripcionDocumento' : me.descripciondocumento,
                             'fechaRegistro' : me.generarfecha(),
@@ -1787,7 +1787,7 @@ import pdf from 'vue-pdf'
                     formData.append('file', me.archivoFile);
                     nombreCarpeta = "C" + me.numnuc.value.substr(1);
                     //
-                    axios.post('api/DocsDiligencias/Post/'+nombreCarpeta+'/'+me.archivoName,
+                    me.$SP.post('api/DocsDiligencias/Post/'+nombreCarpeta+'/'+me.archivoName,
                         formData,
                         {
                         headers: {
@@ -1801,7 +1801,7 @@ import pdf from 'vue-pdf'
                         me.rutarchivo = nombreCarpeta + '/'+me.archivoName;
                         //Inicia generación de firma electronica
                         //
-                        axios.get('api/PeritoAsignado/1', {params: {
+                        me.$SP.get('api/PeritoAsignado/1', {params: {
                             pwdfirma : me.pwdfirma,
                             hashregistro : me.GUID,
                             curp : me.curp,
