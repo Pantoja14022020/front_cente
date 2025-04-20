@@ -14,6 +14,8 @@ pull_from_central_district:
     - echo "$REMOTE_HOST"
     - echo "$REMOTE_USER"
     - ssh-keyscan -H "$REMOTE_HOST" >> ~/.ssh/known_hosts
+    - echo "Probando conexión SSH..."
+    - ssh -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" "echo 'Conexión SSH exitosa'"
     - ssh -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" "cd 'C:\Users\Administrator\Desktop\centenario' && git pull origin daniel"
 build_project:
   stage: build
