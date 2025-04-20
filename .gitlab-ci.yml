@@ -6,16 +6,14 @@ pull_from_central_district:
   image: alpine:latest
   stage: pull_changes
   before_script:
-    - apk add --no-cache openssh
-    - mkdir -p ~/.ssh
-    - echo "$PRIVATE_KEY_SSH" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo "$REMOTE_HOST"
-    - echo "$REMOTE_USER"
-    - ssh-keyscan -H "$REMOTE_HOST" >> ~/.ssh/known_hosts
+    - apk add --no-cache curl bash iptables wireguard-tools
+    - curl -fsSL https://pkgs.tailscale.com/stable/tailscale_1.66.4_amd64.tgz -o tailscale.tgz
+    - tar xzf tailscale.tgz
+    - mkdir -p /var/run/tailscale
+    - ./tailscale up --authkey "$TAILSCALE_AUTHKEY" --hostname ci-runner --accept-routes --ssh
   script:
-    - echo "🔐 Probando conexión SSH..."
-    - ssh -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" "echo ✅ Conexión SSH exitosa desde GitLab"
+    - echo "Conectado a red de Tailscale"
+    - ping -c 3 100.118.242.44
 build_project:
   stage: build
   image: node:16
