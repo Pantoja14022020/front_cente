@@ -9,7 +9,7 @@ pull_from_central_district:
     - apk add --no-cache openssh
   script:
     - mkdir -p ~/.ssh
-    - echo "$GITLAB_SSH_KEY" > ~/.ssh/id_rsa
+    - echo "$PRIVATE_KEY_SSH" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo "$REMOTE_HOST"
     - echo "$REMOTE_USER"
