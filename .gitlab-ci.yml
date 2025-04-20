@@ -16,7 +16,8 @@ pull_from_central_district:
   script:
     - echo "Conectado a red de Tailscale"
     - ping -c 3 100.118.242.44
-    - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 'cd "C:\Users\Administrator\Desktop\centenario" && git pull origin daniel'
+    - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 ^
+      'cd "C:\Users\Administrator\Desktop\centenario" && git remote set-url origin https://daniel:${CI_GITLAB_TOKEN}@gitlab.com/norte70/pgjeh/centenario.git && git pull origin daniel'
 build_project:
   stage: build
   image: node:16
