@@ -9,6 +9,7 @@ pull_from_central_district:
     - apk add --no-cache curl bash iptables wireguard-tools
     - curl -fsSL https://pkgs.tailscale.com/stable/tailscale_1.66.4_amd64.tgz -o tailscale.tgz
     - tar xzf tailscale.tgz
+    - ls -la
     - mkdir -p /var/run/tailscale
     - ./tailscale up --authkey "$TAILSCALE_AUTHKEY" --hostname ci-runner --accept-routes --ssh
   script:
