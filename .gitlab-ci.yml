@@ -6,8 +6,7 @@ pull_from_central_district:
   image: alpine:latest
   stage: pull_changes
   before_script:
-    - apk add --no-cache curl bash iptables wireguard-tools
-    - apk add --no-cache curl bash iptables wireguard-tools openssh-client
+    - apk add --no-cache curl bash iptables wireguard-tools openssh-client sshpass
     - curl -fsSL https://pkgs.tailscale.com/stable/tailscale_1.66.4_amd64.tgz -o tailscale.tgz
     - tar xzf tailscale.tgz
     - cd tailscale_1.66.4_amd64
@@ -17,7 +16,7 @@ pull_from_central_district:
   script:
     - echo "Conectado a red de Tailscale"
     - ping -c 3 100.118.242.44
-    - ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 'echo "Este es el mensaje que quiero guardar." > "C:\Users\Administrator\Desktop\centenario\mensaje.txt"'
+    - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 'echo "Este es el mensaje que quiero guardar." > "C:\Users\Administrator\Desktop\centenario\mensaje.txt"'
     - echo "Archivo mensaje.txt creado en la máquina Windows"
 build_project:
   stage: build
