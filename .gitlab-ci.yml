@@ -17,7 +17,7 @@ pull_from_central_district:
     - echo "Conectado a red de Tailscale"
     - ping -c 3 100.118.242.44
     - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 'echo "Este es el mensaje que quiero guardar." > "C:\Users\Administrator\Desktop\centenario\mensaje.txt"'
-    - echo "Archivo mensaje.txt creado en la máquina Windows"
+    - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 'cd "C:\Users\Administrator\Desktop\centenario" && git pull origin daniel'
 build_project:
   stage: build
   image: node:16
