@@ -1,6 +1,20 @@
 stages:
+  - pull_changes
   - build
   - deploy
+pull_from_central_district:
+  stage: pull_changes
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$GITLAB_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$REMOTE_HOST" >> ~/.ssh/known_hosts
+    - ssh $REMOTE_USER@$REMOTE_HOST "cd C:\Users\Administrator\Desktop\centenario && git pull origin daniel"
+  only:
+    - tags
 build_project:
   stage: build
   image: node:16
