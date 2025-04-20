@@ -14,8 +14,10 @@ pull_from_central_district:
     - ./tailscaled &
     - ./tailscale up --authkey "$TAILSCALE_AUTHKEY" --hostname ci-runner --accept-routes --ssh
   script:
-    - sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44 ^
-      "powershell -Command \"cd 'C:\Users\Administrator\Desktop\centenario'; git remote set-url origin https://daniel:${CI_GITLAB_TOKEN}@gitlab.com/norte70/pgjeh/centenario.git; git pull origin daniel\""
+    - >
+      sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44
+      "cd C:\Users\Administrator\Desktop\centenario & git remote set-url origin https://daniel:${CI_GITLAB_TOKEN}@gitlab.com/norte70/pgjeh/centenario.git & git pull origin daniel"
+
 
 
 build_project:
