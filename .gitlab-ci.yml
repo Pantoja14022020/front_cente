@@ -11,6 +11,7 @@ pull_from_central_district:
     - tar xzf tailscale.tgz
     - cd tailscale_1.66.4_amd64
     - mkdir -p /var/run/tailscale
+    - ./tailscaled &
     - ./tailscale up --authkey "$TAILSCALE_AUTHKEY" --hostname ci-runner --accept-routes --ssh
   script:
     - echo "Conectado a red de Tailscale"
