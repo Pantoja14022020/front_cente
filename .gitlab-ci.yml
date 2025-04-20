@@ -3,11 +3,9 @@ stages:
   - build
   - deploy
 pull_from_central_district:
-  stage: pull_changes
   image: alpine:latest
+  stage: pull_changes
   before_script:
-    - apk add --no-cache openssh
-  script:
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - echo "$PRIVATE_KEY_SSH" > ~/.ssh/id_rsa
@@ -15,7 +13,9 @@ pull_from_central_district:
     - echo "$REMOTE_HOST"
     - echo "$REMOTE_USER"
     - ssh-keyscan -H "$REMOTE_HOST" >> ~/.ssh/known_hosts
-    - ssh "$REMOTE_USER@$REMOTE_HOST" echo "conexión exitosa"
+  script:
+    - echo "🔐 Probando conexión SSH..."
+    - ssh -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_HOST" "echo ✅ Conexión SSH exitosa desde GitLab"
 build_project:
   stage: build
   image: node:16
