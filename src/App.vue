@@ -2,6 +2,7 @@
 
   <v-app class="app-fontstyle">
     <v-toolbar app class="elevation-2 d-flex align-center" style="box-shadow: none !important; background-color: #641529;" >
+      <v-icon @click.stop="drawer = !drawer; updateDrawer()" style="margin-right: 1rem; color: white">menu</v-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span style="letter-spacing: 0.12rem; color: white; font-weight: 300;">SISTEMA CENTENARIO</span>
       </v-toolbar-title>
@@ -14,7 +15,7 @@
     </v-toolbar>
 
     <v-content>
-      <component :is="currentDrawer"/>
+      <component v-if="drawer" :is="currentDrawer"/>
       <router-view></router-view>
     </v-content>
     
@@ -42,6 +43,7 @@
   import keycloak from './auth/keycloak'
   import umixtaNavDrawer from "@/components/m_umixta/umixtaNavDrawer.vue";
   import ConfiguracionNavDrawer from "@/components/m_configuracion/ConfiguracionNavDrawer.vue";
+  import toolsNavDrawer from "@/components/m_tools/toolsNavDrawer.vue";
   export default 
   {
     name: "App",
@@ -50,7 +52,7 @@
 
     },
     
-    data: () => ({ horas: 0, minutos: 0, segundos: 0, error: null }),
+    data: () => ({drawer: true, horas: 0, minutos: 0, segundos: 0, error: null }),
     
     mounted() {
       this.error=null;
@@ -90,7 +92,9 @@
       },
       logout() {
         keycloak.logout({ redirectUri: URI_LOGOUT_KEYCLOAK });
-      }
+      },
+      updateDrawer(){
+        this.$store.commit('setDrawer', !this.$store.state.drawer);}
     },
 
     computed: 
@@ -100,9 +104,14 @@
 
         if (path.startsWith('/umixta')) {
           return umixtaNavDrawer
-        } else if (path.startsWith('/Configuracion')) {
+        }
+        else if (path.startsWith('/Configuracion')) {
           return ConfiguracionNavDrawer
-        }else {
+        }
+        else if (path.startsWith('/tools')) {
+          return toolsNavDrawer
+        }
+        else {
           return null
         }
       },

@@ -1350,7 +1350,7 @@
       return this.modulointerno
     },
     drawer(){
-            return this.$store.drawer 
+            return this.$store.state.drawer
         }
     },
     

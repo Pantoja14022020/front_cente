@@ -2044,7 +2044,7 @@ export default {
         return this.$store.state.usuario.usuario;
         },
         drawer(){
-        return this.$store.drawer 
+        return this.$store.state.drawer
         }
     },
     data: function () {

@@ -1,5 +1,5 @@
 <template>
-    <v-layout  align-start> 
+    <v-layout  align-start>
 
         <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary"  >
         <div class="text-xl-center text-md-center text-xs-center my-4">
@@ -783,7 +783,7 @@
                 return this.$store.state.usuario.email;
             },
             drawer(){
-                return this.$store.drawer 
+                return this.$store.state.drawer
             }
         },
 

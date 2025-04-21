@@ -75,9 +75,9 @@
           </v-card>
       </v-menu>
     </v-toolbar>-->
-      
-      
-    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+
+
+    <!--<v-navigation-drawer  app   v-if="logueado" class="primary"  >
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
@@ -91,10 +91,10 @@
             <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
           </v-list-tile>
         </template>
-        <!--MENU LATERAL-->   
+
         <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esRecepcion || esFacilitador || esFacilitadorMixto">
         
-          <!-- VERSION POR BD-->
+
           <v-list-group
             v-if="$store.state.menu"
             v-for="seccion in $store.state.menu"
@@ -125,9 +125,9 @@
             </v-list-tile>
           </v-list-group>
         </template>
-        <!--FIN DE MENU LATERAL-->
+        //FIN DE MENU LATERAL
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
     
   <v-content class="grey lighten-4" style="padding: 0;">
       <v-container  fluid  >
@@ -221,7 +221,7 @@ export default {
             Loader:true
         }
       },
-    created: function() {  
+    created: function() {
 
       let me = this;
         if(me.$store.state.token== null)

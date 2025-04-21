@@ -1760,7 +1760,7 @@
                 return this.$store.state.usuario.email;
             },
             drawer(){
-                return this.$store.drawer 
+                return this.$store.state.drawer
             }
         },
     watch: {

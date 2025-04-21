@@ -527,7 +527,7 @@ var pdfFonts = require('pdfmake/build/vfs_fonts.js');
         return this.modulointerno
       },
       drawer(){
-            return this.$store.drawer 
+            return this.$store.state.drawer
         }
     },
     watch: {

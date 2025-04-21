@@ -138,7 +138,7 @@ export default {
       me.$alert('Notificación', 'Aun no ha abierto ninguna carpeta por favor ingrese al menu Carpeta ahi abra la carpeta que usted necesite!. En este momento sera redireccionado al menu correspondiente.', 
                     function(){ 
 
-                            me.$router.push('./nuc')
+                            me.$router.push('./tools-nuc')
                     });
     }
     else

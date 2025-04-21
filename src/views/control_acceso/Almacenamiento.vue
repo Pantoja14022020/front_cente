@@ -296,7 +296,7 @@
                 return this.$store.state.usuario.email;
             },
             drawer(){
-                return this.$store.drawer //es para acceder al valor que esta almacenado en el storage
+                return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
             }
         },
 
@@ -480,7 +480,8 @@
                     }  
                 })
             },
-           
+
+
             
            
  
