@@ -1,8 +1,11 @@
-// vue.config.js
+const webpack = require('webpack');
+
 module.exports = {
-    configureWebpack: {
-      externals: {
-        fsevents: "require('fsevents')"
-      }
-    }
-}  
+  configureWebpack: {
+    plugins: [
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^fsevents$/,
+      }),
+    ],
+  },
+};
