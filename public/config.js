@@ -1,6 +1,6 @@
-var URL_SERVER = "http://localhost:8080" //'https://login.pgjhidalgo.gob.mx'
-var REALM = "centenario" //"procu"
-var CLIENTE_ID = "centenario-cliente" //"centenario"
+var URL_SERVER = "https://login.pgjhidalgo.gob.mx" //'http://localhost:8080'
+var REALM = "procu" //"centenario"
+var CLIENTE_ID = "centenario" //"centenario-cliente"
 var ONLOAD = "login-required"
-var URI_FAIL_KEYCLOAK = "http://localhost:8081/" //"http://panel-control-centenario.s3-website-us-east-1.amazonaws.com/"
-var URI_LOGOUT_KEYCLOAK = "http://localhost:8081/" //"http://panel-control-centenario.s3-website-us-east-1.amazonaws.com/"
+var URI_FAIL_KEYCLOAK = "https://centenario.pgjhidalgo.gob.mx/" //"http://localhost:8081/"
+var URI_LOGOUT_KEYCLOAK = "https://centenario.pgjhidalgo.gob.mx/" //"http://localhost:8081/"
