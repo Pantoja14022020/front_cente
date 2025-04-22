@@ -55,6 +55,7 @@
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-service": "^4.5.19",
     "material-design-icons-iconfont": "^5.0.1",
+    "node-loader": "^1.0.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.1",
     "typeface-roboto": "0.0.75",
