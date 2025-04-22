@@ -18,37 +18,37 @@ import './styles/control_acceso/index.css'
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL =  'http://98.80.66.107:5006/'
+axios.defaults.baseURL =  'https://pccentenario.pgjhidalgo.gob.mx/'
 
-const jrInstance = axios.create({ baseURL:  'http://18.233.64.114:5005/' }) 
+const jrInstance = axios.create({ baseURL:  'https://jrcentenario.pgjhidalgo.gob.mx/' }) 
 Vue.prototype.$jr = jrInstance 
 
-const controlaccesoInstance = axios.create({ baseURL:  'http://13.217.131.100:5000/' })
+const controlaccesoInstance = axios.create({ baseURL:  'https://controlaccesocentenario.pgjhidalgo.gob.mx/' })
 Vue.prototype.$controlacceso = controlaccesoInstance 
 
-const confInstance = axios.create({baseURL:  'http://34.224.63.224:5002/'})
+const confInstance = axios.create({baseURL:  'https://configuracioncentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$conf = confInstance
 
-const catInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'})
+const catInstance = axios.create({baseURL:  'https://catcentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$cat = catInstance
 
-const CATInstance = axios.create({baseURL:  'http://34.227.90.239:5001/'}) 
+const CATInstance = axios.create({baseURL:  'https://catcentenario.pgjhidalgo.gob.mx/'}) 
 Vue.prototype.$CAT = CATInstance
 
-const SPInstance = axios.create({baseURL:  'http://44.203.26.217:5008/'})
+const SPInstance = axios.create({baseURL:  'https://spcentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$SP = SPInstance
 
-const panelInstance = axios.create({baseURL:  'http://98.80.66.107:5006/'})
+const panelInstance = axios.create({baseURL:  'https://pccentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$panel = panelInstance
 
-const justiciarestaurativaInstance = axios.create({baseURL:  'http://18.233.64.114:5005/'})
+const justiciarestaurativaInstance = axios.create({baseURL:  'https://jrcentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 
-const ILInstance = axios.create({baseURL:  'http://54.90.102.37:5004/'})
+const ILInstance = axios.create({baseURL:  'https://ilcentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$IL = ILInstance
 
 const PIInstance = axios.create({
-  baseURL:  'http://13.218.126.218:5007/'
+  baseURL:  'https://picentenario.pgjhidalgo.gob.mx/'
 }) 
 Vue.prototype.$PI = PIInstance
 
