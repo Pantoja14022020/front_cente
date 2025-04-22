@@ -6,6 +6,7 @@ build_project:
   stage: build
   image: node:16
   script:
+    - node --max-old-space-size=4096 $(npm bin)/webpack
     - npm install
     - npm run build
     - ls -la dist/
