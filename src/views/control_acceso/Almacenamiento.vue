@@ -1,7 +1,112 @@
 
  <template>
-
+    
     <v-layout align-start>
+        <v-navigation-drawer v-model="this.drawer" app  class="primary"  >
+            <div class="text-xl-center text-md-center text-xs-center my-4">
+                <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+            </div>
+  
+            <v-list dense dark class="pt-0 primary" >
+                <template v-if="esAdministrador">
+                    <v-list-tile  :to="{name:'control-acceso'}">
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">home</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                    </v-list-tile>
+                </template>  
+         
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-panel-control' == '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">view_module</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Configuracion del panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">security</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                        Gestión de usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    
+                    </v-list-group>
+                </template> 
+          
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Almacenamiento
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">storage</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Administración de discos duros
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+            </v-list>
+        </v-navigation-drawer>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
@@ -125,8 +230,8 @@
     </v-layout>
 </template>
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from '../../components/control_acceso/401.vue'
+    import n403 from '../../components/control_acceso/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -153,7 +258,7 @@
                 search: '',
                 rowsPerPageItems: [10, 20, 30, 40, 50],
                 pagination: {
-                rowsPerPage: 50
+                rowsPerPage: 10
                 },
                 editedIndex: -1,
                 dispositivos:[],
@@ -166,7 +271,7 @@
                 espacioDisponible: '',
                 espacioTotal: '',
                 espacioUtilizado: '',    
-                showcomp:true, 
+                showcomp:true,
             }
         },
         computed: {
@@ -176,7 +281,23 @@
             formIcon () {
                 return this.editedIndex === -1 ? 'add' : 'edit'
             },
-            
+
+            //ESTO LO COLOCAMOS PORQUE LO REQUIERE EL COMPONENTE DE DRAW MENU
+            logueado(){
+                return this.$store.state.usuario;
+            },
+            esAdministrador(){ 
+                return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+            },
+            usuario(){
+                return this.$store.state.usuario.usuario;
+            },
+            email(){
+                return this.$store.state.usuario.email;
+            },
+            drawer(){
+                return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
+            }
         },
 
 
@@ -222,7 +343,7 @@
                 let me=this;  
                  let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Almacenamientoes/Listar', configuracion).then(function(response){
+                this.$controlacceso.get('api/Almacenamientoes/Listar', configuracion).then(function(response){
                     //console.log(response);
                     me.dispositivos=response.data;
                 }).catch(err => { 
@@ -280,7 +401,7 @@
                         if (me.editedIndex > -1) {
                             //Código para editar 
                            
-                            axios.put('api/Almacenamientoes/Actualizar',{
+                            this.$controlacceso.put('api/Almacenamientoes/Actualizar',{
                                 'idAlmacenamiento':me.idAlmacenamiento, 
                                 'statusActivo':me.statusActivo, 
                             }, configuracion).then(function(response){
@@ -307,13 +428,13 @@
                             });
                         } else {
                             //Código para guardar
-                             axios.get('api/DriveInfos/'+ me.nombre, configuracion).then(function(response){
+                            this.$controlacceso.get('api/DriveInfos/'+ me.nombre, configuracion).then(function(response){
                           
                              me.rutaFisica = response.data.nu + "Carpetas";
                              me.espacioDisponible = response.data.ed;
                              me.espacioTotal = response.data.et;
                              me.espacioUtilizado = response.data.et - response.data.ed ; 
-                             axios.post('api/Almacenamientoes/Crear',{ 
+                             this.$controlacceso.post('api/Almacenamientoes/Crear',{ 
                                 'nombre': me.nombre,
                                 'rutaFisica': me.rutaFisica,
                                 'statusActivo': false,
@@ -359,7 +480,8 @@
                     }  
                 })
             },
-           
+
+
             
            
  

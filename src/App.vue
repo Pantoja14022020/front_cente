@@ -1,7 +1,8 @@
 <template>
 
   <v-app class="app-fontstyle">
-    <v-toolbar app class="elevation-2 d-flex align-center" style="height: 100px; box-shadow: none !important; background-color: #641529;" >
+    <v-toolbar app class="elevation-2 d-flex align-center" style="box-shadow: none !important; background-color: #641529;" >
+      <v-icon @click.stop="drawer = !drawer; updateDrawer()" style="margin-right: 1rem; color: white">menu</v-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span style="letter-spacing: 0.12rem; color: white; font-weight: 300;">SISTEMA CENTENARIO</span>
       </v-toolbar-title>
@@ -14,6 +15,7 @@
     </v-toolbar>
 
     <v-content>
+      <component v-if="drawer" :is="currentDrawer"/>
       <router-view></router-view>
     </v-content>
     
@@ -39,15 +41,33 @@
   import moment from "moment";
   import "moment/locale/es";
   import keycloak from './auth/keycloak'
-  
+  import umixtaNavDrawer from "@/components/m_umixta/umixtaNavDrawer.vue";
+  import ConfiguracionNavDrawer from "@/components/m_configuracion/ConfiguracionNavDrawer.vue";
+  import toolsNavDrawer from "@/components/m_tools/toolsNavDrawer.vue";
   export default 
   {
     name: "App",
 
-    components: {},
+    components: {
+
+    },
     
-    data: () => ({ horas: 0, minutos: 0, segundos: 0 }),
+    data: () => ({drawer: true, horas: 0, minutos: 0, segundos: 0, error: null }),
     
+    mounted() {
+      this.error=null;
+      this.$controlacceso.post('/api/Usuarios/Login',{usuario: this.$usuario, ClaveP: this.$ClaveP})
+        .then(response => {
+          return response.data
+        })
+        .then(data => {
+          this.$store.dispatch("guardarToken", data.token)
+        })
+        .catch(error => {
+          this.error=error.response.data;
+        });
+    },
+
     created() 
     {
       var self = this;
@@ -72,11 +92,29 @@
       },
       logout() {
         keycloak.logout({ redirectUri: URI_LOGOUT_KEYCLOAK });
-      }
+      },
+      updateDrawer(){
+        this.$store.commit('setDrawer', !this.$store.state.drawer);}
     },
 
     computed: 
     {
+      currentDrawer() {
+        const path = this.$route.path
+
+        if (path.startsWith('/umixta')) {
+          return umixtaNavDrawer
+        }
+        else if (path.startsWith('/Configuracion')) {
+          return ConfiguracionNavDrawer
+        }
+        else if (path.startsWith('/tools')) {
+          return toolsNavDrawer
+        }
+        else {
+          return null
+        }
+      },
       gethora() {
         var dia = moment().format("dddd LL");
         function capitalizarFrase(frase) { return frase.split(" ").map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(" ") }

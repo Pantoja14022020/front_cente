@@ -131,7 +131,7 @@ export default {
                     if (result) { 
                       this.error = null;
                         
-                        axios.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: '001a72ec-64d4-4493-8504-71f5021b2c3f'})
+                        this.$controlacceso.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: '001a72ec-64d4-4493-8504-71f5021b2c3f'})
                         .then(respuesta => {                          
                           this.$store.commit('LOADER',false);
                             return respuesta.data

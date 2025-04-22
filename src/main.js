@@ -1,42 +1,61 @@
 import Vue from 'vue'
+import '@babel/polyfill'
 import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import store from './store' 
 import axios from 'axios'   
+import VeeValidate from 'vee-validate'  
+import  VueEditor  from "vue2-editor";
+import WebCam from 'vue-web-cam'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'typeface-roboto/index.css';
 import keycloak from './auth/keycloak'
 
-//Estilos CSS
 import './styles/panel_control/index.css'
+import './styles/control_acceso/index.css'
 
 
 Vue.config.productionTip = false
 
+axios.defaults.baseURL =  'https://pccentenario.pgjhidalgo.gob.mx/'
 
+const jrInstance = axios.create({ baseURL:  'https://jrcentenario.pgjhidalgo.gob.mx/' }) 
+Vue.prototype.$jr = jrInstance 
 
-axios.defaults.baseURL =  'http://3.95.38.176:5006/'
-
-
-
-const controlaccesoInstance = axios.create({ baseURL:  'http://18.233.164.30:5000/' }) 
+const controlaccesoInstance = axios.create({ baseURL:  'https://controlaccesocentenario.pgjhidalgo.gob.mx/' })
 Vue.prototype.$controlacceso = controlaccesoInstance 
 
+const confInstance = axios.create({baseURL:  'https://configuracioncentenario.pgjhidalgo.gob.mx/'})
+Vue.prototype.$conf = confInstance
 
-
-const confInstance = axios.create({baseURL:  'http://54.242.228.50:5002/'}) 
-Vue.prototype.$conf = confInstance 
-
-
-
-const catInstance = axios.create({baseURL:  'http://52.87.216.188:5001/'}) 
+const catInstance = axios.create({baseURL:  'https://catcentenario.pgjhidalgo.gob.mx/'})
 Vue.prototype.$cat = catInstance
 
+const CATInstance = axios.create({baseURL:  'https://catcentenario.pgjhidalgo.gob.mx/'}) 
+Vue.prototype.$CAT = CATInstance
 
+const SPInstance = axios.create({baseURL:  'https://spcentenario.pgjhidalgo.gob.mx/'})
+Vue.prototype.$SP = SPInstance
 
-const panelInstance = axios.create({baseURL:  'http://3.95.38.176:5006/'}) 
-Vue.prototype.$panel = panelInstance 
+const panelInstance = axios.create({baseURL:  'https://pccentenario.pgjhidalgo.gob.mx/'})
+Vue.prototype.$panel = panelInstance
+
+const justiciarestaurativaInstance = axios.create({baseURL:  'https://jrcentenario.pgjhidalgo.gob.mx/'})
+Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
+
+const ILInstance = axios.create({baseURL:  'https://ilcentenario.pgjhidalgo.gob.mx/'})
+Vue.prototype.$IL = ILInstance
+
+const PIInstance = axios.create({
+  baseURL:  'https://picentenario.pgjhidalgo.gob.mx/'
+}) 
+Vue.prototype.$PI = PIInstance
+
+const smsInstance = axios.create({
+  baseURL: 'https://api.smsmasivos.com.mx/'
+}) 
+Vue.prototype.$sms = smsInstance
 
 
 
@@ -44,7 +63,10 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
       .then( authenticated => 
         {
 
-          if(!authenticated) { keycloak.logout({redirectUri: URI_FAIL_KEYCLOAK}); alert("No fue posible autenticarse") }
+          if(!authenticated) { 
+            keycloak.logout({ redirectUri: URI_FAIL_KEYCLOAK });
+            alert("No fue posible autenticarse") 
+          }
 
           const token = keycloak.token;
           const payload = JSON.parse(atob(token.split('.')[1]));
@@ -55,7 +77,9 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
             .then(response => {
               controlaccesoInstance.post('api/Usuarios/PerteneceAlDistrito',{ usuario: username })
                 .then(response => {
-                  new Vue({ router, store, render: h => h(App) }).$mount('#app')
+                  Vue.prototype.$usuario = username;  
+                  Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
+                  new Vue({ router, store, VeeValidate, WebCam, VueEditor, render: h => h(App) }).$mount('#app')
                 })
                 .catch(error => {
                   alert("El usuario no se encuentra en este distrito")

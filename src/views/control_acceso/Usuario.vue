@@ -1,5 +1,110 @@
 <template>
    <v-layout align-start>
+    <v-navigation-drawer v-model="this.drawer" app  class="primary"  >
+            <div class="text-xl-center text-md-center text-xs-center my-4">
+                <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+            </div>
+  
+            <v-list dense dark class="pt-0 primary" >
+                <template v-if="esAdministrador">
+                    <v-list-tile  :to="{name:'control-acceso'}">
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">home</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                    </v-list-tile>
+                </template>  
+         
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-panel-control' == '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">view_module</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Configuracion del panel de control
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">security</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Roles
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+  
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                        Gestión de usuarios
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    
+                    </v-list-group>
+                </template> 
+          
+                <template v-if="esAdministrador">
+                    <v-list-group>
+                    <v-list-tile slot="activator"> 
+                        <v-list-tile-content >
+                        <v-list-tile-title class="centenarioMenuAreas">
+                        Almacenamiento
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">storage</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                            Administración de discos duros
+                        </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    </v-list-group>
+                </template>
+            </v-list>
+        </v-navigation-drawer>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
     <v-flex v-if="showpage">
@@ -363,8 +468,8 @@
 </template>
 
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from '../../components/control_acceso/401.vue'
+    import n403 from '../../components/control_acceso/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -401,7 +506,7 @@
                 search: '',
             rowsPerPageItems: [10, 20, 30, 40, 50],
             pagination: {
-                rowsPerPage: 50
+                rowsPerPage: 10
             },
             editedIndex: -1, 
                 
@@ -456,6 +561,22 @@
             },
               formIcon () {
                 return this.editedIndex === -1 ? 'add' : 'edit'
+            },
+            //ESTO LO COLOCAMOS PORQUE LO REQUIERE EL COMPONENTE DE DRAW MENU
+            logueado(){
+                return this.$store.state.usuario;
+            },
+            esAdministrador(){ 
+                return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+            },
+            usuario(){
+                return this.$store.state.usuario.usuario;
+            },
+            email(){
+                return this.$store.state.usuario.email;
+            },
+            drawer(){
+                return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
             }
         },
 
@@ -503,7 +624,7 @@
                 let header = { "Authorization": "Bearer " + this.$store.state.token };
                 let configuracion = { headers: header };
                 try {
-                    let usuariosResponse = await axios.get('api/Usuarios/Listar', configuracion);
+                    let usuariosResponse = await this.$controlacceso.get('api/Usuarios/Listar', configuracion);
                     me.contador = usuariosResponse.data.length;
                     console.log(me.contador);
 
@@ -719,7 +840,7 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var panelArray=[]; 
-                axios.get('api/PanelUsuarios/ListarAsignados/' + me.idUsuario, configuracion).then(function(response){ 
+                me.$controlacceso.get('api/PanelUsuarios/ListarAsignados/' + me.idUsuario, configuracion).then(function(response){ 
                  
                     panelArray = response.data;
                     panelArray.map(function(x){
@@ -742,7 +863,7 @@
 
                 if(me.distritoActual === me.idDistritoPach)
                 {
-                    axios.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
+                    this.$controlacceso.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
                         if(me.panel.length==0)
                         {
                             me.addPanel=false;
@@ -751,7 +872,7 @@
                           debugger
                           for(var i=0;i<me.panel.length;i++){ 
                             
-                                axios.post('api/PanelUsuarios/Crear',{ 
+                                this.$controlacceso.post('api/PanelUsuarios/Crear',{ 
                                     'usuarioId':me.idUsuario, 
                                     'panelControlId': me.panel[i],  
                                 }, configuracion).then(function(response){  
@@ -797,7 +918,7 @@
                 }
                 else{
                     console.log('aqui')
-                    axios.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
+                        this.$controlacceso.delete('api/PanelUsuarios/Eliminar/'+ me.idUsuario, configuracion).then(function(response){
                         if(me.panel.length==0)
                         {
                             // me.addPanel=false;
@@ -806,7 +927,7 @@
                           debugger
                           for(var i=0;i<me.panel.length;i++){ 
                             console.log('aqui')
-                                axios.post('api/PanelUsuarios/Crear',{ 
+                                this.$controlacceso.post('api/PanelUsuarios/Crear',{ 
                                     'usuarioId':me.idUsuario, 
                                     'panelControlId': me.panel[i],  
                                 }, configuracion).then(function(response){  
@@ -833,7 +954,7 @@
                             for(var i=0;i<me.panel.length;i++)
                             { 
                                 console.log('aqui')
-                                axios.post('api/PanelUsuarios/ClonarSoloPanel',{
+                                    this.$controlacceso.post('api/PanelUsuarios/ClonarSoloPanel',{
                                         'UsuarioId':me.idUsuario,
                                         'idDistrito':me.distritoActual,
                                         'panelControlId': me.panel[i],
@@ -888,7 +1009,7 @@
                 var rolesArray=[]; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.get('api/Rols/Listar', configuracion).then(function(response){
+                this.$controlacceso.get('api/Rols/Listar', configuracion).then(function(response){
                     rolesArray=response.data;
                     rolesArray.map(function(x){
                         me.roles.push({text: x.nombre,value:x.idrol});
@@ -983,7 +1104,7 @@
                             if(me.distritoActual == me.idDistritoPach && me.distrito == me.idDistritoPach)
                             {
                                 console.log('son en el mismo distrito')
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1024,7 +1145,7 @@
                             else if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach){
                                 console.log('va de pachuca a otro distrito')
 
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1039,7 +1160,7 @@
                                             'act_password':me.actPassword                        
                                         }, configuracion).then(function(response){
                                             
-                                            axios.post('api/Usuarios/ClonarUsuario',{
+                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
                                                 'idusuario':me.idUsuario,
                                                 'rolId':me.idrol,
                                                 'moduloservicioId': me.idModuloServicio, 
@@ -1060,7 +1181,7 @@
                                                 // me.listar();
                                                 // me.limpiar(); 
 
-                                                axios.post('api/PanelUsuarios/ClonarPanel',{
+                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
                                                     'UsuarioId':me.idUsuario,
                                                     'idDistrito':me.me.distrito,
                                                     'caso': 2,
@@ -1129,7 +1250,7 @@
                             }
                             else if((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)){
                                 console.log('todos diferentes')
-                                axios.put('api/Usuarios/Actualizar',{
+                                this.$controlacceso.put('api/Usuarios/Actualizar',{
                                             'idusuario':me.idUsuario,
                                             'rolId':me.idrol,
                                             'moduloservicioId': me.idModuloServicio, 
@@ -1144,7 +1265,7 @@
                                             'act_password':me.actPassword                        
                                         }, configuracion).then(function(response){
                                             console.log(response)
-                                            axios.post('api/Usuarios/ClonarUsuario',{
+                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
                                                 'idusuario':me.idUsuario,
                                                 'rolId':me.idrol,
                                                 'moduloservicioId': me.idModuloServicio, 
@@ -1165,7 +1286,7 @@
                                                 // me.$notify('La información se actualizo correctamente !!!','success') 
                                                 // me.listar();
                                                 // me.limpiar(); 
-                                                axios.post('api/PanelUsuarios/ClonarPanel',{
+                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
                                                     'UsuarioId':me.idUsuario,
                                                     'idDistritoD':me.distrito,
                                                     'caso': 3,
@@ -1240,7 +1361,7 @@
                         } else { 
                     
                             let me=this;
-                            axios.post('api/Usuarios/Crear',{
+                            this.$controlacceso.post('api/Usuarios/Crear',{
                                 'rolId':me.idrol,
                                 'moduloservicioId': me.idModuloServicio, 
                                 'puesto': me.puesto, 
@@ -1320,7 +1441,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Usuarios/Activar/'+ me.adId,{},configuracion).then(function(response){
+                this.$controlacceso.put('api/Usuarios/Activar/'+ me.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
@@ -1348,7 +1469,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                axios.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
+                this.$controlacceso.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response){
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre="";
