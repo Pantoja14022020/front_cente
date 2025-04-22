@@ -44,6 +44,7 @@
   import umixtaNavDrawer from "@/components/m_umixta/umixtaNavDrawer.vue";
   import ConfiguracionNavDrawer from "@/components/m_configuracion/ConfiguracionNavDrawer.vue";
   import toolsNavDrawer from "@/components/m_tools/toolsNavDrawer.vue";
+import { CleanPlugin } from "webpack";
   export default 
   {
     name: "App",
@@ -91,6 +92,7 @@
         this.$router.push("./turnador");
       },
       logout() {
+        console.log("saliendoooooooo del centenario......")
         keycloak.logout({ redirectUri: URI_LOGOUT_KEYCLOAK });
       },
       updateDrawer(){
