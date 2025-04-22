@@ -6,7 +6,7 @@ build_project:
   stage: build
   image: node:16
   script:
-    - node --max-old-space-size=4096 $(npm bin)/webpack
+    - node --max-old-space-size=4096 $(npm bin)/vue-cli-service build
     - npm install
     - npm run build
     - ls -la dist/
