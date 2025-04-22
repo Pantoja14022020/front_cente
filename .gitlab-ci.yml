@@ -1,24 +1,6 @@
 stages:
-  - pull_changes
   - build
   - deploy
-pull_from_central_district:
-  image: alpine:latest
-  stage: pull_changes
-  before_script:
-    - apk add --no-cache curl bash iptables wireguard-tools openssh-client sshpass
-    - curl -fsSL https://pkgs.tailscale.com/stable/tailscale_1.66.4_amd64.tgz -o tailscale.tgz
-    - tar xzf tailscale.tgz
-    - cd tailscale_1.66.4_amd64
-    - mkdir -p /var/run/tailscale
-    - ./tailscaled &
-    - ./tailscale up --authkey "$TAILSCALE_AUTHKEY" --hostname ci-runner --accept-routes --ssh
-  script:
-    - >
-      sshpass -p '13dpr0056c.' ssh -o StrictHostKeyChecking=no administrator@100.118.242.44
-      "cd C:\Users\Administrator\Desktop\centenario & git remote set-url origin https://daniel:${CI_GITLAB_TOKEN}@gitlab.com/norte70/pgjeh/centenario.git & git pull origin daniel"
-
-
 
 build_project:
   stage: build
@@ -42,7 +24,7 @@ deploy_to_s3:
     - aws --version
     - ls -la dist/
     - aws s3 sync dist/ s3://panel-control-centenario --region us-east-1 --delete
-    #- aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"
   dependencies:
     - build_project
   only:
