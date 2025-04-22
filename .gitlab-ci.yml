@@ -6,8 +6,8 @@ build_project:
   stage: build
   image: node:16
   script:
-    - rm -rf node_modules package-lock.json
-    - npm install
+    - rm -rf node_modules package-lock.json dist/
+    - npm cache clean --force
     - node --max-old-space-size=4096 $(npm bin)/vue-cli-service build
     - ls -la dist/
   artifacts:
