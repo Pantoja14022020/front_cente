@@ -8,6 +8,7 @@ build_project:
   script:
     - rm -rf node_modules package-lock.json dist/
     - npm cache clean --force
+    - npm install
     - node --max-old-space-size=4096 $(npm bin)/vue-cli-service build
     - ls -la dist/
   artifacts:
