@@ -457,7 +457,7 @@
                 <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn  @click.native="close" >Cancelar</v-btn>
-                            <v-btn @click.native="guardarPaneles" class="success" >Guardar</v-btn>
+                            <v-btn @click.native="guardar" class="success" >Guardar</v-btn>
                         </v-card-actions>
                             </v-form>
 
