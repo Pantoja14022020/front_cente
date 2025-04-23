@@ -79,7 +79,7 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
                 .then(response => {
                   Vue.prototype.$usuario = username;  
                   //Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
-                  Vue.prototype.$ClaveP = '536ec2a1-8c23-4f84-87ce-7d28f505950e'
+                  Vue.prototype.$ClaveP = '001a72ec-64d4-4493-8504-71f5021b2c3f'
                   new Vue({ router, store, VeeValidate, WebCam, VueEditor, render: h => h(App) }).$mount('#app')
                 })
                 .catch(error => {
