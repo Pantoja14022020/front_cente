@@ -78,7 +78,8 @@ keycloak.init({onLoad: ONLOAD, checkLoginIframe: false})
               controlaccesoInstance.post('api/Usuarios/PerteneceAlDistrito',{ usuario: username })
                 .then(response => {
                   Vue.prototype.$usuario = username;  
-                  Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
+                  //Vue.prototype.$ClaveP = '6b37f386-4393-40a1-96fa-e9407462c1d7';
+                  Vue.prototype.$ClaveP = '536ec2a1-8c23-4f84-87ce-7d28f505950e'
                   new Vue({ router, store, VeeValidate, WebCam, VueEditor, render: h => h(App) }).$mount('#app')
                 })
                 .catch(error => {
