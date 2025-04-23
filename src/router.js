@@ -70,8 +70,8 @@ import RFFormaCara from "@/components/m_configuracion/RFFormaCara.vue";
 import RFFormaMenton from "@/components/m_configuracion/RFFormaMenton.vue";
 import RFGrosorLabios from "@/components/m_configuracion/RFGrosorLabios.vue";
 import RFLargoCabello from "@/components/m_configuracion/RFLargoCabello.vue";
-import RFTamañoBoca from "@/components/m_configuracion/RFTamañoBoca.vue"
-import RFTamañoNariz from "@/components/m_configuracion/RFTamañoNariz.vue"
+import RFTamanoBoca from "@/components/m_configuracion/RFTamanoBoca.vue"
+import RFTamanoNariz from "@/components/m_configuracion/RFTamanoNariz.vue"
 import RFTez from "@/components/m_configuracion/RFTez.vue";
 import RFTipoCejas from "@/components/m_configuracion/RFTipoCejas.vue";
 import RFTipoFrente from "@/components/m_configuracion/RFTipoFrente.vue";
@@ -174,12 +174,12 @@ import UmixtaEntrevista from "@/components/m_umixta/Entrevista.vue"
 import UmixtaDelito from "@/components/m_umixta/Delito.vue"
 import Terminacion from "@/components/m_umixta/Terminacion.vue"
 import UmixtaRepresentantes from "@/components/m_umixta/Representantes.vue"
-import EstadisticasCinicioAño from "@/components/m_umixta/EstadisticasCinicioAño.vue"
-import EstadisticasCinicioAños from "@/components/m_umixta/EstadisticasCinicioAños.vue"
-import EstadisticasEnvioJrAño from "@/components/m_umixta/EstadisticasEnvioJrAño.vue"
-import EstadisticasEnvioJrAños from "@/components/m_umixta/EstadisticasEnvioJrAños.vue"
-import EstadisticasCIEJRAño from "@/components/m_umixta/EstadisticasCIEJRAño.vue"
-import EstadisticasCIEJRAños from "@/components/m_umixta/EstadisticasCIEJRAños.vue"
+import EstadisticasCinicioAno from "@/components/m_umixta/EstadisticasCinicioAno.vue"
+import EstadisticasCinicioAnos from "@/components/m_umixta/EstadisticasCinicioAnos.vue"
+import EstadisticasEnvioJrAno from "@/components/m_umixta/EstadisticasEnvioJrAno.vue"
+import EstadisticasEnvioJrAnos from "@/components/m_umixta/EstadisticasEnvioJrAnos.vue"
+import EstadisticasCIEJRAno from "@/components/m_umixta/EstadisticasCIEJRAno.vue"
+import EstadisticasCIEJRAnos from "@/components/m_umixta/EstadisticasCIEJRAnos.vue"
 import TableroDireccionM from "@/components/m_umixta/tablerodireccionm.vue"
 import TableroDireccionA from "@/components/m_umixta/tablerodirecciona.vue"
 import TableroDireccionD from "@/components/m_umixta/tablerodirecciond.vue"
@@ -1181,14 +1181,14 @@ export default new Router({
       component: EstadisticasCinicioMes
     },
     {
-      path: '/umixta-estadisticascinicioaño',
-      name: 'umixtaestadisticascinicioaño',
-      component: EstadisticasCinicioAño
+      path: '/umixta-estadisticascinicioano',
+      name: 'umixtaestadisticascinicioano',
+      component: EstadisticasCinicioAno
     },
     {
-      path: '/umixta-estadisticascinicioaños',
-      name: 'umixtaestadisticascinicioaños',
-      component: EstadisticasCinicioAños
+      path: '/umixta-estadisticascinicioanos',
+      name: 'umixtaestadisticascinicioanos',
+      component: EstadisticasCinicioAnos
     },
     {
       path: '/umixta-estadisticasenviojrmes',
@@ -1196,14 +1196,14 @@ export default new Router({
       component: EstadisticasEnvioJrMes
     },
     {
-      path: '/umixta-estadisticasenviojraño',
-      name: 'umixtaestadisticasenviojraño',
-      component: EstadisticasEnvioJrAño
+      path: '/umixta-estadisticasenviojrano',
+      name: 'umixtaestadisticasenviojrano',
+      component: EstadisticasEnvioJrAno
     },
     {
-      path: '/umixta-estadisticasenviojraños',
-      name: 'umixtaestadisticasenviojraños',
-      component: EstadisticasEnvioJrAños
+      path: '/umixta-estadisticasenviojranos',
+      name: 'umixtaestadisticasenviojranos',
+      component: EstadisticasEnvioJrAnos
     },
     {
       path: '/umixta-estadisticasciejrmes',
@@ -1211,14 +1211,14 @@ export default new Router({
       component: EstadisticasCIEJRMes
     },
     {
-      path: '/umixta-estadisticasciejraño',
-      name: 'umixtaestadisticasciejraño',
-      component: EstadisticasCIEJRAño
+      path: '/umixta-estadisticasciejrano',
+      name: 'umixtaestadisticasciejrano',
+      component: EstadisticasCIEJRAno
     },
     {
-      path: '/umixta-estadisticasciejraños',
-      name: 'umixtaestadisticasciejraños',
-      component: EstadisticasCIEJRAños
+      path: '/umixta-estadisticasciejranos',
+      name: 'umixtaestadisticasciejranos',
+      component: EstadisticasCIEJRAnos
     },
     {
       path: '/umixta-noticiashechos',
@@ -1724,14 +1724,14 @@ export default new Router({
       component: RFLargoCabello,
     },
     {
-      path: '/Configuracion-rftamañoboca',
-      name: 'configuracionrftamañoboca',
-      component: RFTamañoBoca,
+      path: '/Configuracion-rftamanoboca',
+      name: 'configuracionrftamanoboca',
+      component: RFTamanoBoca,
     },
     {
-      path: '/Configuracion-rftamañonariz',
-      name: 'configuracionrftamañonariz',
-      component: RFTamañoNariz,
+      path: '/Configuracion-rftamanonariz',
+      name: 'configuracionrftamanonariz',
+      component: RFTamanoNariz,
     },
     {
       path: '/Configuracion-rftez',
