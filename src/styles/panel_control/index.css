@@ -1,0 +1,48 @@
+/* ESTA HOJA TRATARÁ DE MANTENER LOS COLORES PRINCIPALES DEL SISTEMA O AL MENOS LA MAYORÍA*/
+.centenarioToolBarIcon
+{
+    color: #BC955C !important;
+}
+
+.centenarioSelectedMenuItem
+{
+    color:#9F2241 !important;
+    background-color: #9F2241 !important;
+    border-color: #9F2241 !important;
+}
+
+.centenarioMenuAreas
+{
+    color: #BC955C !important;
+    font-weight: bold !important;
+}
+.centenarioMenuModules
+{
+    color:white !important;
+}
+.centenarioMenuIcon
+{
+    color:white !important;
+}
+.centenarioModuleColor
+{
+    background-color:#DDC9a3 !important;
+}
+.centenarioModuleAbrevColor
+{
+    background-color:#BC955C !important;
+}
+.centenarioAdminModuleColor
+{
+    background-color:#235B4E !important;
+}
+.centenarioAdminModuleAbrevColor
+{
+    background-color:#10312B !important;
+    color:#BC955C !important;
+}
+
+.centenarioAdminModuleIcon
+{
+    color:#BC955C !important;
+}
