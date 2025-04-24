@@ -97,7 +97,7 @@
         let me = this;
         if (this.$store.state.usuario && this.$store.state.usuario.idusuario) {
           axios
-          .get("api/PanelControls/Listar/"+ this.$store.state.usuario.idusuario )
+          .get("api/PanelControls/Permitidos/"+ this.$store.state.usuario.idusuario )
           .then(function(response) {
             me.panels = response.data;
           })
