@@ -84,28 +84,34 @@
         aviso:[],
       };
     },
-    created() {
+    mounted(){
       this.Listar();
+    },
+    created() {
+      
       this.ObtenerDistrito();
       this.conprobarAvisos();
     },
     methods: {
       Listar() {
         let me = this;
-        axios
-          .get("api/PanelControls/Listar")
+        if (this.$store.state.usuario && this.$store.state.usuario.idusuario) {
+          axios
+          .get("api/PanelControls/Listar/"+ this.$store.state.usuario.idusuario )
           .then(function(response) {
             me.panels = response.data;
           })
           .catch(function(error) {
             console.log(error);
           });
+        } else {
+          console.log('idusuario no está disponible aún');
+        }
       },
       ObtenerDistrito() {
         let me = this;
         var distritoA = [];
         var distritoS = [];
-
         axios
           .get("api/PanelControls/obtenerDistrito")
           .then(function(response) {
@@ -158,5 +164,12 @@
           }
         },
     },
+    watch: {
+      '$store.state.usuario.idusuario'(newVal, oldVal) {
+        if (newVal) {
+          this.Listar();
+        }
+      }
+    }
   };
 </script>
