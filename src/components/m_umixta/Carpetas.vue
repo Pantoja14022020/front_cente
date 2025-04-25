@@ -493,7 +493,7 @@
         this.$store.state.ratencionid = item.rAtencionId
         this.$store.state.rhechoid = item.rHechoId
         this.$store.state.distritoCarpeta = item.distritoInicial
-        this.$router.push('./entrevistainicial')
+        this.$router.push('./umixta-entrevistainicial')
       },
       close () {
         this.dialog = false;

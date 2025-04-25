@@ -832,7 +832,7 @@ export default {
           if(me.sinDenunciante === 1){
             alertify.alert("No hay ninguna persona registrada con la clasificación de Denunciante. Para poder registrar una Cédula de Reporte, registre a una persona con esta clasificación.",
                 function(){
-                    me.$router.push('./victimaidti');
+                    me.$router.push('./umixtavictimaidti');
                 });
           }else{
             me.nombreD = response.data.nombre,
@@ -1001,7 +1001,7 @@ export default {
             } else {
                 alertify.alert("Cedula de Desaparición de Personas", "No se puede realizar una Cédula de Personas Desaparecidas porque no se ha creado la Media Filiación de la Persona Desaparecida.<br> Realiza la Media Filiación para la Persona Desaparecida.",
                 function(){
-                    me.$router.push('./mediaAfiliacion');
+                    me.$router.push('./umixtamediaAfiliacion');
                 });
             }
         }).catch(error => {
@@ -1847,7 +1847,7 @@ export default {
         if(personasArray.every(item => item.registro === false)){
             alertify.alert("Notificación","No hay persona relacionada con tema de desaparición.",
                 function(){
-                    me.$router.push('./victimaidti');
+                    me.$router.push('./umixtavictimaidti');
                 });
           }
       }).catch(err => {
