@@ -5317,13 +5317,16 @@ export default {
     downloadPdf(nombre, puesto, agencia) {
 
       let me = this;
-      var pdfMake = require("pdfmake/build/pdfmake.js");
+      //var pdfMake = require("pdfmake/build/pdfmake.js");
+      const pdfMake = require("pdfmake/build/pdfmake");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      if (pdfMake.vfs == undefined) {
+      const pdfFonts = require("pdfmake/build/vfs_fonts");
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      /*if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
+      }*/
 
       //***************************************************************************** */
       // VARIABLES
