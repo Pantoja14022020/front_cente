@@ -1475,6 +1475,14 @@ export default {
       docLecDer: 'Lectura de derechos',
     };
   },
+  //AGREGUE ESTO YO DANIEL PARA PRUEBA
+  mounted() {
+    const pdfMake = require("pdfmake/build/pdfmake");
+    const pdfFonts = require("pdfmake/build/vfs_fonts");
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    this.pdfMake = pdfMake;
+  },
   computed: {
     text_Toltip() {
       return this.rnh1 === false ? "Guardar entrevista" : "Imprimir entrevista";
@@ -3068,7 +3076,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err)
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", "error");
           } else if (err.response.status == 401) {
@@ -3429,14 +3436,14 @@ export default {
 
     mostrarpdf_CaratulaNUC() {
       var dd = this.crearPdf_CaratulaNUC();
-      var pdfMake = require("pdfmake/build/pdfmake.js");
+      //var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      if (pdfMake.vfs == undefined) {
+      /*if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-      var doc = pdfMake.createPdf(dd);
+      }*/
+      var doc = this.pdfMake.createPdf(dd); //ESTO YO AGREGUE
       var f = document.getElementById("iframepdf1");
       var callback = function (url) {
         f.setAttribute("src", url);
@@ -5318,16 +5325,13 @@ export default {
     downloadPdf(nombre, puesto, agencia) {
 
       let me = this;
-      //var pdfMake = require("pdfmake/build/pdfmake.js");
-      const pdfMake = require("pdfmake/build/pdfmake");
+      var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      const pdfFonts = require("pdfmake/build/vfs_fonts");
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      /*if (pdfMake.vfs == undefined) {
+      if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }*/
+      }
 
       //***************************************************************************** */
       // VARIABLES
