@@ -2692,7 +2692,7 @@
                                                         //window.open(doc.output('bloburl'), '_blank');  
                                                         */
                                                         me.limpiar();                                                                                                 
-                                                        me.$router.push('./entrevista')
+                                                        me.$router.push('./umixta-entrevista')
 
                                                     }).catch(err => { 
                                                         if (err.response.status==400){
@@ -2950,7 +2950,7 @@
                                                 //window.open(doc.output('bloburl'), '_blank');  
                                                 */
                                                 me.limpiar();                                                                                               
-                                                me.$router.push('./entrevista') 
+                                                me.$router.push('./umixta-entrevista') 
 
                                             }).catch(err => { 
                                                 if (err.response.status==400){
@@ -2997,7 +2997,7 @@
                                                 me.limpiar();
                                                 // DESDE AQUI
                                                 me.$store.state.ratencionid = response.data.idatencion;
-                                                me.$router.push('./entrevista') 
+                                                me.$router.push('./umixta-entrevista') 
                                                 //HASTA AQUI
                                         }
                                         

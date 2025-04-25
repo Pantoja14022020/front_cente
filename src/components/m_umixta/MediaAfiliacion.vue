@@ -4264,7 +4264,7 @@ export default {
               if(me.personas.length == 0 && me.desaparecioSiNo === 2){
                 alertify.alert("Notificación","No se ha registrado ninguna persona relacionada con el tema de desaparición, o las personas vinculadas ya cuentan con una Media Filiación como persona desaparecida..",
                   function(){
-                    me.$router.push('./victimaidti');
+                    me.$router.push('./umixta-victimaidti');
                   });
               } else if(me.personas.length == 0 && me.desaparecioSiNo === 1){
                 alertify.alert("Notificación","Las personas registradas ya poseen una Media Filiación.",

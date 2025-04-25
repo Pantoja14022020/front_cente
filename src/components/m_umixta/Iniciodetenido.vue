@@ -3147,7 +3147,7 @@
             if(this.ratencioncontrol != ""){
 
                 this.$store.state.ratencionid = this.ratencioncontrol
-                this.$router.push('./entrevista2')
+                this.$router.push('./umixta-entrevista2')
 
             }else
                 this.$notify('Debe registrar al menos un imputado','error')         

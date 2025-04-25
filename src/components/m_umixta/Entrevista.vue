@@ -2003,7 +2003,7 @@ export default {
           });
         //**************************************************** */
 
-        me.$router.push("./Listaregistros");
+        me.$router.push("./umixta-listaregistros");
       }
 
       if (me.switch1 == true || me.switch2 == true) {
@@ -2057,7 +2057,7 @@ export default {
                       "success"
                     );
                     me.crearRegistroTableroI(descripcionRegTabI);
-                    me.$router.push("./entrevistainicial");
+                    me.$router.push("./umixta-entrevistainicial");
                   })
                   .catch((err) => {
                     if (err.response.status == 400) {

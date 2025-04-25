@@ -557,7 +557,7 @@
                 this.$store.state.rac= item.rac;  
                 this.$store.state.ratencionid2 = item.rAtencionId;
                 this.$store.state.rhechoid2 = item.rHechoId ;
-                this.$router.push('./informacionrac') 
+                this.$router.push('./umixta-informacionrac') 
 
             },
             MostrarNucg(item){

@@ -2041,7 +2041,7 @@ methods: {
 
 
                             me.$notify('La información se guardo correctamente !!!','success')
-                            me.$router.push('./entrevistainicial')
+                            me.$router.push('./umixta-entrevistainicial')
 
                             }).catch(err => {
                             if (err.response.status==400){

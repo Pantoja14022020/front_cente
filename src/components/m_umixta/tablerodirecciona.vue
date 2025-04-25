@@ -428,7 +428,7 @@
         this.$store.state.ratencionid = item.idRAtencion
         this.$store.state.rhechoid = item.idRHecho
         this.$store.state.distritoCarpeta = item.distrito_Procedencia
-        this.$router.push('./detallescarpetatableroa')
+        this.$router.push('./umixta-detallescarpetatableroa')
       },
       close () {
         this.dialog = false;
