@@ -2516,7 +2516,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       var dd = me.downloadPdf(nombre, puesto, agencia);
@@ -2529,7 +2529,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       //***************************************************************************** */
@@ -2739,7 +2739,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd).print();
       setTimeout(() => 
@@ -2753,7 +2753,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       //***************************************************************************** */
@@ -3137,7 +3137,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf1");
@@ -3158,7 +3158,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd).print();
 
@@ -3174,7 +3174,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       //***************************************************************************** */

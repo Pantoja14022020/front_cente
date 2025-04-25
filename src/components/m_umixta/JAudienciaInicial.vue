@@ -1713,7 +1713,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd).print();
       me.limpiar();
@@ -1727,7 +1727,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf");
@@ -1743,7 +1743,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       //***************************************************************************** */
       // VARIABLES

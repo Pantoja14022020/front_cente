@@ -2067,7 +2067,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf");
@@ -2093,7 +2093,7 @@ export default {
           var pdfMake = require("pdfmake/build/pdfmake.js");
           if (pdfMake.vfs === undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }
           // Crear y abrir el PDF
           var doc = pdfMake.createPdf(dd);
@@ -2115,7 +2115,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       //***************************************************************************** */

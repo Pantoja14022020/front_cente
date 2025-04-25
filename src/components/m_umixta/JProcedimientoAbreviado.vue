@@ -518,7 +518,7 @@
 
            if (pdfMake.vfs == undefined){
                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                pdfMake.vfs = pdfFonts.vfs; 
             }
 
             var dd = me.downloadPdf(nombre,puesto,agencia);
@@ -536,7 +536,7 @@
 
             if (pdfMake.vfs == undefined){
                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                pdfMake.vfs = pdfFonts.vfs; 
             }
             //***************************************************************************** */
             // VARIABLES

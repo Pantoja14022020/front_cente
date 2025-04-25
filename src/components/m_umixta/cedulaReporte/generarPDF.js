@@ -9,7 +9,7 @@ export const generarCedulaPDF = (nombre, puesto, desaparecido, media, padre, pre
   var htmlToPdfmake = require("html-to-pdfmake")
   if (pdfMake.vfs == undefined) {
     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-    pdfMake.vfs = pdfFonts.pdfMake.vfs
+    pdfMake.vfs = pdfFonts.vfs
   }
   var logo3 = padre.base64.logo3
   var logo4 = padre.base64.logo4

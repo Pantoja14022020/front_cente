@@ -756,7 +756,7 @@ import { generarQRCodeBase64 } from './crearQR';
    
                    if (pdfMake.vfs == undefined){
                        var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                       pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                       pdfMake.vfs = pdfFonts.vfs; 
                    } 
                   pdfMake.createPdf(dd).print();
 
@@ -1895,7 +1895,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
            if (pdfMake.vfs == undefined){
                    var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                   pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                   pdfMake.vfs = pdfFonts.vfs; 
            }
 
 
@@ -1908,7 +1908,7 @@ import { generarQRCodeBase64 } from './crearQR';
        },
        crearPdf_Derivacion1(re_arregloConjunto, re_conjuntoRepresentantes) {
                 let me = this;
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
 
                //***************************************************************************** */
                // VARIABLES
@@ -2358,7 +2358,7 @@ import { generarQRCodeBase64 } from './crearQR';
        },           
         crearPdf_Derivacion2(re_arregloConjunto, re_conjuntoRepresentantes) {
             let me = this;
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
 
             //***************************************************************************** */
             // VARIABLES
@@ -2960,7 +2960,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 if (pdfMake.vfs == undefined)
                 {
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
                 }
               }
               else

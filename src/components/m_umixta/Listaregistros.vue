@@ -1096,7 +1096,7 @@
 
                 if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
 
                     
                 }
@@ -1115,7 +1115,7 @@
 
                 if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
                 }
                 var doc = pdfMake.createPdf(dd).print();
                  me.close();
@@ -1368,7 +1368,7 @@
 
                 if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
 
                     
                 }
@@ -1387,7 +1387,7 @@
 
                 if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
                 }
                 var doc = pdfMake.createPdf(dd).print();
                  me.close();
@@ -1402,7 +1402,7 @@
 
             if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                        pdfMake.vfs = pdfFonts.vfs; 
                 }
                 
                 var dd = me.downloadPdfdiligencia(nombre,puesto,agencia);
@@ -1419,7 +1419,7 @@
 
                 if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                        pdfMake.vfs = pdfFonts.vfs; 
                 }
 
                 //***************************************************************************** */
