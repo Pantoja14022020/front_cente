@@ -3151,7 +3151,7 @@ export default {
                             var htmlToPdfmake = require("html-to-pdfmake");
                             if (pdfMake.vfs == undefined){
                                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                                pdfMake.vfs = pdfFonts.vfs;
                             }                                
                             var doc1 = pdfMake.createPdf(dd1).print();
                             me.fieldsBlank()
@@ -3860,7 +3860,7 @@ export default {
 
                 if (pdfMake.vfs == undefined) {
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
                 }
 
                 doc.getDataUrl(callback, doc);                    
@@ -5111,7 +5111,7 @@ export default {
 
             if (pdfMake.vfs == undefined) {
                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
             }            
             
             doc.getDataUrl(callback, doc);      
@@ -5341,7 +5341,7 @@ export default {
 
             if (pdfMake.vfs == undefined) {
                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
             }            
 
             doc.getDataUrl(callback, doc);                    

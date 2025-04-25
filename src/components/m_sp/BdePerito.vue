@@ -1836,7 +1836,7 @@ import pdf from 'vue-pdf'
             var htmlToPdfmake = require("html-to-pdfmake");
             if (pdfMake.vfs == undefined) {
                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
             }
             var dd = me.downloadPdf(nombre,puesto,agencia);
             var doc = pdfMake.createPdf(dd);
@@ -1851,7 +1851,7 @@ import pdf from 'vue-pdf'
            //
            if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
             }
             var dd = me.descargaPdf(me.efirma,me.imageUrl,me.urlfirma,me.rfcid);
             //var doc = pdfMake.createPdf(dd);
@@ -1864,7 +1864,7 @@ import pdf from 'vue-pdf'
             //
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
             }
             //***************************************************************************** */
             // VARIABLES
@@ -2044,7 +2044,7 @@ import pdf from 'vue-pdf'
             //
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
             }
             //***************************************************************************** */
             // VARIABLES

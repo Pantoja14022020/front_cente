@@ -2630,7 +2630,7 @@
 
            if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
             var dd = me.downloadPdf(nombre,puesto,agencia);
             var doc = pdfMake.createPdf(dd);
@@ -2646,7 +2646,7 @@
 
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
 
             //***************************************************************************** */
@@ -2812,7 +2812,7 @@
 
            if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
             var dd = me.downloadPdf2(nombre,puesto,agencia,tipo,textoinfo);
             var doc = pdfMake.createPdf(dd);
@@ -2828,7 +2828,7 @@
 
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
 
             //***************************************************************************** */

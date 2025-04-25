@@ -1109,7 +1109,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                        pdfMake.vfs = pdfFonts.vfs; 
                     } 
                     pdfMake.createPdf(dd).print(); 
                     me.swDir = false

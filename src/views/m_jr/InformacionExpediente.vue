@@ -1657,7 +1657,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                        pdfMake.vfs = pdfFonts.vfs; 
                     }
 
                     var doc = pdfMake.createPdf(dd).print(); 
@@ -1671,7 +1671,7 @@ import { generarQRCodeBase64 } from './crearQR';
   
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs;                
+                        pdfMake.vfs = pdfFonts.vfs;                
                     }
                     var doc = pdfMake.createPdf(dd);
                     var f = document.getElementById('iframepdf2'); 
@@ -1687,7 +1687,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     var htmlToPdfmake = require("html-to-pdfmake");
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                        pdfMake.vfs = pdfFonts.vfs;
                     }
                     var doc = pdfMake.createPdf(dd);
                     var f = document.getElementById('iframepdf3'); 
@@ -3021,7 +3021,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
 
             //***************************************************************************** */

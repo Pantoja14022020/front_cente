@@ -1856,7 +1856,7 @@
 
            if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
             
             var doc = pdfMake.createPdf(dd);
@@ -1871,7 +1871,7 @@
 
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                    pdfMake.vfs = pdfFonts.vfs; 
             }
 
             //***************************************************************************** */

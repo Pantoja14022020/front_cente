@@ -1939,7 +1939,7 @@
                                 var htmlToPdfmake = require("html-to-pdfmake");
                                 if (pdfMake.vfs == undefined){
                                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                                    pdfMake.vfs = pdfFonts.vfs;
                                 }                                
                                 var doc1 = pdfMake.createPdf(dd1).print();
                                 // if (me.v_tipodocumento=="Acuerdo reparatorio") {
@@ -2003,7 +2003,7 @@
                         //     var htmlToPdfmake = require("html-to-pdfmake");
                         //     if (pdfMake.vfs == undefined){
                         //         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        //         pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                        //         pdfMake.vfs = pdfFonts.vfs;
                         //     }
                         //     var doc1 = pdfMake.createPdf(dd1).print();
                         //     // var doc2 = pdfMake.createPdf(dd2).print();
@@ -3250,7 +3250,7 @@
     
                     if (pdfMake.vfs == undefined) {
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                        pdfMake.vfs = pdfFonts.vfs;
                     }
                     var doc = pdfMake.createPdf(dd);
                     var f = document.getElementById('iframepdfAR1');

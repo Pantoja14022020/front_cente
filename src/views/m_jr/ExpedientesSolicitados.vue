@@ -1511,7 +1511,7 @@
                     var htmlToPdfmake = require("html-to-pdfmake")
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs
+                        pdfMake.vfs = pdfFonts.vfs
                     }
                     var doc = pdfMake.createPdf(dd)
                     var f = document.getElementById('iframepdf3');
@@ -1528,7 +1528,7 @@
 
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs;                        
+                        pdfMake.vfs = pdfFonts.vfs;                        
                     }
 
                     var doc = pdfMake.createPdf(dd);
@@ -1546,7 +1546,7 @@
 
                     if (pdfMake.vfs == undefined){
                         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                        pdfMake.vfs = pdfFonts.vfs;
                     }
                     me.ResenaBreve = false
                     var doc = pdfMake.createPdf(dd).print();
@@ -2844,7 +2844,7 @@
 
             if (pdfMake.vfs == undefined){
                     var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
             }
 
             var logo1 = this.logo1;
@@ -3227,7 +3227,7 @@
                                                       var htmlToPdfmake = require("html-to-pdfmake");
                                                       if (pdfMake.vfs == undefined) {
                                                         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                                                        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                                                        pdfMake.vfs = pdfFonts.vfs;
                                                       }
                                                       var doc = pdfMake.createPdf(dd).print();
 
@@ -3615,7 +3615,7 @@
             var htmlToPdfmake = require("html-to-pdfmake");
             if (pdfMake.vfs == undefined) {
                 var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
             }
             var doc = pdfMake.createPdf(dd);
             var f = document.getElementById("iframepdf1");

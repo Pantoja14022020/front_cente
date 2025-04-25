@@ -1482,7 +1482,7 @@ export default {
     
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }          
 
           if (me.vistaPreviaTF == true) {
@@ -1504,7 +1504,7 @@ export default {
 
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }
           var doc = pdfMake.createPdf(dd).print();                    
         }
@@ -4349,7 +4349,7 @@ export default {
 
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }
           var doc = pdfMake.createPdf(dd);
           var f = document.getElementById("iframepdfoficio");
@@ -4460,7 +4460,7 @@ export default {
     
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
                 }
                 var doc = pdfMake.createPdf(dd).print();
                 me.modal_RS = false                                  
@@ -4514,7 +4514,7 @@ export default {
 
               if (pdfMake.vfs == undefined) {
                 var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                pdfMake.vfs = pdfFonts.vfs;
               }
               var doc = pdfMake.createPdf(dd).print();
 
@@ -4632,7 +4632,7 @@ export default {
     
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
                 }
                 var doc = pdfMake.createPdf(dd).print();
             me.dialogoInfo = false;
@@ -4905,7 +4905,7 @@ export default {
 
         if (pdfMake.vfs == undefined) {
           var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-          pdfMake.vfs = pdfFonts.pdfMake.vfs;
+          pdfMake.vfs = pdfFonts.vfs;
         }
         var doc = pdfMake.createPdf(dd).print();
         //var docR = pdfMake.createPdf(ddR).print();
@@ -4916,7 +4916,7 @@ export default {
 
         if (pdfMake.vfs == undefined) {
           var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-          pdfMake.vfs = pdfFonts.pdfMake.vfs;
+          pdfMake.vfs = pdfFonts.vfs;
         }
       }
 

@@ -1607,7 +1607,7 @@ export default {
                         
                         if (pdfMake.vfs == undefined){
                             var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                            pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                            pdfMake.vfs = pdfFonts.vfs; 
                         } 
                         
                         var doc = pdfMake.createPdf(dd).print(); 
@@ -1776,7 +1776,7 @@ export default {
     
                                         if (pdfMake.vfs == undefined){
                                             var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                                            pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                                            pdfMake.vfs = pdfFonts.vfs; 
                                         } 
                                         var doc = pdfMake.createPdf(dd).print();                                             
                                         //Llama a la funcion para que lista los registros del seguimiento para se vea la accion del guardado
@@ -2175,7 +2175,7 @@ export default {
 
                         if (pdfMake.vfs == undefined){
                             var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                            pdfMake.vfs = pdfFonts.pdfMake.vfs;                        
+                            pdfMake.vfs = pdfFonts.vfs;                        
                         }
 
                         var doc = pdfMake.createPdf(dd);
@@ -2192,7 +2192,7 @@ export default {
 
                         if (pdfMake.vfs == undefined){
                             var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                            pdfMake.vfs = pdfFonts.pdfMake.vfs;                        
+                            pdfMake.vfs = pdfFonts.vfs;                        
                         }
                         
                         var doc = pdfMake.createPdf(dd);
@@ -2579,7 +2579,7 @@ export default {
 
                             if (pdfMake.vfs == undefined){
                                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                                pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                                pdfMake.vfs = pdfFonts.vfs; 
                             } 
                             var doc = pdfMake.createPdf(dd).print(); 
                 
@@ -2596,7 +2596,7 @@ export default {
 
                             if (pdfMake.vfs == undefined){
                                 var pdfFonts = require('pdfmake/build/vfs_fonts.js')
-                                pdfMake.vfs = pdfFonts.pdfMake.vfs; 
+                                pdfMake.vfs = pdfFonts.vfs; 
                             } 
                             var doc = pdfMake.createPdf(dd).print(); 
                 

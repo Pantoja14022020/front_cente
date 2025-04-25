@@ -2735,7 +2735,7 @@ export default {
 
         if (pdfMake.vfs == undefined) {
           var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-          pdfMake.vfs = pdfFonts.pdfMake.vfs;
+          pdfMake.vfs = pdfFonts.vfs;
         }                
 
         me.vistaPreviaTF = false
@@ -2953,7 +2953,7 @@ export default {
 
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }
 
           var ddR = me.crearPdf_Recordatorio();          

@@ -1488,7 +1488,7 @@ export default {
 
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
 
       if (val != '') {        
@@ -3181,7 +3181,7 @@ export default {
 
                   if (pdfMake.vfs == undefined) {
                     var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                    pdfMake.vfs = pdfFonts.vfs;
                   }
                   var doc = pdfMake.createPdf(dd).print();
                 })
@@ -3325,7 +3325,7 @@ export default {
 
                 if (pdfMake.vfs == undefined) {
                   var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+                  pdfMake.vfs = pdfFonts.vfs;
                 }
 
                 var ddR = me.crearPdf_Recordatorio();
@@ -3365,7 +3365,7 @@ export default {
       
       if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs;
       }
       
       if (me.sol == "citatorio") {
@@ -3395,7 +3395,7 @@ export default {
 
         if (pdfMake.vfs == undefined) {
           var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-          pdfMake.vfs = pdfFonts.pdfMake.vfs;
+          pdfMake.vfs = pdfFonts.vfs;
         }
         var doc = pdfMake.createPdf(dd).print();
       }
@@ -4076,7 +4076,7 @@ export default {
 
           if (pdfMake.vfs == undefined) {
             var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-            pdfMake.vfs = pdfFonts.pdfMake.vfs;
+            pdfMake.vfs = pdfFonts.vfs;
           }
           var doc = pdfMake.createPdf(dd);
           var f = document.getElementById("iframepdfoficio");
