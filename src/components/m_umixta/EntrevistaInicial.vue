@@ -3068,6 +3068,7 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err)
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", "error");
           } else if (err.response.status == 401) {
