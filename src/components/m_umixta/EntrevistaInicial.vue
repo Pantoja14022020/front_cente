@@ -3435,7 +3435,7 @@ export default {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         console.log(pdfFonts)
         console.log("pues ese es el pdfFonts")
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+        pdfMake.vfs = pdfFonts.vfs//pdfFonts.pdfMake.vfs;
       }
       var doc = pdfMake.createPdf(dd); 
       var f = document.getElementById("iframepdf1");
