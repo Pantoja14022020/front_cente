@@ -1475,14 +1475,6 @@ export default {
       docLecDer: 'Lectura de derechos',
     };
   },
-  //AGREGUE ESTO YO DANIEL PARA PRUEBA
-  mounted() {
-    const pdfMake = require("pdfmake/build/pdfmake");
-    const pdfFonts = require("pdfmake/build/vfs_fonts");
-
-    pdfMake.vfs = pdfFonts.pdfMake.vfs;
-    this.pdfMake = pdfMake;
-  },
   computed: {
     text_Toltip() {
       return this.rnh1 === false ? "Guardar entrevista" : "Imprimir entrevista";
@@ -3436,14 +3428,16 @@ export default {
 
     mostrarpdf_CaratulaNUC() {
       var dd = this.crearPdf_CaratulaNUC();
-      //var pdfMake = require("pdfmake/build/pdfmake.js");
+      var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      /*if (pdfMake.vfs == undefined) {
+      if (pdfMake.vfs == undefined) {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
+        console.log(pdfFonts)
+        console.log("pues ese es el pdfFonts")
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }*/
-      var doc = this.pdfMake.createPdf(dd); //ESTO YO AGREGUE
+      }
+      var doc = pdfMake.createPdf(dd); 
       var f = document.getElementById("iframepdf1");
       var callback = function (url) {
         f.setAttribute("src", url);
