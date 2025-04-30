@@ -396,6 +396,8 @@ import n401 from './401.vue';
 import n403 from './403.vue';
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
+import Swal from "sweetalert2";
+import {firmarDocumento} from "@/helpers/efirma";
 
 var assert, curp, persona;
 assert = require("assert");
@@ -1034,8 +1036,30 @@ export default {
       }
       var doc = pdfMake.createPdf(dde);
       var f = document.getElementById("iframepdf");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      f.setAttribute("src", "");
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
       };
       doc.getDataUrl(callback, doc);
       me.modaldocumento = true;
@@ -1253,7 +1277,7 @@ export default {
           },
           PiePagina: {
             fontSize: 7,
-            color: COLOR_TEXTO_PIE_PAGINA,
+            //color: COLOR_TEXTO_PIE_PAGINA,
           },
           Texto: {
             fontSize: 10,
@@ -1440,7 +1464,7 @@ export default {
           },
           PiePagina: {
             fontSize: 7,
-            color: COLOR_TEXTO_PIE_PAGINA,
+            //color: COLOR_TEXTO_PIE_PAGINA,
           },
           Texto: {
             fontSize: 10,

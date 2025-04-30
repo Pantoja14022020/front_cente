@@ -1515,9 +1515,9 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticascinicioaño' == '#'
+                    'umixtaestadisticascinicioano' == '#'
                       ? ''
-                      : 'umixtaestadisticascinicioaño',
+                      : 'umixtaestadisticascinicioano',
                 }"
                   active-class="secondary"
               >
@@ -1534,9 +1534,9 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticascinicioaños' == '#'
+                    'umixtaestadisticascinicioanos' == '#'
                       ? ''
-                      : 'umixtaestadisticascinicioaños',
+                      : 'umixtaestadisticascinicioanos',
                 }"
                   active-class="secondary"
               >
@@ -1579,9 +1579,9 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticasenviojraño' == '#'
+                    'umixtaestadisticasenviojrano' == '#'
                       ? ''
-                      : 'umixtaestadisticasenviojraño',
+                      : 'umixtaestadisticasenviojrano',
                 }"
                   active-class="secondary"
               >
@@ -1598,9 +1598,9 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticasenviojraños' == '#'
+                    'umixtaestadisticasenviojranos' == '#'
                       ? ''
-                      : 'umixtaestadisticasenviojraños',
+                      : 'umixtaestadisticasenviojranos',
                 }"
                   active-class="secondary"
               >
@@ -1643,7 +1643,7 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticasciejraño' == '#' ? '' : 'umixtaestadisticasciejraño',
+                    'umixtaestadisticasciejrano' == '#' ? '' : 'umixtaestadisticasciejrano',
                 }"
                   active-class="secondary"
               >
@@ -1660,9 +1660,9 @@
                   v-if="esAdministrador || esCoordinador || esDirector"
                   :to="{
                   name:
-                    'umixtaestadisticasciejraños' == '#'
+                    'umixtaestadisticasciejranos' == '#'
                       ? ''
-                      : 'umixtaestadisticasciejraños',
+                      : 'umixtaestadisticasciejranos',
                 }"
                   active-class="secondary"
               >
