@@ -1277,6 +1277,8 @@ export default {
     },
 
     imprimirdiligencia(item) {
+
+      console.log("imprimiendo diligencia")
       let me = this;
       this.numerooficio = item.numeroOficio;
       this.origenDirSub = item.uDirSubPro;
@@ -1791,7 +1793,7 @@ export default {
         },
         content: [
           {
-            text: u_subProc + "\n" + u_dirSubPro + "\n" + u_agencia,
+            text: u_subProc +  "\n" + u_dirSubPro + "\n" + u_agencia,
             style: "Adscripcion",
             absolutePosition: { x: 85, y: 95 },
           },

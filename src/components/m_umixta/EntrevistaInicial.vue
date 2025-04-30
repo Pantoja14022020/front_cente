@@ -1245,6 +1245,12 @@ import n403 from "./403.vue";
 import { error } from "util";
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
+import md5 from 'md5';
+import { encode as b64encode } from 'base-64';
+import { X509, KJUR } from 'jsrsasign';
+import CryptoJS from 'crypto-js';
+import Swal from 'sweetalert2'
+import { firmarDocumento } from "../../helpers/efirma";
 
 export default {
   data() {
@@ -3162,7 +3168,7 @@ export default {
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      let me  =this;
+      let me  = this;
 
       //***************************************************************************** */
       // VARIABLES
@@ -3172,12 +3178,12 @@ export default {
       var logo3 = this.logo3;
       var logo4 = this.logo4;
 
-      var dirsubproc = this.dirsubprocuinicial;
-      var agencia = this.agenciainicial;
+      var dirsubproc = this.dirsubprocuinicial; //Variable
+      var agencia = this.agenciainicial; //Variable
       var diragencia = this.direccionAgencia;
-      var u_subProc = this.u_subproc;
+      var u_subProc = this.u_subproc; //Variable
       var telagencia = this.telefonosAgencia;
-      var nuc = this.nuc;
+      var nuc = this.nuc; //Variable
 
       //***************************************************************************** */
 
@@ -3186,8 +3192,10 @@ export default {
       var mes = moment(date).format("MMMM");
       var año = moment(date).format("YYYY");
       var hr = moment(date).format("h:mm:ss a");
-      var fecha = dia + " de " + mes + " del " + año;
+      var fecha = dia + " de " + mes + " del " + año; //Variable
       //***************************************************************************** */
+
+      console.log(this.rBreve) //Variable
 
       var htmltexto = htmlToPdfmake(this.rBreve);
 
@@ -3365,7 +3373,7 @@ export default {
               width: 200,
               alignment: 'center',
               margin: [0, 15, 0, 15]
-          }, 
+          },
         ],
 
         styles: {
@@ -3426,7 +3434,8 @@ export default {
       if (mes == 11) return "Diciembre";
     },
 
-    mostrarpdf_CaratulaNUC() {
+    async mostrarpdf_CaratulaNUC() {
+
       var dd = this.crearPdf_CaratulaNUC();
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -3436,13 +3445,41 @@ export default {
         pdfMake.vfs = pdfFonts.vfs
       }
       var doc = pdfMake.createPdf(dd); 
+
       var f = document.getElementById("iframepdf1");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      f.setAttribute("src","")
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
       };
+
       doc.getDataUrl(callback, doc);
+
       this.modal_CaratulaNUC = true;
     },
+
+
+
     imprimirCaratulaNUC() {
       let me = this;
       var dd = me.crearPdf_CaratulaNUC();
@@ -3456,7 +3493,9 @@ export default {
       var doc = pdfMake.createPdf(dd).print();
       me.close();
     },
+
     mostrarpdf_LecturaDerechos() {
+      console.log("Imprimiendo lectura de derechos")
       var dd = this.crearPdf_CaratulaNUC();
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -3473,6 +3512,7 @@ export default {
       doc.getDataUrl(callback, doc);
       this.modal_CaratulaNUC = true;
     },
+
     imprimirLecturaDerechos() {
       let me = this;
       var dd = me.crearPdf_CaratulaNUC();

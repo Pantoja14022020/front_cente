@@ -1278,6 +1278,7 @@ export default {
             text: "Número de oficio: " + this.numerooficio,
             style: "Nooficio",
             alignment: "right",
+            absolutePosition: { x: 85, y: 110 },
           },
           {
             text:

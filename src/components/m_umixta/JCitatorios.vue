@@ -2315,7 +2315,7 @@ export default {
     },
     mostrarpdf(nombre, puesto, agencia) {
       let me = this;
-      
+      //console.log("mostrar pdf")
       var dd = me.downloadPdf(nombre, puesto, agencia);
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -2349,6 +2349,7 @@ export default {
       me.limpiar();
     },
     downloadPdf(nombre, puesto, agencia) {
+      //console.log("ver cittttt")
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
@@ -2474,10 +2475,7 @@ export default {
           },
           {
             text:
-              "CAUSA PENAL: " +
-              causapenal +
-              "\n\n" +
-              (causajo != "" ? "CAUSA PENAL J.O: " + causajo + "\n\n" : "") +
+              "CAUSA PENAL: " + causapenal + "\n\n" + (causajo != "" ? "CAUSA PENAL J.O: " + causajo + "\n\n" : "") +
               "DELITO: " +
               delitos +
               "\n\n" +

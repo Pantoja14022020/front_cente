@@ -763,6 +763,7 @@ export default {
     },
     guardarregistro() {
       let me = this;
+      console.log("citatorio saving")
       this.$validator.validate().then((result) => {
         if (result) {
           this.fechaactual = this.dia + " de " + this.mes + " del " + this.año;
@@ -804,6 +805,7 @@ export default {
       this.aux3 = true;
     },
     guardaredit2() {
+      console.log("vista previa del citatorio")
       this.$validator.validate().then((result) => {
         if (result) {
           this.mostrarpdf(this.acnombre, this.acpuesto, this.acagencia);

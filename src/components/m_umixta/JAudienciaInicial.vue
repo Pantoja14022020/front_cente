@@ -1137,6 +1137,7 @@ export default {
       }
     },
     generarpdf() {
+      //console.log("generar pdf")
       this.$validator.validateAll("crear").then((result) => {
         if (result) {
           this.fechaactual = this.generarfecha();
