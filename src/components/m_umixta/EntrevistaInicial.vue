@@ -879,17 +879,17 @@
             <v-btn
               color="success"
               text
-              @click.native="imprimir_LecturaDerechosVictima()"
+              @click.native="imprimirLecturaDerechos(u_nombre, u_puesto, u_agencia); modaldocumento = false;"
               >{{ text_Modal }}</v-btn
             >
-            <v-btn icon @click="modal_LecturaDerechosVictima = false">
+            <v-btn icon @click="modal_LecturaDerechosVictima = false; ">
               <v-icon>close</v-icon>
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
           <iframe
-            id="iframepdf3"
+            id="iframepdf8"
             type="application/pdf"
             width="100%"
             height="835"
@@ -1489,7 +1489,7 @@ export default {
       return this.rnh1 === false ? "save" : "print";
     },
     text_Modal() {
-      return this.rnh1 === false ? "Guardar e imprimir" : "Imprimir";
+      return this.rnh1 === false ? "Imprimir" : "Imprimir";
     },
     getColorStyle() {
       if (this.diasI < 25) {
@@ -2784,7 +2784,8 @@ export default {
 
       //Un segundo de espera para que tenga valor el QR
       setTimeout(() => {
-        me.imprimirLecturaDerechos(me.u_nombre, me.u_puesto, me.u_agencia);
+        me.mostrarpdf_LecturaDerechos(me.u_nombre, me.u_puesto, me.u_agencia)
+        //me.imprimirLecturaDerechos(me.u_nombre, me.u_puesto, me.u_agencia);
         me.modaldocumento = false;
       }, 1000);
     },
@@ -3494,9 +3495,9 @@ export default {
       me.close();
     },
 
-    mostrarpdf_LecturaDerechos() {
-      console.log("Imprimiendo lectura de derechos")
-      var dd = this.crearPdf_CaratulaNUC();
+    mostrarpdf_LecturaDerechos(nombre, puesto, agencia) {
+      let me = this;
+      var dd = me.downloadPdf(nombre, puesto, agencia);;
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
@@ -3505,12 +3506,35 @@ export default {
         pdfMake.vfs = pdfFonts.vfs;
       }
       var doc = pdfMake.createPdf(dd);
-      var f = document.getElementById("iframepdf1");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      var f = document.getElementById("iframepdf8");
+      f.setAttribute("src", "");
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        //this.modal_CaratulaNUC = true;
+        this.modal_LecturaDerechosVictima = true;
       };
       doc.getDataUrl(callback, doc);
-      this.modal_CaratulaNUC = true;
+      //this.modal_CaratulaNUC = true;
+      this.modal_LecturaDerechosVictima = true;
     },
 
     imprimirLecturaDerechos() {
@@ -4302,12 +4326,35 @@ export default {
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf3");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      f.setAttribute("src", "");
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
       };
       doc.getDataUrl(callback, doc);
       this.modal_LecturaDerechosVictima = true;
     },
+    //nota mental
     imprimir_LecturaDerechosVictima() {
       let me = this;
       var dd = me.crearPdf_LecturaDerechosVictima();
@@ -4325,13 +4372,13 @@ export default {
     //************************************************************************* */
     //************************************************************************ */
     // ENTREVISTA  VICTIMA
-    crearPdf_LecturaDerechosVictima() {
+    /*crearPdf_LecturaDerechosVictima() {
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
-      //***************************************************************************** */
+      //!***************************************************************************** *!/
       // VARIABLES
-      //***************************************************************************** */
+      //!***************************************************************************** *!/
       var logo1 = this.logo1;
       var logo3 = this.logo3;
       var logo2 = this.logo2;
@@ -4341,7 +4388,7 @@ export default {
       var diragencia = this.direccionAgencia;
       var telagencia = this.telefonosAgencia;
 
-      //***************************************************************************** */
+      //!***************************************************************************** *!/
 
       var date = moment(this.fechaelevanuc, "YYYY-MM-DD HH:mm:ss");
       var dia = moment(date).format("DD");
@@ -4349,7 +4396,7 @@ export default {
       var año = moment(date).format("YYYY");
       var hr = moment(date).format("h:mm:ss a");
       var fecha = dia + " de " + mes + " del " + año;
-      //***************************************************************************** */
+      //!***************************************************************************** *!/
       var html_textofila1 = htmlToPdfmake(
         "<p>En este acto, el(la) Agente del Ministerio Público hace saber a la víctima (s) u ofendido (s) C.<strong>" +
           this.nombre +
@@ -4629,8 +4676,30 @@ export default {
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf3");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      f.setAttribute("src", "");
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
       };
       doc.getDataUrl(callback, doc);
       this.modal_LecturaDerechosVictima = true;
@@ -4647,7 +4716,7 @@ export default {
       }
       var doc = pdfMake.createPdf(dd).print();
       me.close();
-    },
+    },*/
 
     //************************************************************************* */
 
@@ -5342,7 +5411,7 @@ export default {
     //Nueva forma de imprimir la lectura de derechos
     imprimirLecturaDerechos(nombre, puesto, agencia) {
       let me = this;
-      var dd = me.downloadPdf(nombre, puesto, agencia);
+      var dd = me.downloaguardPdf(nombre, puesto, agencia);
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
 
@@ -5350,6 +5419,7 @@ export default {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.vfs;
       }
+
       var doc = pdfMake.createPdf(dd).print();
       this.modaldocumento = true;
     },
