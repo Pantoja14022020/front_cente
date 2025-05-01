@@ -478,6 +478,8 @@ import moment from "moment";
 import { error } from "util";
 import "moment/locale/es";
 import { generarQRCodeBase64 } from './crearQRRac';
+import Swal from "sweetalert2";
+import {firmarDocumento} from "@/helpers/efirma";
 export default {
   data() {
     return {
@@ -1557,8 +1559,30 @@ export default {
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf1");
-      var callback = function (url) {
-        f.setAttribute("src", url);
+      f.setAttribute("src", "");
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Deseas firmar este documento?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            f.setAttribute("src", response[0]["DocFirmado"]);
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
       };
       doc.getDataUrl(callback, doc);
 
