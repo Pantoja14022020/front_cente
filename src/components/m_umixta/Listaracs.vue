@@ -398,6 +398,7 @@
                         me.$notify('Error al intentar listar los registros!!!','error')    
                     } 
                 });
+              console.log("listar",me.carpetas);
             },
             listarconfiltro(){
                 let me=this;  
@@ -410,19 +411,19 @@
                 else{
                     indicadoragencia = true
                     agenciaid = me.agencia
-                } 
+                }
 
                 if(me.modulo == "" || me.modulo == undefined){indicadormodulo = false,moduloid = '00000000-0000-0000-0000-000000000000'}
                 else{
                     indicadormodulo = true
                     moduloid = me.modulo
-                } 
+                }
 
                 if(me.fechad == "" || me.fechad == undefined || me.fechadesde == undefined || me.fechadesde == undefined){indicadorFI = false,fechad = '0001-01-01'}
                 else{
                     indicadorFI = true
                     fechad = me.fechadesde
-                } 
+                }
 
 
                 if(me.fechah == "" || me.fechah == undefined || me.fechahasta == undefined || me.fechahasta == undefined){indicadorFF = false,fechah = '0001-01-01'}
@@ -435,10 +436,15 @@
                 else if(me.esCoordinador) rol = "C"
                 else rol = "A"
 
-                this.$cat.get('api/RHechoes/ListarPorModuloRACSAdminDirector/' + indicadoragencia + "/" + agenciaid + "/" + indicadormodulo + "/" + moduloid + "/" + indicadorFI + "/" + fechad + "/" + indicadorFF + "/" + fechah + "/" + me.u_iddsp + "/" + me.u_idagencia + "/" + me.u_idmoduloservicio + "/" +  rol ,configuracion).then(function(response){
+                                                    //        [HttpGet("[action]/{Indicadoragencia}/{idAgencia}/{IndicadorModulo}/{idModuloServicio}/{IndicadorFechaI}/{FechaI}/{IndicadorFechaF}/{FechaF}/{IddspU}/{IdAgenciaU}/{IdModuloU}/{rol}")]
+
+              this.$cat.get('api/RHechoes/ListarPorModuloRACSAdminDirector/' + indicadoragencia + "/" + agenciaid + "/" + indicadormodulo + "/" + moduloid + "/" + indicadorFI + "/" + fechad + "/" + indicadorFF + "/" + fechah + "/" + me.u_iddsp + "/" + me.u_idagencia + "/" + me.u_idmoduloservicio + "/" +  rol ,configuracion).then(function(response){
                     me.dialogo = false
                     me.carpetas = response.data
-                }).catch(err => { 
+                    console.log("listarconfiltro", agenciaid,moduloid,indicadoragencia,indicadormodulo,fechad,fechah,indicadorFI,indicadorFF,rol)
+                    console.log( "url: ", 'api/RHechoes/ListarPorModuloRACSAdminDirector/' + indicadoragencia + "/" + agenciaid + "/" + indicadormodulo + "/" + moduloid + "/" + indicadorFI + "/" + fechad + "/" + indicadorFF + "/" + fechah + "/" + me.u_iddsp + "/" + me.u_idagencia + "/" + me.u_idmoduloservicio + "/" +  rol)
+                    //console.log(configuracion)
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -492,9 +498,11 @@
                 me.modulos = []
                 me.modulo = ""
                 if( me.agencia != undefined ){
-
                     me.$conf.get('api/ModuloServicios/ListarPorAgencia/'+me.agencia,configuracion).then(function(response){      
                         moduloarray=response.data;
+
+                        console.log("listarModulos",moduloarray);
+
                         moduloarray.map(function(x){
                             me.modulos.push({text: x.nombre,value: x.idModuloServicio});
                         });
@@ -529,6 +537,7 @@
 
                     me.$conf.get('api/ModuloServicios/ListarPorAgencia/'+me.u_idagencia,configuracion).then(function(response){      
                         moduloarray=response.data;
+                        console.log("listarModulos2",moduloarray);
                         moduloarray.map(function(x){
                             me.modulos.push({text: x.nombre,value: x.idModuloServicio});
                         });

@@ -14,11 +14,15 @@ import keycloak from './auth/keycloak'
 
 import './styles/panel_control/index.css'
 import './styles/control_acceso/index.css'
+import Keycloak from "./auth/keycloak";
 
 
 Vue.config.productionTip = false
 
 axios.defaults.baseURL =  'https://pccentenario.pgjhidalgo.gob.mx/' //'http://localhost:5006/'
+
+const keycloakUser = axios.create({ baseURL: 'https://login-admin.pgjhidalgo.gob.mx/'})
+Vue.prototype.$keycloakUser = keycloakUser
 
 const jrInstance = axios.create({ baseURL: 'https://jrcentenario.pgjhidalgo.gob.mx/' /*'http://localhost:5005/'*/ }) 
 Vue.prototype.$jr = jrInstance 

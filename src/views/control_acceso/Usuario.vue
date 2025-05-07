@@ -208,7 +208,7 @@
                             <v-icon>close</v-icon>
                         </v-btn>
                     </v-toolbar-items>
-                </v-toolbar> 
+                </v-toolbar>
 
 
                 <v-container grid-list-md text-xs-center>
@@ -481,6 +481,9 @@
         },
         data(){
             return {
+                keycloakUserToken:'',
+                keycloakPasswordToken:'',
+                createdKeycloakUserId: [],
                 u_iddistrito:'',
                 u_distrito:'',
                 e401:false, 
@@ -586,7 +589,8 @@
             }
         },
 
-        created () { 
+        created () {
+
             this.u_iddistrito=this.$store.state.usuario.iddistrito;
             this.u_distrito=this.$store.state.usuario.distrito; 
         
@@ -618,7 +622,153 @@
             this.listarPanels();
             this.listardistritos();
         },
-        methods:{ 
+        methods:{
+            //generar los tokens para las peticiones de keycloak
+            async generateTokenPassword(){
+              try {
+                const data = new URLSearchParams();
+                data.append('grant_type', 'password');
+                data.append('client_id', 'admin-cli');
+                data.append('password', 'admin');
+                data.append('username', 'alessandro2204@outlook.com');
+
+                const response = await this.$keycloakUser.post(
+                    'realms/procu/protocol/openid-connect/token',
+                    data,
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded',}}
+                );
+
+                this.keycloakPasswordToken = response.data.access_token;
+                return response.data.access_token
+              } catch (error) {
+                throw error;
+              }
+
+            },
+            async generateUserToken() {
+             try {
+              const data = new URLSearchParams();
+              data.append('grant_type', 'client_credentials');
+              data.append('client_id', 'api-custom-client');
+              data.append('client_secret', '8PNGHcO6NortLoGBGGSG563IqdFPLNTj');
+
+              const response = await this.$keycloakUser.post(
+                  'realms/procu/protocol/openid-connect/token',
+                  data,
+                  { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+              );
+
+              this.keycloakUserToken = response.data.access_token;
+              return response.data.access_token;
+            } catch (error) {
+              throw error;
+            }
+          },
+            //métodos para crear al usuario en keycloak
+            async createKeycloakUser(configuracion){
+              //generar el token para crear el usuario
+                let token = await this.generateUserToken()
+              //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
+                let passwordToken = await this.generateTokenPassword();
+                let me = this
+                //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
+                const data = [{
+                  email: me.email,
+                  CURP: "TAPD010720HHGLNNA4",
+                  firstName: me.nombre,
+                  lastName: me.nombre,
+                  segundoApellido: me.nombre,
+                  telefono: me.telefono,
+                  Calle: me.direccion,
+                  Numero: me.direccion,
+                  Estado: me.direccion,
+                  Municipio: me.direccion,
+                  Colonia: me.direccion,
+                  PreferenciaContacto: "SMS",
+                  cp: me.direccion,
+                  password: me.password
+                }]
+                    //Creamos el usuario en keycloak
+                    this.$keycloakUser.post('realms/procu/keycloak-user-api/users/CreateUsers', data, {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        //usamos el token de usuario
+                        'Authorization': 'Bearer '+token
+                      }
+                    }).then( (response) => {
+                      //si la creación en keycloak es exitosa procedemos a crear la contraseña para el usuario creado
+                      let passwordData = {
+                        type: "password",
+                        value: me.password,
+                        temporary: true
+                      }
+                      //obtenemos el ID del usuario recién creado en keycloak
+                      this.createdKeycloakUserId = response.data["Lista de usuarios creados"]
+                      console.log("id del usuario creado",this.createdKeycloakUserId[0])
+                      //
+                      this.$keycloakUser.put('https://login-admin.pgjhidalgo.gob.mx/admin/realms/procu/users/'+this.createdKeycloakUserId[0]+'/reset-password', passwordData,{
+                        headers: {
+                          'Content-Type': 'application/json',
+                          //usamos el token del password
+                          'Authorization': 'Bearer '+passwordToken
+                        }
+                      }).then((response) => {
+                        //si la contraseña es agregada exitosamente se procede a crear al usuario en la base de centenario
+                        me.$notify("Usuario creado exitosamente en Keycloak")
+
+                        this.$controlacceso.post('api/Usuarios/Crear',{
+                          'rolId':me.idrol,
+                          'moduloservicioId': me.idModuloServicio,
+                          'puesto': me.puesto,
+                          'nombre':me.nombre,
+                          'direccion':me.direccion,
+                          'telefono': me.telefono,
+                          'email':me.email,
+                          'condicion':me.condicion,
+                          'usuario': me.usuario,
+                          'password':me.password
+                        }, configuracion).then(function(response){
+                          me.close();
+                          me.$notify('La información se guardo correctamente !!!','success')
+                          me.listar();
+                          me.limpiar();
+                        }).catch(err => {
+                          if (err.response.status==400){
+                            me.$notify("No es un usuario válido", 'error')
+                          } else if (err.response.status==401){
+                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                            me.e401 = true,
+                                me.showpage= false
+                          } else if (err.response.status==403){
+                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.e403= true
+                            me.showpage= false
+                          } else if (err.response.status==404){
+                            me.$notify("El recuso no ha sido encontrado", 'error')
+                          }else{
+                            me.$notify('Error al intentar crear el  registro!!!','error')
+                          }
+                        });
+
+                      //en caso de que exista un error en la creación de la contraseña, el usuario existirá en keycloak pero no en la base de centenario
+                      }).catch((error) => {me.$notify("Contraseña no actualizada", 'error')})
+
+
+
+                    }).catch(error => {
+                      //en caso de que el usuario no se crease en keycloak, no se creara en la base de datos ni se intentará actualizar la contraseña
+                      if (error.response.status==409){
+                        let errorMessage = error.response.data;
+                        me.$notify(errorMessage, 'error')
+                      }else {
+                        me.$notify('No se creo el usuario en Keycloak:', "error")
+                      }
+
+                    });
+
+            },
+
+
             async listar() {
                 let me = this; 
                 let header = { "Authorization": "Bearer " + this.$store.state.token };
@@ -1070,6 +1220,9 @@
                 this.dialog=true;
             },
             limpiar(){
+                this.keycloakUserToken='',
+                this.keycloakPasswordToken='',
+                this.createdKeycloakUserId=[],
                 this.id="";
                 this.idrol="";
                 this.nombre="";
@@ -1090,10 +1243,10 @@
                 this.editedIndex=-1;
                 this.distritoActual=''
             },
-            guardar () { 
-                this.$validator.validate().then(result => {
+            guardar () {
+                this.$validator.validate().then(async result => {
                     debugger
-                    if (result) { 
+                    if (result) {
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
                         if (this.editedIndex > -1) { 
@@ -1123,7 +1276,7 @@
                                             me.$notify('La información se actualizo correctamente !!!','success') 
                                             me.listar();
                                             me.limpiar();                        
-                                        }).catch(error => {  
+                                        }).catch(error => {
                                             if (error.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
                                             } else if (error.response.status==401){
@@ -1361,39 +1514,8 @@
                         } else { 
                     
                             let me=this;
-                            this.$controlacceso.post('api/Usuarios/Crear',{
-                                'rolId':me.idrol,
-                                'moduloservicioId': me.idModuloServicio, 
-                                'puesto': me.puesto, 
-                                'nombre':me.nombre,
-                                'direccion':me.direccion,
-                                'telefono': me.telefono,
-                                'email':me.email,
-                                'condicion':me.condicion, 
-                                'usuario': me.usuario,
-                                'password':me.password
-                            }, configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se guardo correctamente !!!','success') 
-                                me.listar();
-                                me.limpiar();                        
-                            }).catch(err => {  
-                                if (err.response.status==400){
-                                    me.$notify("No es un usuario válido", 'error')
-                                } else if (err.response.status==401){
-                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                    me.e401 = true,
-                                    me.showpage= false
-                                } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                    me.e403= true
-                                    me.showpage= false 
-                                } else if (err.response.status==404){
-                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                }else{
-                                    me.$notify('Error al intentar crear el  registro!!!','error')   
-                                } 
-                            });
+                            await me.createKeycloakUser(configuracion)
+
                         }
                     }
                 })
