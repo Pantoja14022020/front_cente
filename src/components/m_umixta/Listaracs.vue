@@ -459,7 +459,7 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros!!!','error')    
-                    } 
+                    }
                 });
             },
             listaragencias(){
