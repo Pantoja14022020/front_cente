@@ -539,6 +539,7 @@
                 nombreAgencia:'',
 
                 usuario:'',
+                usuarioAnt:'',
                 password:'',
                 actPassword:false,
                 passwordAnt:'',
@@ -587,7 +588,12 @@
             dialog (val) {
             val || this.close()
             },
-
+            usuarioAnt(val) {
+              console.log("usuario anterior",val)
+            },
+            usuario(val){
+              console.log("usuario campotexto",val)
+            }
         },
 
         created () {
@@ -634,8 +640,8 @@
                 data.append('password', 'admin');
                 data.append('username', 'alessandro2204@outlook.com');
 
-                const response = await this.$keycloakUser.post(
-                    'realms/procu/protocol/openid-connect/token',
+                const response = await this.$controlacceso.post(
+                    'api/Usuarios/GetTokenKeyCloak',
                     data,
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded',}}
                 );
@@ -647,6 +653,7 @@
               }
 
             },
+
             async generateUserToken() {
              try {
               const data = new URLSearchParams();
@@ -654,8 +661,8 @@
               data.append('client_id', 'api-custom-client');
               data.append('client_secret', '8PNGHcO6NortLoGBGGSG563IqdFPLNTj');
 
-              const response = await this.$keycloakUser.post(
-                  'realms/procu/protocol/openid-connect/token',
+              const response = await this.$controlacceso.post(
+                  'api/Usuarios/GetTokenKeyCloak',
                   data,
                   { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
               );
@@ -669,9 +676,11 @@
             //métodos para crear al usuario en keycloak
             async createKeycloakUser(configuracion){
               //generar el token para crear el usuario
-                let token = await this.generateUserToken()
-              //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
+                //let token = await this.generateUserToken()
+                //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
                 let passwordToken = await this.generateTokenPassword();
+                let token = "";
+                //let passwordToken = ""
                 let me = this
                 //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
                 const data = [{
@@ -789,16 +798,17 @@
             //let token = await this.generateUserToken()
             //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
             let passwordToken = await this.generateTokenPassword();
+            //let passwordToken = ""
             let me = this
             //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
             const data = [{
-              username: me.usuario,
+              username: me.usuarioAnt,
               newUsername: me.usuario,
               email: me.email,
               CURP: "TOHA020422HHGLRLA8",
               firstName: me.nombre,
-              lastName: me.nombre,
-              segundoApellido: me.nombre,
+              lastName: "",
+              segundoApellido: "",
               telefono: me.telefono,
               Calle: me.direccion,
               Numero: me.direccion,
@@ -827,8 +837,8 @@
               //obtenemos el ID del usuario recién creado en keycloak
               this.createdKeycloakUserId = response.data["Lista de usuarios creados"]
               console.log("id del usuario creado",this.createdKeycloakUserId[0])
+              //si el hash del campo de la contraseña es diferente al de la contraseña anterior
               if (me.password!=me.passwordAnt) {
-                //Eliminar este paso en caso de que la contraseña se pueda actualizar con el API de actualización
                 this.$keycloakUser.put('https://login-admin.pgjhidalgo.gob.mx/admin/realms/procu/users/' + this.createdKeycloakUserId[0] + '/reset-password', passwordData, {
                   headers: {
                     'Content-Type': 'application/json',
@@ -1816,6 +1826,7 @@
                 this.telefono=item.telefono;
                 this.email=item.email;
                 this.usuario= item.usuario;
+                this.usuarioAnt = item.usuario;
                 this.password=item.password_hash;
                 this.passwordAnt=item.password_hash;
                 this.editedIndex=1;
@@ -1872,262 +1883,264 @@
                                 me.actPassword=true;
                             }
                             //Eliminar y reemplazar por la función updateKeycloakUser() cuando la api de actualización este lista
-                            if(me.distritoActual == me.idDistritoPach && me.distrito == me.idDistritoPach) {
-                                console.log('son en el mismo distrito')
-                                this.$controlacceso.put('api/Usuarios/Actualizar',{
-                                            'idusuario':me.idUsuario,
-                                            'rolId':me.idrol,
-                                            'moduloservicioId': me.idModuloServicio, 
-                                            'puesto': me.puesto, 
-                                            'nombre':me.nombre,
-                                            'direccion':me.direccion,
-                                            'telefono': me.telefono,
-                                            'email':me.email,
-                                            'condicion':me.condicion, 
-                                            'usuario': me.usuario,
-                                            'password':me.password,
-                                            'act_password':me.actPassword                        
-                                        }, configuracion).then(function(response){
-                                        
-                                            me.close();
-                                            me.$notify('La información se actualizo correctamente !!!','success') 
-                                            me.listar();
-                                            me.limpiar();                        
-                                        }).catch(error => {
-                                            if (error.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (error.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (error.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (error.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                            } 
-                                        
-                                            });
-                            }
-                            else if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach){
-                                console.log('va de pachuca a otro distrito')
+                            //await me.updateKeycloakUser(configuracion)
+                          if (me.distritoActual == me.idDistritoPach && me.distrito == me.idDistritoPach) {
+                            console.log('son en el mismo distrito')
+                            this.$controlacceso.put('api/Usuarios/Actualizar', {
+                              'idusuario': me.idUsuario,
+                              'rolId': me.idrol,
+                              'moduloservicioId': me.idModuloServicio,
+                              'puesto': me.puesto,
+                              'nombre': me.nombre,
+                              'direccion': me.direccion,
+                              'telefono': me.telefono,
+                              'email': me.email,
+                              'condicion': me.condicion,
+                              'usuario': me.usuario,
+                              'password': me.password,
+                              'act_password': me.actPassword
+                            }, configuracion).then(function (response) {
 
-                                this.$controlacceso.put('api/Usuarios/Actualizar',{
-                                            'idusuario':me.idUsuario,
-                                            'rolId':me.idrol,
-                                            'moduloservicioId': me.idModuloServicio, 
-                                            'puesto': me.puesto, 
-                                            'nombre':me.nombre,
-                                            'direccion':me.direccion,
-                                            'telefono': me.telefono,
-                                            'email':me.email,
-                                            'condicion':me.condicion, 
-                                            'usuario': me.usuario,
-                                            'password':me.password,
-                                            'act_password':me.actPassword                        
-                                        }, configuracion).then(function(response){
-                                            
-                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
-                                                'idusuario':me.idUsuario,
-                                                'rolId':me.idrol,
-                                                'moduloservicioId': me.idModuloServicio, 
-                                                'puesto': me.puesto, 
-                                                'nombre':me.nombre,
-                                                'direccion':me.direccion,
-                                                'telefono': me.telefono,
-                                                'email':me.email,
-                                                'condicion':me.condicion, 
-                                                'usuario': me.usuario,
-                                                'password':me.password,
-                                                'idDistrito':me.distrito,
-                                                'caso': 2,
-                                            },configuracion).then(function(response){
-                                                // console.log(response)
-                                                // me.close();
-                                                // me.$notify('La información se actualizo correctamente !!!','success') 
-                                                // me.listar();
-                                                // me.limpiar(); 
+                              me.close();
+                              me.$notify('La información se actualizo correctamente !!!', 'success')
+                              me.listar();
+                              me.limpiar();
+                            }).catch(error => {
+                              if (error.response.status == 400) {
+                                me.$notify("No es un usuario válido", 'error')
+                              } else if (error.response.status == 401) {
+                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                me.e401 = true,
+                                    me.showpage = false
+                              } else if (error.response.status == 403) {
+                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.e403 = true
+                                me.showpage = false
+                              } else if (error.response.status == 404) {
+                                me.$notify("El recuso no ha sido encontrado", 'error')
+                              } else {
+                                me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                              }
 
-                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
-                                                    'UsuarioId':me.idUsuario,
-                                                    'idDistrito':me.me.distrito,
-                                                    'caso': 2,
-                                                },configuracion).then(function(response){
-                                                    console.log(response)
-                                                    me.close();
-                                                    me.$notify('La información se actualizo correctamente !!!','success') 
-                                                    me.listar();
-                                                    me.limpiar(); 
-                                                }).catch(error => {  
-                                                    if (error.response.status==400){
-                                                    me.$notify("No es un usuario válido", 'error')
-                                                } else if (error.response.status==401){
-                                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                    me.e401 = true,
-                                                    me.showpage= false
-                                                } else if (error.response.status==403){ 
-                                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                    me.e403= true
-                                                    me.showpage= false 
-                                                } else if (error.response.status==404){
-                                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                                }else{
-                                                    me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                                } 
-                                            
-                                                });
-                                            }).catch(error => {  
-                                            if (error.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (error.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (error.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (error.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                            } 
-                                        
-                                            });
+                            });
+                          }
+                          else if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach) {
+                            console.log('va de pachuca a otro distrito')
 
-                                                                
-                                        }).catch(error => {  
-                                            if (error.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (error.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (error.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (error.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                            } 
-                                        
-                                            });
-                            }
-                            else if((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)){
-                                console.log('todos diferentes')
-                                this.$controlacceso.put('api/Usuarios/Actualizar',{
-                                            'idusuario':me.idUsuario,
-                                            'rolId':me.idrol,
-                                            'moduloservicioId': me.idModuloServicio, 
-                                            'puesto': me.puesto, 
-                                            'nombre':me.nombre,
-                                            'direccion':me.direccion,
-                                            'telefono': me.telefono,
-                                            'email':me.email,
-                                            'condicion':me.condicion, 
-                                            'usuario': me.usuario,
-                                            'password':me.password,
-                                            'act_password':me.actPassword                        
-                                        }, configuracion).then(function(response){
-                                            console.log(response)
-                                            this.$controlacceso.post('api/Usuarios/ClonarUsuario',{
-                                                'idusuario':me.idUsuario,
-                                                'rolId':me.idrol,
-                                                'moduloservicioId': me.idModuloServicio, 
-                                                'puesto': me.puesto, 
-                                                'nombre':me.nombre,
-                                                'direccion':me.direccion,
-                                                'telefono': me.telefono,
-                                                'email':me.email,
-                                                'condicion':me.condicion, 
-                                                'usuario': me.usuario,
-                                                'password':me.password,
-                                                'idDistritoO':me.distritoActual,
-                                                'idDistritoD':me.distrito,
-                                                'caso': 3,
-                                            },configuracion).then(function(response){
-                                                // console.log(response)
-                                                // me.close();
-                                                // me.$notify('La información se actualizo correctamente !!!','success') 
-                                                // me.listar();
-                                                // me.limpiar(); 
-                                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel',{
-                                                    'UsuarioId':me.idUsuario,
-                                                    'idDistritoD':me.distrito,
-                                                    'caso': 3,
-                                                },configuracion).then(function(response){
-                                                    console.log(response)
-                                                    me.close();
-                                                    me.$notify('La información se actualizo correctamente !!!','success') 
-                                                    me.listar();
-                                                    me.limpiar(); 
-                                                }).catch(error => {  
-                                                    if (error.response.status==400){
-                                                    me.$notify("No es un usuario válido", 'error')
-                                                } else if (error.response.status==401){
-                                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                    me.e401 = true,
-                                                    me.showpage= false
-                                                } else if (error.response.status==403){ 
-                                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                    me.e403= true
-                                                    me.showpage= false 
-                                                } else if (error.response.status==404){
-                                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                                }else{
-                                                    me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                                } 
-                                            
-                                                });
-                                            }).catch(error => {  
-                                            if (error.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (error.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (error.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (error.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                            } 
-                                        
-                                            });
+                            this.$controlacceso.put('api/Usuarios/Actualizar', {
+                              'idusuario': me.idUsuario,
+                              'rolId': me.idrol,
+                              'moduloservicioId': me.idModuloServicio,
+                              'puesto': me.puesto,
+                              'nombre': me.nombre,
+                              'direccion': me.direccion,
+                              'telefono': me.telefono,
+                              'email': me.email,
+                              'condicion': me.condicion,
+                              'usuario': me.usuario,
+                              'password': me.password,
+                              'act_password': me.actPassword
+                            }, configuracion).then(function (response) {
 
-                                            // me.close();
-                                            // me.$notify('La información se actualizo correctamente !!!','success') 
-                                            // me.listar();
-                                            // me.limpiar();                        
-                                        }).catch(error => {  
-                                            if (error.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (error.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (error.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (error.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar la informacion!!!','error')   
-                                            } 
-                                        
-                                            });
+                              this.$controlacceso.post('api/Usuarios/ClonarUsuario', {
+                                'idusuario': me.idUsuario,
+                                'rolId': me.idrol,
+                                'moduloservicioId': me.idModuloServicio,
+                                'puesto': me.puesto,
+                                'nombre': me.nombre,
+                                'direccion': me.direccion,
+                                'telefono': me.telefono,
+                                'email': me.email,
+                                'condicion': me.condicion,
+                                'usuario': me.usuario,
+                                'password': me.password,
+                                'idDistrito': me.distrito,
+                                'caso': 2,
+                              }, configuracion).then(function (response) {
+                                // console.log(response)
+                                // me.close();
+                                // me.$notify('La información se actualizo correctamente !!!','success')
+                                // me.listar();
+                                // me.limpiar();
 
-                            }
-                            //fin Eliminar
+                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel', {
+                                  'UsuarioId': me.idUsuario,
+                                  'idDistrito': me.me.distrito,
+                                  'caso': 2,
+                                }, configuracion).then(function (response) {
+                                  console.log(response)
+                                  me.close();
+                                  me.$notify('La información se actualizo correctamente !!!', 'success')
+                                  me.listar();
+                                  me.limpiar();
+                                }).catch(error => {
+                                  if (error.response.status == 400) {
+                                    me.$notify("No es un usuario válido", 'error')
+                                  } else if (error.response.status == 401) {
+                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                    me.e401 = true,
+                                        me.showpage = false
+                                  } else if (error.response.status == 403) {
+                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.e403 = true
+                                    me.showpage = false
+                                  } else if (error.response.status == 404) {
+                                    me.$notify("El recuso no ha sido encontrado", 'error')
+                                  } else {
+                                    me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                                  }
+
+                                });
+                              }).catch(error => {
+                                if (error.response.status == 400) {
+                                  me.$notify("No es un usuario válido", 'error')
+                                } else if (error.response.status == 401) {
+                                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                  me.e401 = true,
+                                      me.showpage = false
+                                } else if (error.response.status == 403) {
+                                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                  me.e403 = true
+                                  me.showpage = false
+                                } else if (error.response.status == 404) {
+                                  me.$notify("El recuso no ha sido encontrado", 'error')
+                                } else {
+                                  me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                                }
+
+                              });
+
+
+                            }).catch(error => {
+                              if (error.response.status == 400) {
+                                me.$notify("No es un usuario válido", 'error')
+                              } else if (error.response.status == 401) {
+                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                me.e401 = true,
+                                    me.showpage = false
+                              } else if (error.response.status == 403) {
+                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.e403 = true
+                                me.showpage = false
+                              } else if (error.response.status == 404) {
+                                me.$notify("El recuso no ha sido encontrado", 'error')
+                              } else {
+                                me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                              }
+
+                            });
+                          }
+                          else if ((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)) {
+                            console.log('todos diferentes')
+                            this.$controlacceso.put('api/Usuarios/Actualizar', {
+                              'idusuario': me.idUsuario,
+                              'rolId': me.idrol,
+                              'moduloservicioId': me.idModuloServicio,
+                              'puesto': me.puesto,
+                              'nombre': me.nombre,
+                              'direccion': me.direccion,
+                              'telefono': me.telefono,
+                              'email': me.email,
+                              'condicion': me.condicion,
+                              'usuario': me.usuario,
+                              'password': me.password,
+                              'act_password': me.actPassword
+                            }, configuracion).then(function (response) {
+                              console.log(response)
+                              this.$controlacceso.post('api/Usuarios/ClonarUsuario', {
+                                'idusuario': me.idUsuario,
+                                'rolId': me.idrol,
+                                'moduloservicioId': me.idModuloServicio,
+                                'puesto': me.puesto,
+                                'nombre': me.nombre,
+                                'direccion': me.direccion,
+                                'telefono': me.telefono,
+                                'email': me.email,
+                                'condicion': me.condicion,
+                                'usuario': me.usuario,
+                                'password': me.password,
+                                'idDistritoO': me.distritoActual,
+                                'idDistritoD': me.distrito,
+                                'caso': 3,
+                              }, configuracion).then(function (response) {
+                                // console.log(response)
+                                // me.close();
+                                // me.$notify('La información se actualizo correctamente !!!','success')
+                                // me.listar();
+                                // me.limpiar();
+                                this.$controlacceso.post('api/PanelUsuarios/ClonarPanel', {
+                                  'UsuarioId': me.idUsuario,
+                                  'idDistritoD': me.distrito,
+                                  'caso': 3,
+                                }, configuracion).then(function (response) {
+                                  console.log(response)
+                                  me.close();
+                                  me.$notify('La información se actualizo correctamente !!!', 'success')
+                                  me.listar();
+                                  me.limpiar();
+                                }).catch(error => {
+                                  if (error.response.status == 400) {
+                                    me.$notify("No es un usuario válido", 'error')
+                                  } else if (error.response.status == 401) {
+                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                    me.e401 = true,
+                                        me.showpage = false
+                                  } else if (error.response.status == 403) {
+                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.e403 = true
+                                    me.showpage = false
+                                  } else if (error.response.status == 404) {
+                                    me.$notify("El recuso no ha sido encontrado", 'error')
+                                  } else {
+                                    me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                                  }
+
+                                });
+                              }).catch(error => {
+                                if (error.response.status == 400) {
+                                  me.$notify("No es un usuario válido", 'error')
+                                } else if (error.response.status == 401) {
+                                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                  me.e401 = true,
+                                      me.showpage = false
+                                } else if (error.response.status == 403) {
+                                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                  me.e403 = true
+                                  me.showpage = false
+                                } else if (error.response.status == 404) {
+                                  me.$notify("El recuso no ha sido encontrado", 'error')
+                                } else {
+                                  me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                                }
+
+                              });
+
+                              // me.close();
+                              // me.$notify('La información se actualizo correctamente !!!','success')
+                              // me.listar();
+                              // me.limpiar();
+                            }).catch(error => {
+                              if (error.response.status == 400) {
+                                me.$notify("No es un usuario válido", 'error')
+                              } else if (error.response.status == 401) {
+                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                me.e401 = true,
+                                    me.showpage = false
+                              } else if (error.response.status == 403) {
+                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.e403 = true
+                                me.showpage = false
+                              } else if (error.response.status == 404) {
+                                me.$notify("El recuso no ha sido encontrado", 'error')
+                              } else {
+                                me.$notify('Error al intentar actualizar la informacion!!!', 'error')
+                              }
+
+                            });
+
+                          }
+
+                          //fin Eliminar
                         }
                         else {
                             let me=this;
