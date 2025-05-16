@@ -625,6 +625,8 @@
         },
 
         methods:{
+           //Esta funcion no debe implementarse, se recomienda agregar un campo para CURP y otro para RFC
+          //se usa debido a que no es posible enviar datos vacios a keycloak
             generarCurpYRfc(nombre, apellidoP) {
       const estados = [
         'AS','BC','BS','CC','CL','CM','CS','CH','DF','DG','GT','GR','HG','JC',
@@ -690,7 +692,6 @@
         rfc: rfc.toUpperCase()
       };
     },
-
 
             //generar los tokens para las peticiones de keycloak
             async generateTokenPassword(){
@@ -766,11 +767,11 @@
                   type_persona: "Fisica",
                 }]
                     //Creamos el usuario en keycloak
-                    this.$controlacceso.post('api/Usuarios/CrearUsuarioKeycloak', data, {
+                    me.$controlacceso.post('api/Usuarios/CrearUsuarioKeycloak', data, {
                       headers: {
                         'Content-Type': 'application/json',
                         //usamos el token de usuario
-                        'Authorization': 'Bearer '+token
+                        //'Authorization': 'Bearer '+token
                       }
                     }).then( (response) => {
                       //si la creación en keycloak es exitosa procedemos a crear la contraseña para el usuario creado
