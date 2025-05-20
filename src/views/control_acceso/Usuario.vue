@@ -741,10 +741,39 @@
               //generar el token para crear el usuario
                 //let token = await this.generateUserToken()
                 //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
-                let passwordToken = await this.generateTokenPassword();
-                let token = "";
-                //let passwordToken = ""
-                let me = this
+              let me = this
+
+              /*if(me.password.length<8){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos 8 carácteres'
+                });
+              }
+              else if(!/(?=.*?[0-9])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos un número'
+                });
+              }
+              else if(!/(?=.*?[A-Z])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos una mayúscula'
+                });
+              }
+              else if(!/(?=.*?[a-z])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos una minúscula'
+                });
+              }
+
+              if(me.password.length<8 || !/(?=.*?[0-9])/.test(me.password) || !/(?=.*?[A-Z])/.test(me.password) || !/(?=.*?[a-z])/.test(me.password)){
+                me.$notify("Utilice al menos 8 carácteres y use mayúsculas, minúsculas y números", 'error');
+                return;
+              }*/
+
+              let passwordToken = await this.generateTokenPassword();
 
                 //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
                 const data = [{
@@ -858,11 +887,44 @@
 
             //métodos para actualizar al usuario en keycloak
             async updateKeycloakUser(configuracion){
-            //el usuario se actualiza sin contraseña por lo que hay que realizar otra petición para actualizarla
-            let passwordToken = await this.generateTokenPassword();
-            //let passwordToken = ""
-            let me = this
-            //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
+              let me = this
+
+              if(me.password.length<8){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos 8 carácteres'
+                });
+              }
+              else if(!/(?=.*?[0-9])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos un número'
+                });
+              }
+              else if(!/(?=.*?[A-Z])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos una mayúscula'
+                });
+              }
+              else if(!/(?=.*?[a-z])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos una minúscula'
+                });
+              }
+
+              if(me.password.length<8 || !/(?=.*?[0-9])/.test(me.password) || !/(?=.*?[A-Z])/.test(me.password) || !/(?=.*?[a-z])/.test(me.password)){
+                me.$notify("Utilice al menos 8 carácteres y use mayúsculas, minúsculas y números", 'error');
+                return;
+              }
+
+
+              //el usuario se actualiza sin contraseña por lo que hay que realizar otra petición para actualizarla
+              let passwordToken = await this.generateTokenPassword();
+
+
+              //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
 
               //obtener los datos del usuario en keycloak, es necesario el id para actualizar la contraseña
               this.$controlacceso.get('api/Usuarios/ObtenerUsuarioKeycloak/'+me.usuarioAnt,
@@ -891,6 +953,7 @@
                       rfc: response.data[0].rfc,
                       type_persona: "Fisica"
                     }]
+
                     //actualizar el usuario
                     this.$controlacceso.put('api/Usuarios/ActualizarUsuarioKeycloak', data, {
                       headers: {
@@ -907,6 +970,7 @@
 
                       if (me.password!=me.passwordAnt) {
                         //actualizar la contraseña si el hash cambia
+
                         this.$controlacceso.put(
                             'api/Usuarios/'+this.createdKeycloakUserId+'/ActualizarContrasenaKeycloak',
                             passwordData
@@ -1716,6 +1780,12 @@
                         }
                         else if(errorMessage.rfc){
                           me.$notify('No se creo el usuario en Keycloak:'+ errorMessage.rfc, "error")
+                        }
+                        else if(errorMessage.newUsername){
+                          me.$notify('No se creo el usuario en Keycloak:'+ errorMessage.newUsername, "error")
+                        }
+                        else{
+                          me.$notify('No se creo el usuario en Keycloak:'+ errorMessage.error, "error")
                         }
                       }
 

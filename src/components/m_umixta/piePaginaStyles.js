@@ -23,7 +23,7 @@ export const piePaginaStyles = () =>
         },
         PiePagina:{
           fontSize: 7,
-          color:COLOR_TEXTO_PIE_PAGINA,
+          //color:COLOR_TEXTO_PIE_PAGINA,
         },
         Texto:{
           fontSize: 8,

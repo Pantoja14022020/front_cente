@@ -282,7 +282,7 @@
             logueado(){
                 return this.$store.state.usuario;
             },
-            esAdministrador(){ 
+            esAdministrador(){
                 return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
             },
             usuario(){
@@ -302,8 +302,8 @@
             }
         },
 
-        created: function() {  
-            this.listar(); 
+        created: function() {
+            this.listar();
              // Add a request interceptor
             this.$panel.interceptors.request.use( (config)=> {
               // Do something before request is sent
