@@ -743,12 +743,16 @@
           },
             //métodos para crear al usuario en keycloak
             async createKeycloakUser(configuracion){
-              //generar el token para crear el usuario
-                //let token = await this.generateUserToken()
-                //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
               let me = this
 
-              /*if(me.password.length<8){
+              if(!me.nombre.split(" ")[1]){
+                this.errors.add({
+                  field: 'nombre',
+                  msg: 'Ingrese un nombre con al menos un apellido separados por un espacio'
+                });
+              }
+
+              if(me.password.length<8){
                 this.errors.add({
                   field: 'password',
                   msg: 'La contraseña debe tener al menos 8 carácteres'
@@ -774,10 +778,10 @@
               }
 
               if(me.password.length<8 || !/(?=.*?[0-9])/.test(me.password) || !/(?=.*?[A-Z])/.test(me.password) || !/(?=.*?[a-z])/.test(me.password)){
-                me.$notify("Utilice al menos 8 carácteres y use mayúsculas, minúsculas y números", 'error');
+                me.$notify("Utilice al menos 8 carácteres utilice mayúsculas, minúsculas y números", 'error');
                 return;
-              }*/
-
+              }
+              //el usuario se crea sin contraseña por lo que hay que realizar otra petición para actualizarla
               let passwordToken = await this.generateTokenPassword();
 
                 //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
@@ -2030,7 +2034,7 @@
             listarPanels(){
                 let me=this;
                 var panelArray=[]; 
-                me.$panel.get('api/PanelControls/Listar').then(function(response){ 
+                me.$panel.get('api/PanelControls/Listar').then(function(response){
                     panelArray = response.data;
                     panelArray.map(function(x){
                         me.panels.push({text:x.nombre, value: x.idPC});
