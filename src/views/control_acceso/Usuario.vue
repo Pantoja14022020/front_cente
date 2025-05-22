@@ -703,11 +703,16 @@
                 data.append('username', 'alessandro2204@outlook.com');
                 data.append('realm', 'procu');
 
+
                 const response = await this.$controlacceso.post(
                     'api/Usuarios/GetTokenKeyCloakWithGrantTypePassword',
                     data,
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded',}}
                 );
+
+                if (!response.data || !response.data.access_token) {
+                  throw new Error("Token no obtenido desde Keycloak");
+                }
 
                 this.keycloakPasswordToken = response.data.access_token;
                 return response.data.access_token
@@ -1055,11 +1060,6 @@
                                     'idDistrito': me.distrito,
                                     'caso': 2,
                                   }, configuracion).then(function (response) {
-                                    // console.log(response)
-                                    // me.close();
-                                    // me.$notify('La información se actualizo correctamente !!!','success')
-                                    // me.listar();
-                                    // me.limpiar();
 
                                     me.$controlacceso.post('api/PanelUsuarios/ClonarPanel', {
                                       'UsuarioId': me.idUsuario,
@@ -1102,7 +1102,10 @@
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
                                       me.$notify("El recuso no ha sido encontrado", 'error')
-                                    } else {
+                                    } else if (error.response.status == 504) {
+                                      me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                                    }
+                                    else {
                                       me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                                     }
 
@@ -1206,7 +1209,10 @@
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
                                       me.$notify("El recuso no ha sido encontrado", 'error')
-                                    } else {
+                                    } else if (error.response.status == 504) {
+                                      me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                                    }
+                                    else {
                                       me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                                     }
 
@@ -1361,7 +1367,10 @@
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
                                       me.$notify("El recuso no ha sido encontrado", 'error')
-                                    } else {
+                                    } else if (error.response.status == 504) {
+                                      me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                                    }
+                                    else {
                                       me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                                     }
 
@@ -1465,7 +1474,10 @@
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
                                       me.$notify("El recuso no ha sido encontrado", 'error')
-                                    } else {
+                                    } else if (error.response.status == 504) {
+                                      me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                                    }
+                                    else {
                                       me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                                     }
 
@@ -1502,6 +1514,9 @@
                       else{
                         //es actualizacion del usuario en centenario sin contraseña
                         me.$notify("Usuario actualizado exitosamente en Keycloak")
+                        //el distritoActual es el distrito del usuario que se esta editando
+                        //el idDistritoPach es Pachuca
+                        //cuando no cambia el distrito
                         if (me.distritoActual == me.idDistritoPach && me.distrito == me.idDistritoPach) {
                           console.log('son en el mismo distrito')
                           me.$controlacceso.put('api/Usuarios/Actualizar', {
@@ -1542,6 +1557,7 @@
 
                           });
                         }
+                        //cuando el distrito actual es diferente de Pachuca caso 2
                         else if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach) {
                           console.log('va de pachuca a otro distrito')
 
@@ -1622,7 +1638,10 @@
                                 me.showpage = false
                               } else if (error.response.status == 404) {
                                 me.$notify("El recuso no ha sido encontrado", 'error')
-                              } else {
+                              } else if (error.response.status == 504) {
+                              me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                              }
+                            else {
                                 me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                               }
 
@@ -1648,6 +1667,7 @@
 
                           });
                         }
+                        //cuando el distrito del usuario a editar es diferente de pachuca y  caso 3
                         else if ((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)) {
 
                           me.$controlacceso.put('api/Usuarios/Actualizar', {
@@ -1726,7 +1746,10 @@
                                 me.showpage = false
                               } else if (error.response.status == 404) {
                                 me.$notify("El recuso no ha sido encontrado", 'error')
-                              } else {
+                              } else if (error.response.status == 504) {
+                                me.$notify("El servidor tardó demasiado en responder. Intenta de nuevo más tarde o contacta al administrador.", 'error');
+                              }
+                              else {
                                 me.$notify('Error al intentar actualizar la informacion!!!', 'error')
                               }
 
@@ -2291,7 +2314,14 @@
                                 //contraseña actualizada sera verdadero
                                 me.actPassword=true;
                             }
+                          if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach){
+                            me.$notify("No es posible actualizar este usuario por el momento")
+                          }
+                          else if ((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)){
+                            me.$notify("No es posible actualizar este usuario por el momento")
+                          }else{
                             await me.updateKeycloakUser(configuracion)
+                          }
 
                         }
                         else {
