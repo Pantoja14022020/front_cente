@@ -307,7 +307,7 @@
              // Add a request interceptor
             this.$panel.interceptors.request.use( (config)=> {
               // Do something before request is sent
-              console.log(config); 
+
               this.$store.commit('LOADER',true); 
               return config;
             }, (error)=> {
@@ -318,14 +318,14 @@
 
               // Add a response interceptor
               this.$panel.interceptors.response.use((response)=>{
-                console.log(response);
+
                 this.$store.commit('LOADER',false);
                 // Do something with response data
               return response;
               },  (error)=> {
                   // Do something with response error
               return new Promise( (resolve, reject)=> {
-                this.$store.dispatch('logout').then(()=>{
+                this.$store.dispatch('logout').then(()=> {
                   this.$router.push('/login')
                 })
                 throw err;
@@ -338,9 +338,8 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 this.$panel.get('api/PanelControls/Listar', configuracion).then(function(response){
-                    //console.log(response);
                     me.panel=response.data;
-                }).catch(err => { 
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -390,7 +389,7 @@
             },
             guardar () {
                 this.$validator.validate().then(result => {
-                    if (result) { 
+                    if (result) {
                         let header={"Authorization" : "Bearer " + this.$store.state.token};
                         let configuracion= {headers : header};
                         if (this.editedIndex > -1) {
@@ -402,45 +401,50 @@
                                 'nombre': me.nombre,
                                 'icono': me.icono,
                                 'ruta': me.ruta,
-                                'status':me.status, 
+                                'status':me.status,
                             }, configuracion).then(function(response){
                                 me.close();
                                 me.$notify('La información se actualizo correctamente !!!','success')  
                                 me.listar();
                                 me.limpiar();      
                                                 
-                            }).catch(err => {  
+                            }).catch(err => {
                                  if (err.response.status==400){
                                     me.$notify("No es un usuario válido", 'error')
                                 } else if (err.response.status==401){
                                     me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
                                     me.e401 = true,
                                     me.showpage= false
-                                } else if (err.response.status==403){ 
+                                } else if (err.response.status==403){
                                     me.$notify("No esta autorizado para ver esta pagina", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
                                     me.$notify("El recuso no ha sido encontrado", 'error')
                                 }else{
-                                            me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                } 
+                                    me.$notify('Error al intentar actualizar el registro!!!','error')
+                                }
                             });
                         } else {
                             //Código para guardar
                             let me=this;
                             this.$panel.post('api/PanelControls/Crear',{
-                                'abrev':me.abrev, 
+                                'abrev':me.abrev,
                                 'nombre': me.nombre,
                                 'icono': me.icono,
                                 'ruta': me.ruta,
-                                'status':me.status,  
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
-                                me.listar();
-                                me.limpiar();                        
-                            }).catch(err => {  
+                                'status':me.status,
+                            }).then(function(response){
+                                me.$panel.put('api/PanelControls/Activar/'+response.data.id).then(function (response){
+                                  me.close();
+                                  me.$notify('La información se guardo correctamente !!!','success')
+                                  me.listar();
+                                  me.limpiar();
+                                }).catch(err =>{
+                                  me.$notify("No fue posible activar el módulo", 'error')
+                                })
+
+                            }).catch(err => {
                                  if (err.response.status==400){
                                     me.$notify("No es un usuario válido", 'error')
                                 } else if (err.response.status==401){
