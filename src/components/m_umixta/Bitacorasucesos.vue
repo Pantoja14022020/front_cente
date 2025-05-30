@@ -8,30 +8,30 @@
         <v-divider class="mx-2" inset vertical />
         <v-spacer />
         <v-text-field
-          class="text-xs-center"
-          v-model="search"
-          append-icon="search"
-          label="Búsqueda"
-          single-line
-          hide-details
+            class="text-xs-center"
+            v-model="search"
+            append-icon="search"
+            label="Búsqueda"
+            single-line
+            hide-details
         />
         <v-spacer />
         <v-flex xs12 sm6 md3>
           <v-text-field
-            class="font-weight-regular"
-            v-model="nuc"
-            disabled
-            prepend-icon="folder"
-            filled
+              class="font-weight-regular"
+              v-model="nuc"
+              disabled
+              prepend-icon="folder"
+              filled
           />
         </v-flex>
         <v-btn
-          class="mx-2"
-          @click="cerrarcarpeta"
-          fab
-          dark
-          small
-          color="primary"
+            class="mx-2"
+            @click="cerrarcarpeta"
+            fab
+            dark
+            small
+            color="primary"
         >
           <v-icon dark>close</v-icon>
         </v-btn>
@@ -40,11 +40,11 @@
         </v-btn>
       </v-toolbar>
       <v-data-table
-        :headers="headers"
-        :items="bitacoras"
-        :search="search"
-        :rows-per-page-items="rowsPerPageItems"
-        :pagination.sync="pagination"
+          :headers="headers"
+          :items="bitacoras"
+          :search="search"
+          :rows-per-page-items="rowsPerPageItems"
+          :pagination.sync="pagination"
       >
         <template slot="items" class="white" slot-scope="props">
           <td>{{ props.item.tipo }}</td>
@@ -54,10 +54,10 @@
             <v-tooltip bottom>
               <template v-slot:activator="{ on }">
                 <v-icon
-                  class="mr-2"
-                  v-on="on"
-                  color="warning"
-                  @click="imprimir(props.item)"
+                    class="mr-2"
+                    v-on="on"
+                    color="warning"
+                    @click="imprimir(props.item)"
                 >
                   print
                 </v-icon>
@@ -71,10 +71,10 @@
         </template>
       </v-data-table>
       <v-dialog
-        v-model="modalAdd"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
+          v-model="modalAdd"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
       >
         <v-card>
           <v-toolbar dark color="primary">
@@ -82,7 +82,7 @@
             <v-spacer />
             <v-toolbar-items>
               <v-btn color="success" text @click="mostrarpdf_Bitacora()"
-                >VISTA PREVIA</v-btn
+              >VISTA PREVIA</v-btn
               >
               <v-btn icon @click="modalAdd = false">
                 <v-icon>close</v-icon>
@@ -95,31 +95,31 @@
                 <v-layout row wrap>
                   <v-flex class="espaciado" xs12 sm12 md6 lg6>
                     <v-text-field
-                      name="tipo de registro"
-                      v-model="tipo"
-                      v-validate="'required'"
-                      label="Tipo:"
-                      :error-messages="errors.collect('tipo de registro')"
+                        name="tipo de registro"
+                        v-model="tipo"
+                        v-validate="'required'"
+                        label="Tipo:"
+                        :error-messages="errors.collect('tipo de registro')"
                     />
                   </v-flex>
                   <v-flex class="espaciado" xs12 sm12 md6 lg6>
                     <v-autocomplete
-                      name="persona"
-                      :items="personas"
-                      v-model="personaId"
-                      return-object
-                      v-validate="'required'"
-                      label="Persona:"
-                      :error-messages="errors.collect('persona')"
+                        name="persona"
+                        :items="personas"
+                        v-model="personaId"
+                        return-object
+                        v-validate="'required'"
+                        label="Persona:"
+                        :error-messages="errors.collect('persona')"
                     />
                   </v-flex>
                   <v-flex class="espaciado" xs12 sm12 md12 lg612>
                     <vue-editor
-                      name="texto registro"
-                      v-validate="'required'"
-                      :editorToolbar="customToolbar"
-                      v-model="textolibre"
-                      :error-messages="errors.collect('texto registro')"
+                        name="texto registro"
+                        v-validate="'required'"
+                        :editorToolbar="customToolbar"
+                        v-model="textolibre"
+                        :error-messages="errors.collect('texto registro')"
                     />
                   </v-flex>
                 </v-layout>
@@ -131,33 +131,42 @@
       </v-dialog>
     </v-flex>
     <v-dialog
-      v-model="modal_Bitacora"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
+        v-model="modal_Bitacora"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
     >
       <v-card>
         <v-toolbar dark color="primary">
           <v-toolbar-title>Documento.</v-toolbar-title>
-          <v-spacer />
+          <v-spacer/>
+          <v-btn @click.native="prevPage()"><</v-btn>
+          <div class="d-flex align-center">
+            <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
+          </div>
+          <v-btn @click.native="nextPage()">></v-btn>
+          <v-spacer/>
           <v-toolbar-items>
             <v-btn color="success" text @click.native="imprimir_Bitacora">
               {{ btntitle }} {{ " " }} {{ tipo }}
             </v-btn>
-            <v-btn icon @click="modal_Bitacora = false">
+            <v-btn icon @click="modal_Bitacora = false; numpage=1">
               <v-icon>close</v-icon>
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
-          <iframe
-            id="iframepdf1"
-            type="application/pdf"
-            width="100%"
-            height="835"
-            frameborder="0"
-            scrolling="no"
-          />
+          <canvas id="canvaspdf1"
+                  style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
+          ></canvas>
+          <!--          <iframe
+                      id="iframepdf1"
+                      type="application/pdf"
+                      width="100%"
+                      height="835"
+                      frameborder="0"
+                      scrolling="no"
+                    />-->
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -177,6 +186,9 @@ import n403 from './403.vue';
 import { error } from "util";
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
+import pdfjsLib from "pdfjs-dist/legacy/build/pdf";
+import Swal from "sweetalert2";
+import {firmarDocumento} from "@/helpers/efirma";
 
 export default {
   components: {
@@ -185,6 +197,12 @@ export default {
     n403,
   },
   data: () => ({
+    //variables de pdf
+    numpage: 1,
+    currentpdfpages: 0,
+    base64pdf: "",
+    canvasid: "",
+
     customToolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ["bold", "italic", "underline", "strike"],
@@ -265,11 +283,11 @@ export default {
     me.nuc = me.$store.state.nuc;
     if (me.rHechoId == null) {
       me.$alert(
-        "Notificación",
-        "Aun no ha abierto ninguna carpeta por favor ingrese al menu Carpeta y luego en Listar carpeta y ahi abra la carpeta que usted elija!. En este momento sera redireccionado al menu correspondiente.",
-        function () {
-          me.$router.push("./umixta-carpetas");
-        }
+          "Notificación",
+          "Aun no ha abierto ninguna carpeta por favor ingrese al menu Carpeta y luego en Listar carpeta y ahi abra la carpeta que usted elija!. En este momento sera redireccionado al menu correspondiente.",
+          function () {
+            me.$router.push("./umixta-carpetas");
+          }
       );
     } else {
       me.$notify("Carpeta abierta correctamente !!!", "success");
@@ -293,35 +311,35 @@ export default {
     }
     // Add a request interceptor
     axios.interceptors.request.use(
-      (config) => {
-        // Do something before request is sent
-        // console.log(config)
-        this.$store.commit("LOADER", true);
-        return config;
-      },
-      (error) => {
-        // Do something with request error
-        this.$store.commit("LOADER", false);
-        return Promise.reject(error);
-      }
+        (config) => {
+          // Do something before request is sent
+          // console.log(config)
+          this.$store.commit("LOADER", true);
+          return config;
+        },
+        (error) => {
+          // Do something with request error
+          this.$store.commit("LOADER", false);
+          return Promise.reject(error);
+        }
     );
     // Add a response interceptor
     axios.interceptors.response.use(
-      (response) => {
-        // console.log(response)
-        this.$store.commit("LOADER", false);
-        // Do something with response data
-        return response;
-      },
-      (err) => {
-        // Do something with response error
-        return new Promise((resolve, reject) => {
-          this.$store.dispatch("logout").then(() => {
-            this.$router.push("/login");
+        (response) => {
+          // console.log(response)
+          this.$store.commit("LOADER", false);
+          // Do something with response data
+          return response;
+        },
+        (err) => {
+          // Do something with response error
+          return new Promise((resolve, reject) => {
+            this.$store.dispatch("logout").then(() => {
+              this.$router.push("/login");
+            });
+            throw err;
           });
-          throw err;
-        });
-      }
+        }
     );
   },
   computed: {
@@ -331,88 +349,141 @@ export default {
   },
   watch: {},
   methods: {
-    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
+    //funciones pdf to canvas
+    async renderPdfToCanvas(base64pdf, canvasId, numpage) {
+      // Importación clásica compatible con v2.x
+      // ✅ Usa la versión legacy transpilada
+      const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
+
+
+      // Configurar el worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+
+      // Convertir base64 a Uint8Array
+      const binary = atob(base64pdf);
+      const length = binary.length;
+      const bytes = new Uint8Array(length);
+      for (let i = 0; i < length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      // Cargar documento
+      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+      this.currentpdfpages = pdf.numPages
+      const page = await pdf.getPage(numpage); // renderiza solo la página 1
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      // Preparar canvas
+      const canvas = document.getElementById(canvasId);
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      // Renderizar en canvas
+      await page.render({ canvasContext: context, viewport }).promise;
+    },
+    nextPage(){
+      if(this.numpage<this.currentpdfpages){
+        this.numpage = this.numpage + 1
+      }else{
+
+      }
+
+    },
+    prevPage(){
+      if(this.numpage>1){
+        this.numpage = this.numpage - 1
+      }else{
+
+      }
+
+    },
+
+    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id)
     {
-        
-        let me=this; 
-        var textoModificado = nuc.replace(/-/g, "~");
 
-        var date = moment(fechadoc, "YYYY-MM-DD HH:mm:ss");
-        var dia = moment(date).format("DD");
-        var mes = moment(date).format("MMMM");
-        var año = moment(date).format("YYYY");
-        var fecha = dia + " de " + mes + " del " + año;
+      let me=this;
+      var textoModificado = nuc.replace(/-/g, "~");
 
-        
-        try {
-            me.qrCode = await generarQRCodeBase64(tipodo,textoModificado,nombrefirma,fecha,id);
+      var date = moment(fechadoc, "YYYY-MM-DD HH:mm:ss");
+      var dia = moment(date).format("DD");
+      var mes = moment(date).format("MMMM");
+      var año = moment(date).format("YYYY");
+      var fecha = dia + " de " + mes + " del " + año;
 
-            console.log("QR generado");
-        } catch (err) {
-            console.error('Error:', err);
-        }
+
+      try {
+        me.qrCode = await generarQRCodeBase64(tipodo,textoModificado,nombrefirma,fecha,id);
+
+        console.log("QR generado");
+      } catch (err) {
+        console.error('Error:', err);
+      }
     },
     listarLogo() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       this.$conf
-        .get("api/ConfGlobals/Listar", configuracion)
-        .then(function (response) {
-          me.logo1 = response.data.logo1;
-          me.logo2 = response.data.logo2;
-          me.logo3 = response.data.logo3;
-          me.logo4 = response.data.logo4;
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar listar los registros!!!", "error");
-          }
-        });
+          .get("api/ConfGlobals/Listar", configuracion)
+          .then(function (response) {
+            me.logo1 = response.data.logo1;
+            me.logo2 = response.data.logo2;
+            me.logo3 = response.data.logo3;
+            me.logo4 = response.data.logo4;
+          })
+          .catch((err) => {
+            if (err.response.status == 400) {
+              me.$notify("No es un usuario válido", "error");
+            } else if (err.response.status == 401) {
+              me.$notify(
+                  "Por favor inicie sesion para poder navegar en la aplicacion",
+                  "error"
+              );
+              (me.e401 = true), (me.showpage = false);
+            } else if (err.response.status == 403) {
+              me.$notify("No esta autorizado para ver esta pagina", "error");
+              me.e403 = true;
+              me.showpage = false;
+            } else if (err.response.status == 404) {
+              me.$notify("El recuso no ha sido encontrado", "error");
+            } else {
+              me.$notify("Error al intentar listar los registros!!!", "error");
+            }
+          });
     },
     informacionagencia() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       me.$conf
-        .get("api/Agencias/Listarporid/" + me.u_idagencia, configuracion)
-        .then(function (response) {
-          me.direccionAgencia = response.data.direccion;
-          me.telefonosAgencia = response.data.telefono;
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar listar los registros!!!", "error");
-          }
-        });
+          .get("api/Agencias/Listarporid/" + me.u_idagencia, configuracion)
+          .then(function (response) {
+            me.direccionAgencia = response.data.direccion;
+            me.telefonosAgencia = response.data.telefono;
+          })
+          .catch((err) => {
+            if (err.response.status == 400) {
+              me.$notify("No es un usuario válido", "error");
+            } else if (err.response.status == 401) {
+              me.$notify(
+                  "Por favor inicie sesion para poder navegar en la aplicacion",
+                  "error"
+              );
+              (me.e401 = true), (me.showpage = false);
+            } else if (err.response.status == 403) {
+              me.$notify("No esta autorizado para ver esta pagina", "error");
+              me.e403 = true;
+              me.showpage = false;
+            } else if (err.response.status == 404) {
+              me.$notify("El recuso no ha sido encontrado", "error");
+            } else {
+              me.$notify("Error al intentar listar los registros!!!", "error");
+            }
+          });
     },
     cerrarcarpeta() {
       this.$store.state.rhechoid = null;
@@ -444,29 +515,29 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       me.$CAT
-        .get("api/RBitacoras/ListarPorHecho/" + me.rHechoId, configuracion)
-        .then(function (response) {
-          me.bitacoras = response.data;
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar listar los registros!!!", "error");
-          }
-        });
+          .get("api/RBitacoras/ListarPorHecho/" + me.rHechoId, configuracion)
+          .then(function (response) {
+            me.bitacoras = response.data;
+          })
+          .catch((err) => {
+            if (err.response.status == 400) {
+              me.$notify("No es un usuario válido", "error");
+            } else if (err.response.status == 401) {
+              me.$notify(
+                  "Por favor inicie sesion para poder navegar en la aplicacion",
+                  "error"
+              );
+              (me.e401 = true), (me.showpage = false);
+            } else if (err.response.status == 403) {
+              me.$notify("No esta autorizado para ver esta pagina", "error");
+              me.e403 = true;
+              me.showpage = false;
+            } else if (err.response.status == 404) {
+              me.$notify("El recuso no ha sido encontrado", "error");
+            } else {
+              me.$notify("Error al intentar listar los registros!!!", "error");
+            }
+          });
     },
     listarPersonas() {
       let me = this;
@@ -474,32 +545,32 @@ export default {
       let configuracion = { headers: header };
       var personasArray = [];
       me.$CAT
-        .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
-        .then(function (response) {
-          personasArray = response.data;
-          personasArray.map(function (x) {
-            me.personas.push({ text: x.nombreCompleto, value: x.personaId });
+          .get("api/RAPs/ListarTodos/" + me.rAtencionId, configuracion)
+          .then(function (response) {
+            personasArray = response.data;
+            personasArray.map(function (x) {
+              me.personas.push({ text: x.nombreCompleto, value: x.personaId });
+            });
+          })
+          .catch((err) => {
+            if (err.response.status == 400) {
+              me.$notify("No es un usuario válido", "error");
+            } else if (err.response.status == 401) {
+              me.$notify(
+                  "Por favor inicie sesion para poder navegar en la aplicacion",
+                  "error"
+              );
+              (me.e401 = true), (me.showpage = false);
+            } else if (err.response.status == 403) {
+              me.$notify("No esta autorizado para ver esta pagina", "error");
+              me.e403 = true;
+              me.showpage = false;
+            } else if (err.response.status == 404) {
+              me.$notify("El recuso no ha sido encontrado", "error");
+            } else {
+              me.$notify("Error al intentar listar los registros!!!", "error");
+            }
           });
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar listar los registros!!!", "error");
-          }
-        });
     },
     imprimir(item) {
       let me = this;
@@ -518,12 +589,12 @@ export default {
       me.vistaPreviaTF = false;
       me.generarQR(me.docRegistros,me.nuc,item.usuario,item.fechasis,item.idBitacora);
 
-      setTimeout(() => 
+      setTimeout(() =>
       {
         me.imprimir_Bitacora();
       }, 1000);
 
-      
+
     },
     // BITACORA
     crearPdf_Bitacora() {
@@ -597,26 +668,26 @@ export default {
             },
             {
               text:
-                pdf_diragencia +
-                "\n" +
-                pdf_telagencia +
-                "\n" +
-                "www.hidalgo.gob.mx",
+                  pdf_diragencia +
+                  "\n" +
+                  pdf_telagencia +
+                  "\n" +
+                  "www.hidalgo.gob.mx",
               style: "subheaderlogo",
               style: "PiePagina",
               margin: [312, 12, 72, 0],
               alignment: "right",
               absolutePosition: { x: 0, y: 30 },
             },
-            me.vistaPreviaTF == false? 
-            {
-                image: me.qrCode,
-                width: 80, // Ajusta el ancho según tu diseño
-                height: 80, // Ajusta la altura según tu diseño
-                absolutePosition: { x: 5, y: -20 }, // Ajusta las coordenadas según tu diseño
+            me.vistaPreviaTF == false?
+                {
+                  image: me.qrCode,
+                  width: 80, // Ajusta el ancho según tu diseño
+                  height: 80, // Ajusta la altura según tu diseño
+                  absolutePosition: { x: 5, y: -20 }, // Ajusta las coordenadas según tu diseño
 
-            }
-          : "",
+                }
+                : "",
           ];
 
           return footerContent;
@@ -672,14 +743,14 @@ export default {
             alignment: "justify",
             style: "DePara",
           },
-          me.vistaPreviaTF == false? 
-          {
-              image: me.qrCode,
-              width: 200,
-              alignment: 'center',
-              margin: [0, 15, 0, 15]
-          }
-          : "",
+          me.vistaPreviaTF == false?
+              {
+                image: me.qrCode,
+                width: 200,
+                alignment: 'center',
+                margin: [0, 15, 0, 15]
+              }
+              : "",
         ],
         styles: {
           Adscripcion: {
@@ -728,7 +799,7 @@ export default {
 
       var now = moment();
       me.generarQR(me.docRegistros,me.nuc,me.u_nombre,now,me.idbitacora);
-      
+
       var dd = this.crearPdf_Bitacora();
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -739,8 +810,13 @@ export default {
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf1");
       var callback = function (url) {
-        f.setAttribute("src", url);
+        me.base64pdf = url;
+        me.canvasid = "canvaspdf1"
+        me.renderPdfToCanvas(url.split(",")[1], "canvaspdf1", me.numpage)
+        //f.setAttribute("src", url);
       };
+
+
       doc.getDataUrl(callback, doc);
       this.modal_Bitacora = true;
     },
@@ -750,10 +826,10 @@ export default {
       let configuracion = { headers: header };
 
       var descripcionRegTabI =
-        "Registro de nuevo registro de tipo " +
-        me.tipo +
-        " de la persona " +
-        me.personaId.text;
+          "Registro de nuevo registro de tipo " +
+          me.tipo +
+          " de la persona " +
+          me.personaId.text;
 
       if (me.editedIndex == 1) {
         var dd = me.crearPdf_Bitacora();
@@ -763,91 +839,143 @@ export default {
           var pdfFonts = require("pdfmake/build/vfs_fonts.js");
           pdfMake.vfs = pdfFonts.vfs;
         }
-        var doc = pdfMake.createPdf(dd).print();
+        var doc = pdfMake.createPdf(dd);
+        var callback = async (url) => {
+          const result = await Swal.fire({
+            title: '¿Este documento será firmado?',
+            text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, firmar',
+            cancelButtonText: 'No'
+          });
+
+          if (result.isConfirmed) {
+            try {
+              const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+              const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+              if (pdfWindow) {
+                pdfWindow.focus();
+                pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+              }
+
+            } catch (error) {
+              console.log('Error al firmar:', error);
+            }
+          }
+        };
+        doc.getDataUrl(callback, doc);
+
         me.close();
       } else {
         me.$confirm(
-          "Esperando confirmación",
-          "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
-          function () {
-            me.$CAT
-              .post(
-                "api/RBitacoras/Crear",
-                {
-                  //***************************** PERSONA*/
-                  tipo: me.tipo,
-                  rHechoId: me.rHechoId,
-                  idPersona: me.personaId.value,
-                  descipcion: me.textolibre,
-                  distrito: me.u_distrito,
-                  dirsubproc: me.u_dirSubProc,
-                  agencia: me.u_agencia,
-                  usuario: me.u_nombre,
-                  puesto: me.u_puesto,
-                  fechareporte: me.fechareporte,
-                  numerooficio: me.numerooficio,
-                  //************************************ */
-                },
-                configuracion
-              )
-              .then(function (response) {
+            "Esperando confirmación",
+            "Estas seguro de  que deseas guardar información e imprimir el documento. Una vez realizada esta accion no prodra realizar cambios",
+            function () {
+              me.$CAT
+                  .post(
+                      "api/RBitacoras/Crear",
+                      {
+                        //***************************** PERSONA*/
+                        tipo: me.tipo,
+                        rHechoId: me.rHechoId,
+                        idPersona: me.personaId.value,
+                        descipcion: me.textolibre,
+                        distrito: me.u_distrito,
+                        dirsubproc: me.u_dirSubProc,
+                        agencia: me.u_agencia,
+                        usuario: me.u_nombre,
+                        puesto: me.u_puesto,
+                        fechareporte: me.fechareporte,
+                        numerooficio: me.numerooficio,
+                        //************************************ */
+                      },
+                      configuracion
+                  )
+                  .then(function (response) {
 
-                me.idbitacora = response.data.idrbitacora;
-                me.vistaPreviaTF = false;
-                var now = moment();
-                me.generarQR(me.docRegistros,me.nuc,me.u_nombre,now,me.idbitacora);
+                    me.idbitacora = response.data.idrbitacora;
+                    me.vistaPreviaTF = false;
+                    var now = moment();
+                    me.generarQR(me.docRegistros,me.nuc,me.u_nombre,now,me.idbitacora);
 
-                setTimeout(() => 
-                {
-                  var dd = me.crearPdf_Bitacora();
-                  var pdfMake = require("pdfmake/build/pdfmake.js");
-                  var htmlToPdfmake = require("html-to-pdfmake");
-                  if (pdfMake.vfs == undefined) {
-                    var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-                    pdfMake.vfs = pdfFonts.vfs;
-                  }
-                  var doc = pdfMake.createPdf(dd).print();
-                  me.$notify(
-                    "La información se guardo correctamente !!!",
-                    "success"
-                  );
-                  me.modal_Bitacora = false;
-                  me.crearRegistroTableroI(descripcionRegTabI);
-                  me.listarRegistroBitacora();
-                  me.close();
-                }, 1000);
+                    setTimeout(() =>
+                    {
+                      var dd = me.crearPdf_Bitacora();
+                      var pdfMake = require("pdfmake/build/pdfmake.js");
+                      var htmlToPdfmake = require("html-to-pdfmake");
+                      if (pdfMake.vfs == undefined) {
+                        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
+                        pdfMake.vfs = pdfFonts.vfs;
+                      }
+                      var doc = pdfMake.createPdf(dd);
+                      var callback = async (url) => {
+                        const result = await Swal.fire({
+                          title: '¿Este documento será firmado?',
+                          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+                          icon: 'question',
+                          showCancelButton: true,
+                          confirmButtonText: 'Sí, firmar',
+                          cancelButtonText: 'No'
+                        });
 
-                
-              })
-              .catch((err) => {
-                if (err.response.status == 400) {
-                  me.$notify("No es un usuario válido", "error");
-                } else if (err.response.status == 401) {
-                  me.$notify(
-                    "Por favor inicie sesion para poder navegar en la aplicacion",
-                    "error"
-                  );
-                  (me.e401 = true), (me.showpage = false);
-                } else if (err.response.status == 403) {
-                  me.$notify(
-                    "No esta autorizado para ver esta pagina",
-                    "error"
-                  );
-                  me.e403 = true;
-                  me.showpage = false;
-                } else if (err.response.status == 404) {
-                  me.$notify("El recuso no ha sido encontrado", "error");
-                } else {
-                  me.$notify(
-                    "Error al intentar crear el  registro!!!",
-                    "error"
-                  );
-                }
-              });
-          },
-          function () {
-            alertify.warning("Verifica la información");
-          }
+                        if (result.isConfirmed) {
+                          try {
+                            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+                            const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+                            if (pdfWindow) {
+                              pdfWindow.focus();
+                              pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+                            }
+
+                          } catch (error) {
+                            console.log('Error al firmar:', error);
+                          }
+                        }
+                      };
+                      doc.getDataUrl(callback, doc);
+
+                      me.$notify(
+                          "La información se guardo correctamente !!!",
+                          "success"
+                      );
+                      me.modal_Bitacora = false;
+                      me.crearRegistroTableroI(descripcionRegTabI);
+                      me.listarRegistroBitacora();
+                      me.close();
+                    }, 1000);
+
+
+                  })
+                  .catch((err) => {
+                    if (err.response.status == 400) {
+                      me.$notify("No es un usuario válido", "error");
+                    } else if (err.response.status == 401) {
+                      me.$notify(
+                          "Por favor inicie sesion para poder navegar en la aplicacion",
+                          "error"
+                      );
+                      (me.e401 = true), (me.showpage = false);
+                    } else if (err.response.status == 403) {
+                      me.$notify(
+                          "No esta autorizado para ver esta pagina",
+                          "error"
+                      );
+                      me.e403 = true;
+                      me.showpage = false;
+                    } else if (err.response.status == 404) {
+                      me.$notify("El recuso no ha sido encontrado", "error");
+                    } else {
+                      me.$notify(
+                          "Error al intentar crear el  registro!!!",
+                          "error"
+                      );
+                    }
+                  });
+            },
+            function () {
+              alertify.warning("Verifica la información");
+            }
         ).set("labels", { ok: "Guardar", cancel: "Cancelar" });
       }
     },
@@ -857,43 +985,43 @@ export default {
       let configuracion = { headers: header };
 
       me.$CAT
-        .post(
-          "api/RegistroTableroI/Crear",
-          {
-            RhechoId: me.rHechoId,
-            TipoRegistroTableroI: descripcionRegTabI,
-            Distrito: me.u_distrito,
-            DirSub: me.u_dirSubPro,
-            Agencia: me.u_agencia,
-            ModuloServicioId: me.u_idmoduloservicio,
-            Modulo: me.u_modulo,
-            UsuarioId: me.u_idusuario,
-            NombreUsuario: me.u_nombre,
-          },
-          configuracion
-        )
-        .then(function (response) {
-          me.$notify("La información se guardo correctamente !!!", "success");
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar crear el  registro!!!", "error");
-          }
-        });
+          .post(
+              "api/RegistroTableroI/Crear",
+              {
+                RhechoId: me.rHechoId,
+                TipoRegistroTableroI: descripcionRegTabI,
+                Distrito: me.u_distrito,
+                DirSub: me.u_dirSubPro,
+                Agencia: me.u_agencia,
+                ModuloServicioId: me.u_idmoduloservicio,
+                Modulo: me.u_modulo,
+                UsuarioId: me.u_idusuario,
+                NombreUsuario: me.u_nombre,
+              },
+              configuracion
+          )
+          .then(function (response) {
+            me.$notify("La información se guardo correctamente !!!", "success");
+          })
+          .catch((err) => {
+            if (err.response.status == 400) {
+              me.$notify("No es un usuario válido", "error");
+            } else if (err.response.status == 401) {
+              me.$notify(
+                  "Por favor inicie sesion para poder navegar en la aplicacion",
+                  "error"
+              );
+              (me.e401 = true), (me.showpage = false);
+            } else if (err.response.status == 403) {
+              me.$notify("No esta autorizado para ver esta pagina", "error");
+              me.e403 = true;
+              me.showpage = false;
+            } else if (err.response.status == 404) {
+              me.$notify("El recuso no ha sido encontrado", "error");
+            } else {
+              me.$notify("Error al intentar crear el  registro!!!", "error");
+            }
+          });
     },
   },
 };

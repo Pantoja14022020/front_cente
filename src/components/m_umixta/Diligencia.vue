@@ -856,6 +856,7 @@ export default {
   },
   watch: {},
   methods: {
+
     async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
     {
         
@@ -1742,7 +1743,37 @@ export default {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.vfs;
       }
-      var doc = pdfMake.createPdf(dd).print();
+      var doc = pdfMake.createPdf(dd);
+
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Este documento será firmado?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+            if (pdfWindow) {
+              pdfWindow.focus();
+              pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+            }
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+          f.setAttribute("src", url);
+        }
+
+        this.modal_CaratulaNUC = true;
+      };
+
+      doc.getDataUrl(callback, doc);
       me.limpiar();
     },
     downloadPdf(nombre, puesto, agencia) {

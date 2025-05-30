@@ -1151,6 +1151,12 @@
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title>Documento.</v-toolbar-title>
+            <v-spacer/>
+            <v-btn @click.native="prevPage()"><</v-btn>
+            <div class="d-flex align-center">
+              <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
+            </div>
+            <v-btn @click.native="nextPage()">></v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn color="success" text @click.native="guardar()"
@@ -1162,14 +1168,17 @@
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
-            <iframe
+            <canvas id="canvaspdf"
+                    style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
+            ></canvas>
+<!--            <iframe
               id="iframepdf"
               type="application/pdf"
               width="100%"
               height="835"
               frameborder="0"
               scrolling="no"
-            ></iframe>
+            ></iframe>-->
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -1303,6 +1312,12 @@ export default {
     n403,
   },
   data: () => ({
+    //variables de pdf
+    numpage: 1,
+    currentpdfpages: 0,
+    base64pdf: "",
+    canvasid: "",
+
     alert: false,
     dialog: false,
     dialogoeditor: false,
@@ -1506,8 +1521,65 @@ export default {
     );
   },
   computed: {},
-  watch: {},
+  watch: {
+    numpage(oldVal, newVal) {
+      this.renderPdfToCanvas(this.base64pdf.split(",")[1], this.canvasid, this.numpage)
+    }
+  },
   methods: {
+    //funciones pdf to canvas
+    async renderPdfToCanvas(base64pdf, canvasId, numpage) {
+      // Importación clásica compatible con v2.x
+      // ✅ Usa la versión legacy transpilada
+      const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
+
+
+      // Configurar el worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+
+      // Convertir base64 a Uint8Array
+      const binary = atob(base64pdf);
+      const length = binary.length;
+      const bytes = new Uint8Array(length);
+      for (let i = 0; i < length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      // Cargar documento
+      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+      this.currentpdfpages = pdf.numPages
+      const page = await pdf.getPage(numpage); // renderiza solo la página 1
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      // Preparar canvas
+      const canvas = document.getElementById(canvasId);
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      // Renderizar en canvas
+      await page.render({ canvasContext: context, viewport }).promise;
+    },
+    nextPage(){
+      if(this.numpage<this.currentpdfpages){
+        this.numpage = this.numpage + 1
+      }else{
+
+      }
+
+    },
+    prevPage(){
+      if(this.numpage>1){
+        this.numpage = this.numpage - 1
+      }else{
+
+      }
+
+    },
+
     async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
     {
         
@@ -4222,10 +4294,10 @@ export default {
       }
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf");
-      f.setAttribute("src","")
+      //f.setAttribute("src","")
 
       var callback = async (url) => {
-        const result = await Swal.fire({
+       /* const result = await Swal.fire({
           title: '¿Deseas firmar este documento?',
           text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
           icon: 'question',
@@ -4243,7 +4315,10 @@ export default {
           }
         } else {
           f.setAttribute("src", url);
-        }
+        }*/
+        this.base64pdf = url;
+        this.canvasid = "canvaspdf"
+        await this.renderPdfToCanvas(url.split(",")[1], "canvaspdf", this.numpage)
 
         this.modal_CaratulaNUC = true;
       };
@@ -4251,8 +4326,9 @@ export default {
       doc.getDataUrl(callback, doc);
       me.modaldocumento = true;
     },
-    imprimirpdf(nombre, puesto, agencia) 
+    imprimirpdf(nombre, puesto, agencia)
     {
+      console.log("icono impimicion")
       let me = this;
 
       var dd = me.downloadPdf(nombre, puesto, agencia);
@@ -4264,7 +4340,36 @@ export default {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.vfs;
       }
-      var doc = pdfMake.createPdf(dd).print();
+      var doc = pdfMake.createPdf(dd)
+      var callback = async (url) => {
+        const result = await Swal.fire({
+          title: '¿Este documento será firmado?',
+          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, firmar',
+          cancelButtonText: 'No'
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+            if (pdfWindow) {
+              pdfWindow.focus();
+              pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+            }
+
+          } catch (error) {
+            console.log('Error al firmar:', error);
+          }
+        } else {
+
+        }
+
+        this.modal_CaratulaNUC = true;
+      };
+      doc.getDataUrl(callback, doc);
       setTimeout(() => 
       {
         me.limpiar();

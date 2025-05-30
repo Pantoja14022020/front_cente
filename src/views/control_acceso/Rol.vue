@@ -387,7 +387,7 @@
                         } else {
                             //Código para guardar
                             let me=this;
-                            this.$controlacceso.post('api/Rols/Crear',{ 
+                            this.$controlacceso.post('api/Rols/Crear',{
                                 'nombre': me.nombre,
                                 'descripcion': me.descripcion,
                                 'condicion': me.condicion,

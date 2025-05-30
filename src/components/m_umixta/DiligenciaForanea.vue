@@ -388,25 +388,34 @@
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title>Documento.</v-toolbar-title>
+            <v-spacer/>
+            <v-btn @click.native="prevPage()"><</v-btn>
+            <div class="d-flex align-center">
+              <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
+            </div>
+            <v-btn @click.native="nextPage()">></v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn color="success" text @click.native="crearPDF_SP()"
                 >Guardar Diligencia</v-btn
               >
-              <v-btn icon @click="modaldocumento = false">
+              <v-btn icon @click="modaldocumento = false; numpage = 1;">
                 <v-icon>close</v-icon>
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
-            <iframe
+            <canvas id="canvaspdf"
+                    style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
+            ></canvas>
+<!--            <iframe
               id="iframepdf"
               type="application/pdf"
               width="100%"
               height="835"
               frameborder="0"
               scrolling="no"
-            ></iframe>
+            ></iframe>-->
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -639,6 +648,7 @@ import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
 import Swal from "sweetalert2";
 import {firmarDocumento} from "@/helpers/efirma";
+import pdfjsLib from "pdfjs-dist/legacy/build/pdf";
 
 export default {
   components: {
@@ -647,6 +657,11 @@ export default {
     n403,
   },
   data: () => ({
+    //variables de pdf
+    numpage: 1,
+    currentpdfpages: 0,
+    base64pdf: "",
+    canvasid: "",
     //-------Logos-----------------------------------------/
     logo1: "",
     logo2: "",
@@ -884,8 +899,65 @@ export default {
       return this.editedIndex === -1 ? "Guardar e Imprimir" : "Imprimir";
     },
   },
-  watch: {},
+  watch: {
+    numpage(oldVal, newVal) {
+      this.renderPdfToCanvas(this.base64pdf.split(",")[1], this.canvasid, this.numpage)
+    }
+  },
   methods: {
+
+    async renderPdfToCanvas(base64pdf, canvasId, numpage) {
+      // Importación clásica compatible con v2.x
+      // ✅ Usa la versión legacy transpilada
+      const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
+
+
+      // Configurar el worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+
+      // Convertir base64 a Uint8Array
+      const binary = atob(base64pdf);
+      const length = binary.length;
+      const bytes = new Uint8Array(length);
+      for (let i = 0; i < length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      // Cargar documento
+      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+      this.currentpdfpages = pdf.numPages
+      const page = await pdf.getPage(numpage); // renderiza solo la página 1
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      // Preparar canvas
+      const canvas = document.getElementById(canvasId);
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      // Renderizar en canvas
+      await page.render({ canvasContext: context, viewport }).promise;
+    },
+    nextPage(){
+      if(this.numpage<this.currentpdfpages){
+        this.numpage = this.numpage + 1
+      }else{
+
+      }
+
+    },
+    prevPage(){
+      if(this.numpage>1){
+        this.numpage = this.numpage - 1
+      }else{
+
+      }
+
+    },
+
     async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
     {
         
@@ -912,7 +984,7 @@ export default {
     {
       let me = this;
 
-      this.$conf.get("api/ConfGlobals/Listar").then(function (response) 
+      this.$conf.get("api/ConfGlobals/Listar").then(function (response)
       {
         me.logo1 = response.data.logo1;
         me.logo2 = response.data.logo2;
@@ -941,7 +1013,7 @@ export default {
       });
     },
     //Se lsitan diligencias que ya se habian hecho
-    listardiligencias() 
+    listardiligencias()
     {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -1049,7 +1121,7 @@ export default {
       let configuracion = { headers: header };
       var distritosarray = "";
 
-      me.$conf.get("api/Distritoes/ListarSinPropiodistrito/" + me.u_iddistrito,configuracion).then(function (response) 
+      me.$conf.get("api/Distritoes/ListarSinPropiodistrito/" + me.u_iddistrito,configuracion).then(function (response)
       {
         distritosarray = response.data;
         distritosarray.map(function (x) 
@@ -1085,7 +1157,7 @@ export default {
       let configuracion = { headers: header };
       var distritosarray = "";
 
-      me.$conf.get("api/Distritoes/Listar", configuracion).then(function (response) 
+      me.$conf.get("api/Distritoes/Listar", configuracion).then(function (response)
       {
         distritosarray = response.data;
         distritosarray.map(function (x) 
@@ -1253,6 +1325,7 @@ export default {
     //Funcion para guardar la diligencia
     async crearPDF_SP() 
     {
+
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
@@ -1262,7 +1335,7 @@ export default {
       me.$confirm
       (
         "Esperando confirmación", 
-        "Estas seguro de que deseas guardar información e imprimir el documento. Una vez realizada esta accion no podra realizar cambios", async function () 
+        "Estas seguro de que deseas guardar información e imprimir el documento. Una vez realizada esta accion no podra realizar cambios", async  () =>
         {
           try 
           {
@@ -1312,7 +1385,7 @@ export default {
 
           } catch (err) 
           {
-            if (err.response.status == 400) {
+           /* if (err.response.status == 400) {
               me.$notify("No es un usuario válido", "error");
             } else if (err.response.status == 401) {
               me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", "error");
@@ -1325,8 +1398,11 @@ export default {
             } else if (err.response.status == 404) {
               me.$notify("El recuso no ha sido encontrado", "error");
             } else {
+
               me.$notify("Error al intentar crear el  registro!!!", "error");
-            }
+
+            }*/
+            console.log(err);
           }
         },
         function () {
@@ -1342,7 +1418,7 @@ export default {
       let configuracion = { headers: header };
 
       //Envia el id de la diligencia para editarla y el id del distrito para saber de nuevo donde hacer la clonacion
-      this.$cat.put("api/RDiligenciasForaneas/ReenviarSolicitud",
+      me.$cat.put("api/RDiligenciasForaneas/ReenviarSolicitud",
       {
         IdRDiligenciasForaneas: item.idRDiligenciasForaneas,
         AgenciaRecibe: item.agenciaRecibe,
@@ -1385,6 +1461,7 @@ export default {
             "Error al intentar crear el  registro!!!",
             "error"
           );
+
         }
       });
 
@@ -1618,44 +1695,75 @@ export default {
         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
         pdfMake.vfs = pdfFonts.vfs;
       }
-      var doc = pdfMake.createPdf(dd).print();
-    },
-    mostrarPDFDF(nombre, puesto, agencia) {
-      let me = this;
-      
-      var dd = me.downloadPdf(nombre, puesto, agencia);
-      var pdfMake = require("pdfmake/build/pdfmake.js");
-      var htmlToPdfmake = require("html-to-pdfmake");
-
-      if (pdfMake.vfs == undefined) {
-        var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-        pdfMake.vfs = pdfFonts.vfs;
-      }
       var doc = pdfMake.createPdf(dd);
-
-      var f = document.getElementById("iframepdf");
-      f.setAttribute("src", "");
-
       var callback = async (url) => {
-        const result = await Swal.fire({
-          title: '¿Deseas firmar este documento?',
-          text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Sí, firmar',
-          cancelButtonText: 'No'
-        });
+         const result = await Swal.fire({
+           title: '¿Deseas firmar este documento?',
+           text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonText: 'Sí, firmar',
+           cancelButtonText: 'No'
+         });
 
-        if (result.isConfirmed) {
+         if (result.isConfirmed) {
+           try {
+             const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+             const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+             if (pdfWindow) {
+               pdfWindow.focus();
+               pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+             }
+
+           } catch (error) {
+             console.log('Error al firmar:', error);
+           }
+         }
+          else {
+
+         }
+      }
+      doc.getDataUrl(callback, doc);
+     },
+     mostrarPDFDF(nombre, puesto, agencia) {
+       let me = this;
+
+       var dd = me.downloadPdf(nombre, puesto, agencia);
+       var pdfMake = require("pdfmake/build/pdfmake.js");
+       var htmlToPdfmake = require("html-to-pdfmake");
+
+       if (pdfMake.vfs == undefined) {
+         var pdfFonts = require("pdfmake/build/vfs_fonts.js");
+         pdfMake.vfs = pdfFonts.vfs;
+       }
+       var doc = pdfMake.createPdf(dd);
+
+       var f = document.getElementById("iframepdf");
+       //f.setAttribute("src", "");
+
+       var callback = async (url) => {
+        /* const result = await Swal.fire({
+           title: '¿Deseas firmar este documento?',
+           text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonText: 'Sí, firmar',
+           cancelButtonText: 'No'
+         });
+
+         if (result.isConfirmed) {*/
           try {
-            const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
-            f.setAttribute("src", response[0]["DocFirmado"]);
+            this.base64pdf = url;
+            this.canvasid = "canvaspdf1"
+            this.renderPdfToCanvas(url.split(",")[1], "canvaspdf", this.numpage)
+            //const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+            //f.setAttribute("src", response[0]["DocFirmado"]);
           } catch (error) {
             console.log('Error al firmar:', error);
           }
-        } else {
+        /*} else {
           f.setAttribute("src", url);
-        }
+        }*/
 
         this.modal_CaratulaNUC = true;
       };

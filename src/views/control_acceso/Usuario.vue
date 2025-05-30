@@ -626,7 +626,7 @@
 
         methods:{
            //Esta funcion no debe implementarse, se recomienda agregar un campo para CURP y otro para RFC
-          //se usa debido a que no es posible enviar datos vacios a keycloak
+           //se usa debido a que no es posible enviar datos vacios a keycloak
             generarCurpYRfc(nombre, apellidoP) {
       const estados = [
         'AS','BC','BS','CC','CL','CM','CS','CH','DF','DG','GT','GR','HG','JC',
@@ -776,6 +776,13 @@
                   msg: 'La contraseña debe tener al menos una minúscula'
                 });
               }
+              else if(!/^(?=.*\d)(?=.*[!@#$%^&*])/.test(me.password)){
+                this.errors.add({
+                  field: 'password',
+                  msg: 'La contraseña debe tener al menos un símbolo'
+                });
+              }
+
 
               if(me.password.length<8 || !/(?=.*?[0-9])/.test(me.password) || !/(?=.*?[A-Z])/.test(me.password) || !/(?=.*?[a-z])/.test(me.password)){
                 me.$notify("Utilice al menos 8 carácteres utilice mayúsculas, minúsculas y números", 'error');
@@ -1826,7 +1833,6 @@
 
 
           },
-
             async listar() {
                 let me = this; 
                 let header = { "Authorization": "Bearer " + this.$store.state.token };
@@ -2318,9 +2324,12 @@
                                 //contraseña actualizada sera verdadero
                                 me.actPassword=true;
                             }
+
+                          //caso 2
                           if (me.distritoActual == me.idDistritoPach && me.distrito != me.idDistritoPach){
                             me.$notify("No es posible actualizar este usuario por el momento")
                           }
+                          //caso 3
                           else if ((me.distritoActual != me.idDistritoPach && me.distrito != me.idDistritoPach) || (me.distritoActual != me.idDistritoPach && me.distrito == me.idDistritoPach)){
                             me.$notify("No es posible actualizar este usuario por el momento")
                           }else{
