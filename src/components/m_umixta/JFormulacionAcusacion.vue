@@ -1162,7 +1162,7 @@
               <v-btn color="success" text @click.native="guardar()"
                 >Guardar formulación</v-btn
               >
-              <v-btn icon @click="modaldocumento = false">
+              <v-btn icon @click="modaldocumento = false; numpage=1">
                 <v-icon>close</v-icon>
               </v-btn>
             </v-toolbar-items>
@@ -4008,7 +4008,7 @@ export default {
           me.$confirm(
             "Esperando confirmación",
             "Estas seguro de  que deseas guardar información ",
-            function () {
+             ()=> {
               me.$IL
                 .post(
                   "api/Agenda/Crear",
@@ -4082,7 +4082,7 @@ export default {
                   },
                   configuracion
                 )
-                .then(function (response) {
+                .then( (response)=> {
                   me.$notify(
                     "La información se guardo correctamente !!!",
                     "success"
@@ -4118,7 +4118,7 @@ export default {
                   }
                 });
             },
-            function () {
+             ()=> {
               alertify.warning("Verifica la información");
             }
           ).set("labels", { ok: "Guardar", cancel: "Cancelar" });

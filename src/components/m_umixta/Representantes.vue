@@ -1999,11 +1999,11 @@ export default {
             this.$refs.webcam.start();
         },
         onError(error) {
-            console.log("On Error Event", error);
+            //console.log("On Error Event", error);
         },
         onCameras(cameras) {
             this.devices = cameras;
-            console.log("On Cameras Event", cameras);
+            //console.log("On Cameras Event", cameras);
         },
         onClose () {
             this.dialog = false; 
@@ -2011,7 +2011,7 @@ export default {
         onCameraChange(deviceId) {
             this.deviceId = deviceId;
             this.camera = deviceId;
-            console.log("On Camera Change Event", deviceId);
+            //console.log("On Camera Change Event", deviceId);
         }, 
         // STEP 2 INFORMACION COMPLEMENTARIA
         listarMedionotificacion(){
@@ -2636,12 +2636,13 @@ export default {
             });
         },  
         obteneridde(){
-                let me=this; 
+                let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
-                let configuracion= {headers : header}; 
-                this.$cat.get('api/RAPs/ListarDE/'+ me.persona.value2,configuracion).then(function(response){
+                let configuracion= {headers : header};
+                console.log("datospersonaRAP: ",me.persona)
+                this.$cat.get('api/RAPs/ListarDE/'+ me.persona[0].value,configuracion).then((response)=>{
                     me.idireccionescuha=response.data.idDEscucha
-                }).catch(err => { 
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -2653,14 +2654,15 @@ export default {
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
+                        me.idireccionescuha=me.persona[0].value
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros!!!','error')    
-                    } 
+                    }
                 });
 
         },  
-        de_selectEstado: function(val) {  
+        de_selectEstado: function(val) {
             let me=this;    
             for (var i = 0; i < me.de_ciudades.length; i++) {
                 if (me.de_ciudades[i].text === val){
@@ -2674,8 +2676,8 @@ export default {
             for (var i = 0; i < me.de_municipios.length; i++) {
                 if (me.de_municipios[i].text === val){
                     me.de_municipioid=  me.de_municipios[i].value; 
-                }    
-            } 
+                }
+            }
             me.de_listarPorMunicipio();
         },
         de_selectLocalidad: function(val) { 
@@ -2683,7 +2685,7 @@ export default {
             for (var i = 0; i < me.de_localidades.length; i++) {
                 if (me.de_localidades[i].text === val){
                     me.de_localidadid=  me.de_localidades[i].value; 
-                }  
+                }
             } 
 
         },
@@ -2883,7 +2885,6 @@ export default {
 
         },
         archivo(){
-            console.log("ENTRANDO A ARCHIVO");
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
@@ -2959,7 +2960,7 @@ export default {
                  
         },
         guardar(){
-                    console.log("imagen:"+this.imageName);
+
                     this.$validator.validate().then(result => {
                     if (result) { 
                         let me=this;
@@ -3032,25 +3033,27 @@ export default {
                                         'estado': me.de_estado,
                                         'municipio': me.de_municipio,
                                         'localidad': me.de_localidad,
-                                        'cp': me.de_cp,
-                                        'lat': me.de_lat,
-                                        'lng': me.de_lng,
+                                        'cp': me.de_cp.toString(),
+                                        'lat': me.de_lat.toString(),
+                                        'lng': me.de_lng.toString(),
                                         'ArticulosPenales' : me.articulosv,
                                         'representados' : representados,
                                         //--------------------------------
                                         'nombreDocumento' : me.GUID,                                       
-                                        'fecha' : me.generarfecha,
+                                        //'fecha' : me.generarfecha,
 
-                                    },configuracion).then(function(response){ 
+                                    },configuracion).then((response)=>{
                                         me.imageFile2 = me.imageFile
                                         //console.log(response.data)
                                         me.archivo();
                                         me.docidentificacion2 = me.docidentificacion;
                                         console.log(me.idrepresentante)
                                         me.idrepresentante = response.data.idrepresentante
-                                        me.$notify('La información se guardo correctamente !!!','success') 
-                                        this.$cat.put('api/RAPs/Actualizardireccionescucha',{
-                                            'idDEscucha': me.idireccionescuha,
+                                        me.$notify('La información se guardo correctamente !!!','success')
+
+                                        me.obteneridde()
+                                        me.$cat.put('api/RAPs/Actualizardireccionescucha',{
+                                            'idDEscucha': me.idireccionescuha?me.idireccionescuha:me.persona[0].value,
                                             'calle': me.de_calle,
                                             'noint': me.de_noInt,
                                             'noext': me.de_noExt,
@@ -3062,10 +3065,10 @@ export default {
                                             'municipio': me.de_municipio,
                                             'localidad': me.de_localidad,
                                             'cp': me.de_cp,
-                                            'lat': me.de_lat,
-                                            'lng': me.de_lng,
+                                            'lat': me.de_lat.toString(),
+                                            'lng': me.de_lng.toString(),
                                         
-                                            },configuracion).then(function(){   
+                                            },configuracion).then(()=>{
                                             me.$notify('La información se actualizo correctamente !!!','success') 
                                             //******************* Archivo   
                                             }).catch(err => { 
@@ -3094,7 +3097,7 @@ export default {
                                             me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
                                             me.e401 = true,
                                             me.showpage= false
-                                        } else if (err.response.status==403){ 
+                                        } else if (err.response.status==403){
                                             me.$notify("No esta autorizado para ver esta pagina", 'error')
                                             me.e403= true
                                             me.showpage= false 
@@ -3171,13 +3174,13 @@ export default {
                                         'estado': me.de_estado,
                                         'municipio': me.de_municipio,
                                         'localidad': me.de_localidad,
-                                        'cp': me.de_cp,
-                                        'lat': me.de_lat,
-                                        'lng': me.de_lng,
+                                        'cp': me.de_cp.toString(),
+                                        'lat': me.de_lat.toString(),
+                                        'lng': me.de_lng.toString(),
                                         'ArticulosPenales' : me.articulosv,
                                         'representados' : representados 
 
-                                    },configuracion).then(function(response){ 
+                                    },configuracion).then((response)=>{
                                         me.imageFile2 = me.imageFile
                                         //console.log(response.data)
                                         me.archivo();
@@ -3185,9 +3188,10 @@ export default {
                                         console.log(me.idrepresentante)
                                         me.crearRegistroTableroI(descripcionRegTabI);
                                         me.idrepresentante = response.data.idrepresentante
-                                        me.$notify('La información se guardo correctamente !!!','success') 
+                                        me.$notify('La información se guardo correctamente !!!','success')
+                                        me.obteneridde()
                                         this.$cat.put('api/RAPs/Actualizardireccionescucha',{
-                                            'idDEscucha': me.idireccionescuha,
+                                            'idDEscucha': me.idireccionescuha?me.idireccionescuha:me.persona[0].value,
                                             'calle': me.de_calle,
                                             'noint': me.de_noInt,
                                             'noext': me.de_noExt,
@@ -3202,7 +3206,7 @@ export default {
                                             'lat': me.de_lat,
                                             'lng': me.de_lng,
                                         
-                                            },configuracion).then(function(){   
+                                            },configuracion).then(()=>{
                                             me.$notify('La información se actualizo correctamente !!!','success') 
                                             //******************* Archivo   
                                             }).catch(err => { 

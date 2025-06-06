@@ -258,17 +258,26 @@
            <v-toolbar dark color="primary">
 
            <v-toolbar-title>Documento.</v-toolbar-title>
+             <v-spacer/>
+             <v-btn @click.native="prevPage()"><</v-btn>
+             <div class="d-flex align-center">
+               <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
+             </div>
+             <v-btn @click.native="nextPage()">></v-btn>
            <v-spacer></v-spacer>
            <v-toolbar-items>
            <v-btn  color=success text @click.native="imprimir_DerivacionNew()">
            Guardar e Imprimir</v-btn>
-           <v-btn icon   @click="modal_Derivacion = false">
+           <v-btn icon   @click="modal_Derivacion = false; numpage=1">
            <v-icon>close</v-icon>
            </v-btn>
            </v-toolbar-items>
            </v-toolbar>
            <v-card-text>
-              <iframe
+             <canvas id="canvaspdf2"
+                     style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
+             ></canvas>
+<!--              <iframe
               id="iframepdf2"
               type="application/pdf"
               width="100%"
@@ -276,7 +285,7 @@
               frameborder="0"
               scrolling="no"
               ref="pdfFrame"
-              ></iframe>
+              ></iframe>-->
           </v-card-text>
        </v-card>
    </v-dialog>
@@ -513,7 +522,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
 import QRCode from "qrcode";
-import { generarQRCodeBase64 } from './crearQR'; 
+import { generarQRCodeBase64 } from './crearQR';
 
 
 
@@ -530,6 +539,12 @@ import { generarQRCodeBase64 } from './crearQR';
    },
    data: function () {
        return {
+         //variables de pdf
+         numpage: 1,
+         currentpdfpages: 0,
+         base64pdf: "",
+         canvasid: "",
+
            rHechoId:'',
            rAtencionId:'',
            nucId:'',
@@ -746,6 +761,9 @@ import { generarQRCodeBase64 } from './crearQR';
 
    },
    watch: {
+     numpage(oldVal, newVal) {
+       this.renderPdfToCanvas(this.base64pdf.split(",")[1], this.canvasid, this.numpage)
+     },
        qrCode(val) {
         let me = this
            if (val != null && val != '' && me.informe) {
@@ -766,6 +784,59 @@ import { generarQRCodeBase64 } from './crearQR';
     }
    },
    methods:{
+     //funciones pdf to canvas
+     async renderPdfToCanvas(base64pdf, canvasId, numpage) {
+       // Importación clásica compatible con v2.x
+       // ✅ Usa la versión legacy transpilada
+       const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
+
+
+       // Configurar el worker
+       pdfjsLib.GlobalWorkerOptions.workerSrc =
+           'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+
+       // Convertir base64 a Uint8Array
+       const binary = atob(base64pdf);
+       const length = binary.length;
+       const bytes = new Uint8Array(length);
+       for (let i = 0; i < length; i++) {
+         bytes[i] = binary.charCodeAt(i);
+       }
+
+       // Cargar documento
+       const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+       this.currentpdfpages = pdf.numPages
+       const page = await pdf.getPage(numpage); // renderiza solo la página 1
+       const scale = 1.5;
+       const viewport = page.getViewport({ scale });
+
+       // Preparar canvas
+       const canvas = document.getElementById(canvasId);
+       const context = canvas.getContext('2d');
+       canvas.width = viewport.width;
+       canvas.height = viewport.height;
+
+       // Renderizar en canvas
+       await page.render({ canvasContext: context, viewport }).promise;
+     },
+     nextPage(){
+       if(this.numpage<this.currentpdfpages){
+         this.numpage = this.numpage + 1
+       }else{
+
+       }
+
+     },
+     prevPage(){
+       if(this.numpage>1){
+         this.numpage = this.numpage - 1
+       }else{
+
+       }
+
+     },
+
         async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) {
             
             let me=this; 
@@ -996,6 +1067,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 for(let i = 0; i < response.data.length; i++)
                 {
                     let registro = response.data[i];
+                    console.log(registro);
                     if (registro.direccion == ' No.  , , , , Mexico, CP: 0') {
                         alert("Este representante: " + registro.nombreCompleto + " no le has agregado una dirección por lo que no puedes derivarlo a Justicia Restaurativa");
                         return Promise.reject();
@@ -2312,20 +2384,44 @@ import { generarQRCodeBase64 } from './crearQR';
                     const pdfDoc = pdfMake.createPdf(dd);
 
                     // Genera el PDF y obtén la URL de datos (data URL)
-                    pdfDoc.getDataUrl((dataUrl) => {
-                    // Crea un objeto Blob desde la URL de datos
-                    const blob = dataURItoBlob(dataUrl);
+                    pdfDoc.getDataUrl(async (dataUrl) => {
+                      // Crea un objeto Blob desde la URL de datos
+                      const blob = dataURItoBlob(dataUrl);
 
-                    // Crea una URL de objeto a partir del Blob
-                    const pdfUrl = URL.createObjectURL(blob);
+                      // Crea una URL de objeto a partir del Blob
+                      const pdfUrl = URL.createObjectURL(blob);
 
-                    // Abre una nueva ventana o pestaña del navegador con la URL del PDF
-                    const newWindow = window.open(pdfUrl, '_blank');
+                      // Abre una nueva ventana o pestaña del navegador con la URL del PDF
+                      const newWindow = window.open(pdfUrl, '_blank');
 
-                    // Espera un momento antes de ejecutar la función de impresión (ajusta el tiempo según sea necesario)
-                    setTimeout(() => {
-                        newWindow.print(); // Abre el cuadro de diálogo de impresión en la nueva ventana
-                    }, 500); // Espera 1 segundo (puedes ajustar este tiempo según tus necesidades)
+                      const result = await Swal.fire({
+                        title: '¿Este documento será firmado?',
+                        text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, firmar',
+                        cancelButtonText: 'No'
+                      });
+
+
+                      if (result.isConfirmed) {
+                        try {
+                          const response = await firmarDocumento("https://drive.com", "12345", pdfUrl, "ROJM980130");
+                          const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+                          if (pdfWindow) {
+                            pdfWindow.focus();
+                            pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+                          }
+
+                        } catch (error) {
+                          console.log('Error al firmar:', error);
+                        }
+                      }
+                      // Espera un momento antes de ejecutar la función de impresión (ajusta el tiempo según sea necesario)
+                      setTimeout(() => {
+
+                        //newWindow.print(); // Abre el cuadro de diálogo de impresión en la nueva ventana
+                      }, 500); // Espera 1 segundo (puedes ajustar este tiempo según tus necesidades)
                     });
 
                     function dataURItoBlob(dataURI) {
@@ -2348,6 +2444,9 @@ import { generarQRCodeBase64 } from './crearQR';
 
                     // Genera el PDF y obtén la URL de datos (data URL)
                     pdfDoc.getDataUrl((dataUrl) => {
+                      this.base64pdf = dataUrl;
+                      this.canvasid = "canvaspdf2"
+                      this.renderPdfToCanvas(dataUrl.split(",")[1], "canvaspdf2", this.numpage)
                     this.pdfUrl = dataUrl; // Almacena la URL del PDF en la variable pdfUrl
                     // Establece la fuente del iframe con la URL del PDF
                     this.$refs.pdfFrame.src = this.pdfUrl;
@@ -2821,20 +2920,43 @@ import { generarQRCodeBase64 } from './crearQR';
                 const pdfDoc = pdfMake.createPdf(dd);
 
                 // Genera el PDF y obtén la URL de datos (data URL)
-                pdfDoc.getDataUrl((dataUrl) => {
-                // Crea un objeto Blob desde la URL de datos
-                const blob = dataURItoBlob(dataUrl);
+                pdfDoc.getDataUrl(async (dataUrl) => {
+                  // Crea un objeto Blob desde la URL de datos
+                  const blob = dataURItoBlob(dataUrl);
 
-                // Crea una URL de objeto a partir del Blob
-                const pdfUrl = URL.createObjectURL(blob);
+                  // Crea una URL de objeto a partir del Blob
+                  const pdfUrl = URL.createObjectURL(blob);
 
-                // Abre una nueva ventana o pestaña del navegador con la URL del PDF
-                const newWindow = window.open(pdfUrl, '_blank');
+                  // Abre una nueva ventana o pestaña del navegador con la URL del PDF
+                  const newWindow = window.open(pdfUrl, '_blank');
 
-                // Espera un momento antes de ejecutar la función de impresión (ajusta el tiempo según sea necesario)
-                setTimeout(() => {
-                    newWindow.print(); // Abre el cuadro de diálogo de impresión en la nueva ventana
-                }, 500); // Espera 1 segundo (puedes ajustar este tiempo según tus necesidades)
+                  const result = await Swal.fire({
+                    title: '¿Este documento será firmado?',
+                    text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, firmar',
+                    cancelButtonText: 'No'
+                  });
+
+
+                  if (result.isConfirmed) {
+                    try {
+                      const response = await firmarDocumento("https://drive.com", "12345", pdfUrl, "ROJM980130");
+                      const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+                      if (pdfWindow) {
+                        pdfWindow.focus();
+                        pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+                      }
+
+                    } catch (error) {
+                      console.log('Error al firmar:', error);
+                    }
+                  }
+                  // Espera un momento antes de ejecutar la función de impresión (ajusta el tiempo según sea necesario)
+                  setTimeout(() => {
+                    //newWindow.print(); // Abre el cuadro de diálogo de impresión en la nueva ventana
+                  }, 500); // Espera 1 segundo (puedes ajustar este tiempo según tus necesidades)
                 });
 
                 function dataURItoBlob(dataURI) {
@@ -2857,6 +2979,9 @@ import { generarQRCodeBase64 } from './crearQR';
 
                 // Genera el PDF y obtén la URL de datos (data URL)
                 pdfDoc.getDataUrl((dataUrl) => {
+                  this.base64pdf = dataUrl;
+                  this.canvasid = "canvaspdf2"
+                  this.renderPdfToCanvas(dataUrl.split(",")[1], "canvaspdf2", this.numpage)
                 this.pdfUrl = dataUrl; // Almacena la URL del PDF en la variable pdfUrl
                 // Establece la fuente del iframe con la URL del PDF
                 this.$refs.pdfFrame.src = this.pdfUrl;
@@ -2992,7 +3117,7 @@ import { generarQRCodeBase64 } from './crearQR';
             var countr = 0;
 
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios',
-            function(){
+            ()=>{
 
             for (var i = 0; i < me.tableDataRequeridos.length; i++) {
                 var item = me.tableDataRequeridos[i];
@@ -3037,7 +3162,7 @@ import { generarQRCodeBase64 } from './crearQR';
                         'DistritoIdDestino' : me.distrito.value,
                         'ArregloConjunto': JSON.stringify(me.tableDataRequeridos),
                         'ArregloRepresentantes': JSON.stringify(me.tableDataRepresentantes),
-                    },configuracion).then(function(response)
+                    },configuracion).then((response)=>
                     {
 
                         me.$notify('La información se guardo correctamente !!!','success')
@@ -3071,7 +3196,7 @@ import { generarQRCodeBase64 } from './crearQR';
                         'NombreSubDirigido' : me.dirigidoDirSubProc,
                         
 
-                    },configuracion).then(function(response)
+                    },configuracion).then((response)=>
                     {
                         //SE GUARDAN LOS VALORES GUARDADOS EN LA API ANTERIOR PARA USO EN LA API POSTERIOR
                         var idConjuntoNew = response.data.idconjunto;
@@ -3092,7 +3217,7 @@ import { generarQRCodeBase64 } from './crearQR';
                             'ClasificacionR': clasificacionRNew,
                             'DelitosC': delitosNew,
 
-                        },configuracion).then(function(response)
+                        },configuracion).then((response)=>
                         {
                             me.$notify('La información se guardo correctamente !!!','success')
                             
@@ -3179,7 +3304,7 @@ import { generarQRCodeBase64 } from './crearQR';
                             me.activarAnimacionCarga();
 
                             copiarDerivacion(configuracion,services,serviceNames,0,me.nuc,me.rHechoId,me.rAtencionId,me.distritoSeleccionado,idEnvioNew,me.idExpedienteNew).then(
-                            function(response){
+                            (response)=>{
 
                                 me.comprobarDerivacionesMSG();
                                 me.desactivarAnimacionCarga();
@@ -3466,12 +3591,12 @@ import { generarQRCodeBase64 } from './crearQR';
            let header={"Authorization" : "Bearer " + this.$store.state.token};
            let configuracion= {headers : header};
            this.$cat.get('api/DireccionDelitoes/ListarPoridHecho/'+me.rHechoId, configuracion)
-           .then(function (response){
+           .then((response)=>{
                this.$cat.get('api/AmpDecs/ListarEntrevistaInicial/'+me.rHechoId, configuracion)
-                   .then(function (resp){
+                   .then((resp)=>{
 
                        me.$justiciarestaurativa.get('api/Expedientes/ExisteExpedientes/'+ me.rHechoId,configuracion)
-                       .then(function (response) {
+                       .then((response)=> {
 
 
                            if(response.data && response.data.length > 1)

@@ -263,6 +263,12 @@
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title>Documento.</v-toolbar-title>
+            <v-spacer/>
+            <v-btn @click.native="prevPage()"><</v-btn>
+            <div class="d-flex align-center">
+              <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
+            </div>
+            <v-btn @click.native="nextPage()">></v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn color="success" v-if="Unclick" text @click.native="guardarM()"
@@ -274,6 +280,9 @@
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
+            <canvas id="canvaspdf"
+                    style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
+            ></canvas>
             <iframe
               id="iframepdf"
               type="application/pdf"
@@ -335,6 +344,12 @@ export default {
     n403,
   },
   data: () => ({
+    //variables de pdf
+    numpage: 1,
+    currentpdfpages: 0,
+    base64pdf: "",
+    canvasid: "",
+
     concaDyP: "",
     alert: false,
     dialog: false,
@@ -514,9 +529,67 @@ export default {
     );
   },
   computed: {},
-  watch: {},
+  watch: {
+    numpage(oldVal, newVal) {
+      this.renderPdfToCanvas(this.base64pdf.split(",")[1], this.canvasid, this.numpage)
+    }
+  },
   methods: {
-    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
+    //funciones pdf to canvas
+    async renderPdfToCanvas(base64pdf, canvasId, numpage) {
+      // Importación clásica compatible con v2.x
+      // ✅ Usa la versión legacy transpilada
+      const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
+
+
+      // Configurar el worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+
+      // Convertir base64 a Uint8Array
+      const binary = atob(base64pdf);
+      const length = binary.length;
+      const bytes = new Uint8Array(length);
+      for (let i = 0; i < length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+
+      // Cargar documento
+      const pdf = await pdfjsLib.getDocument({ data: bytes }).promise;
+      this.currentpdfpages = pdf.numPages
+      const page = await pdf.getPage(numpage); // renderiza solo la página 1
+      const scale = 1.5;
+      const viewport = page.getViewport({ scale });
+
+      // Preparar canvas
+      const canvas = document.getElementById(canvasId);
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      // Renderizar en canvas
+      await page.render({ canvasContext: context, viewport }).promise;
+    },
+    nextPage(){
+      if(this.numpage<this.currentpdfpages){
+        this.numpage = this.numpage + 1
+      }else{
+
+      }
+
+    },
+    prevPage(){
+      if(this.numpage>1){
+        this.numpage = this.numpage - 1
+      }else{
+
+      }
+
+    },
+
+
+    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id)
     {
         
         let me=this; 
@@ -548,7 +621,7 @@ export default {
     },
 
     //Funcion para listar los logos que se usan en el pdf
-    listarLogo() 
+    listarLogo()
     {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -912,7 +985,7 @@ export default {
       });
     },
     //Funcion para reimprimir el pdf generado del desglose
-    imprimirdoc(item) 
+    imprimirdoc(item)
     {
       let me = this;
       this.fechas = item.fechaDesglose.substring(8, 10) + " de " + this.obtenermes(item.fechaDesglose.substring(5, 7) - 1) + " del " + item.fechaDesglose.substring(0, 4);
@@ -1099,13 +1172,13 @@ export default {
 
       //-------------------------------------------------CREACION DEL REGISTRO DEL DESGLOSE------------------------------------------------------
       //GET para conocer el numero de desgloses que tiene la carpeta
-      this.$cat.get("api/Desgloses/ObtenerNumDesglose/" + me.rHechoId, configuracion).then(function (response)
+      this.$cat.get("api/Desgloses/ObtenerNumDesglose/" + me.rHechoId, configuracion).then( (response) =>
       {
         //Recibe le numero de desgloses y le suma uno a la nueva nomeclatura de la nuc XX-XXXX-XXXXX-DX
         totalDesgloses = response.data.total;
         newnuc = me.nuc + "-D" + (totalDesgloses + 1);
 
-        this.$cat.post("api/Desgloses/CrearRegistroDesglose",
+        me.$cat.post("api/Desgloses/CrearRegistroDesglose",
         {
           RHechoId: me.rHechoId,
           nucg: newnuc,
@@ -1124,7 +1197,7 @@ export default {
           UsuarioEnvia: me.u_nombre,
           PuestoEnvia: me.u_puesto,
 
-        },configuracion).then(function (response) 
+        },configuracion).then( (response) =>
         {
           me.iddesglose = response.data.iddesglose;
 
@@ -1179,7 +1252,7 @@ export default {
 
       //-------------------------------------------------CREACION DE LA RAC y RAtencion------------------------------------------------------
       //Abstraccion de la informacion de RAC Y RATENCION
-      this.$cat.get("api/Desgloses/ListarRacRAtencion/" + me.rAtencionId,configuracion).then(function (response)
+      me.$cat.get("api/Desgloses/ListarRacRAtencion/" + me.rAtencionId,configuracion).then( (response)=>
       {
         //Este arreglo almacena toda la informacion de rac y ratencion
         racsRatencions = response.data;
@@ -1187,7 +1260,7 @@ export default {
         var newrac = racsRatencions.racg + "-D" + (totalDesgloses + 1);
 
         //API DE POST PARA GUARDAR LA MISMA INFORMACION con ids y racg diferente
-        this.$cat.post("api/Desgloses/CrearRacRatencion",
+        me.$cat.post("api/Desgloses/CrearRacRatencion",
         {
           Indicador: racsRatencions.indicador,
           DistritoId: racsRatencions.distritoId,
@@ -1216,7 +1289,7 @@ export default {
           ContencionVicitma: racsRatencions.contencionVicitma,
           ModuloServicio: racsRatencions.moduloServicio,
           MedioLlegada: racsRatencions.medioLlegada,
-        },configuracion).then(function (response) 
+        },configuracion).then( (response)=>
         {
           //Se guarda el nuevo id de atencion para su posterior uso
           newIdRAtencion = response.data.idatencion;
@@ -1239,7 +1312,7 @@ export default {
 
             //-------------------------------------------------CREACION DE LA RAP, PERSONAS Y DIRECCIONES------------------------------------------------------
             //Api para abtraer informacion y guardarlo en el arreglo de informacion de personas
-            this.$cat.get("api/Desgloses/ListarpersonaPD/" + recorridoPersonas[i],configuracion).then(function (response)
+            me.$cat.get("api/Desgloses/ListarpersonaPD/" + recorridoPersonas[i],configuracion).then( (response)=>
             {
               personasarray = response.data;
 
@@ -1254,7 +1327,7 @@ export default {
               }
 
               //Recorrido del arreglo de informacion de personas y posterior guardado con ids diferentes
-              this.$cat.post("api/Desgloses/GuardarPersonasD",
+              me.$cat.post("api/Desgloses/GuardarPersonasD",
               {
                 RAtencionId: newIdRAtencion,
                 ClasificacionPersona:personasarray.clasificacionPersona,
@@ -1308,14 +1381,14 @@ export default {
                 RangoEdadTF: personasarray.rangoEdadTF,
                 PoliciaDetuvo: personasarray.policiaDetuvo,
 
-              },configuracion).then(function (response) 
+              },configuracion).then( (response) =>
               {
                 //A la par que se va guardando la persona proceso a guardar el id que obtuvo y guardo sus documentos de identificacion
                 idpersonanew = response.data.idpersonar;
                 idrapnew = response.data.idrapr;
 
                 //Api para abtraer la informacion de sus documentos de identificacion
-                this.$cat.get("api/Desgloses/ListardocumentospersonaPD/" + idtemporal, configuracion).then(function (response)
+                me.$cat.get("api/Desgloses/ListardocumentospersonaPD/" + idtemporal, configuracion).then( (response)=>
                 {
                   documentospersonaarray = response.data;
 
@@ -1324,7 +1397,7 @@ export default {
                   //Claro, si es que existe documentos de indentificacion, de lo contrario se salta esta insercion
                   if (documentosexiste != "") 
                   {
-                    this.$cat.post("api/Desgloses/GuardarDocumentosPersonasD",
+                    me.$cat.post("api/Desgloses/GuardarDocumentosPersonasD",
                     {
                           PersonaId: idpersonanew,
                           TipoDocumento:documentospersonaarray.tipoDocumento,
@@ -1338,7 +1411,7 @@ export default {
                           Usuario: documentospersonaarray.usuario,
                           Puesto: documentospersonaarray.puesto,
 
-                    },configuracion).then(function (response) 
+                    },configuracion).then( (response) =>
                     {
                       //No hay respuesta aqui, no es necesario
                     }).catch((err) => 
@@ -1405,12 +1478,12 @@ export default {
                 });
 
                 //Al mismo tiempo del mismo recorrido de personas listo su direccion personal y al mismo tiempo recorro para guardar la copia
-                this.$cat.get("api/RAPs/ListarDP/" + idtemporal, configuracion).then(function (response)
+                me.$cat.get("api/RAPs/ListarDP/" + idtemporal, configuracion).then( (response)=>
                 {
                   dppersonaarray = response.data;
 
                   //Aqui estoy guardado la copia 
-                  this.$cat.post("api/Desgloses/GuardarDireccionPersonasD",
+                  me.$cat.post("api/Desgloses/GuardarDireccionPersonasD",
                   {
                     calle: dppersonaarray.calle,
                     noint: dppersonaarray.noint,
@@ -1429,7 +1502,7 @@ export default {
                     RAPId: idrapnew,
 
 
-                  },configuracion).then(function (response) 
+                  },configuracion).then( (response) =>
                   {
                     //Este tampoco requiere uyna respuesta, no la necesita
                   }).catch((err) => 
@@ -1555,12 +1628,12 @@ export default {
 
           //-------------------------------------------------CREACION DE LA NUC y RHECHO------------------------------------------------------
           //Aqui solo abtraego la informacion del hecho y la nuc
-          this.$cat.get("api/Desgloses/ListarRHechoNuc/" + me.rHechoId,configuracion).then(function (response)
+          me.$cat.get("api/Desgloses/ListarRHechoNuc/" + me.rHechoId,configuracion).then( (response)=>
           {
             rHechoNucarray = response.data;
 
             //Aqui inserto la copia con el numero de nuc nuevo
-            this.$cat.post("api/Desgloses/CrearNucRhecho",
+            me.$cat.post("api/Desgloses/CrearNucRhecho",
             {
               Indicador: rHechoNucarray.indicador,
               DistritoId: rHechoNucarray.distritoId,
@@ -1589,10 +1662,10 @@ export default {
               Texto: rHechoNucarray.texto,
               FechaHoraSuceso2: rHechoNucarray.fechaHoraSuceso2,
               
-            },configuracion).then(function (response) 
+            },configuracion).then( (response) =>
             {
               //Una vez creado genero un registro en el historia que esta carpeta proviene de un desglose
-              this.$cat.post("api/Historialcarpeta/Crear",
+              me.$cat.post("api/Historialcarpeta/Crear",
               {
                 RHechoId: me.rHechoId,
                 Detalle: "Desglose de carpeta " + newnuc,
@@ -1605,7 +1678,7 @@ export default {
                 UPuesto: me.u_puesto,
                 UModulo: me.u_modulo,
 
-              },configuracion).then(function (response) 
+              },configuracion).then( (response) =>
               {
                 //Una vez insertado tambien creo un historial en el tablero de inactividad para la nuc original
                 var descripcionRegTabI = "Se creo un desglose  " + newnuc;
@@ -1650,7 +1723,7 @@ export default {
 
                   me.activarAnimacionCarga();
                   //A travez de este archivo inicio el proceso de clonado para la nueva base de datos
-                  copiarCarpeta(configuracion,services,serviceNames,0,newnuc,newidrhecho,newIdRAtencion,me.distritoSeleccionado,me.u_idmoduloservicio,me.u_idagencia,idRemEnDesglose).then(function (response)
+                  copiarCarpeta(configuracion,services,serviceNames,0,newnuc,newidrhecho,newIdRAtencion,me.distritoSeleccionado,me.u_idmoduloservicio,me.u_idagencia,idRemEnDesglose).then( (response)=>
                   {
                     //Compruebo por medios de esta funcion si el desglose o las clonaciones de llevaron a cabo de manera correcta
                     me.comprobarRemision(newidrhecho);
@@ -1658,6 +1731,9 @@ export default {
                     
                   }).catch((err) => 
                   {
+                    me.desactivarAnimacionCarga();
+
+                    if(err.response && err.response.status){
                     if (err.response.status == 400) {
                       me.$notify(
                         "No es un usuario válido",
@@ -1686,6 +1762,9 @@ export default {
                         "Error al intentar crear el  registro!!!",
                         "error"
                       );
+                    }
+                    }else {
+                      me.$notify("Ocurrió un error inesperado", "error");
                     }
                   });
                 }
@@ -1733,12 +1812,12 @@ export default {
                 var delitosarray = [];
 
                 //Lo mismo, abstraego informacion+
-                this.$cat.get("api/Desgloses/ListardelitosD/" +recorridoDelitos[i],configuracion).then(function (response)
+                me.$cat.get("api/Desgloses/ListardelitosD/" +recorridoDelitos[i],configuracion).then( (response)=>
                 {
                   delitosarray = response.data;
 
                   //Aqui inserto la copia
-                  this.$cat.post("api/Desgloses/GuardarDelitosD",
+                  me.$cat.post("api/Desgloses/GuardarDelitosD",
                   {
                     DelitoId: delitosarray.delitoId,
                     RHechoId: newidrhecho,
@@ -1769,7 +1848,7 @@ export default {
                     TipoInfoDigital: delitosarray.tipoInfoDigital,
                     MedioDigital: delitosarray.medioDigital,
 
-                  },configuracion).then(function (response) 
+                  },configuracion).then( (response) =>
                   {
                     //No requiero respuesta
                   }).catch((err) => 
@@ -1930,6 +2009,7 @@ export default {
         }
       });
     },
+
     async imprimirYDescargar(u_nombre, u_puesto, u_agencia, agencia, modulo, distrito)
     {
       let me = this;
@@ -2074,9 +2154,9 @@ export default {
       var doc = pdfMake.createPdf(dd);
       var f = document.getElementById("iframepdf");
 
-      f.setAttribute("src","")
+      //f.setAttribute("src","")
       var callback = async (url) => {
-        const result = await Swal.fire({
+        /*const result = await Swal.fire({
           title: '¿Deseas firmar este documento?',
           text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
           icon: 'question',
@@ -2095,7 +2175,10 @@ export default {
         } else {
           f.setAttribute("src", url);
         }
-
+*/
+        this.base64pdf = url;
+        this.canvasid = "canvaspdf"
+        await this.renderPdfToCanvas(url.split(",")[1], "canvaspdf", this.numpage)
         this.modal_CaratulaNUC = true;
       };
 
@@ -2122,8 +2205,34 @@ export default {
           }
           // Crear y abrir el PDF
           var doc = pdfMake.createPdf(dd);
+          var callback = async (url) => {
+            const result = await Swal.fire({
+              title: '¿Este documento será firmado?',
+              text: 'Una vez firmado no podrás modificarlo, a menos que vuelvas a imprimir.',
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, firmar',
+              cancelButtonText: 'No'
+            });
+
+            if (result.isConfirmed) {
+              try {
+                const response = await firmarDocumento("https://drive.com", "12345", url, "ROJM980130");
+                const pdfWindow = window.open(response[0]["DocFirmado"], '_blank');
+                if (pdfWindow) {
+                  pdfWindow.focus();
+                  pdfWindow.print(); // puede que esto funcione dependiendo del navegador y headers del PDF
+                }
+
+              } catch (error) {
+                console.log('Error al firmar:', error);
+              }
+            }
+          };
+          doc.getDataUrl(callback, doc);
+          /*
           doc.open(); // Para abrir en una ventana emergente
-          resolve();
+          resolve();*/
         } catch (error) 
         {
           console.error("Error al generar o mostrar el PDF:", error);

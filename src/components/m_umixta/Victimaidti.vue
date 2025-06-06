@@ -4729,8 +4729,8 @@
                                     'municipio': me.municipio,
                                     'localidad': me.localidad,
                                     'cp': me.cp,
-                                    'lat': me.lat,
-                                    'lng':me.lng,
+                                    'lat': me.lat.toString(),
+                                    'lng':me.lng.toString(),
                                     //************************************ DIRECCION ESCUCHA */
     
                                     'de_calle': me.de_calle,
@@ -4744,8 +4744,8 @@
                                     'de_municipio': me.de_municipio,
                                     'de_localidad': me.de_localidad,
                                     'de_cp': me.de_cp,
-                                    'de_lat': me.de_lat,
-                                    'de_lng': me.de_lng,
+                                    'de_lat': me.de_lat.toString(),
+                                    'de_lng': me.de_lng.toString(),
                                     //*************************************/
                                 },configuracion).then(function(response){
     

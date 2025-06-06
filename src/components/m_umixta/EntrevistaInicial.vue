@@ -1560,7 +1560,7 @@ export default {
     me.listarModulosUsuario();
   },
   methods: {
-    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
+    async generarQR(tipodo,nuc,nombrefirma,fechadoc,id)
     {
         
         let me=this; 
@@ -3567,6 +3567,7 @@ export default {
           confirmButtonText: 'Sí, firmar',
           cancelButtonText: 'No'
         });
+
 
         if (result.isConfirmed) {
           try {
