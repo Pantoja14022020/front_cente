@@ -20,7 +20,7 @@
                         
                     </v-tooltip>
 
-                    <v-dialog   v-model="dialog"  max-width="600px">
+                    <v-dialog   v-model="dialog" max-width="600px" persistent>
 
 
                         <v-card>
@@ -84,6 +84,12 @@
                                                           v-validate="'required'"
                                                           :error-messages="errors.collect('nombre JR')">
                                             </v-text-field>
+                                            <v-text-field name="url distrito" 
+                                                          label="URL del distrito"
+                                                          v-model="urlDistrito" 
+                                                          v-validate="'required'"
+                                                          :error-messages="errors.collect('url distrito')">
+                                            </v-text-field>
                                         </v-flex>          
                                              
                                          <v-switch v-model="switch1"   label="¿Distrito default?:" color="success"  hide-details></v-switch>
@@ -141,6 +147,7 @@
                 <v-btn color="primary" @click="listar">Resetear</v-btn>
                 </template>
             </v-data-table>
+            <v-dialog   v-model="bloqueo" max-width="600px" persistent></v-dialog>
         </v-flex>
     </v-layout>
 </template>
@@ -190,7 +197,10 @@
                 e401:false,
                 e403:false,
                 nombrejr:'',
-          
+                DistritoCxn: [],
+                proceso: '',
+                bloqueo: false,
+                urlDistrito:''
             }
         },
         computed: {
@@ -242,6 +252,10 @@
                 this.$conf.get('api/Distritoes/Listar',configuracion).then(function(response){
                     //console.log(response);
                     me.distritos=response.data;
+                    me.distritos.map(function(x){
+                        me.DistritoCxn.push({text: x.nombre, value: x.idDistrito});
+                    });
+                    me.bloqueo = false;
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -268,7 +282,9 @@
                 this.telefono=item.telefono;
                 this.contacto=item.contacto;
                 this.nombrejr=item.nombrejr;
+                this.urlDistrito = item.urlDistrito;
                 this.editedIndex=1;
+                this.switch1 = item.statusAsginacion;
                 this.dialog = true
             },
  
@@ -286,18 +302,20 @@
                 this.telefono="";
                 this.contacto=""; 
                 this.nombrejr="";
+                this.urlDistrito = "";
                 this.switch1= false;
                 this.editedIndex=-1;
             },
             guardar () {
                 this.$validator.validate().then(result => {
                     if (result) {  
+                        this.bloqueo = true;
                         if (this.editedIndex > -1) {
                             //Código para editar
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            this.$conf.put('api/Distritoes/Actualizar',{
+                            this.$conf.put('api/Distritoes/ActualizarPachuca',{
                                 'idDistrito':me.idDistrito,
                                 'nombre': me.nombre,
                                 'clave': me.clave,
@@ -306,35 +324,23 @@
                                 'contacto': me.contacto,
                                 'statusAsginacion':me.switch1,
                                 'nombrejr':me.nombrejr,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se actualizo correctamente !!!','success')  
+                            'urlDistrito':me.urlDistrito,
+                            },configuracion).then(async function(response){
+                                let newDistrito = response.data.id;
+                                await me.clonacionDistritos(newDistrito);
+                                me.$notify('La información se actualizo correctamente !!!','success')
+                                me.close();   
                                 me.listar();
-                                me.limpiar();      
-                                                
+                                me.limpiar();              
                            }).catch(err => { 
-                                    if (err.response.status==400){
-                                        me.$notify("No es un usuario válido", 'error')
-                                    } else if (err.response.status==401){
-                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                        me.e401 = true,
-                                        me.showpage= false
-                                    } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                        me.e403= true
-                                        me.showpage= false 
-                                    } else if (err.response.status==404){
-                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                    }else{
-                                        me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                    } 
+                                me.$notify(`Error al actualizar distrito en Pachuca`, 'error'); 
                             });
                         } else {
                             //Código para guardar
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
-                            this.$conf.post('api/Distritoes/Crear',{
+                            this.$conf.post('api/Distritoes/CrearPachuca',{ 
                                 'nombre': me.nombre,
                                 'clave': me.clave,
                                 'direccion': me.direccion,
@@ -342,36 +348,80 @@
                                 'contacto': me.contacto,
                                 'statusAsginacion':me.switch1,
                                 'nombrejr':me.nombrejr,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
+                            'urlDistrito':me.urlDistrito,
+                            },configuracion).then(async function(response){
+                                let newDistrito = response.data.id;     
+                                await me.clonacionDistritos(newDistrito); 
+                                me.$notify('La información se guardo correctamente !!!','success') 
+                                me.close(); 
                                 me.listar();
                                 me.limpiar();                        
                             }).catch(err => { 
-                                if (err.response.status==400){
-                                    me.$notify("No es un usuario válido", 'error')
-                                } else if (err.response.status==401){
-                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                    me.e401 = true,
-                                    me.showpage= false
-                                } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                    me.e403= true
-                                    me.showpage= false 
-                                } else if (err.response.status==404){
-                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                }else{
-                                    me.$notify('Error al intentar crear el  registro!!!','error')  
-                                } 
+                                me.$notify(`Error al guardar distrito en Pachuca`, 'error'); 
                             });
                         }
                     }
                 })  
             },
-           
             
-           
- 
-        }        
+            async clonacionDistritos(newDistrito){
+                let me = this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+
+                for (let i = 0; i < me.DistritoCxn.length; i++) { 
+                    var idErrorG = me.DistritoCxn[i]; 
+                    try{
+                       const response = await this.$conf.post('api/Distritoes/ClonarDistritos',{ 
+                                'idDistrito': newDistrito,
+                                'nombre': me.nombre,
+                                'clave': me.clave,
+                                'direccion': me.direccion,
+                                'telefono': me.telefono, 
+                                'contacto': me.contacto,
+                                'statusAsginacion':me.switch1,
+                                'nombrejr':me.nombrejr,
+                                'urlDistrito':me.urlDistrito,
+                                'distritoCnx': me.DistritoCxn[i].value
+                            },configuracion);
+
+                            if(response.status == 200){
+                                var ActR = true;
+                                await me.guardarErrorReplic(idErrorG,newDistrito, ActR)
+                            }
+                    } catch(error) {
+                        me.$notify(`Error al guardar distrito en: ${me.DistritoCxn[i].text}`, 'error');          
+                        var ActR = false;
+                        await me.guardarErrorReplic(idErrorG,newDistrito, ActR)
+                    }             
+                }    
+            },
+            async guardarErrorReplic(idErrorG,newDistrito, ActR){
+                let me = this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                me.proceso = me.editedIndex === -1?'Guardar':'Actualizar'
+
+                try{
+                   const response =  await this.$conf.post('api/ErroresReplicacion/RegistrarError',{
+                        'registroErrorId': newDistrito,
+                        'distritoId': idErrorG.value,
+                        'nombreDistrito': idErrorG.text,
+                        'modulo': "Distrito",
+                        'proceso': me.proceso,
+                        'status': true,
+                        'ActualizaRegistro': ActR
+                    }, configuracion);
+
+                    if(response.status == 201){
+                         me.$notify(response.data.mensaje, 'warning');
+                    }
+                }
+                catch(error){
+                    me.$notify("No se pudo crear o actualizar el registro del error.", 'error');
+                }
+               
+            }
+        }
     }
 </script>

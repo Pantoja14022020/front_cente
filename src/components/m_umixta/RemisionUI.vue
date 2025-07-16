@@ -1116,6 +1116,9 @@ export default {
                     "api/VehiculoDesaparicionPersona/Clonar",
                     "api/DireccionDelitoes/Clonar",
                     "api/Vehiculos/Clonar",
+                    "api/DatosProtegido/Clonar",
+                    "api/RegistroTableroI/Clonar",
+                    "api/Desgloses/Clonar",
 
                   ];
                   const serviceNames = 
@@ -1140,6 +1143,8 @@ export default {
                     "Vehículos Relacionados con desaparición de personas",
                     "Direccion del Delito",
                     "Registro de Vehiculos",
+                    "Registro tablero inactividad",
+                    "Desgloces",
                   ];                  
 
                   me.activarAnimacionCarga();

@@ -41,10 +41,23 @@
                                   : props.item.fechaDerivacion.substring(8, 10) + " de " + obtenermes(props.item.fechaDerivacion.substring(5, 7) - 1) + " del " + props.item.fechaDerivacion.substring(0, 4) + ", " + props.item.fechaDerivacion.substring(11, 19)
                               }}
                           </td>
-                          <td>{{ props.item.statusGeneral }}</td>
+                          <td :style="{ color: !props.item.statusEnvio ? '#b71c1c' : 'inherit' }">
+                             {{ !props.item.statusEnvio ? 'Derivacion no enviada' : props.item.statusGeneral }}
+                            </td>
                           <td>{{ props.item.noExpediente !== null ? props.item.noExpediente : 'Aun sin numero de expediente' }}</td>
                           <td>{{ props.item.statusAMPO == "Contestado" ? props.item.statusAMPO : 'Sin contestar' }}</td>          
                           <td>
+
+                             <v-tooltip bottom v-if="props.item.statusEnvio == false">
+                                <template v-slot:activator="{ on }">
+                                    <v-icon class="mr-2" v-on="on" @click="reenviarDerivacion(props.item)" color="info">
+                                        refresh
+                                    </v-icon>
+                                </template>
+                                <span>Reenviar derivación que no fue enviada</span>
+                              </v-tooltip>
+
+                              <template v-if="props.item.statusEnvio == true">
 
                               <v-tooltip bottom>               
                                 <template v-slot:activator="{ on }">
@@ -80,6 +93,7 @@
                                 </template>
                                 <span>Respuesta AMPO</span>
                               </v-tooltip>
+                              </template>
                           </td>                
                   </template>
                   <template slot="no-data">
@@ -102,7 +116,7 @@
                        Vista previa
                        </v-btn>
                        <v-btn icon @click="modalAdd = false">
-                       <v-icon>close</v-icon>
+                       <v-icon @click="limpiar()" >close</v-icon>
                        </v-btn>
                    </v-toolbar-items>
                </v-toolbar>
@@ -149,12 +163,15 @@
                             <!-- Cierre del cuerpo del componente -->
                        </v-flex>
 
-                       <v-flex class="espaciadox" xs12 sm12 md6 lg6 >                           
+                       <v-flex class="espaciadox" xs12 sm12 md6 lg6 >    
+                        <v-card-title class="font-weight-regular" v-if="tableDataRequeridos != ''">
+                                <strong>¡ATENCIÓN!&nbsp;</strong>Ya has registrado un conjunto, si deseas crear otro llena nuevamente los campos vacios.
+                            </v-card-title>                       
                             <v-autocomplete 
                                 name="solicitantes"   
                                 :items="raps1"
                                 v-model="solicitante"
-                                v-validate="'required'" 
+                                
                                 label="*Solicitantes:"
                                 data-vv-scope="agregar"
                                 return-object       
@@ -169,7 +186,7 @@
                                 name="requeridos" 
                                 :items="raps2"
                                 v-model="requerido"
-                                v-validate="'required'" 
+                                
                                 label="*Requeridos:"
                                 data-vv-scope="agregar"
                                 return-object
@@ -184,7 +201,7 @@
                                 name="delito" 
                                 :items="delitos"
                                 v-model="delito" 
-                                v-validate="'required'" 
+                                 
                                 label="*Delitos:"
                                 data-vv-scope="agregar"
                                 return-object
@@ -197,17 +214,8 @@
 
                            <v-tooltip bottom v-if="solicitante != '' && requerido != '' && delito != '' && ene != ''">
                                <template v-slot:activator="{ on }">
-                                    <v-btn 
-                                        class="mx-2" 
-                                        slot="activator" 
-                                        v-on="on" 
-                                        @click="evaluarDireccionSol()" 
-                                        fab 
-                                        dark 
-                                        small 
-                                        color="success"
-                                        >
-                                        <v-icon>add</v-icon>
+                                    <v-btn color="success" text @click="evaluarDireccionSol()">
+                                        Agregar conjunto
                                     </v-btn>
                                </template>
                                <span >Agregar derivacion</span>
@@ -258,26 +266,17 @@
            <v-toolbar dark color="primary">
 
            <v-toolbar-title>Documento.</v-toolbar-title>
-             <v-spacer/>
-             <v-btn @click.native="prevPage()"><</v-btn>
-             <div class="d-flex align-center">
-               <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
-             </div>
-             <v-btn @click.native="nextPage()">></v-btn>
            <v-spacer></v-spacer>
            <v-toolbar-items>
            <v-btn  color=success text @click.native="imprimir_DerivacionNew()">
            Guardar e Imprimir</v-btn>
-           <v-btn icon   @click="modal_Derivacion = false; numpage=1">
+            <v-btn icon   @click="modal_Derivacion = false">
            <v-icon>close</v-icon>
            </v-btn>
            </v-toolbar-items>
            </v-toolbar>
            <v-card-text>
-             <canvas id="canvaspdf2"
-                     style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
-             ></canvas>
-<!--              <iframe
+              <iframe
               id="iframepdf2"
               type="application/pdf"
               width="100%"
@@ -285,7 +284,7 @@
               frameborder="0"
               scrolling="no"
               ref="pdfFrame"
-              ></iframe>-->
+              ></iframe>
           </v-card-text>
        </v-card>
    </v-dialog>
@@ -476,7 +475,7 @@
        </v-card>
    </v-dialog>
 
-   <v-dialog v-model="cargando" max-width="1000px">
+   <v-dialog v-model="cargando" max-width="1000px" persistent overlay-opacity="1">
         <v-card>
           <v-toolbar card dark color="grey lighten-4 primary--text">
             <v-avatar size="30">
@@ -710,7 +709,42 @@ import { generarQRCodeBase64 } from './crearQR';
 
            dirigidoAmpo:'',
            puestoAmpo: '',
-            tipoPDF: 0 
+            tipoPDF: 0,
+
+            services: [
+                        'api/Racs/Clonar'
+                        ,'api/RAtencions/Clonar'
+                        ,'api/Nucs/Clonar'
+                        ,'api/RHechoes/Clonar'
+                        ,'api/RAPs/Clonar'
+                        ,'api/AmpDecs/Clonar'
+                        ,'api/RDHs/Clonar'
+                        ,'api/Representante/Clonar'
+                        ,'api/Turnoes/Clonar'
+                        ,'api/DireccionDelitoes/Clonar'
+                        ,'api/ClonacionJR/ClonarExpediente'
+                        ,'api/ClonacionJR/ClonarEnvio'
+                        ,'api/ClonacionJR/ClonarConjunto'
+                        ,'api/ClonacionJR/ClonarSolReq'
+                        ,'api/ClonacionJR/ClonarDelitos'
+           ],
+           serviceNames: [
+                            'RAC'
+                            ,'Atencion'
+                            ,'NUC'
+                            ,'Hecho'
+                            ,'RAP'
+                            ,'Ampliación de Declaración'
+                            ,'Delitos'
+                            ,'Representante'
+                            ,'Turnos'
+                            ,'Direccion del Delito'
+                            ,'Expediente de la derivacion'
+                            ,'Envio de la derivacion'
+                            ,'Conjunto de derivaciones'
+                            ,'Solicitantes Requeridos'
+                            ,'Delitos derivados'
+           ],
        
 
        };
@@ -787,7 +821,7 @@ import { generarQRCodeBase64 } from './crearQR';
      //funciones pdf to canvas
      async renderPdfToCanvas(base64pdf, canvasId, numpage) {
        // Importación clásica compatible con v2.x
-       // ✅ Usa la versión legacy transpilada
+       // Usa la versión legacy transpilada
        const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
 
 
@@ -1030,7 +1064,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
             for(var i=0; i<me.solicitante.length; i++)
             {
-                if(me.solicitante[i].value4 == " 0 S/N    Mexico 0" || me.solicitante[i].value5 == "0,0")
+                if(me.solicitante[i].value4 == "  0 S/N    Mexico 0" || me.solicitante[i].value5 == "0,0")
                 {
                     alert("Este solicitante: " + me.solicitante[i].value + " no puedes derivarlo a Justicia Restaurativa ya que no le has agregado una direccion o telefono");
                     return;
@@ -1041,9 +1075,17 @@ import { generarQRCodeBase64 } from './crearQR';
                 }
             }
             for(var i=0; i<me.requerido.length; i++)
+             {
+                if(me.requerido[i].value4 == "  0 S/N    Mexico 0" || me.requerido[i].value5 == "0,0")
+                {
+                    alert("Este requerido: " + me.requerido[i].value + " no puedes derivarlo a Justicia Restaurativa ya que no le has agregado una direccion o telefono");
+                    return;
+                }
+                else
             {
                 consultas.push(me.consultarRepresentante(me.requerido[i].value2, 1));
             }
+        }
 
             if (consultas.length > 0) {
                 Promise.all(consultas)
@@ -1062,23 +1104,51 @@ import { generarQRCodeBase64 } from './crearQR';
 
             let personaId = id;
 
-            return me.$justiciarestaurativa.get('api/Envios/ConsultaRepresentante/'+id,configuracion).then(function(response)
+            return me.$cat.get('api/Representante/ConsultaRepresentante/'+id,configuracion).then(function(response)
             {
-                for(let i = 0; i < response.data.length; i++)
-                {
+                for (let i = 0; i < response.data.length; i++) {
                     let registro = response.data[i];
-                    console.log(registro);
-                    if (registro.direccion == ' No.  , , , , Mexico, CP: 0') {
-                        alert("Este representante: " + registro.nombreCompleto + " no le has agregado una dirección por lo que no puedes derivarlo a Justicia Restaurativa");
+
+                    if (!registro.medioNotificacion) {
+                        alert("Este representante: " + registro.nombreCompleto + " no le has agregado una medio de notificacion por lo que no puedes derivarlo a Justicia Restaurativa");
                         return Promise.reject();
-                    } else if (!registro.telefono) {
+                    } else if (registro.medioNotificacion.includes("Teléfono") && !registro.telefono) {
                         alert("Este representante: " + registro.nombreCompleto + " no le has agregado un teléfono por lo que no puedes derivarlo a Justicia Restaurativa");
                         return Promise.reject();
-                    } else if (!registro.correoElectronico) {
+                    } else if (registro.medioNotificacion.includes("Correo electrónico") && !registro.correoElectronico) {
                         alert("Este representante: " + registro.nombreCompleto + " no le has agregado un correo por lo que no puedes derivarlo a Justicia Restaurativa");
                         return Promise.reject();
+                    } else if (registro.medioNotificacion.includes("Domicilio") && registro.direccion == ' No.  , , , , Mexico, CP: 0') {
+                        alert("Este representante: " + registro.nombreCompleto + " no le has agregado una dirección por lo que no puedes derivarlo a Justicia Restaurativa");
+                        return Promise.reject();
                     }
-                };
+                    
+                    // Verificar y modificar Tipo1
+                    if (registro.tipo1 !== 1 && registro.tipo1 !== 7) {
+                        registro.tipo1 = '';  // Asignar cadena vacía si no es 1 ni 7
+                        registro.tipo1Nombre = 'No activo';  // Asignar cadena vacía al nombre
+                    }
+
+                    // Verificar y modificar Tipo2
+                    if (registro.tipo2 !== 1 && registro.tipo2 !== 7) {
+                        registro.tipo2 = '';  // Asignar cadena vacía si no es 1 ni 7
+                        registro.tipo2Nombre = 'No activo';  // Asignar cadena vacía al nombre
+                    }
+                    
+                    // Solo obtener el medio de notificacion puesto
+                    if(!registro.medioNotificacion.includes('Correo electrónico'))
+                    {
+                        registro.correoElectronico = '';
+                    }
+                    if(!registro.medioNotificacion.includes("Teléfono"))
+                    {
+                        registro.telefono = ''
+                    }
+                    if(!registro.medioNotificacion.includes("Domicilio"))
+                    {
+                        registro.direccion = '';
+                    }
+                    };
                 
                 if(almacenar == 1) {
                     if (me.representantesValidados[personaId]) {
@@ -1367,6 +1437,13 @@ import { generarQRCodeBase64 } from './crearQR';
            let configuracion= {headers : header};
            me.$conf.get('api/DSPs/ListarPorDisttritoCve/'+ me.distrito.value + '/CJR',configuracion  ).then(function(response){
                
+                if(response.data.message == 'No hay registros')
+                {
+                   alert("El distrito "+ me.distrito.text +" no cuenta con una unidad de Justicia Restaurativa");
+                   me.distrito = '';
+                   return;
+                }
+
                me.dirigidoNombre=response.data.responsable;
                
                me.dirigidoDirSubProc= response.data.nombreSubDir;
@@ -2106,8 +2183,15 @@ import { generarQRCodeBase64 } from './crearQR';
 
                             mensajeRepresentantes += `Nombre representante: ${representante.nombre}\n`;
                             mensajeRepresentantes += `Tipo: ${tipos}\n`;
-                            mensajeRepresentantes += `Contacto: ${representante.correo} - ${representante.telefono}\n`;
-                            mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            // Mostrar Contacto solo si uno de los dos (correo o teléfono) tiene información
+                            if (representante.correo !== 'No especificado' || representante.telefono !== 'No especificado') {
+                                mensajeRepresentantes += `Contacto: ${representante.correo !== 'No especificado' ? representante.correo : ''} ${representante.telefono !== 'No especificado' ? representante.telefono : ''}`.trim()+'\n';
+                            }
+
+                            // Mostrar Dirección solo si tiene información
+                            if (representante.direccion !== 'No especificado') {
+                                mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            }
                         });
 
                         // Si no hay representantes activos
@@ -2165,8 +2249,15 @@ import { generarQRCodeBase64 } from './crearQR';
 
                             mensajeRepresentantes += `Nombre representante: ${representante.nombre}\n`;
                             mensajeRepresentantes += `Tipo: ${tipos}\n`;
-                            mensajeRepresentantes += `Contacto: ${representante.correo} - ${representante.telefono}\n`;
-                            mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            // Mostrar Contacto solo si uno de los dos (correo o teléfono) tiene información
+                            if (representante.correo !== 'No especificado' || representante.telefono !== 'No especificado') {
+                                mensajeRepresentantes += `Contacto: ${representante.correo !== 'No especificado' ? representante.correo : ''} ${representante.telefono !== 'No especificado' ? representante.telefono : ''}`.trim()+'\n';
+                            }
+
+                            // Mostrar Dirección solo si tiene información
+                            if (representante.direccion !== 'No especificado') {
+                                mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            }
                         });
 
                         // Si no hay representantes activos
@@ -2593,8 +2684,15 @@ import { generarQRCodeBase64 } from './crearQR';
 
                             mensajeRepresentantes += `Nombre representante: ${representante.nombre}\n`;
                             mensajeRepresentantes += `Tipo: ${tipos}\n`;
-                            mensajeRepresentantes += `Contacto: ${representante.correo} - ${representante.telefono}\n`;
-                            mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            // Mostrar Contacto solo si uno de los dos (correo o teléfono) tiene información
+                            if (representante.correo !== 'No especificado' || representante.telefono !== 'No especificado') {
+                                mensajeRepresentantes += `Contacto: ${representante.correo !== 'No especificado' ? representante.correo : ''} ${representante.telefono !== 'No especificado' ? representante.telefono : ''}`.trim()+'\n';
+                            }
+
+                            // Mostrar Dirección solo si tiene información
+                            if (representante.direccion !== 'No especificado') {
+                                mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            }
                         });
 
                         // Si no hay representantes activos
@@ -2658,9 +2756,15 @@ import { generarQRCodeBase64 } from './crearQR';
 
                             mensajeRepresentantes += `Nombre representante: ${representante.nombre}\n`;
                             mensajeRepresentantes += `Tipo: ${tipos}\n`;
-                            mensajeRepresentantes += `Contacto: ${representante.correo} - ${representante.telefono}\n`;
-                            mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
-                            console.log(representante);
+                            // Mostrar Contacto solo si uno de los dos (correo o teléfono) tiene información
+                            if (representante.correo !== 'No especificado' || representante.telefono !== 'No especificado') {
+                                mensajeRepresentantes += `Contacto: ${representante.correo !== 'No especificado' ? representante.correo : ''} ${representante.telefono !== 'No especificado' ? representante.telefono : ''}`.trim()+'\n';
+                            }
+
+                            // Mostrar Dirección solo si tiene información
+                            if (representante.direccion !== 'No especificado') {
+                                mensajeRepresentantes += `Dirección: ${representante.direccion}\n`;
+                            }
                         });
 
                         // Si no hay representantes activos
@@ -3108,6 +3212,7 @@ import { generarQRCodeBase64 } from './crearQR';
             let configuracion= {headers : header};
             
             var idEnvioNew = '';
+             var envioDerivacion = false;
             
             me.distritoSeleccionado=me.distrito.value;
             me.distritoNombre=me.distrito.value2;
@@ -3117,7 +3222,7 @@ import { generarQRCodeBase64 } from './crearQR';
             var countr = 0;
 
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios',
-            ()=>{
+             function(){
 
             for (var i = 0; i < me.tableDataRequeridos.length; i++) {
                 var item = me.tableDataRequeridos[i];
@@ -3139,6 +3244,11 @@ import { generarQRCodeBase64 } from './crearQR';
             var solicitantes = counts + countr;
             var descripcionRegTabI = 'Registro de derivacion a Justicia Restaurativa ';
 
+            // Si es el mismo distrito donde se envia lo inicalizamos como true
+                if(me.distritoNombre == me.u_distrito)
+                {
+                    envioDerivacion = true;
+                }
             //AQUI VA TODO EL CUERPO DEL CODIGO
 
             //SE GENERA UN SOLO EXPEDIENTE Y ENVIO
@@ -3162,7 +3272,8 @@ import { generarQRCodeBase64 } from './crearQR';
                         'DistritoIdDestino' : me.distrito.value,
                         'ArregloConjunto': JSON.stringify(me.tableDataRequeridos),
                         'ArregloRepresentantes': JSON.stringify(me.tableDataRepresentantes),
-                    },configuracion).then((response)=>
+                        'statusEnvio': envioDerivacion,
+                    },configuracion).then(function(response)
                     {
 
                         me.$notify('La información se guardo correctamente !!!','success')
@@ -3260,9 +3371,11 @@ import { generarQRCodeBase64 } from './crearQR';
                     });
                                         
                 }
+                me.crearHistorial(me.rHechoId, me.u_modulo, me.u_distrito, me.u_dirSubPro, me.u_agencia, me.u_nombre, me.u_puesto, me.distrito.value2,);
                     if(me.distritoNombre != me.u_distrito)
                     {
-                        me.$notify('Se inicia el el copiado para derivacion en otro distrito','success')                                                             
+                        me.$notify('Se inicia el copiado para derivacion en otro distrito','success')
+                        /*me.$notify('Se inicia el el copiado para derivacion en otro distrito','success')                                                             
                                 const services = [
 
                                                     'api/Racs/Clonar'
@@ -3299,17 +3412,35 @@ import { generarQRCodeBase64 } from './crearQR';
                                                 ,'Solicitantes Requeridos'
                                                 ,'Delitos derivados'
                                                 
-                                ];
+                                ];*/
 
                             me.activarAnimacionCarga();
 
-                            copiarDerivacion(configuracion,services,serviceNames,0,me.nuc,me.rHechoId,me.rAtencionId,me.distritoSeleccionado,idEnvioNew,me.idExpedienteNew).then(
-                            (response)=>{
-
-                                me.comprobarDerivacionesMSG();
+                            copiarDerivacion(configuracion,me.services,me.serviceNames,0,me.nuc,me.rHechoId,me.rAtencionId,me.distritoSeleccionado,idEnvioNew,me.idExpedienteNew)
+                            .then(function(response)
+                            {
+                                me.actualizarStatusEnvio(idEnvioNew, true);
+                                me.comprobarDerivacionesMSG(me.idExpedienteNew);
                                 me.desactivarAnimacionCarga();
                                 
                             }).catch(err=>{
+                                    if (err) {
+                                        me.$notify('Error en el envio de derivación. Vuelvelo a intentar mas tarde.', 'error');
+                                        me.limpiar();
+                                        me.listarDerivaciones();
+                                        me.desactivarAnimacionCarga();
+                                    }
+                                });
+                                } else {
+                            alert("La remision se realizo correctamente");
+                            me.limpiar();
+                            me.listarDerivaciones();
+                        }
+                        
+                        //Finalizar la remision y regresando a la pantalla principal
+                        me.crearRegistroTableroI(descripcionRegTabI);
+                    })
+                    .catch(err => {
                             if (err.response.status==400){
                                 me.$notify("No es un usuario válido", 'error')
                             } else if (err.response.status==401){
@@ -3326,20 +3457,27 @@ import { generarQRCodeBase64 } from './crearQR';
                                 me.$notify('Error al intentar crear el  registro!!!','error')  
                             } 
                             });
-                    }
+                    //AQUI TERMINA
+            },
 
-                        if(me.distritoNombre == me.u_distrito){
-                            alert("La remision se realizo correctamente");
-                            me.limpiar();
-                            me.listarDerivaciones();
-                        }
+            function()
+            {
+                alertify.warning('Verifica la información')
+            }
+            ).set('labels', {ok:'Guardar', cancel:'Cancelar'});
+        },
+        actualizarStatusEnvio(envioId, status) 
+        {
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
 
-                        //Finalizar la remision y regresando a la pantalla principal
-                        me.crearRegistroTableroI(descripcionRegTabI);
-                        
-
-
-                    }).catch(err => {
+            this.$justiciarestaurativa.put('api/Envios/StatusEnvioDerivacion',{
+                'IdEnvio': envioId, 
+                'statusEnvio': status
+            },configuracion)
+            .then(function(response){
+            })
+            .catch(err => { 
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
                         } else if (err.response.status==401){
@@ -3353,22 +3491,37 @@ import { generarQRCodeBase64 } from './crearQR';
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar crear el  registro!!!','error')
+                            me.$notify('Error al intentar actualizar el registro!!!','error')
                         }
                     });
-            
+                },
+                reenviarDerivacion(item)
+        {
+            let me = this;
+            me.$notify('Se inicia el copiado para derivacion enen otro distrito','success')
+            me.activarAnimacionCarga();
+            me.rAtencionIdD = me.$store.state.ratencionid;
+            me.rHechoIdD =  me.$store.state.rhechoid;
 
-                
+            let header={"Authorization" : "Bearer " + me.$store.state.token};
+            let configuracion= {headers : header};
 
+            copiarDerivacion(configuracion,me.services,me.serviceNames,0,item.nuc,me.rHechoIdD,me.rAtencionIdD,item.distritoIdDestino,item.idEnvio,item.expedienteId)
+                .then(function(response)
+                {
+                    me.actualizarStatusEnvio(item.idEnvio, true);
+                    me.comprobarDerivacionesMSG(item.expedienteId);
+                    me.desactivarAnimacionCarga();
+                }).catch(err=>
+                {
+                    if (err) {
+                        me.$notify('Error en el envio de la derivación. Vuelvelo a intentar mas tarde.', 'error');
+                        me.desactivarAnimacionCarga();
+                    }
+                });
 
-            //AQUI TERMINA
-            },
-
-            function(){
-                alertify.warning('Verifica la información')
-            }
-            ).set('labels', {ok:'Guardar', cancel:'Cancelar'});
-
+            me.limpiar();
+            me.listarDerivaciones();
         },
        limpiar() {
           let me  = this;
@@ -3396,13 +3549,13 @@ import { generarQRCodeBase64 } from './crearQR';
           me.representantes = [];
           me.representantesValidados = {};
        },
-       comprobarDerivacionesMSG() {
+       comprobarDerivacionesMSG(idExpedienteD) {
             let me=this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var existeExpediente = 1;
 
-            me.$justiciarestaurativa.get('api/Expedientes/ExisteExpedienteEspecifico/'+ me.idExpedienteNew,configuracion).then(function (response) 
+            me.$justiciarestaurativa.get('api/Expedientes/ExisteExpedienteEspecifico/'+ idExpedienteD,configuracion).then(function (response) 
             {
 
                 existeExpediente = response.data.existeExpediente;
@@ -3453,6 +3606,43 @@ import { generarQRCodeBase64 } from './crearQR';
                    'Modulo':me.u_modulo,
                    'UsuarioId':me.u_idusuario,
                    'NombreUsuario': me.u_nombre,
+                   },configuracion).then(function(response){
+                   me.$notify('La información se guardo correctamente !!!','success')
+               }).catch(err => {
+                   if (err.response.status==400){
+                       me.$notify("No es un usuario válido", 'error')
+                   } else if (err.response.status==401){
+                       me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                       me.e401 = true,
+                       me.showpage= false
+                   } else if (err.response.status==403){
+                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.e403= true
+                       me.showpage= false
+                   } else if (err.response.status==404){
+                       me.$notify("El recuso no ha sido encontrado", 'error')
+                   }else{
+                       me.$notify('Error al intentar crear el  registro!!!','error')
+                   }
+               });             
+       },
+       crearHistorial(rHechoId, u_modulo, u_distrito, u_dirSubPro, u_agencia, u_nombre, u_puesto, distritoDestino)
+       {
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+        
+            me.$cat.post('api/Historialcarpeta/Crear',{
+                'RhechoId': rHechoId,
+                'Detalle': "Derivación a Justicia Restaurativa",
+                'Modulo': "Recepcion de carpeta",
+                'Agencia': "Justicia Restaurativa PGJ - "+distritoDestino,
+                'UDistrito':u_distrito,
+                'USubproc': u_dirSubPro,
+                'UAgencia': u_agencia,
+                'Usuario': u_nombre,
+                'UPuesto': u_puesto,
+                'UModulo': u_modulo,
            
                },configuracion).then(function(response){
                    me.$notify('La información se guardo correctamente !!!','success')
@@ -3602,6 +3792,7 @@ import { generarQRCodeBase64 } from './crearQR';
                            if(response.data && response.data.length > 1)
                            {
                                alert("Ya tienes un expediente solicitado, corrobora si no es el mismo para evitar duplicar informacion: ");
+                               me.limpiar();
                            }
 
                            if(me.tfV == false)

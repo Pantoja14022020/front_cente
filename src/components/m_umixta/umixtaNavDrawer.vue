@@ -1,7 +1,96 @@
 
 
 <template>
+  <v-app id="app">
+    <v-toolbar flat app class="grey lighten-4">
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text" />
+      <v-toolbar-title class="text-uppercase grey--text">
+        <span class="font-weight-light btn_sisC" @click="salir">SISTEMA CENTENARIO</span>
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn v-if="logueado" flat icon>
+        <v-icon>notifications</v-icon>
+      </v-btn>
+      <v-btn :to="{ name: 'login' }" v-else flat icon>
+        <v-icon>vpn_key</v-icon>
+      </v-btn>
+      <v-menu offset-y right v-if="logueado" flat transition="scale-transition">
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>person</v-icon>
+          </v-btn>
+        </template>
+        <v-card min-width="300" class="mx-auto">
+          <v-toolbar prominent card dark color="grey lighten-4 primary--text">
+            <v-avatar size="50">
+              <v-icon size="36" class="grey lighten-2 centenarioToolBarIcon"
+                >person</v-icon
+              >
+            </v-avatar>
+            <v-toolbar-title class="body-1 font-weight-medium">
+              {{ usuario }}
+              <p class="caption font-weight-light">
+                <a>{{ email }}</a>
+              </p>
+            </v-toolbar-title>
+          </v-toolbar>
+          <v-card-text>
+            <v-list>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon class="centenarioToolBarIcon">build</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    <p class="body-2 font-weight-bold"><a>Mi cuenta</a></p>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    <p color="accent" class="caption font-weight-regular">
+                      <a>Configuración de tu cuenta.</a>
+                    </p>
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon class="centenarioToolBarIcon">help</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    <p class="body-2 font-weight-bold"><a>Ayuda</a></p>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    <p color="accent" class="caption font-weight-regular">
+                      <a>Manual de usuario</a>
+                    </p>
+                  </v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile @click="salir">
+                <v-list-tile-action>
+                  <v-icon class="centenarioToolBarIcon"
+                    >power_settings_new</v-icon
+                  >
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title>
+                    <p class="body-2 font-weight-bold"><a>Cerrar sesión</a></p>
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card-text>
+          <v-divider class="mx-0" />
+          <v-card-actions>
+            <v-spacer />
+            <v-btn class="mx-3" small outline color="accent"> Cerrar </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
+    </v-toolbar>
+
     <v-navigation-drawer permanent app class="primary">
+
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/"><img src="@/assets/Logo.png" height="110px" alt="" /></a>
       </div>
@@ -17,7 +106,8 @@
         <template
             v-if="esAdministrador || esRecepcion || esAmpoMixto ||esAmpoDetenido ||esAmpoDetenido || esAMPOAMP"
         >
-          <v-list-group>
+          <!--<v-list-group>-->
+            <v-list-group :value="isActiveRoute(['umixtaregistro', 'umixtanoticiashechos', 'umixtainiciodetenido'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -28,7 +118,7 @@
             <v-list-tile
                 v-if="esAdministrador || esRecepcion || esAmpoMixto || esAMPOAMP"
                 :to="{ name: 'umixtaregistro' == '#' ? '' : 'umixtaregistro' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaregistro']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">how_to_reg</v-icon>
@@ -42,7 +132,7 @@
             <v-list-tile
                 v-if="esAdministrador || esRecepcion || esAmpoMixto || esAMPOAMP"
                 :to="{ name: 'umixtanoticiashechos' == '#' ? '' : 'umixtanoticiashechos' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtanoticiashechos']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">perm_identity</v-icon>
@@ -56,7 +146,7 @@
             <v-list-tile
                 v-if="esAdministrador || esRecepcion || esAmpoMixto ||esAmpoDetenido || esAMPOAMP"
                 :to="{ name: 'umixtainiciodetenido' == '#' ? '' : 'umixtainiciodetenido' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtainiciodetenido']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">perm_identity</v-icon>
@@ -72,7 +162,7 @@
         <template
             v-if="esAdministrador || esDirector || esCoordinador || esAmpoMixto ||esAmpoDetenido"
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['listaregistros', 'lapsoatencion', 'turnos'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -85,7 +175,7 @@
                 esAdministrador || esDirector || esCoordinador || esAmpoMixto ||esAmpoDetenido
               "
                 :to="{ name: 'umixtalistaregistros' == '#' ? '' : 'umixtalistaregistros' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtalistaregistros']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">group</v-icon>
@@ -101,7 +191,7 @@
                 esAdministrador || esDirector || esCoordinador || esAmpoMixto ||esAmpoDetenido
               "
                 :to="{ name: 'umixtalapsoatencion' == '#' ? '' : 'umixtalapsoatencion' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtalapsoatencion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">access_time</v-icon>
@@ -117,7 +207,7 @@
                 esAdministrador || esDirector || esCoordinador || esAmpoMixto ||esAmpoDetenido
               "
                 :to="{ name: 'umixtaturnos' == '#' ? '' : 'umixtaturnos' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaturnos']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">title</v-icon>
@@ -140,7 +230,7 @@
             esAMPOAMP
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtaautorizacioncolaboracion', 'umixtacolaboracionesasignadas'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -162,7 +252,7 @@
                     ? ''
                     : 'umixtaautorizacioncolaboracion',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaautorizacioncolaboracion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">done_all</v-icon>
@@ -188,7 +278,7 @@
                     ? ''
                     : 'umixtacolaboracionesasignadas',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacolaboracionesasignadas']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">description</v-icon>
@@ -211,7 +301,7 @@
             esAMPOAMP
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute('umixtacontencionespersonas')">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -232,7 +322,7 @@
                 name:
                   'umixtacontencionespersonas' == '#' ? '' : 'umixtacontencionespersonas',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacontencionespersonas']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">account_box</v-icon>
@@ -256,7 +346,7 @@
             esAMPOAMP
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtacarpetas', 'umixtabuzonui', 'umixtacrechazadasui', 'umixtahistorialcarpeta', 'umixtareasignacionnuc'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -275,7 +365,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtacarpetas' == '#' ? '' : 'umixtacarpetas' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacarpetas']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -296,7 +386,7 @@
                 esAmpoIL
               "
                 :to="{ name: 'umixtabuzonui' == '#' ? '' : 'umixtabuzonui' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtabuzonui']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -318,7 +408,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtacrechazadasui' == '#' ? '' : 'umixtacrechazadasui' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacrechazadasui']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -341,7 +431,7 @@
                 :to="{
                 name: 'umixtahistorialcarpeta' == '#' ? '' : 'umixtahistorialcarpeta',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtahistorialcarpeta']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -361,7 +451,7 @@
                 esAmpoIL
               "
                 :to="{ name: 'umixtareasignacionnuc' == '#' ? '' : 'umixtareasignacionnuc' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtareasignacionnuc']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -385,7 +475,14 @@
             esAMPOAMP
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(
+              ['umixtaentrevistainicial', 'umixtavictimaidti', 'umixtamediaafiliacion', 'umixtacedulareporte', 'umixtarepresentantes', 'umixtadatosprotegidos',
+                'umixtadeclaracion', 'umixtadelito', 'umixtaindicio', 'umixtadiligencia', 'umixtadiligenciaforanea', 'umixtapoliciai', 'umixtac5i', 'umixtajaundiencia', 'umixtajaudienciainicial',
+                'umixtajcapturaeventos', 'umixtajcitatorios', 'umixtajformulacionacusacion', 'umixtajsolicitudinformacion', 'umixtamedidascautelares', 'umixtahistorialeventos',
+                'umixtajcupres', 'umixtadereasignacion', 'umixtaarchivo', 'umixtasolicitudcolaboracion', 'umixtanotificacion', 'umixtacreacionarchivos', 'umixtabitacorasucesos',
+                'umixtacitatorio', 'umixtaderivacionjr', 'umixtamedidasproteccion', 'umixtavehiculos', 'umixtaarmasobjetos', 'umixtadatosrelacionados', 'umixtaremisionui',
+                'umixtaDesgloce', 'umixtaresolucionlibertad', 'umixtaacumulacioncarpeta'
+              ])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -406,7 +503,7 @@
                 :to="{
                 name: 'umixtaentrevistainicial' == '#' ? '' : 'umixtaentrevistainicial',
               }"
-                active-class="secondary"
+              :class="{ 'secondary': isActiveRoute(['umixtaentrevistainicial']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">record_voice_over</v-icon>
@@ -417,7 +514,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtavictimaidti', 'umixtamediaafiliacion', 'umixtacedulareporte', 'umixtarepresentantes', 'umixtadatosprotegidos'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title>
@@ -436,7 +533,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtavictimaidti' == '#' ? '' : 'umixtavictimaidti' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtavictimaidti']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">person_add</v-icon>
@@ -460,7 +557,7 @@
                   :to="{
                   name: 'umixtamediaafiliacion' == '#' ? '' : 'umixtamediaafiliacion',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtamediaafiliacion']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">face</v-icon>
@@ -482,7 +579,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtacedulareporte' == '#' ? '' : 'umixtacedulareporte' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtacedulareporte']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon"
@@ -506,7 +603,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtarepresentantes' == '#' ? '' : 'umixtarepresentantes' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtarepresentantes']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">record_voice_over</v-icon>
@@ -530,7 +627,7 @@
                   :to="{
                   name: 'umixtadatosprotegidos' == '#' ? '' : 'umixtadatosprotegidos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtadatosprotegidos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">https</v-icon>
@@ -553,7 +650,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtadeclaracion' == '#' ? '' : 'umixtadeclaracion' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtadeclaracion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
@@ -575,7 +672,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtadelito' == '#' ? '' : 'umixtadelito' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtadelito']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">post_add</v-icon>
@@ -597,7 +694,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaindicio' == '#' ? '' : 'umixtaindicio' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaindicio']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">policy</v-icon>
@@ -608,7 +705,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtadiligencia', 'umixtadiligenciaforanea', 'umixtapoliciai', 'umixtac5i'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title> Diligencias </v-list-tile-title>
@@ -625,7 +722,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtadiligencia' == '#' ? '' : 'umixtadiligencia' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtadiligencia']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">low_priority</v-icon>
@@ -649,7 +746,7 @@
                   :to="{
                   name: 'umixtadiligenciaforanea' == '#' ? '' : 'umixtadiligenciaforanea',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtadiligenciaforanea']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">low_priority</v-icon>
@@ -671,7 +768,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtapoliciai' == '#' ? '' : 'umixtapoliciai' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtapoliciai']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">low_priority</v-icon>
@@ -693,7 +790,7 @@
                   esAMPOAMP
                 "
                   :to="{ name: 'umixtac5i' == '#' ? '' : 'umixtac5i' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtac5i']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assignment_return</v-icon>
@@ -717,7 +814,8 @@
               "
                 no-action
                 sub-group
-                value="true"
+                :value="isActiveRoute(['umixtajaundiencia', 'umixtajaudienciainicial', 'umixtajcapturaeventos', 'umixtajformulacionacusacion', 
+                                      'umixtajsolicitudinformacion', 'umixtamedidascautelares', 'umixtahistorialeventos', 'umixtajcitatorios'])"
             >
               <v-list-tile slot="activator">
                 <v-list-tile-content>
@@ -734,7 +832,7 @@
                   esAmpoIL
                 "
                   :to="{ name: 'umixtajaundiencia' == '#' ? '' : 'umixtajaundiencia' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajaundiencia']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">account_balance</v-icon>
@@ -757,7 +855,7 @@
                   :to="{
                   name: 'umixtajaudienciainicial' == '#' ? '' : 'umixtajaudienciainicial',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajaudienciainicial']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">event_seat</v-icon>
@@ -780,7 +878,7 @@
                   :to="{
                   name: 'umixtajcapturaeventos' == '#' ? '' : 'umixtajcapturaeventos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajcapturaeventos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon"
@@ -803,7 +901,7 @@
                   esAmpoIL
                 "
                   :to="{ name: 'umixtajcitatorios' == '#' ? '' : 'umixtajcitatorios' }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajcitatorios']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">contact_mail</v-icon>
@@ -829,7 +927,7 @@
                       ? ''
                       : 'umixtajformulacionacusacion',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajformulacionacusacion']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">list_alt</v-icon>
@@ -855,7 +953,7 @@
                       ? ''
                       : 'umixtajsolicitudinformacion',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtajsolicitudinformacion']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">how_to_vote</v-icon>
@@ -878,7 +976,7 @@
                   :to="{
                   name: 'umixtamedidascautelares' == '#' ? '' : 'umixtamedidascautelares',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtamedidascautelares']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">reorder</v-icon>
@@ -901,7 +999,7 @@
                   :to="{
                   name: 'umixtahistorialeventos' == '#' ? '' : 'umixtahistorialeventos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtahistorialeventos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">chrome_reader_mode</v-icon>
@@ -923,7 +1021,7 @@
                 esAmpoIL
               "
                 :to="{ name: 'umixtajcupres' == '#' ? '' : 'umixtajcupres' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtajcupres']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">group_add</v-icon>
@@ -945,7 +1043,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtadereasignacion' == '#' ? '' : 'umixtadereasignacion' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtadereasignacion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">cached</v-icon>
@@ -967,7 +1065,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaarchivo' == '#' ? '' : 'umixtaarchivo' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaarchivo']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">backup</v-icon>
@@ -992,7 +1090,7 @@
                 name:
                   'umixtasolicitudcolaboracion' == '#' ? '' : 'umixtasolicitudcolaboracion',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtasolicitudcolaboracion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">featured_play_list</v-icon>
@@ -1015,7 +1113,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtanotificacion' == '#' ? '' : 'umixtanotificacion' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtanotificacion']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">notifications</v-icon>
@@ -1039,7 +1137,7 @@
                 :to="{
                 name: 'umixtacreacionarchivos' == '#' ? '' : 'umixtacreacionarchivos',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacreacionarchivos']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">chrome_reader_mode</v-icon>
@@ -1061,7 +1159,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtabitacorasucesos' == '#' ? '' : 'umixtabitacorasucesos' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtabitacorasucesos']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">playlist_add</v-icon>
@@ -1083,7 +1181,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtacitatorio' == '#' ? '' : 'umixtacitatorio' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtacitatorio']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">assignment</v-icon>
@@ -1105,7 +1203,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaderivacionjr' == '#' ? '' : 'umixtaderivacionjr' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaderivacionjr']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">low_priority</v-icon>
@@ -1170,7 +1268,7 @@
                 esRecepcion ||
                 esAmpoIL ||
                 esAMPOAMP
-              ":to="{ name: 'umixtavehiculos' == '#' ? '' : 'umixtavehiculos' }" active-class="secondary">
+              ":to="{ name: 'umixtavehiculos' == '#' ? '' : 'umixtavehiculos' }" :class="{ 'secondary': isActiveRoute(['umixtavehiculos']) }">
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">directions_car</v-icon>
               </v-list-tile-action>
@@ -1192,7 +1290,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaarmasobjetos' == '#' ? '' : 'umixtaarmasobjetos' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaarmasobjetos']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">sports_hockey</v-icon>
@@ -1216,7 +1314,7 @@
                 :to="{
                 name: 'umixtadatosrelacionados' == '#' ? '' : 'umixtadatosrelacionados',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtadatosrelacionados']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">queue_play_next</v-icon>
@@ -1238,7 +1336,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaremisionui' == '#' ? '' : 'umixtaremisionui' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaremisionui']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">move_to_inbox</v-icon>
@@ -1262,7 +1360,7 @@
                 esAMPOAMP
               "
                 :to="{ name: 'umixtaDesgloce' == '#' ? '' : 'umixtaDesgloce' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtaDesgloce']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -1274,7 +1372,7 @@
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtaresolucionlibertad', 'umixtaacumulacioncarpeta'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title>
@@ -1296,7 +1394,7 @@
                   :to="{
                   name: 'umixtaresolucionlibertad' == '#' ? '' : 'umixtaresolucionlibertad',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaresolucionlibertad']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">delete_sweep</v-icon>
@@ -1320,7 +1418,7 @@
                   :to="{
                   name: 'umixtaacumulacioncarpeta' == '#' ? '' : 'umixtaacumulacioncarpeta',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaacumulacioncarpeta']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">delete_sweep</v-icon>
@@ -1344,7 +1442,7 @@
             esRecepcion
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtalistaracs', 'umixtareasignacionrac'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -1362,7 +1460,7 @@
                 esRecepcion
               "
                 :to="{ name: 'umixtalistaracs' == '#' ? '' : 'umixtalistaracs' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtalistaracs']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -1376,7 +1474,7 @@
             <v-list-tile
                 v-if="esAdministrador || esDirector || esCoordinador || esAmpoMixto ||esAmpoDetenido ||esRecepcion"
                 :to="{ name: 'umixtareasignacionrac' == '#' ? '' : 'umixtareasignacionrac' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtareasignacionrac']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -1399,7 +1497,7 @@
             esRecepcion
           "
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtainformacionrac', 'umixtavictimaidti2', 'umixtapoliciainvestigadorarac'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -1417,7 +1515,7 @@
                 esRecepcion
               "
                 :to="{ name: 'umixtainformacionrac' == '#' ? '' : 'umixtainformacionrac' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtainformacionrac']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">record_voice_over</v-icon>
@@ -1438,7 +1536,7 @@
                 esRecepcion
               "
                 :to="{ name: 'umixtavictimaidti2' == '#' ? '' : 'umixtavictimaidti2' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtavictimaidti2']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">person_add</v-icon>
@@ -1464,7 +1562,7 @@
                     ? ''
                     : 'umixtapoliciainvestigadorarac',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtapoliciainvestigadorarac']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">low_priority</v-icon>
@@ -1478,7 +1576,10 @@
           </v-list-group>
         </template>
         <template v-if="esAdministrador || esCoordinador || esDirector">
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtaestadisticasciniciomes', 'umixtaestadisticascinicioaño', 'umixtaestadisticascinicioaños',
+                                                'umixtaestadisticasenviojrmes','umixtaestadisticasenviojraño', 'umixtaestadisticasenviojraños', 
+                                                'umixtaestadisticasciejrmes', 'umixtaestadisticasciejraño', 'umixtaestadisticasciejraños'
+          ])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -1486,7 +1587,7 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtaestadisticasciniciomes', 'umixtaestadisticascinicioano', 'umixtaestadisticascinicioanos'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title> Carpetas Iniciadas </v-list-tile-title>
@@ -1500,7 +1601,7 @@
                       ? ''
                       : 'umixtaestadisticasciniciomes',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasciniciomes']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1519,7 +1620,7 @@
                       ? ''
                       : 'umixtaestadisticascinicioano',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticascinicioano']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1538,7 +1639,7 @@
                       ? ''
                       : 'umixtaestadisticascinicioanos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['estadisticascinicioanos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1550,7 +1651,7 @@
                 </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtaestadisticasenviojrmes', 'umixtaestadisticasenviojrano', 'umixtaestadisticasenviojranos'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title> Envíos a JR </v-list-tile-title>
@@ -1564,7 +1665,7 @@
                       ? ''
                       : 'umixtaestadisticasenviojrmes',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasenviojrmes']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1583,7 +1684,7 @@
                       ? ''
                       : 'umixtaestadisticasenviojrano',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasenviojrano']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1602,7 +1703,7 @@
                       ? ''
                       : 'umixtaestadisticasenviojranos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['estadisticasenviojranos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1614,7 +1715,7 @@
                 </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
-            <v-list-group no-action sub-group value="true">
+            <v-list-group no-action sub-group :value="isActiveRoute(['umixtaestadisticasciejrmes', 'umixtaestadisticasciejrano', 'umixtaestadisticasciejranos'])">
               <v-list-tile slot="activator">
                 <v-list-tile-content>
                   <v-list-tile-title>
@@ -1628,7 +1729,7 @@
                   name:
                     'umixtaestadisticasciejrmes' == '#' ? '' : 'umixtaestadisticasciejrmes',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasciejrmes']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1645,7 +1746,7 @@
                   name:
                     'umixtaestadisticasciejrano' == '#' ? '' : 'umixtaestadisticasciejrano',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasciejrano']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1664,7 +1765,7 @@
                       ? ''
                       : 'umixtaestadisticasciejranos',
                 }"
-                  active-class="secondary"
+                  :class="{ 'secondary': isActiveRoute(['umixtaestadisticasciejranos']) }"
               >
                 <v-list-tile-action>
                   <v-icon class="centenarioMenuIcon">assessment</v-icon>
@@ -1679,7 +1780,7 @@
           </v-list-group>
         </template>
         <template v-if="esAdministrador || esDirector || esCoordinador">
-          <v-list-group>
+          <v-list-group :value="isActiveRoute('umixtabusquedanombre')">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -1690,7 +1791,7 @@
             <v-list-tile
                 v-if="esAdministrador || esDirector || esCoordinador"
                 :to="{ name: 'umixtabusquedanombre' == '#' ? '' : 'umixtabusquedanombre' }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtabusquedanombre']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">find_in_page</v-icon>
@@ -1704,9 +1805,9 @@
           </v-list-group>
         </template>
         <template
-            v-if="esDirector || esCoordinador || esProcurador"
+            v-if="esDirector || esCoordinador || esProcurador || esAdministrador"
         >
-          <v-list-group>
+          <v-list-group :value="isActiveRoute(['umixtatablerodirecciond', 'umixtatablerodirecciona', 'umixtatablerodireccionm'])">
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuAreas">
@@ -1719,7 +1820,7 @@
                 :to="{
                 name: 'umixtatablerodirecciond' == '#' ? '' : 'umixtatablerodirecciond',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtatablerodirecciond']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">group</v-icon>
@@ -1735,7 +1836,7 @@
                 :to="{
                 name: 'umixtatablerodirecciona' == '#' ? '' : 'umixtatablerodirecciona',
               }"
-                active-class="secondary"
+                :class="{ 'secondary': isActiveRoute(['umixtatablerodirecciona']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">group</v-icon>
@@ -1753,7 +1854,7 @@
                 :to="{
                 name: 'umixtatablerodireccionm' == '#' ? '' : 'umixtatablerodireccionm',
               }"
-                active-class="secondary"
+              :class="{ 'secondary': isActiveRoute(['umixtatablerodireccionm']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">group</v-icon>
@@ -1766,6 +1867,41 @@
             </v-list-tile>
           </v-list-group>
         </template>
+
+
+        <!-- <template v-if="esDirector">
+          <v-list-group :value="isActiveRoute(['rotacionpersonal', 'clonacionesfallidas'])">
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuAreas">
+                  Rotación de personal
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile v-if="esDirector" :class="{ 'secondary': isActiveRoute(['rotacionpersonal']) }" @click="navigateTo('rotacionpersonal')"> 
+              <v-list-tile-action>
+                <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Edición de usuario
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile v-if="esDirector" :class="{ 'secondary': isActiveRoute(['clonacionesfallidas']) }" @click="navigateTo('clonacionesfallidas')">
+              <v-list-tile-action>
+                <v-icon class="centenarioMenuIcon">report</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Clonaciones fallidas
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
+        </template> -->
+
+
         <v-list-tile
             v-if="
             esAdministrador ||
@@ -1775,7 +1911,7 @@
             esAmpoIL
           "
             :to="{ name: 'umixtajcalendario' == '#' ? '' : 'umixtajcalendario' }"
-            active-class="secondary"
+            :class="{ 'secondary': isActiveRoute(['umixtajcalendario']) }"
         >
           <v-list-tile-action>
             <v-icon class="centenarioMenuIcon">date_range</v-icon>
@@ -1813,7 +1949,7 @@
             esAMPOAMP
           "
             :to="{ name: 'umixtahistorialactualizaciones' == '#' ? '' : 'umixtahistorialactualizaciones' }"
-            active-class="secondary"
+            :class="{ 'secondary': isActiveRoute(['umixtahistorialactualizaciones']) }"
         >
           <v-list-tile-action>
             <v-icon class="centenarioMenuIcon">history</v-icon>
@@ -1835,7 +1971,7 @@
             esAMPOAMP
           "
           :to="{ name: 'umixtabusquedanuc' == '#' ? '' : 'umixtabusquedanuc' }"
-          active-class="secondary"
+          :class="{ 'secondary': isActiveRoute(['umixtabusquedanuc']) }"
           >
           <v-list-tile-action>
             <v-icon class="centenarioMenuIcon">policy</v-icon>
@@ -1849,6 +1985,16 @@
 
       </v-list>
     </v-navigation-drawer>
+    <v-content class="grey lighten-4">
+      <v-divider />
+      <v-container fluid>
+        <v-slide-y-transition mode="out-in">
+          <router-view />
+        </v-slide-y-transition>
+        <loader />
+      </v-container>
+    </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -2017,6 +2163,20 @@ export default {
             window.location.href = response.data.direccion
           })
     },
+    isActiveRoute(routeNames) {
+      return Array.isArray(routeNames)
+        ? routeNames.includes(this.$route.name)
+        : this.$route.name === routeNames;
+    },
+    navigateTo(routeName) {
+      if (this.$route.name !== routeName) {
+        this.$router.push({ name: routeName }).catch((err) => {
+          if (err.name !== 'NavigationDuplicated') {
+            console.error(err);
+          }
+        });
+      }
+    }
   },
 };
 // reasignacion de nuc, solo ver recepcion, director, coordinador,
@@ -2024,5 +2184,7 @@ export default {
 </script>
 
 <style scoped>
-
+.btn_sisC:hover {
+  cursor: pointer
+}
 </style>

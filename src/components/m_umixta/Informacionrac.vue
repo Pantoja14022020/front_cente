@@ -20,7 +20,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -29,7 +29,7 @@
               small
               color="primary"
             >
-              <v-icon dark>close</v-icon>
+            <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar RAC</span>
@@ -74,25 +74,29 @@
                   <tr>
                     <td>Medio de notificación:</td>
                     <td>
-                      <b>{{ medionotificacion }} </b>
+                      <b v-if="medionotificacion">{{ medionotificacion }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Teléfonos:</td>
                     <td>
-                      <b> {{ tel }}</b>
+                      <b v-if='tel'>{{ tel }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Correo:</td>
                     <td>
-                      <b>{{ email }} </b>
+                      <b v-if='email'>{{ email }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Dirección:</td>
                     <td>
-                      <b>{{ direccion }} </b>
+                      <b v-if='direccion'>{{ direccion }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <br />
@@ -114,43 +118,50 @@
                   <tr>
                     <td>Estado familiar:</td>
                     <td>
-                      <b> {{ estadocivil }}</b>
+                      <b v-if='estadocivil'>{{ estadocivil }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Género:</td>
                     <td>
-                      <b> {{ genero }}</b>
+                      <b v-if='genero'>{{ genero }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Ocupación:</td>
                     <td>
-                      <b> {{ ocupacion }}</b>
+                      <b v-if='ocupacion'>{{ ocupacion }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Nivel de estudios:</td>
                     <td>
-                      <b>{{ nivelEstudio }} </b>
+                      <b v-if='nivelEstudio'>{{ nivelEstudio }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Lengua</td>
                     <td>
-                      <b> {{ lengua }}</b>
+                      <b v-if='lengua'>{{ lengua }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Religión:</td>
                     <td>
-                      <b> {{ religion }}</b>
+                      <b v-if='religion'>{{ religion }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
                   <tr>
                     <td>Discapacidad:</td>
                     <td>
-                      <b>{{ discapacidad }} </b>
+                       <b v-if='discapacidad'>{{ discapacidad }}</b>
+                      <span class="text-grey-light" v-else>No registrado</span>
                     </td>
                   </tr>
 
@@ -248,10 +259,8 @@
                 <!------------------------------------------------------------------------------------------------------  ------------------------------------------------------------------------------------------------------>
               </v-card-title>
               <v-card-text>
-                <p v-html="rBreve">
-                  {{ rBreve }}
-                </p>
-              </v-card-text>
+                <p class="break-word" v-html="rBreve"></p>
+            </v-card-text>
             </v-card>
           </v-layout>
 
@@ -566,6 +575,7 @@ export default {
       localidad: "",
       localidadid: "",
       localidades: [],
+      vialidades: [],
 
       cp: "",
       //*************** */
@@ -684,6 +694,7 @@ export default {
 
       //*********************************************** */
 
+      this.listarVialidad();
       this.listarrHecho();
       this.listarLogo();
     }
@@ -963,9 +974,12 @@ export default {
             " " +
             response.data.apellidoPaterno +
             " " +
-            response.data.apellidoMaterno;
+            (response.data.apellidoMaterno == "LO DESCONOCE" ? "" : " " + response.data.apellidoMaterno);
           me.alias = response.data.alias;
-          me.tel = response.data.telefono1 + " , " + response.data.telefono2;
+           me.tel = [
+            response.data.telefono1 !== "0" && response.data.telefono1.trim() ? response.data.telefono1.trim() : "",
+            response.data.telefono2 !== "0" && response.data.telefono2.trim() ? response.data.telefono2.trim() : ""
+          ].filter(Boolean).join(", ");
           me.email = response.data.correo;
           me.rac = response.data.rac;
           me.fhreg = response.data.fechaHoraInicio;
@@ -1019,10 +1033,16 @@ export default {
       me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
+
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let nombreVialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
           me.direccion =
+           nombreVialidad +
+            " " +
             response.data.calle +
             " " +
-            response.data.noint +
+            (response.data.noint == "0" ? "" : response.data.noint) +
             " " +
             response.data.noext +
             " " +
@@ -1034,7 +1054,7 @@ export default {
             " " +
             response.data.pais +
             " " +
-            response.data.cp;
+            (response.data.cp == "0" ? "" : response.data.cp);
           me.listardiligencias();
           me.listarDDerivacion();
         })
@@ -1086,6 +1106,32 @@ export default {
             me.$notify("Error al intentar listar los registros!!!", "error");
           }
         });
+    },
+     listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+              me.vialidades.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
     },
     obtenermes: function (mes) {
       if (mes == 0) return "Enero";
@@ -2175,3 +2221,10 @@ export default {
   },
 };
 </script>
+<style>
+.break-word {
+  word-break: break-word; /* o use break-all si es más agresivo */
+  overflow-wrap: break-word;
+  white-space: normal; /* por si hereda nowrap */
+}
+</style>

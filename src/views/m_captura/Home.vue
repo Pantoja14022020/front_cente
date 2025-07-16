@@ -123,14 +123,14 @@
                 </v-list-tile-action>
                 <v-list-tile-content>
                   <v-list-tile-title class="centenarioMenuModules">
-                    Lista de carpetas asignadas
+                    Lista de carpetas creadas
                   </v-list-tile-title>
                 </v-list-tile-content>
               </v-list-tile> 
             </v-list-group>
           </template>
   
-          <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
+          <!--<template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
             <v-list-group>
               <v-list-tile slot="activator">   
                 <v-list-tile-content >
@@ -220,7 +220,7 @@
                 </v-list-tile-content>
               </v-list-tile>
             </v-list-group>
-          </template>
+          </template>-->
         
         </v-list>
       </v-navigation-drawer>
@@ -295,7 +295,12 @@
   import Loader from '../../components/m_captura/modulo/_loader.vue'
   export default {
     name: 'App',
-    components:{Loader},
+    components: {Loader},
+    /*created(){
+      if (this.$store.state.token) {
+        this.ValidarToken();
+      }
+    },*/
     data () {
       return { 
         //drawer: true,  
@@ -402,7 +407,21 @@
             window.location.href = response.data.direccion
         })
       }
-    }
+    },
+     async ValidarToken() {
+        let header = { Authorization: "Bearer " + this.$store.state.token };
+        let configuracion = { headers: header };
+        try{
+          await this.$controlacceso.get('api/Usuarios/ValidarToken2', configuracion);
+        }
+        catch{
+          this.$store.dispatch("salir");
+          this.$controlacceso.get('api/Usuarios/DistrictUser')
+          .then(response => {          
+          window.location.href = response.data.direccion
+          })
+        }
+      }
   }
   </script>
   <style>

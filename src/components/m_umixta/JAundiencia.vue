@@ -24,7 +24,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="agregar()"
@@ -33,7 +33,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -580,6 +580,7 @@ export default {
     fechac: "",
     domiciliopropiedad: "",
     dnumerocelnotificaciones: "",
+    vialidades: [],
     //*************** */
     customToolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -660,6 +661,7 @@ export default {
 
       //*********************************************** */
       me.listarLogo();
+      me.listarVialidad();
       me.listar();
       me.listarrHecho();
       me.listardelitos();
@@ -1433,10 +1435,17 @@ export default {
       me.$CAT
         .get("api/RAPs/ListarDP/" + idpersona, configuracion)
         .then(function (response) {
+
+          let vialidadEncontrada = me.vialidades.find(v => v.value === response.data.tipoVialidad);
+          let vialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
+
           me.direccionpi.push({
             idp: response.data.idPersona,
             estado: estado,
             dato:
+            vialidad +
+              " " +
               response.data.calle +
               " " +
               response.data.noint +
@@ -1480,7 +1489,12 @@ export default {
           configuracion
         )
         .then(function (response) {
+          let vialidadEncontrada = me.vialidades.find(v => v.value === response.data.tipoVialidad);
+          let vialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
           me.direccionhecho =
+          vialidad +
+            " " +
             response.data.calle +
             " " +
             response.data.noint +
@@ -1513,6 +1527,33 @@ export default {
             me.$notify("Error al intentar listar los registros!!!", "error");
           }
         });
+    },
+    listarVialidad(){
+        let me=this;
+        let header={"Authorization" : "Bearer " + this.$store.state.token};
+        let configuracion= {headers : header};
+        this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+            response.data.forEach(x => {
+                const item = {text: x.nombre, value: x.clave};
+                me.vialidades.push(item);
+            });
+        }).catch(err => {
+                if (err.response.status==400){
+                    me.$notify("No es un usuario válido", 'error')
+                } else if (err.response.status==401){
+                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                    me.e401 = true,
+                    me.showpage= false
+                } else if (err.response.status==403){
+                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.e403= true
+                    me.showpage= false
+                } else if (err.response.status==404){
+                    me.$notify("El recuso no ha sido encontrado", 'error')
+                }else{
+                    me.$notify('Error al intentar listar los registros!!!','error')
+                }
+            });
     },
     imprimir(item) {
       let me = this;

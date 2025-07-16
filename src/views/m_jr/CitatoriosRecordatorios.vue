@@ -3118,7 +3118,8 @@ export default {
         .get("api/SesionsConjunto/ListarSRD/" + sesionid, configuracion)
         .then(function (response) {
           let s = response.data;
-          let soli = s[0].solicitadosC.replace("; ", ",");
+          let soli = s[0].solicitadosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                      .replace(/\s+/g, ""); // Elimina espacios en blanco
 
           me.$cat
             .get("api/RAPs/ListarPersonaPDF/" + soli, configuracion)
@@ -3146,7 +3147,8 @@ export default {
               });
             })
             .then(() => {
-              let requi = s[0].requeridosC.replace("; ", ",");
+              let requi = s[0].requeridosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                          .replace(/\s+/g, ""); // Elimina espacios en blanco
 
               me.$cat
                 .get("api/RAPs/ListarPersonaPDF/" + requi, configuracion)
@@ -4097,7 +4099,8 @@ export default {
         .get("api/SesionsConjunto/ListarSRD/" + sesionid, configuracion)
         .then(function (response) {
           let s = response.data;
-          let soli = s[0].solicitadosC.replace("; ", ",");
+          let soli = s[0].solicitadosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                      .replace(/\s+/g, ""); // Elimina espacios en blanco
 
           me.$cat
             .get("api/RAPs/ListarPersonaPDF/" + soli, configuracion)
@@ -4133,7 +4136,8 @@ export default {
               );
             })
             .then(() => {
-              let requi = s[0].requeridosC.replace("; ", ",");
+               let requi = s[0].requeridosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                          .replace(/\s+/g, ""); // Elimina espacios en blanco
 
               me.$cat
                 .get("api/RAPs/ListarPersonaPDF/" + requi, configuracion)

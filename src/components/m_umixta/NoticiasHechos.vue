@@ -10,7 +10,8 @@
                 
             </v-toolbar>
             <v-stepper v-model="step" non-linear vertical>
-                <v-stepper-step :complete="step > 1" step="1" :rules="[() => !errors.has('clasificacion de persona') && !errors.has('nombre') && !errors.has('apellido paterno')]">
+                <v-stepper-step :complete="step > 1" step="1" :rules="[() => !errors.has('clasificacion de persona') && !errors.has('nombre') && !errors.has('apellido paterno')
+                                                                            && (!['Victima directa', 'Victima indirecta'].includes(clasificacionpersona) || !errors.has('relacion victima'))]">
                     Captura de datos
                     <small>Datos generales de la víctima u ofendido.</small>
                 </v-stepper-step>
@@ -41,7 +42,9 @@
                                         name="razón social"   
                                         label="Razón social:" 
                                         v-model="razonsocial"   
-                                        v-if="verTP==1">
+                                       v-if="verTP==1"
+                                        :counter="200"
+                                        :maxlength="200">
                                     </v-text-field>
 
                                     <v-autocomplete 
@@ -83,9 +86,10 @@
 
                                     <v-text-field 
                                         name="fecha de nacimiento" 
-                                        label="Fecha de nacimiento:" 
+                                        label="*Fecha de nacimiento:" 
                                         v-model="fnacimiento" 
-                                        v-validate="'date_format:dd/MM/yyyy'"
+                                        type="date"
+                                        v-validate="'required'"
                                         v-on:change="validarEdad"> 
                                     </v-text-field>
 
@@ -96,14 +100,15 @@
                                         label="Sexo:" >
                                     </v-autocomplete>
 
-                                    <v-switch v-if="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'  " v-model="relacion"  :label="'La victima tiene relación con el imputado? '"  color="success"  hide-details></v-switch> 
-                                    
                                     <v-autocomplete
+                                        name="relacion victima"
                                         :items="relacionados"
                                         v-model="relacionado"
-                                        label="Relación:" 
-                                        v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && relacion ">
-                                    </v-autocomplete>
+                                        label="*Relación de la víctima con el imputado:" 
+                                        v-validate="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' ? 'required' : ''"
+                                        v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'" 
+                                        :error-messages="errors.collect('relacion victima')" 
+                                    />
 
                                     <v-switch v-model="familiar" label="¿Registrar familiar?:" color="success"  hide-details></v-switch>
                                     
@@ -226,7 +231,7 @@
                                     <v-btn block="" outline color="primary" @click.native="validadduplicidad" >   Validar que no exista el registro</v-btn> 
 
                                     <v-autocomplete 
-                                        class="espaciado2" name="medio de reporte"
+                                        name="medio de reporte"
                                         :items="mnotificacions"
                                         v-model="mnotificacion"
                                         label="Medio de reporte:">
@@ -348,7 +353,6 @@
                                     </v-autocomplete>
                                     <v-switch 
                                         v-model="registro" 
-                                        v-if="switch2==false" 
                                         label="¿Es un tema de personas desaparecidas?:" 
                                         color="success"  
                                         hide-details 
@@ -394,8 +398,15 @@
 
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>                                    
 
+                                    <v-autocomplete
+                                        name="tipo vialidad"
+                                        :items="vialidades"
+                                        v-model="vialidad"
+                                        label="Tipo de vialidad:" 
+                                    />
+
                                     <v-text-field 
-                                        label="Calle:" 
+                                        label="Nombre:" 
                                         name="calle" 
                                         v-model="calle" 
                                         :error-messages="errors.collect('calle')">
@@ -403,7 +414,7 @@
 
                                     <v-text-field 
                                         name="numero exterior" 
-                                        label="*No. exterior:" 
+                                        label="No. exterior:" 
                                         v-model="noExt" 
                                         :error-messages="errors.collect('numero exterior')">                  
                                     </v-text-field> 
@@ -453,6 +464,13 @@
                                         return-object
                                         v-on:change="listarPorLocalidad">
                                     </v-autocomplete>
+
+                                    <v-autocomplete
+                                        name="tipo asentamiento"
+                                        :items="asentamientos"
+                                        v-model="asentamiento"
+                                        label="Tipo de asentamiento:" 
+                                    />
 
                                     <v-text-field 
                                         label="Código postal:" 
@@ -563,7 +581,8 @@
                                             name="fecha de nacimiento" 
                                             label="Fecha de nacimiento:" 
                                             v-model="fafnacimiento" 
-                                            v-validate="'date_format:dd/MM/yyyy'"
+                                            type="date"
+                                            v-validate="'required'"
                                             v-on:change="validarEdad" > 
                                         </v-text-field>
 
@@ -773,6 +792,7 @@
   import n403 from './403.vue'
   import pdf from 'vue-pdf'
   import { error } from 'util';
+  import { generarTokenCoodenadas } from './crearTokenCoordenadas';
 
   var assert, curp, persona;
   assert = require('assert');
@@ -907,7 +927,9 @@
             {text:'Sobrino(a)',value:'Sobrino(a)'},
             {text:'Tio(a)',value:'Tio(a)'},
             {text:'Vecino(a)',value:'Vecino(a)'},
-            {text:'Conocido(a)',value:'Conocido(a)'},          
+            {text:'Conocido(a)',value:'Conocido(a)'}, 
+            {text:'Ninguna',value:'Ninguna'},
+            {text:'Se desconoce',value:'Se desconoce'},         
         ],
         relacionado:'',
         relacion:false,
@@ -922,7 +944,10 @@
         entreCalle2:'',
         referencia:'',
         pais:'Mexico',
-        
+        vialidad:'',
+        vialidades:[],
+        asentamiento:'',
+        asentamientos:[],
         
 
         cp:'', 
@@ -1028,7 +1053,8 @@
         this.listarReligion();
         this.listarDiscapacidad();
         // DIRECCION PERSONAL
-         
+         this.listarVialidad();
+        this.listarAsentamiento();
         this.listarCiudades();
        
          // Add a request interceptor
@@ -1169,16 +1195,18 @@
             this.tipoDiscapacidad="";
             //************************************************************* */
             //step no3
+            this.vialidad="";
             this.calle="";
             this.noInt="";
             this.noExt="";
             this.entreCalle1="";
             this.entreCalle2="";
             this.referencia="";
-            this.pais="Mexico";
+            this.pais="México";
             this.estadoid="";
             this.municipioid="";
             this.localidadid=""; 
+            this.asentamiento="";
             this.cp=""; 
             this.$validator.reset();
             this.step=1;
@@ -1207,8 +1235,10 @@
         validarEdad(){
            // debugger
             let me = this;
-            var date = moment(me.fnacimiento, 'DD/MM/YYYY');
-            me.edad = moment().diff(date, 'years',false);
+            let fechaNacimiento = moment(me.fnacimiento, 'YYYY-MM-DD');
+            
+            me.edad = moment().diff(fechaNacimiento, 'years',false);
+
 
             if (me.edad < 18){
               if (me.clasificacionpersona==='Victima directa'){
@@ -1342,6 +1372,60 @@
                     } 
                 });
         },
+        listarVialidad(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.vialidades.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        },
+        listarAsentamiento(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.asentamientos.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        },
         generarcurp(){
             let me=this;
             var str = me.fnacimiento;
@@ -1433,7 +1517,8 @@
                 me.cp=response.data.cp;
                 me.lat=response.data.lat;
                 me.lng=response.data.lng;
-                
+                 me.vialidad=response.data.tiopoVialidad;
+                me.asentamiento=response.data.tipoAsentamiento;
                 me.selectEstado(me.estado);
                 
               
@@ -1908,6 +1993,11 @@
             if (!me.estadoid.value== 0){
                 me.estado = me.estadoid.text;
                 me.estadoid = me.estadoid.value;
+                me.municipio = '';
+                me.municipioid = '';
+                me.localidad = '';
+                me.localidadid = '';
+                me.cp = '';
             }
                 var municipiosArray=[];
                 me.municipios.length = 0;
@@ -1948,6 +2038,11 @@
             if (!me.municipioid.value== 0){
                 me.municipio = me.municipioid.text;
                 me.municipioid = me.municipioid.value;
+                me.localidad = '';
+                me.localidadid = '';
+                me.cp = '';
+            }else if (!me.municipioid) {
+                return;
             }
 
             var localidadArray=[];
@@ -1984,8 +2079,12 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            me.localidad = me.localidadid.text;
-            me.localidadid = me.localidadid.value;
+            if (!me.localidadid.value == 0) {
+                me.localidad = me.localidadid.text;
+                me.localidadid = me.localidadid.value;
+            } else if (!me.localidadid) {
+                return;
+            }
             this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response){
                   me.cp=response.data.cp;    
                 
@@ -2222,6 +2321,13 @@
                 listaMediosNotificacion = listaMediosNotificacion.slice(0, -1);
             }    
 /*---------------------------------------------------------------------------------------------------------*/
+                if (me.clasificacionpersona === 'Victima directa' || me.clasificacionpersona === 'Victima indirecta') {
+                                me.relacion = true;
+                            } else {
+                                me.relacion = false;
+                            }
+                /*---------------------------------------------------------------------------------------------------------*/
+
                 if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
                 if(me.sexo == '') me.sexo = 'LO DESCONOCE'
                 if(me.curp == '') me.curp = 'LO DESCONOCE'
@@ -2234,18 +2340,39 @@
 
                     idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
 
-            this.$validator.validate().then(result => {
+            this.$validator.validate().then(async result => {
                 if (result) {
+                    // Se crean las coordenadas cuando el estado tiene algo
+                    if(this.estado != '') {
+                        await this.generarCoordenadas();
+                    }
 
-                    if(me.fnacimiento != "")
-                        me.edadf = me.generaredad();
+                    const fechaParts = me.fnacimiento.split('-');
+                    const dia = fechaParts[2];
+                    const mes = fechaParts[1];
+                    const anio = fechaParts[0];
+                    me.fnacimiento = `${dia}/${mes}/${anio}`;
+
+                    if(me.fnacimiento.includes('undefined') == true){
+                        me.edadf = 99;
+                        me.fnacimiento = '';
+                    }                           
+                    else  
+                    me.edadf = me.generaredad();
+
+                    const fechaParts2 = me.fafnacimiento.split('-');
+                    const dia2 = fechaParts2[2];
+                    const mes2 = fechaParts2[1];
+                    const anio2 = fechaParts2[0];
+                    me.fafnacimiento = `${dia2}/${mes2}/${anio2}`;
+
+                    if(me.fafnacimiento.includes('undefined') == true){
+                        me.edadf2 = 99;
+                        me.fafnacimiento = '';
+                    }
+
                     else    
-                        me.edadf = 999
-
-                    if(me.fafnacimiento != "")
                         me.edadf2 = me.generaredad();
-                    else    
-                        me.edadf2 = 999
 
                     if(me.edadf <18)
                         me.datosprotegidos = true;
@@ -2391,6 +2518,8 @@
                                         'cp': me.cp,
                                         'lat': me.lat,
                                         'lng':me.lng,
+                                        'tipoVialidad': me.vialidad,
+                                        'tipoAsentamiento': me.asentamiento,
                                     },configuracion).then(function(response){
                                         me.$notify('La información se guardo correctamente !!!','success') 
                                         //this.ticketModal=1;
@@ -2558,6 +2687,7 @@
                                                 'Parentesco': me.relacionado,
                                                 'Edad': me.edadf,
                                                 //***************************** DIRECCION*/ 
+                                                'tipoVialidad': me.vialidad,
                                                 'calle': me.calle,
                                                 'noExt': me.noExt,
                                                 'noInt': me.noInt,
@@ -2568,6 +2698,7 @@
                                                 'estado': me.estado,
                                                 'municipio': me.municipio,
                                                 'localidad': me.localidad,
+                                                'tipoAsentamiento': me.asentamiento,
                                                 'cp': me.cp,
                                                 'lat': me.lat,
                                                 'lng': me.lng,
@@ -2849,6 +2980,7 @@
                                         'Parentesco': me.relacionado,
                                         'Edad': me.edadf,
                                         //***************************** DIRECCION*/ 
+                                        'tipoVialidad': me.vialidad,
                                         'calle': me.calle,
                                         'noExt': me.noExt,
                                         'noInt': me.noInt,
@@ -2859,6 +2991,7 @@
                                         'estado': me.estado,
                                         'municipio': me.municipio,
                                         'localidad': me.localidad,
+                                        'tipoAsentamiento': me.asentamiento,
                                         'cp': me.cp,
                                         'lat': me.lat,
                                         'lng': me.lng,
@@ -3091,6 +3224,56 @@
                     this.imageUrl = ''
                 }
 		    } 
+        },
+
+        async generarCoordenadas() 
+        {
+            let tokenData = this.$store.state.tokenCoordenadas;
+
+            
+            if (!tokenData || !tokenData.token || Date.now() > tokenData.expirationTime) 
+            {
+            await generarTokenCoodenadas(this.$store);
+            tokenData = this.$store.state.tokenCoordenadas;
+            }
+
+            // Si sigue sin token, abortamos coordenadas pero sin interrumpir
+            if (!tokenData || !tokenData.token) {
+                this.lat = '';
+                this.lng = '';
+                return;
+            }
+            
+        try 
+        {
+            // Consultamos la api para generar coordenadas
+            const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+            {
+                id_user: tokenData.idUsuario,
+                street:(this.localidad !== '' ? this.calle : ''),
+                num: (this.localidad !== '' ? this.noExt : ''),
+                suburb: this.localidad || '',
+                zip: (this.localidad !== '' ? this.cp : ''),
+                city: this.municipio || '',
+                state: this.estado || '',
+                systemName: tokenData.systemName,
+            },
+            {
+                headers: {
+                Authorization: `Bearer ${tokenData.token}`,
+                'Content-Type': 'application/json',
+                },
+            }
+            );
+
+            this.lat = responseCoordenadas.data.latitude || '';
+            this.lng = responseCoordenadas.data.longitude || '';
+        } catch (error) 
+        {
+            this.lat = '';
+            this.lng = '';
+            this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
+        }
         },
         
        

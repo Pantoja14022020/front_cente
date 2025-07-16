@@ -47,7 +47,9 @@
                                             name="razón social"   
                                             label="Razón social:" 
                                             v-model="razonsocial"   
-                                            v-if="verTP==1">
+                                             v-if="verTP==1"
+                                            :counter="200"
+                                            :maxlength="200">
                                         </v-text-field>
                                     
                                         <v-text-field 
@@ -85,7 +87,7 @@
 
                                         <v-text-field 
                                         name="fecha de nacimiento" 
-                                        label="Fecha de nacimiento:" 
+                                        label="*Fecha de nacimiento:" 
                                         v-model="fnacimiento" 
                                         type="date"
                                         v-validate="'required'"
@@ -101,7 +103,7 @@
                                                     :items="rangosedad"
                                                     v-model="rangoedad"
                                                     v-validate="'required'"
-                                                    label="Rango de edad:"
+                                                    label="*Rango de edad:"
                                                     v-if="switch2==false && RangoEdadTF == true"
                                                     :error-messages="errors.collect('rangos')">
                                                 </v-autocomplete>
@@ -364,7 +366,7 @@
                                             label="¿Que discapacidad tiene?:" 
                                             v-show="switch1">
                                         </v-autocomplete>
-                                         <v-switch 
+                                         <!--<v-switch 
                                             v-model="registro" 
                                             v-if="switch2==false" 
                                             label="¿Es un tema de personas desaparecidas?:" 
@@ -382,7 +384,7 @@
                                                 color="success"
                                                 :label="`Autoriza que la información sea pública con fines de busqueda, localización e identificación`"
                                             />
-                                        </div> 
+                                        </div> -->
                                     </v-flex>
 
                                 </v-layout>
@@ -412,8 +414,15 @@
 
                                     <v-flex class="espaciado" xs12 sm12 md6 lg6> 
                                         
+                                        <v-autocomplete
+                                            name="tipo vialidad"
+                                            :items="vialidades"
+                                            v-model="vialidad"
+                                            label="Tipo de vialidad:" 
+                                        />
+
                                         <v-text-field 
-                                            label="*Calle:" 
+                                            label="Nombre:" 
                                             name="calle" 
                                             v-model="calle" 
                                             v-if="switch2==false"
@@ -423,7 +432,7 @@
 
                                         <v-text-field 
                                             name="numero exterior" 
-                                            label="*No. exterior:" 
+                                            label="No. exterior:"
                                             v-model="noExt" 
                                             v-if="switch2==false"
                                             data-vv-scope="imputado"
@@ -479,6 +488,13 @@
                                             return-object
                                             v-on:change="listarPorLocalidad">
                                         </v-autocomplete>
+
+                                        <v-autocomplete
+                                            name="tipo asentamiento"
+                                            :items="asentamientos"
+                                            v-model="asentamiento"
+                                            label="Tipo de asentamiento:" 
+                                        />
 
                                         <v-text-field 
                                             label="Código postal:" 
@@ -806,6 +822,7 @@
   import n403 from './403.vue'
   import pdf from 'vue-pdf'
   import { error } from 'util';
+  import { generarTokenCoodenadas } from './crearTokenCoordenadas';
 
   var assert, curp, persona;
   assert = require('assert');
@@ -945,6 +962,10 @@
         entreCalle2:'',
         referencia:'',
         pais:'Mexico',
+        vialidad:'',
+        vialidades:[],
+        asentamiento:'',
+        asentamientos:[],
         
 
         cp:'', 
@@ -1037,7 +1058,8 @@
         this.listarDiscapacidad();
         this.listarInstituciones();
         // DIRECCION PERSONAL
-         
+        this.listarVialidad();
+        this.listarAsentamiento();
         this.listarCiudades();
        
          // Add a request interceptor
@@ -1188,6 +1210,7 @@
             this.ruta='';
             //************************************************************* */
             //step no3
+            this.vialidad="";
             this.calle="";
             this.noInt="";
             this.noExt="";
@@ -1198,6 +1221,7 @@
             this.estadoid="";
             this.municipioid="";
             this.localidadid=""; 
+            this.asentamiento="";
             this.cp=""; 
             this.$validator.reset();
             this.step=1;
@@ -1472,7 +1496,8 @@
                 me.cp=response.data.cp;
                 me.lat=response.data.lat;
                 me.lng=response.data.lng;
-                
+                me.vialidad=response.data.tipoVialidad;
+                me.asentamiento=response.data.tipoAsentamiento;
                 me.selectEstado(me.estado);
                 
               
@@ -1545,6 +1570,62 @@
                         } 
                  });
                 }
+
+
+                }).catch(err => { 
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){ 
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false 
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')    
+                    } 
+            });
+        },
+        listarVialidad(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.vialidades.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        },
+        listarAsentamiento(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.asentamientos.push(item);
+                });
                  
             }).catch(err => { 
                     if (err.response.status==400){
@@ -1947,6 +2028,11 @@
             if (!me.estadoid.value== 0){
                 me.estado = me.estadoid.text;
                 me.estadoid = me.estadoid.value;
+                me.municipio = '';
+                me.municipioid = '';
+                me.localidad = '';
+                me.localidadid = '';
+                me.cp = '';
             }
                 var municipiosArray=[];
                 me.municipios.length = 0;
@@ -1987,6 +2073,11 @@
             if (!me.municipioid.value== 0){
                 me.municipio = me.municipioid.text;
                 me.municipioid = me.municipioid.value;
+                me.localidad = '';
+                me.localidadid = '';
+                me.cp = '';
+            } else if (!me.municipioid) {
+                return;
             }
 
             var localidadArray=[];
@@ -2023,8 +2114,12 @@
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
-            me.localidad = me.localidadid.text;
-            me.localidadid = me.localidadid.value;
+            if (!me.localidadid.value == 0) {
+                me.localidad = me.localidadid.text;
+                me.localidadid = me.localidadid.value;
+            } else if (!me.localidadid) {
+                return;
+            }
             this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response){
                   me.cp=response.data.cp;    
                 
@@ -2305,10 +2400,13 @@
 
 /*---------------------------------------------------------------------------------------------------------*/
 
-            this.$validator.validateAll('imputado').then(result => {
+            this.$validator.validateAll('imputado').then(async result => {
                 if (result) {
 
-                    
+                    // Se crean las coordenadas cuando el estado tiene algo
+                    if(this.estado != '') {
+                        await this.generarCoordenadas();
+                    }                    
 
                     //ARREGLA LA FECHA PARA QUE SE GUARDEN CON /
                     const fechaParts = me.fnacimiento.split('-');
@@ -2435,6 +2533,7 @@
                                             'tipoDiscapacidad': me.discapacidad, 
                                             'Edad': me.edadf, 
                                             //Direccion personal
+                                            'tipoVialidad': me.vialidad,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
                                             'noInt': me.noInt,
@@ -2445,6 +2544,7 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng':me.lng,
@@ -2597,6 +2697,7 @@
                                                     'Edad': me.edadf,
                                                     'InicioDetenido': true,
                                                     //***************************** DIRECCION*/ 
+                                                    'tipoVialidad': me.vialidad,
                                                     'calle': me.calle,
                                                     'noExt': me.noExt,
                                                     'noInt': me.noInt,
@@ -2607,6 +2708,7 @@
                                                     'estado': me.estado,
                                                     'municipio': me.municipio,
                                                     'localidad': me.localidad,
+                                                    'tipoAsentamiento': me.asentamiento,
                                                     'cp': me.cp,
                                                     'lat': me.lat,
                                                     'lng': me.lng,
@@ -2747,6 +2849,7 @@
                                             'Edad': me.edadf,  
                                             'InicioDetenido': true,                            
                                             //***************************** DIRECCION*/ 
+                                            'tipoVialidad': me.vialidad,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
                                             'noInt': me.noInt,
@@ -2757,6 +2860,7 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng': me.lng,
@@ -2901,6 +3005,7 @@
                                             'DatosProtegidos': me.datosprotegidos,
                                             'InicioDetenido': true,
                                             //***************************** DIRECCION PERSONAL */ 
+                                            'tipoVialidad': me.vialidad,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
                                             'noInt': me.noInt,
@@ -2911,6 +3016,7 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng': me.lng,
@@ -3040,6 +3146,7 @@
                                     'DatosProtegidos': me.datosprotegidos,
                                     'InicioDetenido': true,
                                     //***************************** DIRECCION PERSONAL */ 
+                                    'tipoVialidad': me.vialidad,
                                     'calle': me.calle,
                                     'noExt': me.noExt,
                                     'noInt': me.noInt,
@@ -3050,6 +3157,7 @@
                                     'estado': me.estado,
                                     'municipio': me.municipio,
                                     'localidad': me.localidad,
+                                    'tipoAsentamiento': me.asentamiento,
                                     'cp': me.cp,
                                     'lat': me.lat,
                                     'lng': me.lng,
@@ -3196,7 +3304,55 @@
 		    } 
         },
         
-       
+       async generarCoordenadas() 
+        {
+            let tokenData = this.$store.state.tokenCoordenadas;
+
+            
+            if (!tokenData || !tokenData.token || Date.now() > tokenData.expirationTime) 
+            {
+            await generarTokenCoodenadas(this.$store);
+            tokenData = this.$store.state.tokenCoordenadas;
+            }
+
+            // Si sigue sin token, abortamos coordenadas pero sin interrumpir
+            if (!tokenData || !tokenData.token) {
+                this.lat = '';
+                this.lng = '';
+                return;
+            }
+            
+        try 
+        {
+            // Consultamos la api para generar coordenadas
+            const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+            {
+                id_user: tokenData.idUsuario,
+                street:(this.localidad !== '' ? this.calle : ''),
+                num: (this.localidad !== '' ? this.noExt : ''),
+                suburb: this.localidad || '',
+                zip: (this.localidad !== '' ? this.cp : ''),
+                city: this.municipio || '',
+                state: this.estado || '',
+                systemName: tokenData.systemName,
+            },
+            {
+                headers: {
+                Authorization: `Bearer ${tokenData.token}`,
+                'Content-Type': 'application/json',
+                },
+            }
+            );
+
+            this.lat = responseCoordenadas.data.latitude || '';
+            this.lng = responseCoordenadas.data.longitude || '';
+        } catch (error) 
+        {
+            this.lat = '';
+            this.lng = '';
+            this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
+        }
+        }
    }
 </script>
 <style>

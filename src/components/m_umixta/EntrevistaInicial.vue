@@ -21,7 +21,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -30,7 +30,7 @@
               small
               color="primary"
             >
-              <v-icon dark>close</v-icon>
+              <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar carpeta</span>
@@ -38,16 +38,16 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
-              @click="agregarFHS()"
+              @click="modalFHS = 1"
               fab
               dark
               small
               color="success"
             >
-              <v-icon dark>access_time</v-icon>
+              <v-icon class="mt-1" dark>access_time</v-icon>
             </v-btn>
           </template>
           <span>Ingresar fecha y hora del suceso</span>
@@ -55,7 +55,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="agregarDS()"
@@ -64,7 +64,7 @@
               small
               color="success"
             >
-              <v-icon dark>place</v-icon>
+              <v-icon class="mt-1" dark>place</v-icon>
             </v-btn>
           </template>
           <span>Ingresar dirección principal del suceso</span>
@@ -72,7 +72,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="activardialogovana()"
@@ -81,7 +81,7 @@
               small
               color="success"
             >
-              <v-icon dark>local_library</v-icon>
+              <v-icon class="mt-1" dark>local_library</v-icon>
             </v-btn>
           </template>
           <span>Ingresar banavim</span>
@@ -89,7 +89,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="activardialogostatus()"
@@ -98,7 +98,7 @@
               small
               color="success"
             >
-              <v-icon dark>update</v-icon>
+              <v-icon class="mt-1" dark>update</v-icon>
             </v-btn>
           </template>
           <span>Actualizar status y etapa de la carpeta</span>
@@ -106,7 +106,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="comprobarinfo()"
@@ -115,7 +115,7 @@
               small
               color="primary"
             >
-              <v-icon dark>print</v-icon>
+              <v-icon class="mt-1" dark>print</v-icon>
             </v-btn>
           </template>
           <span>Imprimir caratula del NUC</span>
@@ -123,7 +123,7 @@
         <v-tooltip bottom v-if="tvictima !== 'Denunciante' && tvictima !=='Anonimo'">
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="funcionprincipal()"
@@ -132,7 +132,7 @@
               small
               color="primary"
             >
-              <v-icon dark>menu_book</v-icon>
+              <v-icon class="mt-1" dark>menu_book</v-icon>
             </v-btn>
           </template>
           <span>Imprimir lectura de derechos</span>
@@ -141,21 +141,21 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
-              @click="abrirDialogo"
+              @click="dialogmodulo = true"
               fab
               dark
               small
               color="primary"
             >
-              <v-icon dark>sync_alt</v-icon>
+              <v-icon class="mt-1" dark>sync_alt</v-icon>
             </v-btn>
           </template>
           <span>Reasignar Carpeta</span>
         </v-tooltip>
-        <v-dialog v-model="dialogmodulo" max-width="1000px">
+        <v-dialog v-model="dialogmodulo" max-width="1000px" persistent>
           <v-card>
             <v-toolbar card dark color="grey lighten-4 primary--text">
               <v-avatar size="30">
@@ -256,7 +256,7 @@
           </v-card>
         </v-layout>
 
-        <v-layout row>
+        <v-layout row d-flex>
           <v-card elevation="0">
             <v-card-title class="accent">
               <h3>Información general de la persona que inicia</h3>
@@ -288,33 +288,38 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>CURP</td>
+                  <td>CURP:</td>
                   <td>
-                    <b>{{ curp }}</b>
+                    <b v-if="curp">{{ curp }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Medio de notificación:</td>
                   <td>
-                    <b>{{ medionotificacion }}</b>
+                    <b v-if="medionotificacion">{{ medionotificacion }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Teléfonos:</td>
                   <td>
-                    <b>{{ tel }}</b>
+                    <b v-if='tel'>{{ tel }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Correo:</td>
                   <td>
-                    <b>{{ email }}</b>
+                    <b v-if='email'>{{ email }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Dirección:</td>
                   <td>
-                    <b>{{ direccion }} </b>
+                    <b v-if='direccion'>{{ direccion }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <br />
@@ -336,43 +341,50 @@
                 <tr>
                   <td>Estado familiar:</td>
                   <td>
-                    <b>{{ estadocivil }}</b>
+                    <b v-if='estadocivil'>{{ estadocivil }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Género:</td>
                   <td>
-                    <b>{{ genero }}</b>
+                    <b v-if='genero'>{{ genero }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Ocupación:</td>
                   <td>
-                    <b>{{ ocupacion }}</b>
+                    <b v-if='ocupacion'>{{ ocupacion }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Nivel de estudios:</td>
                   <td>
-                    <b>{{ nivelestudio }}</b>
+                    <b v-if='nivelestudio'>{{ nivelestudio }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Lengüa</td>
                   <td>
-                    <b>{{ lengua }}</b>
+                    <b v-if='lengua'>{{ lengua }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Religión:</td>
                   <td>
-                    <b>{{ religion }}</b>
+                    <b v-if='religion'>{{ religion }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <tr>
                   <td>Discapacidad:</td>
                   <td>
-                    <b>{{ tipodiscapacidad }}</b>
+                    <b v-if='tipodiscapacidad'>{{ tipodiscapacidad }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <br />
@@ -415,7 +427,9 @@
                 <tr>
                   <td style="width: 180px">Banavim:</td>
                   <td>
-                    <b><v-icon>book</v-icon>{{ vanabim2 }}</b>
+                    <v-icon>book</v-icon>
+                    <b v-if='vanabim2'>{{ vanabim2 }}</b>
+                    <span class="text-grey-light" v-else>No aplica</span>
                   </td>
                 </tr>
                 <tr>
@@ -453,16 +467,16 @@
                       </b>
                     </div>
                     <div v-else>
-                      <b><v-icon>access_time</v-icon>{{ fechasuceso }}</b>
+                      <v-icon>access_time</v-icon>
+                      <span class="text-grey-light">No registrado</span>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td>Dirección principal del suceso:</td>
                   <td>
-                    <b>
-                      {{ direccionsuceso }}
-                    </b>
+                    <b v-if='direccionsuceso'>{{ direccionsuceso }}</b>
+                    <span class="text-grey-light" v-else>No registrado</span>
                   </td>
                 </tr>
                 <br />
@@ -479,7 +493,7 @@
                   <v-icon
                     class="mr-2"
                     v-on="on"
-                    @click="mostrarEdicionResenaBreve()"
+                    @click="modEditResena = true"
                   >
                     edit
                   </v-icon>
@@ -488,7 +502,7 @@
               </v-tooltip>
             </v-card-title>
             <v-card-text>
-              <p v-html="rBreve">{{ rBreve }}</p>
+              <p class="break-word" v-html="rBreve"></p>
             </v-card-text>
           </v-card>
         </v-layout>
@@ -537,7 +551,7 @@
         </v-layout>
       </v-card>
     </v-flex>
-    <v-dialog v-model="modalFHS" max-width="700px">
+    <v-dialog v-model="modalFHS" max-width="700px" persistent>
       <v-card>
         <v-toolbar card dark color="grey lighten-4 primary--text">
           <v-avatar size="30">
@@ -562,14 +576,14 @@
             </v-container>
             <v-card-actions>
               <v-spacer />
-              <v-btn @click.native="closeFHS()">Cancelar</v-btn>
+              <v-btn @click.native="modalFHS = 0">Cancelar</v-btn>
               <v-btn @click.native="guardarFHS" class="success">Guardar</v-btn>
             </v-card-actions>
           </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="modalDS" max-width="950px">
+    <v-dialog v-model="modalDS" max-width="950px" persistent>
       <v-card>
         <v-toolbar card dark color="grey lighten-4 primary--text">
           <v-avatar size="30">
@@ -584,7 +598,7 @@
           <v-form ref="form">
             <v-layout wrap justify-space-between>
               <v-flex xs12 md5 lg5>
-                <v-select
+                <v-autocomplete
                   label="*Lugar especifico:"
                   name="lugar especifico"
                   v-model="lugarespecifico"
@@ -593,7 +607,13 @@
                   v-validate="'required'"
                   :error-messages="errors.collect('lugar especifico')"
                 />
-                <v-text-field label="Calle:" name="calle" v-model="calle" />
+                <v-autocomplete
+                  name="tipo vialidad"
+                  :items="vialidades"
+                  v-model="vialidad"
+                  label="Tipo de vialidad:" 
+                />
+                <v-text-field label="Nombre:" name="calle" v-model="calle" />
                 <v-text-field
                   name="numero exterior"
                   label="Numero exterior:"
@@ -607,13 +627,15 @@
               <v-divider class="mx-2" inset vertical />
               <v-flex xs12 md6 lg6>
                 <v-text-field
-                  label="Pais:"
+                  label="*Pais:"
                   name="pais"
                   v-model="pais"
                   value="México"
+                  v-validate="'required'"
+                  :error-messages="errors.collect('pais')"
                 />
                 <v-autocomplete
-                  label="Estado:"
+                  label="*Estado:"
                   name="estado"
                   v-model="estadoid"
                   :items="ciudades"
@@ -628,7 +650,6 @@
                   v-model="municipioid"
                   :items="municipios"
                   return-object
-                  v-validate="'required'"
                   :error-messages="errors.collect('municipio')"
                   v-on:change="listarPorMunicipio"
                 />
@@ -638,17 +659,21 @@
                   v-model="localidadid"
                   :items="localidades"
                   return-object
-                  v-validate="'required'"
                   :error-messages="errors.collect('localidad')"
                   v-on:change="listarPorLocalidad"
+                />
+                <v-autocomplete
+                  name="tipo asentamiento"
+                  :items="asentamientos"
+                  v-model="asentamiento"
+                  label="Tipo de asentamiento:" 
                 />
                 <v-text-field
                   label="Codigo postal:"
                   name="cp"
                   v-model="cp"
-                  v-validate="'required'"
                   :error-messages="errors.collect('cp')"
-                  @keyup.enter="buscarPorCP()"
+                  @keyup.enter="buscarPorCP(cp)"
                 />
                 <v-layout wrap justify-space-between>
                   <v-flex xs6 md6 lg6>
@@ -657,18 +682,19 @@
                   <v-flex xs6 md6 lg6>
                     <v-text-field v-model="lng" label="Longitud:" disabled />
                   </v-flex>
+                  <!--<span class="text-grey-light">IMPORTANTE: Si colocaste o cambiaste las coordenadas, presiona el botón de "Guardar" nuevamente.</span>-->
                 </v-layout>
-                <v-btn
+                <!--<v-btn
                   block=""
-                  @click.native="btn_geoloc"
+                  @click.native="btn_geolocalizacion"
                   outline
                   color="primary"
                   ><v-icon>location_on</v-icon>Croquis</v-btn
-                >
+                >-->
               </v-flex>
             </v-layout>
             <div class="text-xs-right">
-              <v-btn @click.native="closeDS()">Cancelar</v-btn>
+              <v-btn @click.native="cerrarDS">Cancelar</v-btn>
               <v-btn @click.native="guardarDS" class="success">Guardar</v-btn>
             </div>
           </v-form>
@@ -809,18 +835,18 @@
       <v-card>
         <v-toolbar dark color="primary">
           <v-toolbar-title>Documento.</v-toolbar-title>
-          <v-spacer/>
+          <!--<v-spacer/>
           <v-btn @click.native="prevPage()"><</v-btn>
           <div class="d-flex align-center">
           <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
           </div>
-          <v-btn @click.native="nextPage()">></v-btn>
+          <v-btn @click.native="nextPage()">></v-btn>-->
           <v-spacer />
           <v-toolbar-items>
             <v-btn color="success" text @click.native="imprimirCaratulaNUC()"
               >IMPRIMIR
             </v-btn>
-            <v-btn icon @click="modal_CaratulaNUC = false;  numpage = 1;">
+            <v-btn icon @click="modal_CaratulaNUC = false;">
               <v-icon>close</v-icon>
             </v-btn>
           </v-toolbar-items>
@@ -1112,7 +1138,7 @@
         </v-card>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogvanabim" max-width="1000px">
+    <v-dialog v-model="dialogvanabim" max-width="1000px" persistent>
       <v-card>
         <v-toolbar card dark color="grey lighten-4 primary--text">
           <v-avatar size="30">
@@ -1154,7 +1180,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialostatus" max-width="1000px">
+    <v-dialog v-model="dialostatus" max-width="1000px" persistent>
       <v-card>
         <v-toolbar card dark color="grey lighten-4 primary--text">
           <v-avatar size="30">
@@ -1233,7 +1259,7 @@
             </v-container>
             <v-card-actions>
               <v-spacer />
-              <v-btn @click="desactivardialogostatus()">Cancelar</v-btn>
+              <v-btn @click="dialostatus = false">Cancelar</v-btn>
               <v-btn
                 @click="actualizarstatuscar()"
                 class="success"
@@ -1244,6 +1270,49 @@
             </v-card-actions>
           </v-form>
         </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="modalGeolocalizacionGratuita"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-toolbar-title>Geolocalización.</v-toolbar-title>
+          <v-spacer />
+          <v-toolbar-items>
+            <v-btn color="success" text @click.native="guardarCoordenadas()"
+              >GUARDAR</v-btn
+            >
+            <v-btn icon @click="modalGeolocalizacionGratuita = false">
+              <v-icon>close</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-divider />
+        <v-card elevation="0" class="mb-5" height="auto">
+          <v-container grid-list-sm>
+            <v-layout row wrap justify-center>
+              <v-flex xs12 md12 lg12>
+                <v-card class="pa-3" outlined>
+                  <v-card-title class="headline">Instrucciones</v-card-title>
+                  <v-card-text>
+                    <ul>
+                      <li>Manten presionado el marcador en el mapa para seleccionar la ubicación deseada y arrastrelo.</li>
+                      <li>La ubicación seleccionada se reflejará en las coordenadas guardadas.</li>
+                      <li>Haz clic en "GUARDAR" para confirmar la ubicación seleccionada.</li>
+                    </ul>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md12 lg12>
+                <div id="map" class="map"></div>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card>
       </v-card>
     </v-dialog>
   </v-layout>
@@ -1264,6 +1333,7 @@ import n403 from "./403.vue";
 import { error } from "util";
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
+import { generarTokenCoodenadas } from './crearTokenCoordenadas';
 import md5 from 'md5';
 import { encode as b64encode } from 'base-64';
 import { X509, KJUR } from 'jsrsasign';
@@ -1271,6 +1341,7 @@ import CryptoJS from 'crypto-js';
 import Swal from 'sweetalert2'
 import { firmarDocumento } from "../../helpers/efirma";
 import pdfMake from "pdfmake/build/pdfmake";
+import Loader from "./modulo/_loader.vue";
 
 export default {
   data() {
@@ -1454,7 +1525,7 @@ export default {
       entreCalle1: "",
       entreCalle2: "",
       referencia: "",
-      pais: "Mexico",
+      pais: "México",
       estado: "",
       estadoid: "",
       ciudades: [],
@@ -1464,6 +1535,10 @@ export default {
       localidad: "",
       localidadid: "",
       localidades: [],
+      vialidad:'',
+      vialidades:[],
+      asentamiento:'',
+      asentamientos:[],
       cp: "",
       modalGeolocalizacion: 0,
       center: { lat: 45.508, lng: -73.587 },
@@ -1473,17 +1548,7 @@ export default {
       lat: "",
       lng: "",
       lugarespecifico: "",
-      lugaresespecificos: [
-        "Vehiculo",
-        "Casa",
-        "Calle",
-        "Carretera",
-        "Terreno baldio",
-        "Estacionamiento",
-        "Local comercial",
-        "Oficina",
-        "Otro",
-      ],
+      lugaresespecificos: [],
       idNuc: "",
       statuses: [],
       status: "",
@@ -1491,7 +1556,7 @@ export default {
       statuscarpeta: "",
       etapacarpeta: "",
       iniciales: "",
-      directorPI: "",
+      //directorPI: "",
       etapas: [
         { text: "Trámite", value: "Tramite" },
         { text: "Concluida", value: "Concluida" },
@@ -1505,6 +1570,21 @@ export default {
       qrCode: null,
       docCaratula: 'Caratula de NUC',
       docLecDer: 'Lectura de derechos',
+      modalGeolocalizacionGratuita: 0,
+      map: null,
+      marker: null,
+      selectedCoordinates: null,
+      coordinates: {},
+      linkgeolocation: [
+        {
+          text: 'leaflet',
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
+        },
+        {
+          text: 'leaflet script',
+          href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+        },
+      ],
     };
   },
   computed: {
@@ -1515,7 +1595,7 @@ export default {
       return this.rnh1 === false ? "save" : "print";
     },
     text_Modal() {
-      return this.rnh1 === false ? "Imprimir" : "Imprimir";
+      return this.rnh1 === false ? "Guardar e Imprimir" : "Imprimir";
     },
     getColorStyle() {
       if (this.diasI < 25) {
@@ -1531,7 +1611,14 @@ export default {
   watch: {
     numpage(oldVal, newVal) {
       this.renderPdfToCanvas(this.base64pdf.split(",")[1], this.canvasid, this.numpage)
-    }
+    },
+    modalGeolocalizacionGratuita(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.cargarLeaflet();
+        });
+      }
+    },
   },
   created() {
     let me = this;
@@ -1552,9 +1639,12 @@ export default {
     }
     me.listarrHecho();
     me.listarCiudades();
+    me.listarVialidad();
+    me.listarAsentamiento();
+    me.listarLugarEspecifico();
     me.listarLogo();
     me.listarStatuscarpeta();
-    me.obtenerdirectorPI();
+    //me.obtenerdirectorPI();
     me.listarTableroInactividad();
     me.listar();
     me.listarModulosUsuario();
@@ -1576,7 +1666,7 @@ export default {
         try {
             me.qrCode = await generarQRCodeBase64(tipodo,textoModificado,nombrefirma,fecha,id);
 
-            console.log("QR Generado");
+            //console.log("QR Generado");
         } catch (err) {
             console.error('Error:', err);
         }
@@ -1596,10 +1686,53 @@ export default {
             IdRHecho: me.rHechoId,
             moduloServicioId: me.modulou.value,
             agenciaId: me.u_idagencia,
+            },
+          configuracion
+        )
+        .then(function (response) {
+          me.$CAT
+           .post(
+             "api/RegistroTableroI/Crear",
+             {
+               RhechoId: me.rHechoId,
+               TipoRegistroTableroI: descripcionRegTabI,
+               Distrito: me.u_distrito,
+               DirSub: me.u_dirSubPro,
+               Agencia: me.u_agencia,
+               ModuloServicioId: me.u_idmoduloservicio,
+               Modulo: me.u_modulo,
+               UsuarioId: me.u_idusuario,
+               NombreUsuario: me.u_nombre,
           },
           configuracion
         )
         .then(function (response) {
+          me.$notify("La información se guardo correctamente !!!", "success");
+          //me.crearRegistroTableroI(descripcionRegTabI);
+          /* me.dialogoaceptar = false      
+                 me.listar();
+                 me.limpiar();  */
+          //me.cerrarcarpeta();
+        })
+        .catch((err) => {
+          if (err.response.status == 400) {
+            me.$notify("No es un usuario válido", "error");
+          } else if (err.response.status == 401) {
+            me.$notify(
+              "Por favor inicie sesion para poder navegar en la aplicacion",
+              "error"
+            );
+            (me.e401 = true), (me.showpage = false);
+          } else if (err.response.status == 403) {
+            me.$notify("No esta autorizado para ver esta pagina", "error");
+            me.e403 = true;
+            me.showpage = false;
+          } else if (err.response.status == 404) {
+            me.$notify("El recuso no ha sido encontrado", "error");
+          } else {
+            me.$notify("Error al intentar crear el  registro!!!", "error");
+          }
+        });
           me.$notify("La información se guardo correctamente !!!", "success");
           me.crearRegistroTableroI(descripcionRegTabI);
           /* me.dialogoaceptar = false      
@@ -1621,66 +1754,21 @@ export default {
             me.e403 = true;
             me.showpage = false;
           } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
+            me.$notify("El recurso no ha sido encontrado", "error");
           } else {
-            me.$notify("Error al intentar actualizar el registro!!!", "error");
-          }
-        });
-    },
-    crearRegistroTableroI(descripcionRegTabI) {
-      let me = this;
-      let header = { Authorization: "Bearer " + this.$store.state.token };
-      let configuracion = { headers: header };
-
-      me.$CAT
-        .post(
-          "api/RegistroTableroI/Crear",
-          {
-            RhechoId: me.rHechoId,
-            TipoRegistroTableroI: descripcionRegTabI,
-            Distrito: me.u_distrito,
-            DirSub: me.u_dirSubPro,
-            Agencia: me.u_agencia,
-            ModuloServicioId: me.u_idmoduloservicio,
-            Modulo: me.u_modulo,
-            UsuarioId: me.u_idusuario,
-            NombreUsuario: me.u_nombre,
-          },
-          configuracion
-        )
-        .then(function (response) {
-          me.$notify("La información se guardo correctamente !!!", "success");
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar crear el  registro!!!", "error");
+             me.$notify("Error al intentar actualizar el registro!!!", "error");
           }
         });
     },
 
     desactivardialogmodulo() {
-      let me = this;
-      me.dialogmodulo = false;
-      me.modulou = "";
+      this.dialogmodulo = false;
+      this.modulou = "";
     },
-    abrirDialogo() {
+    /*abrirDialogo() {
       let me = this;
       me.dialogmodulo = true;
-    },
+    },*/
     listarModulosUsuario() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -1723,10 +1811,15 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      me.$CAT
-        .get("api/AmpDecs/Listar/" + me.rHechoId, configuracion)
-        .then(function (response) {
+       me.$CAT.get("api/AmpDecs/Listar/" + me.rHechoId, configuracion).then(function (response) {
+        if(response.data && response.data.length > 0)
+        {
           me.fechaEntre = response.data[0].fechaS;
+          }
+        else
+        {
+          me.$notify("Aun no hay registro de entrevista inicial!!!", "error");
+        }
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -1817,10 +1910,10 @@ export default {
     },
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    mostrarEdicionResenaBreve() {
+    /*mostrarEdicionResenaBreve() {
       let me = this;
       me.modEditResena = true;
-    },
+    },*/
     ActualizarResenaBreve() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -1960,16 +2053,21 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      var inactividadArray = [];
+      //var inactividadArray = [];
       var fechaIn = "";
       var carpetaResuelta = "";
-      var textI =
+      /*var textI =
         "No hay registro despues de la implementacion de tablero de inactividad";
-      var textC = "La carpeta ha sido concluida o se encuentra suspendida";
+      var textC = "La carpeta ha sido concluida o se encuentra suspendida";*/
       me.$CAT
         .get("api/RegistroTableroI/ListarI/" + me.rHechoId, configuracion)
         .then(function (response) {
-          inactividadArray = response.data;
+          //inactividadArray = response.data;
+          if (response.data.status === "warning") {
+            //En caso de no haber registro captura el error y lanza la leyenda que no hay registro de esa carpeta
+            me.diasI = "No hay registro despues de la implementacion de tablero de inactividad";
+            return;
+          }
           //Guarda el valor de fecha del ultimo registro y posteriormente calcula los fdias trascurridos
           fechaIn = response.data.fechaRegistro;
           carpetaResuelta = response.data.nucId;
@@ -1978,13 +2076,12 @@ export default {
             var fechaActual = new Date();
             var fechaIngreso = new Date(fechaIn);
             var diferenciaEnMilisegundos = fechaActual - fechaIngreso;
-            var diasPasados = Math.floor(
-              diferenciaEnMilisegundos / (1000 * 60 * 60 * 24)
-            );
+            var diasPasados = Math.floor(diferenciaEnMilisegundos / (1000 * 60 * 60 * 24));
 
             me.diasI = diasPasados;
           } else {
-            me.diasI = textC;
+            //me.diasI = textC;
+            me.diasI = "La carpeta ha sido concluida o se encuentra suspendida";
           }
         })
         .catch((err) => {
@@ -1992,7 +2089,7 @@ export default {
           me.diasI = textI;
         });
     },
-    obtenerdirectorPI() {
+    /*obtenerdirectorPI() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
@@ -2002,7 +2099,7 @@ export default {
         .then(function (response) {
           me.directorPI = response.data.nombre;
         });
-    },
+    },*/
     listarstatus() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -2043,6 +2140,10 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
 
+      me.listaracumulada();
+      
+      me.listardireccionhecho();
+
       me.$CAT
         .get("api/RAPs/Listar/" + me.rAtencionId, configuracion)
         .then(function (response) {
@@ -2055,9 +2156,12 @@ export default {
             " " +
             response.data.apellidoPaterno +
             " " +
-            response.data.apellidoMaterno;
+            (response.data.apellidoMaterno == "LO DESCONOCE" ? "" : " " + response.data.apellidoMaterno);
           me.alias = response.data.alias;
-          me.tel = response.data.telefono1 + " , " + response.data.telefono2;
+          me.tel = [
+            response.data.telefono1 !== "0" && response.data.telefono1.trim() ? response.data.telefono1.trim() : "",
+            response.data.telefono2 !== "0" && response.data.telefono2.trim() ? response.data.telefono2.trim() : ""
+          ].filter(Boolean).join(", ");
           me.email = response.data.correo;
           me.rac = response.data.rac;
           me.fhreg = response.data.fechaHoraInicio;
@@ -2119,12 +2223,13 @@ export default {
           } else {
             me.rnh1 = true;
           }
-          me.listaracumulada();
+          //me.listaracumulada();
           me.listardireccionpersona();
-          me.listardireccionhecho();
+          //me.listardireccionhecho();
         })
         .catch((err) => {
-          if (err.response.status == 400) {
+          me.$notify("No se ha establecido la persona inicial en esta carpeta.", "error");
+          /*if (err.response.status == 400) {
             me.$notify("No es un usuario válido", "error");
           } else if (err.response.status == 401) {
             me.$notify(
@@ -2140,7 +2245,7 @@ export default {
             me.$notify("El recuso no ha sido encontrado", "error");
           } else {
             me.$notify("Error al intentar listar los registros!!!", "error");
-          }
+          }*/
         });
     },
     funcionprincipal() {
@@ -2803,6 +2908,7 @@ export default {
           (me.control = 4);
       }
 
+      me.$store.commit("LOADER", true);
       //Aqui construiere el QR
       me.qrCode = null;
       me.generarQR(me.docLecDer + ' de '+ me.nombre,me.nuc,me.u_nombre,me.fechaelevanuc,me.rHechoId);
@@ -2816,6 +2922,7 @@ export default {
       setTimeout(() => {
         me.mostrarpdf_LecturaDerechos(me.u_nombre, me.u_puesto, me.u_agencia)
         //me.imprimirLecturaDerechos(me.u_nombre, me.u_puesto, me.u_agencia);
+        me.$store.commit("LOADER", false);
         me.modaldocumento = false;
       }, 1000);
     },
@@ -2826,10 +2933,14 @@ export default {
       me.$CAT
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let nombreVialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
           me.direccion =
+          nombreVialidad +
+            " " +
             response.data.calle +
             " " +
-            response.data.noint +
+            (response.data.noint == "0" ? "" : response.data.noint) +
             " " +
             response.data.noext +
             " " +
@@ -2841,7 +2952,7 @@ export default {
             " " +
             response.data.pais +
             " " +
-            response.data.cp;
+            (response.data.cp == "0" ? "" : response.data.cp);
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -2871,7 +2982,11 @@ export default {
       me.$CAT
         .get("api/AcumulacionCarpetas/Listar/" + me.rHechoId, configuracion)
         .then(function (response) {
+          if (response.data && response.data.length > 0) {
           me.acumulada = response.data[0].nucFusion;
+          } else {
+            me.acumulada = null;
+          }
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -2898,15 +3013,17 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      me.$CAT
-        .get(
-          "api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,
-          configuracion
-        )
-        .then(function (response) {
+      me.$CAT.get("api/DireccionDelitoes/ListarPoridHecho/" + me.rHechoId,configuracion).then(function (response) 
+      {
+        if (response.data.status != "warning") 
+        {
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let nombreVialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
           me.idDDelito = response.data.idDDelito;
           me.lugarespecifico = response.data.lugarEspecifico;
           me.direccionsuceso =
+          nombreVialidad  +
+            " " +
             response.data.calle +
             " " +
             response.data.noint +
@@ -2921,7 +3038,7 @@ export default {
             " " +
             response.data.pais +
             " " +
-            response.data.cp;
+             (response.data.cp ? response.data.cp : ""); 
           me.calle = response.data.calle;
           me.noInt = response.data.noint;
           me.noExt = response.data.noext;
@@ -2934,12 +3051,16 @@ export default {
           me.municipio = response.data.municipio;
           me.localidad = response.data.localidad;
 
+          me.vialidad = response.data.tipoVialidad;
+          me.asentamiento = response.data.tipoAsentamiento;
+
           me.cp = response.data.cp;
           me.lat = response.data.lat;
           me.lng = response.data.lng;
           me.lat2 = response.data.lat;
           me.lng2 = response.data.lng;
-          me.selectEstado(me.estado);
+          if(me.estado != '' || me.estado != null || !me.estado) me.selectEstado(me.estado);
+        }
         })
         .catch((err) => {
           if (err.response.status == 400) {
@@ -3082,22 +3203,22 @@ export default {
             alert(
               "Te hace falta ingresar: " +
                 (fechavacia.includes("null") == true
-                  ? " \n■Fecha y hora del suceso"
+                  ? " \n■ Fecha y hora del suceso"
                   : "") +
                 (direccionvacia.includes("null") == true
-                  ? " \n■Lugar del suceso"
+                  ? " \n■ Lugar del suceso"
                   : "") +
                 (etapavacia.includes("Inicial") == true
-                  ? " \n■Actualizar estatus y etapa"
+                  ? " \n■ Actualizar estatus y etapa"
                   : "") +
                 (clasificacionvacia.includes("Victima") == false
-                  ? " \n■Dar de alta una victima"
+                  ? " \n■ Dar de alta una victima"
                   : "") +
                 (clasificacionvacia.includes("Imputado") == false
-                  ? " \n■Dar de alta un Imputado"
+                  ? " \n■ Dar de alta un Imputado"
                   : "") +
                 (delitovacia.includes("null") == true
-                  ? " \n■Agregar el delito"
+                  ? " \n■ Agregar el delito"
                   : "")
             );
           } else {
@@ -3136,13 +3257,17 @@ export default {
       this.municipioid = "";
       this.localidadid = "";
       this.cp = "";
+      this.vialidad = "";
+      this.asentamiento = "";
+      this.lat = "";
+      this.lng = "";
     },
-    agregarFHS() {
+    /*agregarFHS() {
       this.modalFHS = 1;
     },
     closeFHS() {
       this.modalFHS = 0;
-    },
+    },*/
     guardarFHS() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -3160,7 +3285,8 @@ export default {
         .then(function (response) {
           (me.fecha = new Date().toISOString().substr(0, 10)),
             (me.hora = null),
-            me.closeFHS();
+            //me.closeFHS();
+            me.modalFHS = 0
           me.listarrHecho();
         })
         .catch((err) => {
@@ -3184,17 +3310,20 @@ export default {
         });
     },
     agregarDS() {
-      let me = this;
+      /*let me = this;
       me.listardireccionhecho();
       me.editedIndex = 1;
-      me.modalDS = 1;
+      me.modalDS = 1;*/
+      this.listardireccionhecho();
+      this.editedIndex = 1;
+      this.modalDS = 1;
     },
-    close() {
+    /*close() {
       this.modal_CaratulaNUC = false;
       this.modal_EntrevistaVictima = false;
-    },
+    },*/
     //************************************************************************ */
-    // CARATULA DE RAC
+    // CARATULA DE NUC
     crearPdf_CaratulaNUC() {
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -3353,7 +3482,7 @@ export default {
                 style: "Texto",
               },
               {
-                width: "*",
+                width: 220,
                 text: htmltexto,
                 alignment: "justify",
                 style: "texto",
@@ -3496,7 +3625,7 @@ export default {
     //funciones pdf to canvas
     async renderPdfToCanvas(base64pdf, canvasId, numpage) {
       // Importación clásica compatible con v2.x
-      // ✅ Usa la versión legacy transpilada
+      // Usa la versión legacy transpilada
       const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
 
 
@@ -4821,13 +4950,47 @@ export default {
     //************************************************************************* */
 
     guardarDS() {
+
+
+
       let me = this;
-      let header = { Authorization: "Bearer " + this.$store.state.token };
-      let configuracion = { headers: header };
-      if (me.direccionsuceso == "") {
-        me.$CAT
-          .post(
-            "api/DireccionDelitoes/Crear",
+      if (!this.lugarespecifico || !this.estadoid || !this.pais) 
+      {
+        this.$validator.validate()
+        alertify.error("Por favor complete los campos obligatorios marcados");
+        return;
+      } 
+      else
+      {
+        let header = { Authorization: "Bearer " + this.$store.state.token };
+        let configuracion = { headers: header };
+
+        //En caso de no haber minimo el municipio no tiene caso obtener geolocalizacion
+        if(me.municipio == "")
+        {
+          //Solo en caso de colocar el estado de Hidalgo se obtienen las coordenadas fijas
+          if(me.estado == "Hidalgo" && me.municipio == "" && me.localidad == "")
+          {
+            me.lat = "20.479558167726"
+            me.lng = "-98.887062643673"
+          }
+          //En otros estados no se debe obtener geolocalizacion
+          else
+          {
+            me.lat = ""
+            me.lng = ""
+          }
+        }
+        //En caso de si haberlo se debe obtener la geolocalizacion
+        else
+        {
+          await this.generarCoordenadas();
+        }
+
+
+        if (me.direccionsuceso == "") 
+        {
+          me.$CAT.post("api/DireccionDelitoes/Crear",
             {
               idrhecho: me.rHechoId,
               lugarEspecifico: me.lugarespecifico,
@@ -4844,11 +5007,14 @@ export default {
               cp: me.cp,
               lat: me.lat,
               lng: me.lng,
+              tipoVialidad: me.vialidad,
+              tipoAsentamiento: me.asentamiento,
             },
             configuracion
           )
           .then(function (response) {
-            me.closeDS();
+            //me.closeDS();
+             me.modalDS = 0
             me.$notify("La información se guardo correctamente !!!", "success");
             me.listardireccionhecho();
             me.limpiar();
@@ -4893,11 +5059,14 @@ export default {
               cp: me.cp,
               lat: me.lat,
               lng: me.lng,
+              tipoVialidad: me.vialidad,
+              tipoAsentamiento: me.asentamiento,
             },
             configuracion
           )
           .then(function (response) {
-            me.closeDS();
+            //me.closeDS();
+            me.modalDS = 0
             me.$notify("La información se guardo correctamente !!!", "success");
             me.listardireccionhecho();
             me.limpiar();
@@ -4921,8 +5090,28 @@ export default {
               me.$notify("Error al intentar crear el  registro!!!", "error");
             }
           });
+        }
       }
     },
+
+
+    cerrarDS() {
+      this.modalDS = 0;
+      this.lugarespecifico = '';
+      this.vialidad = '';
+      this.calle = '';
+      this.noExt = '';
+      this.noInt = '';
+      this.entreCalle1 = '';
+      this.entreCalle2 = '';
+      this.referencia = '';
+      this.estadoid = '';
+      this.municipioid = '';
+      this.localidadid = '';
+      this.asentamiento = '';
+      this.cp = '';
+    },
+
 
     listarCiudades() {
       let me = this;
@@ -4964,6 +5153,13 @@ export default {
       if (!me.estadoid.value == 0) {
         me.estado = me.estadoid.text;
         me.estadoid = me.estadoid.value;
+        me.municipio = '';
+        me.municipioid = '';
+        me.localidad = '';
+        me.localidadid = '';
+        me.cp = '';
+      } else if (!me.estadoid) {
+        return;
       }
 
       var municipiosArray = [];
@@ -5007,6 +5203,11 @@ export default {
       if (!me.municipioid.value == 0) {
         me.municipio = me.municipioid.text;
         me.municipioid = me.municipioid.value;
+        me.localidad = '';
+        me.localidadid = '';
+        me.cp = '';
+      } else if (!me.municipioid) {
+        return;
       }
 
       var localidadArray = [];
@@ -5047,8 +5248,12 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
+      if (!me.localidadid.value == 0) {
       me.localidad = me.localidadid.text;
       me.localidadid = me.localidadid.value;
+      } else if (!me.localidadid) {
+        return;
+      }
       this.$conf
         .get(
           "api/Localidads/MostrarPorLocalidad/" + me.localidadid,
@@ -5080,35 +5285,47 @@ export default {
 
     buscarPorCP() {
       let me = this;
-      let header = { Authorization: "Bearer " + this.$store.state.token };
+      let header = { "Authorization": "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      this.$conf
-        .get("api/Localidads/MostrarPorCP/" + me.configuracion)
-        .then(function (response) {
+       me.$conf.get('api/Localidads/BuscarPorCP/' + cp,configuracion).then(function(response)
+       {
+          var estado = response.data.idEstado;
+          var municipio = response.data.idMunicipio;
+
           me.estadoid = response.data.idEstado;
-          me.listarPorEstado();
-          me.municipioid = response.data.idMunicipio;
-          me.buscarPorCpMpo();
-        })
-        .catch((err) => {
-          if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
-          } else if (err.response.status == 401) {
-            me.$notify(
-              "Por favor inicie sesion para poder navegar en la aplicacion",
-              "error"
-            );
-            (me.e401 = true), (me.showpage = false);
-          } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", "error");
-            me.e403 = true;
-            me.showpage = false;
-          } else if (err.response.status == 404) {
-            me.$notify("El recuso no ha sido encontrado", "error");
-          } else {
-            me.$notify("Error al intentar listar los registros!!!", "error");
-          }
+          me.estado=response.data.estado;
+          me.municipioid=response.data.idMunicipio;
+          me.municipio=response.data.municipio;
+          me.localidadid=response.data.idLocalidad;
+          me.localidad=response.data.nombre;
+          var municipiosArray=[];
+        me.$conf.get('api/Municipios/ListarPorEstado/'+ estado,configuracion).then(function(response)
+        {
+          municipiosArray=response.data;
+
+          municipiosArray.map(function(x){me.municipios.push({text: x.nombre,value: x.idMunicipio});});
+
+          var localidadArray=[];
+          me.$conf.get('api/Localidads/MostrarPorMPO/' + municipio,configuracion).then(function(response)
+          {
+            localidadArray=response.data;
+
+            localidadArray.map(function(x){me.localidades.push({text: x.nombre,value: x.idLocalidad});});
+          
+          }).catch(err => 
+          {
+              me.$notify('Error al intentar listar las localidades!!!','error')
+          });
+
+        }).catch(err => 
+        {
+            me.$notify('Error al intentar listar los municipios!!!','error')
         });
+
+      }).catch(err => 
+      {
+          me.$notify('Error al intentar listar por codigo postal!!!','error')
+      });
     },
     buscarPorCpMpo() {
       let me = this;
@@ -5148,6 +5365,86 @@ export default {
         });
     },
 
+
+    listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+              me.vialidades.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
+    listarAsentamiento(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+              me.asentamientos.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
+    listarLugarEspecifico(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/LugarEspecifico/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+              me.lugaresespecificos.push(x.nombre);
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
+
     selectEstado: function (val) {
       let me = this;
       for (var i = 0; i < me.ciudades.length; i++) {
@@ -5157,6 +5454,8 @@ export default {
       }
       me.listarPorEstado();
     },
+
+
     selectMunicipio: function (val) {
       let me = this;
 
@@ -5165,7 +5464,11 @@ export default {
           me.municipioid = me.municipios[i].value;
         }
       }
+
+      me.listarPorMunicipio();
     },
+
+
     selectLocalidad: function (val) {
       let me = this;
       for (var i = 0; i < me.localidades.length; i++) {
@@ -5173,6 +5476,8 @@ export default {
           me.localidadid = me.localidades[i].value;
         }
       }
+
+      me.listarPorLocalidad();
     },
     activardialogovana() {
       this.vanabim = this.vanabim2;
@@ -5225,9 +5530,9 @@ export default {
       this.status = "";
       this.dialostatus = true;
     },
-    desactivardialogostatus() {
+    /*desactivardialogostatus() {
       this.dialostatus = false;
-    },
+    },*/
     actualizarstatuscar() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -5432,6 +5737,8 @@ export default {
           });
       }
     },
+    //************************************************************************* */
+    // ESTRUCTURA DE LA GEOLOCALIZACION DEL MODAL "modalGeolocalizacion2" //
     imprim1() {
       var printContents = document.getElementById("mapa").outerHTML;
       var w = window.open();
@@ -5450,8 +5757,9 @@ export default {
       this.modalGeolocalizacion2 = 1;
     },
     imprimirmapa() {
-      let me = this;
-      me.downloadPdf2("mapa", "mapa");
+      //let me = this;
+      //me.downloadPdf2("mapa", "mapa");
+      this.downloadPdf2("mapa", "mapa");
     },
     btn_geoloc12() {
       this.geoloc2 = 1;
@@ -5508,6 +5816,7 @@ export default {
     disminuirzoom() {
       this.zoom--;
     },
+    //************************************************************************* */
     //Nueva forma de imprimir la lectura de derechos
     imprimirLecturaDerechos(nombre, puesto, agencia) {
       let me = this;
@@ -6091,6 +6400,219 @@ export default {
     closeDS() {
       this.modalDS = 0;
     },
+
+
+
+
+
+
+
+
+    //************************************************************************* */
+    //************************************************************************* */
+    // ESTRUCTURA DE LA GEOLOCALIZACION, DEL MODAL "modalGeolocalizacionGratuita" GRATUITO
+    cargarLeaflet() {
+      // Cargar hoja de estilo de Leaflet
+      if (!document.getElementById("leaflet-stylesheet")) {
+        const link = document.createElement("link");
+        link.id = "leaflet-stylesheet";
+        link.rel = "stylesheet";
+        link.href = this.linkgeolocation[0].href;
+        document.head.appendChild(link);
+      }
+
+      // Cargar script de Leaflet
+      if (!document.getElementById("leaflet-script")) {
+        const script = document.createElement("script");
+        script.id = "leaflet-script";
+        script.src = this.linkgeolocation[1].href;
+        document.body.appendChild(script);
+
+        script.onload = () => {
+          this.initMap();
+        };
+      }
+    },
+    btn_geolocalizacion() {
+      if (
+        this.estadoid !== "" &&
+        this.municipioid !== "" &&
+        this.localidadid !== "" &&
+        this.calle !== ""
+      ) {
+        this.$store.commit("LOADER", true);
+        const informacion_locacion = {
+          estado: this.estado,
+          municipio: this.municipio,
+          localidad: this.localidad,
+          pais: this.pais,
+        };
+
+        this.modalGeolocalizacionGratuita = true;
+        if(this.lat != '' && this.lng != '') {
+          this.coordinates = {
+            lat: this.lat,
+            lng: this.lng
+          };
+          this.initMap();
+        } else {
+          this.coordenadasLocacion(informacion_locacion, (success, coords) => {
+            if (success) {
+              this.coordinates = coords;
+            }
+            this.initMap();
+          });
+        }
+      } else {
+        this.$notify(
+          "Los siguientes campos son requeridos para la geolocalización: estado, municipio, localidad, calle",
+          "error"
+        );
+      }
+    },
+    coordenadasLocacion(locationInfo, callback) {
+      const { estado, municipio, localidad, pais } = locationInfo;
+      const query = `${localidad}, ${municipio}, ${estado}, ${pais}`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.length > 0) {
+            const coords = {
+              lat: parseFloat(data[0].lat),
+              lng: parseFloat(data[0].lon),
+            };
+            callback(true, coords);
+          } else {
+            this.$notify("No se encontraron coordenadas para la ubicación proporcionada.", "error");
+            this.modalGeolocalizacionGratuita = false;
+            this.$store.commit("LOADER", false);
+          }
+        })
+        .catch((error) => {
+          this.$notify("Error al obtener las coordenadas.", "error");
+          this.modalGeolocalizacionGratuita = false;
+          this.$store.commit("LOADER", false);
+        });
+    },
+    initMap() {
+      const mapContainer = document.getElementById("map");
+      if (!mapContainer) {
+        this.$notify("El contenedor del mapa no está disponible.", "error");
+        this.modalGeolocalizacionGratuita = false;
+        this.$store.commit("LOADER", false);
+      }
+
+      if (!this.map) {
+        // Crear el mapa si no existe
+        this.map = L.map(mapContainer).setView([this.coordinates.lat, this.coordinates.lng], 15);
+
+        // Agregar capa de OpenStreetMap
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(this.map);
+
+        // Crear y agregar un marcador al mapa
+        this.marker = L.marker([this.coordinates.lat, this.coordinates.lng], {
+          draggable: true, // Permite arrastrar el marcador
+        }).addTo(this.map);
+
+        // Actualizar coordenadas al mover el marcador
+        this.marker.on("moveend", (e) => {
+          const { lat, lng } = e.target.getLatLng();
+          this.coordinates = { lat, lng };
+        });
+      } else {
+        // Si el mapa ya existe, actualizar su vista y posición del marcador
+        this.map.setView([this.coordinates.lat, this.coordinates.lng], 15);
+        this.marker.setLatLng([this.coordinates.lat, this.coordinates.lng]);
+      }
+
+      setTimeout(() => {
+        this.map.invalidateSize();
+      }, 300);
+      this.$store.commit("LOADER", false);
+    },
+    guardarCoordenadas() {
+      if (this.lataux !== "" && this.lngaux !== "") {
+        this.lat = this.lataux;
+        this.lng = this.lngaux;
+      } else if (this.marker) {
+        const position = this.marker.getLatLng();
+        this.lat = position.lat;
+        this.lng = position.lng;
+      }
+      this.modalGeolocalizacionGratuita = false;
+    },
+    async generarCoordenadas() 
+    {
+        let tokenData = this.$store.state.tokenCoordenadas;
+
+        
+        if (!tokenData || !tokenData.token || Date.now() > tokenData.expirationTime) 
+        {
+          await generarTokenCoodenadas(this.$store);
+          tokenData = this.$store.state.tokenCoordenadas;
+        }
+
+        // Si sigue sin token, abortamos coordenadas pero sin interrumpir
+        if (!tokenData || !tokenData.token) {
+            this.lat = '';
+            this.lng = '';
+            return;
+        }
+        
+      try 
+      {
+        // Consultamos la api para generar coordenadas
+        const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+          {
+            id_user: tokenData.idUsuario,
+            street:(this.localidad !== '' ? this.calle : ''),
+            num: (this.localidad !== '' ? this.noExt : ''),
+            suburb: this.localidad || '',
+            zip: (this.localidad !== '' ? this.cp : ''),
+            city: this.municipio || '',
+            state: this.estado || '',
+            systemName: tokenData.systemName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${tokenData.token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        this.lat = responseCoordenadas.data.latitude || '';
+        this.lng = responseCoordenadas.data.longitude || '';
+      } catch (error) 
+      {
+        this.lat = '';
+        this.lng = '';
+        this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
+      }
+    },
+
+
   },
 };
 </script>
+
+<style>
+.text-grey-light {
+  color: #b0b0b0;
+  font-weight: normal;
+}
+.map {
+  width: 100%;
+  height: 500px;
+}
+.break-word {
+  word-break: break-word; /* o use break-all si es más agresivo */
+  overflow-wrap: break-word;
+  white-space: normal; /* por si hereda nowrap */
+}
+</style>

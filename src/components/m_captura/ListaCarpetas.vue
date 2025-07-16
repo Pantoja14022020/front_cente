@@ -147,50 +147,51 @@
         <n403 v-if="e403" />
             <v-flex v-if="showpage">
             <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Lista de carpetas.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-text-field 
-                        name="nuc" 
-                        label="NUC:" 
-                        v-model="nuc"
-                        :error-messages="errors.collect('nuc')">                                          
-                    </v-text-field>  
-
-                    <v-btn   @click.native="listar" class="success" >Buscar</v-btn> 
-                    
-                </v-toolbar>
+                    <v-toolbar-title class="font-weight-regular" >Lista de carpetas creadas.</v-toolbar-title>
+                    <v-divider class="mx-2" inset vertical/>
+                    <v-spacer/>
+                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details/>
+                    <v-spacer/>
+            </v-toolbar>
             <v-data-table
                 :headers="headers"
                 :items="carpetas"
                 :search="search" 
                 :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"  >
-                <template slot="items" class="white" slot-scope="props">
-                    <td class="justify-center layout px-0">
-
-                        <v-tooltip bottom   >
-                                <template v-slot:activator="{ on }">
-                                    <v-icon  class="mr-2" color="warning"  v-on="on" @click="abrircarpeta(props.item)">
-                                    folder
-                                    </v-icon>
-                                </template>
-                                <span>Abrir carpeta</span>
-                        </v-tooltip>
- 
-                        
-                    </td>
-                    <td>{{ props.item.nuc }}</td>  
-                    <td>{{ props.item.victima }}</td>  
-                    <td>{{ props.item.distritoInicial }}</td> 
-                    <td>{{ props.item.dirSubProcuInicial }}</td>  
-                    <td>{{ props.item.agenciaInicial}}</td>
-                    <td>{{ props.item.u_Nombre }}</td>  
-                    <td>{{ props.item.fechaElevaNuc.substring(8,10) +" de "+ obtenermes(props.item.fechaElevaNuc.substring(5,7)-1)+" del "+props.item.fechaElevaNuc.substring(0,4) }}</td> 
+                :pagination.sync="pagination"
+                expand
+                item-key="idCaptura"
+                v-model="expanded"
+            >
+                <template slot="items" slot-scope="props">
+                    <tr>
+                        <td>
+                            <v-icon @click.native.stop="props.expanded = !props.expanded" :color="props.expanded ? 'primary' : ''" class="expand-icon">
+                                {{ props.expanded ? 'info' : 'info_outline' }}
+                            </v-icon>
+                        </td>
+                        <td>{{ props.item.nuc }}</td>
+                        <td>{{ props.item.creoDistrito }}</td>
+                        <td>{{ props.item.creoDSP }}</td>
+                        <td>{{ props.item.creoAgencia }}</td>
+                        <td>{{ props.item.creoModulo }}</td>
+                        <td>{{ props.item.victima }}</td>
+                        <td>{{ props.item.fechaElevaNuc.substring(8,10) +" de "+ obtenermes(props.item.fechaElevaNuc.substring(5,7)-1)+" del "+props.item.fechaElevaNuc.substring(0,4) }}</td>
+                    </tr>
+                </template>
+                <template v-slot:expand="props">
+                    <v-container fluid class="pa-4 expand-content">
+                        <v-layout row wrap>
+                            <v-flex xs12 md9>
+                                <p><strong>Se inició en:</strong> {{ props.item.lugarInicio }}</p>
+                                <p><strong>Se remitió a:</strong> {{ props.item.lugarRemitio }}</p>
+                            </v-flex>
+                            <v-flex xs12 md3>
+                                <p><strong>Registró:</strong> {{ props.item.usuarioNombre }}</p>
+                                <p><strong>Fecha creación:</strong> {{ props.item.fechaRegistro.substring(8,10) +" de "+ obtenermes(props.item.fechaRegistro.substring(5,7)-1)+" del "+props.item.fechaRegistro.substring(0,4) }}</p>
+                            </v-flex>
+                        </v-layout>
+                    </v-container> 
                
                 </template>
                 <template slot="no-data">
@@ -206,7 +207,7 @@
     import VeeValidate from 'vee-validate' 
     import n401 from './401.vue'
     import n403 from './403.vue' 
-      import { error } from 'util';
+    import { error } from 'util';
     export default {
         data(){
             return {      
@@ -217,6 +218,7 @@
                 showpage:true,
                 e401:false,
                 e403:false,
+                expanded: [],
                 
                 //-----CLAIM------------------------------------------
                 u_iddistrito:this.$store.state.usuario.iddistrito,
@@ -234,41 +236,22 @@
                 u_subproc:this.$store.state.usuario.subProc, 
                 u_iddsp : this.$store.state.usuario.iddsp,
                 //----------------------------------------------------
-                dialog: false,
-                dialogo:false,
-                agencias:[],
-                agencia:'',
-                modulos:[],
-                modulo:'',
-                agenciaux:'',
-                fechadesde:'',
-                fechad:'',
-                fechahasta:'',
-                fechah:'',
-                menu1:false,
-                menu2:false,
-                nombre:'',
-                apellidop:'',
-                apellidom:'',
                 nuc:'',
                 headers: [
-                    { text: 'Abrir carpeta', value: 'asignacion', sortable: false },
-                    { text: 'NUC', value: 'nuc', sortable: false },  
-                    { text: '1ra persona registrada', value: 'victima', sortable: false },      
-                    { text: 'Distrito', value: 'distritoInicial' },
-                    { text: 'Dirección o Subprocuraduria', value: 'dirSubProcu' },
-                    { text: 'Agencia', value: 'agenciaInicial' }, 
-                    { text: 'Atendido por', value: 'atendidopor'},  
-                    { text: 'Fecha', value: 'fechaelevaNuc', sortable: false },
-                                                  
+                    { text: '', value: 'data-table-expand', sortable: false },
+                    { text: 'NUC', value: 'nuc', sortable: true },
+                    { text: 'Distrito capturó', value: 'distritocapturo', sortable: true},
+                    { text: 'Dirección o Subprocuraduria capturó', value: 'dirSubProcu', sortable: false },
+                    { text: 'Agencia capturó', value: 'agenciacapturo', sortable: false }, 
+                    { text: 'Modulo capturó', value: 'modulocapturo', sortable: false},  
+                    { text: 'Victima', value: 'victima', sortable: false },
+                    { text: 'Fecha inicio', value: 'fechaelevaNuc', sortable: true }
                 ],
                 search: '',
                 rowsPerPageItems: [10, 20, 30, 40, 50],
                 pagination: {
                     rowsPerPage: 20
                 },
-                editedIndex: -1, 
-                //----------------------------------------------------
                 carpetas:[],
                 rHechoId:'',
       
@@ -277,12 +260,6 @@
             }
         },
         computed: {
-            formTitle () {
-                return this.editedIndex === -1 ? 'Nueva agencia' : 'Actualizar agencia'
-            },
-            formIcon () {
-                return this.editedIndex === -1 ? 'add' : 'edit'
-            },
             esAMPOAMP(){
                 return this.$store.state.usuario && this.$store.state.usuario.rol =='AMPO-AMP';
             },
@@ -319,8 +296,11 @@
         },
 
         watch: {
-            dialog (val) {
-            val || this.close()
+          expanded(newVal, oldVal) {
+                // Si hay más de un item expandido, mantener solo el último
+                if (newVal.length > 1) {
+                    this.expanded = [newVal[newVal.length - 1]];
+                }
             }
         },
 
@@ -353,25 +333,7 @@
 
             
         },
-        methods:{
-            fechainif(){
-                if(this.menu1){
-                    this.generarfecha2();
-                    this.$refs.menu1.save(this.fechadesde);
-                } 
-                if(this.menu2){
-                    this.generarfecha2();
-                    this.$refs.menu2.save(this.fechahasta);
-                }            
-            },
-            generarfecha2(){           
-                if(this.menu1) 
-                this.fechad =this.fechadesde.substring(8,10) +" de "+ this.obtenermes(this.fechadesde.substring(5,7)-1)+
-                " del "+ this.fechadesde.substring(0,4);   
-                 if(this.menu2) 
-                this.fechah =this.fechahasta.substring(8,10) +" de "+ this.obtenermes(this.fechahasta.substring(5,7)-1)+
-                " del "+ this.fechahasta.substring(0,4);   
-            },        
+        methods:{      
             obtenermes: function(mes){
                 if(mes==0) return "Enero"
                 if(mes==1) return "Febrero"
@@ -386,21 +348,11 @@
                 if(mes==10) return "Noviembre"
                 if(mes==11) return "Diciembre"
             },
-            limpiarfechad(){
-                this.fechad = ""
-                this.fechadesde = ""
-                this.menu1 = false
-            },
-            limpiarfechah(){
-                this.fechah = ""
-                this.fechahasta = ""
-                this.menu2 = false
-            },
             listar(){            
                 let me=this;  
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                me.$cat.get('api/RHechoes/ListarPorNucMC/' + me.nuc,configuracion).then(function(response){ 
+                me.$cat.get('api/Captura/ListarPorModulo/' + me.u_idmoduloservicio,configuracion).then(function(response){ 
                     me.carpetas=response.data;
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -427,20 +379,26 @@
                 this.$store.state.ratencionid = item.rAtencionId;
                 this.$store.state.rhechoid = item.rHechoId ;
                 this.$router.push('./informaciongeneral') 
-              
-            },
- 
-
-            close () {
-                this.dialog = false;
-                this.limpiar();
             },
             
-            limpiar(){
-                this.rHechoId=""; 
-                
-                this.editedIndex=-1;
-            },    
-        }        
+          }     
     }
 </script>
+<style scoped>
+  .expand-content {
+      background-color: #f5f5f5 !important;
+      padding: 20px !important;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+  }
+  .v-datatable__expand-col {
+      width: 40px;
+  }
+  .expand-icon {
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .expand-icon:hover {
+    transform: scale(1.2);
+  }
+</style>

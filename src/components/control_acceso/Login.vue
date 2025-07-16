@@ -9,9 +9,13 @@
                                 
                                <v-spacer></v-spacer>
                                 <v-navigation-drawer  
-                                    right width="450"
-                                    class="primary"
-                                    app dark=""
+                                    v-model="drawer"
+                                right
+                                width="450"
+                                class="primary"
+                                app
+                                dark
+                                permanent
                                     >
                                     
                                     <div   class="my-5 mx-5">

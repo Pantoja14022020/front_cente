@@ -2254,7 +2254,9 @@ export default {
             v_especieP: [],
             noparcialidadE: 1,
             //* Variables para mostrar la previsualización del PDF
-            framePDF: false
+            framePDF: false,
+            vialidad:'',
+            vialidades:[]
         }
     },
     created() {
@@ -2295,7 +2297,8 @@ export default {
             me.listarLogo();
             me.informacionagencia();
             me.informacionExpediente();
-            me.tipoExpediente()
+            me.tipoExpediente();
+            me.listarVialidad();
         }
         //Interceptores de modulo de justicia restaurativa
         axios.interceptors.request.use((config) => {
@@ -2834,7 +2837,10 @@ export default {
                     fechaNac = '(dato no registrado)'
                 }
 
-                let addressString = `${personAddress.calle} ${personAddress.noint} ${personAddress.noext} ${personAddress.localidad} ${personAddress.municipio} ${personAddress.estado} ${personAddress.pais} ${personAddress.cp}`                                      
+                let vialidadEncontrada = me.vialidades.find(v => v.value == personAddress.tipoVialidad);
+                let vialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
+                let addressString = `${vialidad} ${personAddress.calle} ${personAddress.noint} ${personAddress.noext} ${personAddress.localidad} ${personAddress.municipio} ${personAddress.estado} ${personAddress.pais} ${personAddress.cp}`                                      
 
                 me.v_personInfoS.push({
                     personaId: personInfo.personaId,
@@ -2886,8 +2892,11 @@ export default {
                     fechaNac = '(dato no registrado)'
                 }
 
-                let addressString = `${personAddress.calle} ${personAddress.noint} ${personAddress.noext} ${personAddress.localidad} ${personAddress.municipio} ${personAddress.estado} ${personAddress.pais} ${personAddress.cp}`
-                                
+                let vialidadEncontrada = me.vialidades.find(v => v.value == personAddress.tipoVialidad);
+                let vialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
+                let addressString = `${vialidad} ${personAddress.calle} ${personAddress.noint} ${personAddress.noext} ${personAddress.localidad} ${personAddress.municipio} ${personAddress.estado} ${personAddress.pais} ${personAddress.cp}`
+
                 me.v_personInfoR.push({
                     personaId: personInfo.personaId,
                     nombreCompleto: name,
@@ -4327,8 +4336,8 @@ export default {
                         dataRow.push(`
                             <br>
                             <p>
-                                <strong>Del Solicitante: </strong>El/La <strong>C. ${rrr[0].nombre != null ? `${rrr[0].nombre}` : ''}${rrr[0].apellidoPa != null ? `${ rrr[0].apellidoPa}` : ''}${rrr[0].apellidoMa != null ? ` ${rrr[0].apellidoMa} ` : ''}</strong>, de Nacionalidad <strong>${rrr[0].nacionalidad}</strong> originario/originaria de 
-                                <strong>${(rrr[0].estado == null ? '(dato no registrado)' : rrr[0].estado)}</strong>, con domicilio en <strong>${rrr[0].calle != null ? rrr[0].calle : '(dato no registrado)'}${rrr[0].noExt != null ? ` No.Ext. ${rrr[0].noExt}` : ''}${rrr[0].noInt != null ? ` No.Int. ${rrr[0].noInt}` : ''}${rrr[0].localidad != null ? ` ${rrr[0].localidad}` : ''}${rrr[0].codigoPostal != null ? ` C.P. ${rrr[0].codigoPostal}` : ''}${rrr[0].municipio != null ? ` ${rrr[0].municipio}` : ''}${rrr[0].entreCalle1 != null ? ` entre calle ${rrr[0].entreCalle1}` : ''}${rrr[0].entreCalle2 != null ? (rrr[0].entreCalle1 != null ? ` y entre calle ${rrr[0].entreCalle2}` : ` entre calle ${rrr[0].entreCalle2}`) : ''}${rrr[0].referencia != null ? ` con referencia de ${rrr[0].referencia}` : ''}</strong>, de 
+                                <strong>Del Solicitante: </strong>El/La <strong>C. ${rrr[0].nombre || ''}${rrr[0].nombre ? ' ' : ''}${rrr[0].apellidoPa || ''}${rrr[0].apellidoPa ? ' ' : ''}${rrr[0].apellidoMa || ''}</strong>, de Nacionalidad <strong>${rrr[0].nacionalidad}</strong> originario/originaria de 
+                                <strong>${(rrr[0].estado == null ? '(dato no registrado)' : rrr[0].estado)}</strong>, con domicilio en <strong>${rrr[0].vialidad + ' '}${rrr[0].calle != null ? rrr[0].calle : '(dato no registrado)'}${rrr[0].noExt != null ? ` No.Ext. ${rrr[0].noExt}` : ''}${rrr[0].noInt != null ? ` No.Int. ${rrr[0].noInt}` : ''}${rrr[0].localidad != null ? ` ${rrr[0].localidad}` : ''}${rrr[0].codigoPostal != null ? ` C.P. ${rrr[0].codigoPostal}` : ''}${rrr[0].municipio != null ? ` ${rrr[0].municipio}` : ''}${rrr[0].entreCalle1 != null ? ` entre calle ${rrr[0].entreCalle1}` : ''}${rrr[0].entreCalle2 != null ? (rrr[0].entreCalle1 != null ? ` y entre calle ${rrr[0].entreCalle2}` : ` entre calle ${rrr[0].entreCalle2}`) : ''}${rrr[0].referencia != null ? ` con referencia de ${rrr[0].referencia}` : ''}</strong>, de 
                                 <strong>${rrr[0].edad}</strong> años de edad, por haber nacido el <strong>${(rrr[0].fechaNacimiento == null ? '(dato no registrado)' : moment(rrr[0].fechaNacimiento.split("/").reverse().join("-")).format('LL'))}</strong>.                            
                             </p>
                             <br>
@@ -4383,7 +4392,7 @@ export default {
                             <br>
                             <p>
                                 <strong>Del Requerido: </strong>El/La <strong>C. ${sss[0].nombre != null ? `${sss[0].nombre}`: ''}${sss[0].apellidoPa != null ? ` ${sss[0].apellidoPa}` : ''}${sss[0].apellidoMa != null ? ` ${sss[0].apellidoMa} ` : ''}</strong>, de Nacionalidad <strong>${sss[0].nacionalidad}</strong> originario/originaria de 
-                                <strong>${(sss[0].estado == null ? '(dato no registrado)' : sss[0].estado)}</strong>, con domicilio en <strong>${sss[0].calle != null ? sss[0].calle : '(dato no registrado)'}${sss[0].noExt != null ? ` No.Ext. ${sss[0].noExt}` : ''}${sss[0].noInt != null ? ` No.Int. ${sss[0].noInt}` : ''}${sss[0].localidad != null ? ` ${sss[0].localidad}` : ''}${sss[0].codigoPostal != null ? ` C.P. ${sss[0].codigoPostal}` : ''}${sss[0].municipio != null ? ` ${sss[0].municipio}` : ''}${sss[0].entreCalle1 != null ? ` entre calle ${sss[0].entreCalle1}` : ''}${sss[0].entreCalle2 != null ? (sss[0].entreCalle1 != null ? ` y entre calle ${sss[0].entreCalle2}` : ` entre calle ${sss[0].entreCalle2}`) : ''}${sss[0].referencia != null ? ` con referencia de ${sss[0].referencia}` : ''}</strong>, de 
+                                <strong>${(sss[0].estado == null ? '(dato no registrado)' : sss[0].estado)}</strong>, con domicilio en <strong>${sss[0].vialidad + ' '}${sss[0].calle != null ? sss[0].calle : '(dato no registrado)'}${sss[0].noExt != null ? ` No.Ext. ${sss[0].noExt}` : ''}${sss[0].noInt != null ? ` No.Int. ${sss[0].noInt}` : ''}${sss[0].localidad != null ? ` ${sss[0].localidad}` : ''}${sss[0].codigoPostal != null ? ` C.P. ${sss[0].codigoPostal}` : ''}${sss[0].municipio != null ? ` ${sss[0].municipio}` : ''}${sss[0].entreCalle1 != null ? ` entre calle ${sss[0].entreCalle1}` : ''}${sss[0].entreCalle2 != null ? (sss[0].entreCalle1 != null ? ` y entre calle ${sss[0].entreCalle2}` : ` entre calle ${sss[0].entreCalle2}`) : ''}${sss[0].referencia != null ? ` con referencia de ${sss[0].referencia}` : ''}</strong>, de 
                                 <strong>${sss[0].edad}</strong> años de edad, por haber nacido el <strong>${(sss[0].fechaNacimiento == null ? '(dato no registrado)' : moment(sss[0].fechaNacimiento.split("/").reverse().join("-")).format('LL'))}</strong>.
                             </p>
                             <br>
@@ -4474,8 +4483,11 @@ export default {
             me.v_idsSRR.map(uid => {
                 me.$justiciarestaurativa.get(`api/Responsablejrs/RepresentanteAllActive/${uid.trim()}`, configuracion)
                     .then(responseJR => {             
-                        if (responseJR.data.idResponsable) {                                                    
-                          me.v_representantes.push(responseJR.data)  
+                        if (responseJR.data.idResponsable) {        
+                            let vialidadEncontrada = me.vialidades.find(v => v.value == responseJR.data.tipoVialidad);
+                            responseJR.data.vialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
+
+                            me.v_representantes.push(responseJR.data)  
                         }
                     })
                     .catch(function (error) {
@@ -5376,6 +5388,33 @@ export default {
                     me.siseCorrect = true                                                 
                 }                
             }
+        },
+        listarVialidad(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.vialidades.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
         }
     }
 }

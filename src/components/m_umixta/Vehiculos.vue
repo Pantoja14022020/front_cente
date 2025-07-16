@@ -29,7 +29,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -38,7 +38,7 @@
               small
               color="primary"
             >
-              <v-icon dark>close</v-icon>
+              <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar carpeta</span>
@@ -46,7 +46,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="comprobarInfo()"
@@ -55,7 +55,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+               <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -175,7 +175,9 @@
                       :items="estados"
                       v-model="estadov"
                       return-object
-                      label="Estado:"
+                      label="*Estado:"
+                      v-validate="'required'"
+                      :error-messages="errors.collect('dialogo1.estado')"
                     >
                     </v-autocomplete>
                   </v-flex>
@@ -375,12 +377,20 @@
                     >
                     </v-autocomplete>
 
-                    <v-text-field
+                    <!--<v-text-field
                       name="tipo de servicio"
                       label="Tipo de servicio:"
-                      v-model="tiposervicio"
+                      v-model="tipoServicio"
+                    ></v-text-field>-->
+
+                    <v-autocomplete
+                      name="tipo de servicio"
+                      :items="tiposServicios"
+                      v-model="tipoServicio"
+                      return-object
+                      label="Tipo de servicio:"
                     >
-                    </v-text-field>
+                    </v-autocomplete>
                   </v-flex>
 
                   <v-flex class="espaciado" xs12 sm12 md12 lg12>
@@ -1105,6 +1115,9 @@ export default {
     idvehiculo: "",
     motorserie: "",
     recepcion: "",
+    vialidades:[],
+    vialidadNombreD: "",
+    vialidadNombreP: "",
     delitos: [],
     delito: "",
     direcciondelito: "",
@@ -1150,7 +1163,11 @@ export default {
     descrip: "",
     tipo: "",
     dialogimagen: false,
-    tiposervicio: "",
+    tipoServicio: "",
+    tiposServicios: [
+      { text: "Público", value: "Público" },
+      { text: "Privado", value: "Privado" }
+    ],
     //*************** */
 
     headers: [
@@ -1311,6 +1328,7 @@ export default {
       me.listarPersonas();
       me.listarLogo();
       me.listar();
+      me.listarVialidad();
     }
 
     axios.interceptors.request.use(
@@ -1546,7 +1564,7 @@ export default {
       this.devuelto = item.devuelto;
       this.senasparticulares = item.senasParticulares;
       this.generartextval(item.marca);
-      this.tiposervicio = item.tipoServicio;
+      this.tipoServicio = item.tipoServicio;
       this.ubicacion = item.ubicacion;
 
       var coloresA = item.color;
@@ -1655,10 +1673,12 @@ export default {
       this.lugardeposito = "";
       this.ubicacion = "";
       this.defdep = "";
-      this.tiposervicio = "";
+      this.tipoServicio = "";
       this.swModelo = false;
       this.qrCode = null;
       this.vistaPreviaTF = true;
+      this.vialidadNombreD = "";
+      this.vialidadNombreP = "";
     },
     listar() {
       let me = this;
@@ -1787,7 +1807,13 @@ export default {
       me.$CAT
         .get("api/RAPs/ListarDP/" + me.denunciante.value2, configuracion)
         .then(function (response) {
+
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          me.vialidadNombreP = vialidadEncontrada ? vialidadEncontrada.text : "";
+
           me.domiciliodenunciante =
+            me.vialidadNombreP +
+            " " +
             response.data.calle +
             ", No.Int: " +
             response.data.noint +
@@ -1902,7 +1928,8 @@ export default {
         )
         .then(function (response) {
           me.direcciondelito =
-            "Calle " +
+            me.vialidadNombreD +
+            " " +
             response.data.calle +
             ", No.Int: " +
             response.data.noint +
@@ -1910,7 +1937,7 @@ export default {
             response.data.noext +
             ", " +
             response.data.localidad +
-            "," +
+            ", " +
             response.data.estado +
             ", CP: " +
             response.data.cp;
@@ -2181,6 +2208,32 @@ export default {
           }
         });
     },
+    listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+            me.vialidades.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
     guardar() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -2234,7 +2287,7 @@ export default {
                   Estadov: me.estadov.text,
                   StatusVehiculo: me.defdep.value,
                   Ubicacion: me.ubicacion,
-                  TipoServicio: me.tiposervicio,
+                  TipoServicio: me.tipoServicio.text,
                 },
                 configuracion
               )
@@ -2305,7 +2358,7 @@ export default {
                   Estadov: me.estadov,
                   StatusVehiculo: me.defdep.text,
                   Ubicacion: me.Ubicacion,
-                  TipoServicio: me.tiposervicio,
+                  TipoServicio: me.tipoServicio.text,
                 },
                 configuracion
               )
@@ -3397,7 +3450,7 @@ export default {
             table: {
               widths: [115],
               heights: [80],
-              body: [[{ text: this.direcciondelito, style: "Texto" }]],
+              body: [[{ text: this.direcciondelito, style: "Texto", alignment: "align-left",}]],
             },
             layout: {
               hLineWidth: function (i, node) {

@@ -161,11 +161,11 @@
                             filled
                         ></v-text-field>
                        </v-flex>
-                         <v-btn class="mx-2" @click="cerrarcarpeta" fab dark small color="primary">
-                            <v-icon dark>close</v-icon>
+                        <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                            <v-icon class="mt-1" dark>close</v-icon>
                         </v-btn>
-                        <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-                            <v-icon dark>add</v-icon>
+                        <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                            <v-icon class="mt-1" dark>add</v-icon>
                         </v-btn> 
             
                     
@@ -281,7 +281,7 @@
                 </v-toolbar>
      
                 <v-stepper v-model="step" non-linear vertical>
-                    <v-stepper-step :complete="step > 1" step="1" editable :rules="[() => !errors.has('tipo de persona') && !errors.has('nombre') && !errors.has('apellido paterno') ]">
+                     <v-stepper-step :complete="step > 1" step="1" editable :rules="[() => !errors.has('tipo de persona') && !errors.has('nombre') && !errors.has('apellido paterno') && (!['Victima directa', 'Victima indirecta'].includes(clasificacionpersona) || !errors.has('relacion victima'))]">
                         Captura de datos
                         <small>Datos generales de la vícima u ofendido.</small>
                     </v-stepper-step>
@@ -385,14 +385,16 @@
                                             :error-messages="errors.collect('documento que acredita su personalidad')">
                                         </v-autocomplete>
 
-                                        <v-switch v-if="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'  " v-model="relacion"  :label="'La victima tiene relación con el imputado?'"  color="success"  hide-details></v-switch> 
+                                        <!---<v-switch v-if="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'  " v-model="relacion"  :label="'La victima tiene relación con el imputado?'"  color="success"  hide-details></v-switch> -->
                             
                                         <v-autocomplete
+                                            name="relacion victima"
                                             :items="relacionados"
-                                            v-model="relacionado"
-                                            label="Relación:" 
-                                            v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && relacion ">
-                                        </v-autocomplete>
+                                            v-model="relacionado"label="*Relación de la víctima con el imputado:" 
+                                            v-validate="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' ? 'required' : ''"
+                                            v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'" 
+                                            :error-messages="errors.collect('relacion victima')" 
+                                        />
                                         
                                     </v-flex>
 
@@ -477,7 +479,9 @@
                                 <v-layout row wrap> 
                                     <v-flex class="espaciado" xs12 sm12 md6 lg6 > 
 
-                                        <v-text-field label="Teléfono:" v-if="switch2==false" v-model="telefono1"></v-text-field>
+                                        <v-text-field label="Teléfono móvil:" v-if="switch2==false" v-model="telefono1"></v-text-field>
+
+                                        <v-text-field label="Teléfono fijo:" v-if="switch2==false" v-model="telefono2"></v-text-field>
 
                                         <v-text-field label="Correo electrónico:" v-if="switch2==false" v-model="correo"></v-text-field>
 
@@ -497,6 +501,10 @@
                                             v-if="switch2==false"
                                         ></v-autocomplete>
 
+                                        </v-flex> 
+                                    
+                                    
+                                    <v-flex class="espaciado" xs12 sm12 md6 lg6 > 
                                         <v-autocomplete 
                                             name="género"
                                             :items="generos"
@@ -504,11 +512,7 @@
                                             label="Género:"
                                         ></v-autocomplete>
 
-                                    </v-flex> 
                                     
-                                    
-                                    <v-flex class="espaciado" xs12 sm12 md6 lg6 >  
-                                        
                                         <v-autocomplete 
                                             name="ocupación"
                                             :items="ocupaciones"
@@ -699,7 +703,7 @@
                     <v-form ref="form" >
                         <v-container grid-list-md text-xs-center>
                             <v-layout wrap>
-
+                                 <v-flex  xs12 md12 lg12>
                                     <v-autocomplete 
                                         name="clasificacion de persona"
                                         :items="clasificacionpersonas"
@@ -707,6 +711,31 @@
                                         return-object
                                         label="Clasificación de persona:">
                                     </v-autocomplete>
+
+                                    <v-autocomplete name="Persona Desaparecida"
+                                        :items="tDesaparecidos"
+                                        v-model="registro"
+                                        chips
+                                        v-show="clasificacionpersona.value == 'Victima directa' || clasificacionpersona == 'Victima directa'"
+                                        v-validate="(dialogoactualizar === true && (clasificacionpersona == 'Victima directa' || clasificacionpersona.value == 'Victima directa')) ? 'required' : ''"
+                                        label="*¿Es un tema de personas desaparecidas?:"
+                                        :error-messages="errors.collect('Persona Desaparecida')">
+                                    </v-autocomplete>
+
+                                    <v-autocomplete
+                                        name="relacion victima"
+                                        :items="relacionados"
+                                        v-model="relacionado"
+                                        return-object
+                                        label="*Relación de la víctima con el imputado:"
+                                        v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' || 
+                                                clasificacionpersona.value == 'Victima directa' || clasificacionpersona.value == 'Victima indirecta'"
+                                        v-validate="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' || 
+                                                    clasificacionpersona.value == 'Victima directa' || clasificacionpersona.value == 'Victima indirecta') ? 'required' : ''"
+                                        :error-messages="errors.collect('relacion victima')">
+                                    </v-autocomplete>
+
+                                    </v-flex>
 
                             </v-layout>
                         </v-container>
@@ -1501,6 +1530,7 @@
         medionotificaciones:[],
 
         telefono1:'',
+         telefono2:'',
         correo:'', 
 
         nacionalidad:'Mexicana',
@@ -1547,12 +1577,21 @@
             {text:'Sobrino(a)',value:'Sobrino(a)'},
             {text:'Tio(a)',value:'Tio(a)'},
             {text:'Vecino(a)',value:'Vecino(a)'},
-            {text:'Conocido(a)',value:'Conocido(a)'},          
+            {text:'Conocido(a)',value:'Conocido(a)'},
+            {text:'Ninguna',value:'Ninguna'},
+            {text:'Se desconoce',value:'Se desconoce'},         
         ],
         relacionado:'',
         relacion:false,
         edadf:'',
        dialogoinformacion: false,
+        registro: '',
+        verI: '',
+        verR: '',
+        tDesaparecidos: [
+            {text:"Si",value:true},
+            {text:"No",value:false},
+        ],
         // DIRECCION PERSONAL
         calle:'',
         noExt:'',
@@ -1774,6 +1813,32 @@
             if (first) {
                 this.camera = first.deviceId;
                 this.deviceId = first.deviceId;
+            }
+        },
+        clasificacionpersona(val){
+            if(val === 'Victima directa' && this.radios === 'Fisica' && !this.switch2){
+                this.requeridoPD = 'required';
+                
+            }else if(val !== 'Victima directa'){
+                this.requeridoPD = '';
+                this.registro = false;
+                this.verI = false;
+                this.verR = false;
+
+            }
+
+            if (val !== 'Victima directa' && val !== 'Victima indirecta') {
+                this.relacionado = " ";
+            }
+        },
+        registro(valor){
+            if(valor === true){
+                this.verI = true;
+                this.verR = true;
+            } 
+            else if(valor == false){
+                this.verI = false;
+                this.verR = false;
             }
         }
     },
@@ -2368,13 +2433,15 @@
             this.hechos=[];
             this.modalduplicidad= false;
         },
-        actualizarclasi(item){
-            this.limpiar();
+        async actualizarclasi(item){
+            await this.limpiar();
             this.nombrep = item.nombreCompleto
             this.idrapac = item.idRAP
             this.clasificacionpersona = item.clasificacionPersona
             this.dialogoactualizar = true
-
+            this.registro = item.registro
+            this.personaid = item.personaId
+            this.relacionado = item.parentesco
         },      
         infoadicionalpdetenida(item){
 
@@ -2391,35 +2458,63 @@
             let me=this; 
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
-            var aux;        
+            /*var aux;        
             me.$cat.put('api/RAPs/ActualizarClasificacion',{
 
                 'IdRAP' : this.idrapac,
-                'ClasificacionPersona' : this.clasificacionpersona.value,
+                'ClasificacionPersona' : this.clasificacionpersona.value,*/
+            
+            var clasificacionP = !me.clasificacionpersona.value? me.clasificacionpersona: me.clasificacionpersona.value;
+            let relacionadoP = !me.relacionado.value? me.relacionado: me.relacionado.value;
+            let registroP = !me.registro.value? me.registro: me.registro.value;
 
-            },configuracion).then(function(response){                            
-                me.$notify('La información se actualizo correctamente !!!','success') 
-                me.limpiar();   
-                me.dialogoactualizar = false
-                me.listarrap();    
-            }).catch(err => { 
-                if (err.response.status==400){
-                    me.$notify("No es un usuario válido", 'error')
-                } else if (err.response.status==401){
-                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                    me.e401 = true,
-                    me.showpage= false
-                } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                    me.e403= true
-                    me.showpage= false 
-                } else if (err.response.status==404){
-                    me.$notify("El recuso no ha sido encontrado", 'error')
-                }else{
-                    me.$notify('Error al intentar actualizar el registro!!!','error')   
-                } 
-            });
+            if(relacionadoP == " " && (clasificacionP == 'Victima indirecta' || clasificacionP == 'Victima directa')) {
+                this.$validator.validate()
+                alertify.error("Por favor complete los campos obligatorios marcados");
+                return;
+            } else
+            {
+                if (clasificacionP != "Victima indirecta" && clasificacionP != "Victima directa")
+                {
+                    registroP == false;
+                    relacionadoP = " ";
+                }
+
+                me.$cat.put('api/RAPs/ActualizarClasificacion',{
+    
+                    'IdRAP' : me.idrapac,
+                    'PersonaId': me.personaid,
+                    'ClasificacionPersona' : clasificacionP,
+                    'Registro' : registroP,
+                    'VerI': me.verI,
+                    'VerR': me.verR,
+                    'Parentesco': relacionadoP
+    
+                },configuracion).then(function(response){                            
+                    me.$notify('La información se actualizo correctamente !!!','success') 
+                    me.limpiar();   
+                    me.dialogoactualizar = false
+                    me.listarrap();    
+                }).catch(err => { 
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){ 
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false 
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar actualizar el registro!!!','error')   
+                    } 
+                });
+            }
         },
+                
         actualizarinfoadicional(){
 
             let me=this; 

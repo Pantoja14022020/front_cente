@@ -672,7 +672,10 @@
 import Loader from '../../components/m_jr/modulo/_loader'
 export default {
   name: 'App',
-  components:{Loader},
+  components:
+  {
+    Loader
+  },
   data () {
     return { 
       //drawer: true,  
@@ -774,8 +777,25 @@ export default {
   },
   created(){
     this.$store.dispatch("autoLoginJR");
+    if (this.$store.state.token) {
+      this.ValidarToken();
+    }
   },
   methods:{
+    async ValidarToken() {
+      let header = { Authorization: "Bearer " + this.$store.state.token };
+      let configuracion = { headers: header };
+      try{
+        await this.$controlacceso.get('api/Usuarios/ValidarToken2', configuracion);
+      }
+      catch{
+          this.$store.dispatch("salir");
+          this.$controlacceso.get('api/Usuarios/DistrictUser')
+        .then(response => {          
+          window.location.href = response.data.direccion;
+        }) 
+      }
+    },
     salir(){
       this.$store.state.idExpediente= null; 
       this.$store.state.idEnvio = null;

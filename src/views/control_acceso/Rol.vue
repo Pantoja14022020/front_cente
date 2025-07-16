@@ -79,6 +79,17 @@
                         </v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile> 
+
+                    <v-list-tile :to="{ name: 'control-acceso-clonacionesfallidas'== '#' ? '' :  'control-acceso-clonacionesfallidas'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">report</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                            Clonaciones fallidas
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
                     
                     </v-list-group>
                 </template> 

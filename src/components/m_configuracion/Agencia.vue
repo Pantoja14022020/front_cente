@@ -19,7 +19,7 @@
                         <span>Agregar registro </span>
                         
                     </v-tooltip>
-                    <v-dialog   v-model="dialog"  max-width="900px"> 
+                    <v-dialog   v-model="dialog"  max-width="900px" persistent> 
                         
                         <v-card>
                             <v-toolbar card dark color="grey lighten-4 primary--text">
@@ -353,13 +353,14 @@
                 var dspArray=[];
                 var iddistrito='';
                 me.dsps=[];
-                if (me.editedIndex==1)
+                if (!me.distritoId.value)
                 {
                     iddistrito=me.distritoId;
                 }
                 else
                 {
                     iddistrito=me.distritoId.value;
+                    me.dspId ="";
                 }
                 this.$conf.get('api/DSPs/ListarPorDistritoId/' + iddistrito,configuracion).then(function(response){
                     dspArray=response.data;
@@ -456,92 +457,140 @@
                 this.condetenido = false;
                 this.activa = false;
             },
-            guardar () {
-                this.$validator.validate().then(result => {
-                    if (result) { 
-                        if (this.editedIndex > -1) {
-                            
-                            //Código para editar 
-                            let me=this;
-                            let header={"Authorization" : "Bearer " + this.$store.state.token};
-                            let configuracion= {headers : header};
-                            this.$conf.put('api/Agencias/Actualizar',{
-                                'idAgencia':me.idAgencia, 
-                                'dSPId':me.dspId,
-                                'clave': me.clave,
-                                'nombre': me.nombre,
-                                'direccion': me.direccion,
-                                'municipio': me.municipio,
-                                'telefono': me.telefono, 
-                                'contacto': me.contacto,
-                                'tiposervicio':me.tipoServicio,
-                                'Condetencion': me.condetenido,
-                                'activa': me.activa,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se actualizo correctamente !!!','success')  
-                                me.listar();
-                                me.limpiar();     
-                                }).catch(err => { 
-                                    if (err.response.status==400){
-                                        me.$notify("No es un usuario válido", 'error')
-                                    } else if (err.response.status==401){
-                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                        me.e401 = true,
-                                        me.showpage= false
-                                    } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                        me.e403= true
-                                        me.showpage= false 
-                                    } else if (err.response.status==404){
-                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                    }else{
-                                        me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                    } 
-                                });
-                        } else {
-                            //Código para guardar
-                            debugger
-                            let me=this;
-                            let header={"Authorization" : "Bearer " + this.$store.state.token};
-                            let configuracion= {headers : header};
-                            this.$conf.post('api/Agencias/Crear',{
-                                'dSPId': me.dspId,
-                                'clave': me.clave,
-                                'nombre': me.nombre,
-                                'direccion': me.direccion,
-                                'municipio': me.municipio,
-                                'telefono': me.telefono, 
-                                'contacto': me.contacto,
-                                'tiposervicio':me.tipoServicio,
-                                'Condetencion': me.condetenido,
-                                'activa': me.activa,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
-                                me.listar();
-                                me.limpiar();                        
-                                }).catch(err => { 
-                                    if (err.response.status==400){
-                                        me.$notify("No es un usuario válido", 'error')
-                                    } else if (err.response.status==401){
-                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                        me.e401 = true,
-                                        me.showpage= false
-                                    } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                        me.e403= true
-                                        me.showpage= false 
-                                    } else if (err.response.status==404){
-                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                    }else{
-                                        me.$notify('Error al intentar crear el  registro!!!','error')  
-                                    } 
-                                });
+            async guardar() {
+                const result = await this.$validator.validate();
+                if (!result) return;
+                
+                let primer_id = null;
+                let me = this;
+                let header = { "Authorization": "Bearer " + this.$store.state.token };
+                let configuracion = { headers: header };
+
+                if (this.editedIndex > -1) {
+                    // Código para editar
+                    try {
+                        const response = axios.put(`api/Agencias/Actualizar`, {
+                            'idAgencia': me.idAgencia,
+                            'dSPId': me.dspId,
+                            'clave': me.clave,
+                            'nombre': me.nombre,
+                            'direccion': me.direccion,
+                            'municipio': me.municipio,
+                            'telefono': me.telefono,
+                            'contacto': me.contacto,
+                            'tiposervicio': me.tipoServicio,
+                            'Condetencion': me.condetenido,
+                            'activa': me.activa,
+                        }, configuracion);
+                        primer_id = 1;
+                    } catch (err) {
+                        this.close();
+                        this.$notify(`No se pudo actualizar el registro en el distrito principal`, 'error');
+                        this.listar();
+                        this.limpiar();
+                        return;
+                    }
+                    if (primer_id) {
+                        for (const distrito of this.distritos) {
+                            await this.replicarRegistro(distrito, this.idAgencia);
                         }
-                    }  
-                })
-            },  
+                    }
+                    this.close();
+                    this.$notify('La información se actualizó correctamente!!!', 'success');
+                    this.listar();
+                    this.limpiar();
+                } 
+                else {
+                    // Código para guardar
+                    try {
+                        const response = await axios.post(`api/Agencias/Crear`, {
+                            'dSPId': me.dspId,
+                            'clave': me.clave,
+                            'nombre': me.nombre,
+                            'direccion': me.direccion,
+                            'municipio': me.municipio,
+                            'telefono': me.telefono,
+                            'contacto': me.contacto,
+                            'tiposervicio': me.tipoServicio,
+                            'Condetencion': me.condetenido,
+                            'activa': me.activa,
+                        }, configuracion)
+                        primer_id = response.data.id;
+                    } catch (err) {
+                        this.close();
+                        this.$notify(`No se pudo crear el registro en el distrito principal`, 'error');
+                        this.listar();
+                        this.limpiar();
+                        return;
+                    }
+
+                    if(primer_id){
+                        for (const distrito of this.distritos) {
+                            await this.replicarRegistro(distrito, primer_id);
+                        }
+                    }
+                    this.close();
+                    this.$notify('La información se guardo correctamente !!!','success')  
+                    this.listar();
+                    this.limpiar();
+                }
+            },
+            async replicarRegistro(distrito, _primer_id) {
+                let me = this;
+                let header = { "Authorization": "Bearer " + this.$store.state.token };
+                let configuracion = { headers: header };
+
+                try {
+                    const response = await axios.post(`api/Agencias/Replicar`, {
+                        'distritoId': distrito.value,
+                        'IdAgencia': _primer_id,
+                        'dSPId': me.dspId,
+                        'clave': me.clave,
+                        'nombre': me.nombre,
+                        'direccion': me.direccion,
+                        'municipio': me.municipio,
+                        'telefono': me.telefono,
+                        'contacto': me.contacto,
+                        'tiposervicio': me.tipoServicio,
+                        'Condetencion': me.condetenido,
+                        'activa': me.activa,
+                    }, configuracion)
+                    
+                    if(response.status == 200)
+                    {
+                        await this.error_registro({IdRegistro: _primer_id, IdDistrito: distrito.value,NombreDistrito: distrito.text, ActRegistro: true});
+                    }
+                } catch (err) {
+                    this.$notify(`El distrito ${distrito.text} tiene problemas en conexion`, 'error');
+                    await this.error_registro({IdRegistro: _primer_id, IdDistrito: distrito.value,NombreDistrito: distrito.text, ActRegistro: false});
+                }
+            },
+            async error_registro(error) {
+                let proceso = this.editedIndex > -1 ? "Actualizar" : "Guardar";
+
+                let me = this;
+                let header = { "Authorization": "Bearer " + this.$store.state.token };
+                let configuracion = { headers: header };
+
+                try {
+                    const reponse = await axios.post(`api/ErroresReplicacion/RegistrarError`, {
+                        'ActualizaRegistro': error.ActRegistro,
+                        'RegistroErrorId': error.IdRegistro,
+                        'DistritoId': error.IdDistrito,
+                        'NombreDistrito': error.NombreDistrito,
+                        'Proceso': proceso,
+                        'Modulo': 'Agencia / Area',
+                        'Status': true
+                    }, configuracion)
+
+                    if(reponse.status == 201)
+                    {
+                        me.$notify(reponse.data.mensaje, 'warning');
+                    }
+                } catch (err) {
+                    this.$notify("No se pudo crear o actualizar el registro del error.", 'error');
+                }
+            }
         }        
     }
 </script>

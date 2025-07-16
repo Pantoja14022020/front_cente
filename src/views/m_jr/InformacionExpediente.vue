@@ -990,8 +990,15 @@
                                     <v-container grid-list-md text-xs-center>
                                         <v-layout row wrap> 
                                             <v-flex class="espaciado" xs12 sm12 md6 lg6> 
-                                            <v-text-field 
-                                                    label="Calle:" 
+                                            <v-autocomplete
+                                                    name="tipo vialidad"
+                                                    :items="de_vialidades"
+                                                    v-model="de_vialidad"
+                                                    label="Tipo de vialidad:" 
+                                                    :error-messages="errors.collect('tipo vialidad')" 
+                                                />
+                                                <v-text-field 
+                                                    label="Nombre:" 
                                                     name="calle" 
                                                     v-model="de_calle" 
                                                     :error-messages="errors.collect('calle')" 
@@ -1052,6 +1059,13 @@
                                                     :items="de_localidades" 
                                                     return-object
                                                     v-on:change="de_listarPorLocalidad"
+                                                />
+                                                 <v-autocomplete
+                                                    name="tipo asentamiento"
+                                                    :items="de_asentamientos"
+                                                    v-model="de_asentamiento"
+                                                    label="Tipo de asentamiento:" 
+                                                    :error-messages="errors.collect('tipo asentamiento')" 
                                                 />
                                                 <v-text-field 
                                                     label="Código postal:" 
@@ -1323,6 +1337,7 @@ import 'moment/locale/es';
 import alertify from 'alertifyjs';
 import { VueEditor } from "vue2-editor";  
 import { generarQRCodeBase64 } from './crearQR';  
+import { rmSync } from 'fs';
 
   export default {
     components: { 
@@ -1478,6 +1493,10 @@ import { generarQRCodeBase64 } from './crearQR';
             de_localidades:[],
             de_localidadid:0,
             de_cp:'',
+            de_vialidad:'',
+            de_vialidades:[],
+            de_asentamiento:'',
+            de_asentamientos:[],
             PersonaRepresentada:'',
             idResponsable: '',
             rnacionalidad:'Mexicana',
@@ -1578,7 +1597,9 @@ import { generarQRCodeBase64 } from './crearQR';
             me.InformacionExpediente();
             me.listarLogo();
             me.informacionagencia();
-            me.ExistanciaRepreCat()                   
+            //me.ExistanciaRepreCat()
+            me.listarVialidad();
+            me.listarAsentamiento();                   
         }               
         // INTERCEPTOR MODULO DE JUSTICIA RESTAURATIVA
         axios.interceptors.request.use( (config)=> { 
@@ -1819,6 +1840,8 @@ import { generarQRCodeBase64 } from './crearQR';
                     'municipio': me.de_municipio,
                     'localidad': me.de_localidad,
                     'codigoPostal': me.de_cp,
+                    'tipoVialidad': me.de_vialidad,
+                    'tipoAsentamiento': me.de_asentamiento,
 
                 },configuracion).then(function(response){
                     me.modalresponsable = false;
@@ -1886,7 +1909,8 @@ import { generarQRCodeBase64 } from './crearQR';
                 me.de_selectEstado(me.de_estado);
                 me.de_municipio = response.data.municipio;
                 me.de_localidad = response.data.localidad;
-               
+                me.de_vialidad = response.data.tipoVialidad;
+                me.de_asentamiento = response.data.tipoAsentamiento;
             }
 
           }, configuracion).catch(function(error){
@@ -1949,6 +1973,8 @@ import { generarQRCodeBase64 } from './crearQR';
                     'municipio': me.de_municipio,
                     'localidad': me.de_localidad,
                     'codigoPostal': me.de_cp,
+                    'tipoVialidad': me.de_vialidad,
+                    'tipoAsentamiento': me.de_asentamiento
                 },configuracion).then(function(response){
                     me.$notify('La información se actualizo correctamente !!!','success')  
                     me.responsableClose();
@@ -2988,7 +3014,30 @@ import { generarQRCodeBase64 } from './crearQR';
                     me.estadocivil= responseArr[1].data.estadocivil
                     me.tipodiscapacidad = responseArr[1].data.tipodiscapacidad
                     me.direccionpersonal = responseArr[1].data.direccionP
-                    me.edad = responseArr[1].data.edad                    
+                    me.edad = responseArr[1].data.edad    
+                    
+                    
+                    let arregloRepresentantes = responseArr[0].data.arregloRepresentantes
+
+                    // Convertir a JSON si es una cadena
+                    if (typeof arregloRepresentantes === "string") {
+                        try {
+                            arregloRepresentantes = JSON.parse(arregloRepresentantes);
+                        } catch (error) {
+                            arregloRepresentantes = []; // Si falla el parseo, lo establecemos como un array vacío
+                        }
+                    }
+
+                    // Si arregloRepresentantes es un array válido con datos
+                    if (Array.isArray(arregloRepresentantes) && arregloRepresentantes.length > 0) {
+                        let primeraFila = arregloRepresentantes[0];
+
+                        // Si idRepre tiene datos válidos, ejecutar la función
+                        if (primeraFila.idRepre && primeraFila.idRepre.trim() !== "") {
+                            let idRepreArray = primeraFila.idRepre.split(";").map(id => id.trim());
+                            me.ExistanciaRepreCat(idRepreArray);
+                        }
+                    }
 
             }).catch(function(error){
                 if (error.response.status==401){ 
@@ -3395,6 +3444,7 @@ import { generarQRCodeBase64 } from './crearQR';
           me.rfechanaciomiento = null;
           me.telefono = "";
           me.correo = "";
+          me.de_vialidad = "";
           me.de_calle = "";
           me.de_noExt = "";
           me.de_noInt = "";
@@ -3406,6 +3456,7 @@ import { generarQRCodeBase64 } from './crearQR';
           me.de_estado ="";
           me.de_municipio = "";
           me.de_localidad = "";
+          me.de_asentamiento = "";
           me.de_estadoid = 0;
           me.de_municipioid = 0;
           me.de_localidadid = 0;
@@ -4174,29 +4225,31 @@ import { generarQRCodeBase64 } from './crearQR';
             } 
 
         },
-        ExistanciaRepreCat(){
+        ExistanciaRepreCat(idRepresentantes){
         //Funcion que consulta el representante en Cat para guardarlo en Jr-
             let me= this;
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header}; 
 
-            me.$justiciarestaurativa.get('api/Responsablejrs/SaveautoRepresentantes/'+ me.envioId, configuracion).then(function(response)
-            { 
-                me.autoRepresentante = response.data;
-                
-                for (var i =0; i < me.autoRepresentante.length; i++)
-                {
-                    if(me.autoRepresentante[i].hayRepreJR == 0 && me.autoRepresentante[i].hayRepreCAT == 1)
+            idRepresentantes.forEach(id => {
+                me.$justiciarestaurativa.get('api/Responsablejrs/SaveautoRepresentantes/'+ me.envioId + '/' + id, configuracion).then(function(response)
+                { 
+                    me.autoRepresentante = response.data;
+                    
+                    for (var i =0; i < me.autoRepresentante.length; i++)
                     {
-                        me.guardarRespCarenJr(me.autoRepresentante[i]);
+                        if(me.autoRepresentante[i].hayRepreJR == 0 && me.autoRepresentante[i].hayRepreCAT == 1)
+                        {
+                            me.guardarRespCarenJr(me.autoRepresentante[i]);
+                        }
                     }
-                }
-            }, configuracion).catch(function(error){
-                if (error.response.status==404){
-                me.$notify("El recuso no ha sido encontrado", 'error')
-            }else{
-                me.$notify(error.message,'error')     
-            } 
+                 }, configuracion).catch(function(error){    
+                    if (error.response.status==404){
+                    me.$notify("El recuso no ha sido encontrado", 'error')
+                }else{
+                    me.$notify(error.message,'error')     
+                } 
+                }); 
             }); 
         },
         guardarRespCarenJr(item){
@@ -4234,6 +4287,8 @@ import { generarQRCodeBase64 } from './crearQR';
                 'municipio':item.municipio,
                 'localidad':item.localidad,
                 'codigoPostal':me.repreCat.codigoPostal,
+                'tipoVialidad':item.tipoVialidad,
+                'tipoAsentamiento':item.tipoAsentamiento,
               },configuracion).then(function(response){
                 me.$notify('La información se abrio correctamente !!!','success') 
                
@@ -4301,6 +4356,60 @@ import { generarQRCodeBase64 } from './crearQR';
             }); 
 
         },
+        listarVialidad(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.de_vialidades.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        },
+        listarAsentamiento(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.de_asentamientos.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        }
     } 
 }
 </script>

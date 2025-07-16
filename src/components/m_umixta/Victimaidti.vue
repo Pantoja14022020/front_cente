@@ -16,11 +16,11 @@
                                 filled
                             ></v-text-field>
                            </v-flex>
-                             <v-btn class="mx-2" @click="cerrarcarpeta" fab dark small color="primary">
-                                <v-icon dark>close</v-icon>
+                           <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                                <v-icon class="mt-1" dark>close</v-icon>
                             </v-btn>
-                            <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-                                <v-icon dark>add</v-icon>
+                            <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                                <v-icon class="mt-1" dark>add</v-icon>
                             </v-btn>
     
     
@@ -158,13 +158,13 @@
                                     Captura de datos
                                     <small>Datos generales de la vícima u ofendido.</small>
                                 </v-stepper-step>
-                                <v-stepper-content step="1">
-                                    <v-card color="grey lighten-5" elevation=0 class="mb-5" height="auto">
+                                <v-stepper-content step="1" lazy>
+                                    <v-card flat class="mb-5" style="height: 890px; overflow-y: auto; background-color: #FAFAFA;">
                                         <v-container grid-list-lg>
                                             <v-layout wrap justify-space-between>
                                                 <v-flex  xs12 md5 lg5>
-                                                    <v-switch v-model="switch2"  label="¿Registro anonimo?:" color="success" hide-details></v-switch>
-                                                    <v-switch v-model="datosprotegidos"  v-if="!switch2" label="¿Datos protegidos?:" color="success"  hide-details></v-switch>
+                                                    <v-switch v-model="switch2"  label="¿Registro anónimo?:" color="success" hide-details v-if="clasificacionpersona != 'Imputado'"></v-switch>
+                                                    <v-switch v-model="datosprotegidos"  v-if="!switch2 && radios !== 'Moral'" label="¿Datos protegidos?:" color="success"  hide-details></v-switch>
                                                     <v-radio-group v-model="radios" v-on:change="limpiar()" v-if="switch2==false" row :mandatory="false">
                                                         <v-radio label="Fisica" @change="ocultarTP" color="success" value="Fisica"></v-radio>
                                                         <v-radio label="Moral" @change="mostrarTP" color="success" value="Moral"></v-radio>
@@ -175,17 +175,20 @@
                                                       name="rfc"
                                                       label="*RFC:"
                                                       v-model="rfc"
-                                                      v-validate="'required'"
-                                                      v-if="verTP==1 && !switch2"
+                                                      v-validate="requiredRFC"
+                                                        v-show="verTP==1 && !switch2"
                                                       :error-messages="errors.collect('rfc')">
     
                                                     </v-text-field>
                                                     <v-text-field name="razón social"
-                                                                    label="*Razón social:"
+                                                                    label="*Razón social (máximo 200 caracteres):"
                                                                     v-model="razonsocial"
                                                                     v-validate="requiredRZ"
                                                                     v-show="verTP==1 && !switch2"
-                                                                    :error-messages="errors.collect('razón social')">
+                                                                    :error-messages="errors.collect('razón social')"
+                                                                    :counter="200"
+                                                                    :maxlength="200">
+                                                                    >
     
                                                     </v-text-field>
                                                     <v-autocomplete name="clasificacion de persona"
@@ -202,7 +205,7 @@
                                                                 v-model="registro"
                                                                 v-validate="requeridoPD"
                                                                 chips
-                                                                v-show="clasificacionpersona == 'Victima directa' && !switch2 && radios == 'Fisica'"
+                                                                v-if="clasificacionpersona == 'Victima directa' && !switch2 && radios == 'Fisica'"
                                                                 label="*¿Es un tema de personas desaparecidas?:"
                                                                 :error-messages="errors.collect('Persona Desaparecida')">
                                                     </v-autocomplete>
@@ -248,10 +251,10 @@
                                                     </v-text-field>
                                                     
                                                     <v-text-field name="fecha de nacimiento"
-                                                                    label="Fecha de nacimiento:"
+                                                                    label="*Fecha de nacimiento:"
                                                                     v-model="fnacimiento"
                                                                     type="date"
-                                                                    v-validate="'required'"
+                                                                    v-validate="fechanacimientoRequerido"
                                                                     v-if="switch2==false && RangoEdadTF == false"
                                                                     :error-messages="errors.collect('fecha de nacimiento')">
     
@@ -259,36 +262,32 @@
                                                     
     
                                                     <v-switch v-model="RangoEdadTF" v-if="!switch2" :label="'¿Desconoce la fecha de nacimiento? Agregar un rango de edad'"  color="success"  hide-details></v-switch>
+                                                    
+                                                    <v-autocomplete
+                                                name="rangos"
+                                                :items="rangosedad"
+                                                v-model="rangoedad"
+                                                v-validate="rangoEdadRequerido"
+                                                label="*Rango de edad:"
+                                                v-if="switch2==false && RangoEdadTF == true"
+                                                :error-messages="errors.collect('rangos')">
+                                            </v-autocomplete>
     
                                                     <v-autocomplete
-                                                        name="rangos"
-                                                        :items="rangosedad"
-                                                        v-model="rangoedad"
-                                                        v-validate="'required'"
-                                                        label="Rango de edad:"
-                                                        v-if="switch2==false && RangoEdadTF == true"
-                                                        :error-messages="errors.collect('rangos')">
-                                                    </v-autocomplete>
-    
-                                                    <v-autocomplete
-                                                        name="sexo"
-                                                        :items="sexos"
-                                                        v-model="sexo"
-                                                        label="Sexo:"
-                                                        v-if="switch2==false">
-                                                    </v-autocomplete>
-    
-                                                     <v-switch v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" v-model="relacion"  :label="'La victima tiene relación con el imputado?'"  color="success"  hide-details></v-switch>
-    
-                                                    <v-autocomplete
+                                                       name="relacion victima"
                                                         :items="relacionados"
                                                         v-model="relacionado"
-                                                        label="Relación:"
-                                                        v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && relacion && !switch2">
-                                                    </v-autocomplete>
+                                                        label="*Relación de la víctima con el imputado:" 
+                                                v-validate="relacionadoRequerido"
+                                                v-show="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
+                                                :error-messages="errors.collect('relacion victima')" 
+                                            />
+
+
+
     
                                                     <v-switch
-                                                        v-if="clasificacionpersona == 'Imputado' && !switch2" 
+                                                        v-show="clasificacionpersona == 'Imputado' && !switch2"
                                                         v-model="impuDetenido"  
                                                         :label="'El imputado fue detenido?'"  
                                                         color="success"  
@@ -305,8 +304,8 @@
                                                         multiple
                                                         return-object   
                                                         label="Policia que lo detuvo:"                                                   
-                                                        v-if="impuDetenido && agregarPoli == false"
-                                                        v-validate="'required'"
+                                                        v-show="impuDetenido && agregarPoli == false"
+                                                        v-validate="policiaRequerido"
                                                         :error-messages="errors.collect('policia que lo detuvo')">
                                                     </v-autocomplete>
                                                     
@@ -329,6 +328,14 @@
                                                         label="Entidad federativa de nacimiento:"
                                                         return-object
                                                         v-if="switch2==false"  >
+                                                    </v-autocomplete>
+
+                                                    <v-autocomplete
+                                                        name="sexo"
+                                                        :items="sexos"
+                                                        v-model="sexo"
+                                                        label="Sexo:"
+                                                        v-if="switch2==false">
                                                     </v-autocomplete>
     
                                                     <v-autocomplete name="documento de identificación"
@@ -419,7 +426,8 @@
                                                         </v-layout>
                                                         </v-container>
                                                     </v-card>
-                                                    <v-text-field label="Selecciona la imagen del documento de identificacion" @click='pickFile' v-if="switch2==false"  v-model='imageName' prepend-icon='attach_file'></v-text-field>
+
+                                                    <v-text-field label="Selecciona la imagen del documento de identificación" @click='pickFile' v-if="switch2==false"  v-model='imageName' prepend-icon='attach_file'></v-text-field>
     
                                                     <input
                                                         type="file"
@@ -440,7 +448,7 @@
     
                                                     <v-text-field name="curp" v-if="!switch2" v-model="curp"   label="CURP:" ></v-text-field>
     
-                                                    <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una poblacion afrodescendiente?:" v-if="switch2==false" color="success"  hide-details></v-switch>
+                                                    <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una población afrodescendiente?:" v-if="switch2==false" color="success"  hide-details></v-switch>
     
                                                 </v-flex>
     
@@ -448,9 +456,11 @@
     
                                             </v-layout>
                                             <v-spacer></v-spacer>
+                                            <v-layout justify-end>
                                             <div class="text-xs-right">
                                                 <v-btn color="primary" v-if="!switch2" @click.native="step = 2">Continuar</v-btn>
                                             </div>
+                                            </v-layout>
                                         </v-container>
     
                                     </v-card>
@@ -460,8 +470,8 @@
                                 <v-stepper-step :complete="step > 2" step="2"  v-if="!switch2" editable >
                                     Información complementaria
                                 </v-stepper-step>
-                                <v-stepper-content step="2" v-if="!switch2">
-                                    <v-card color="grey lighten-5" elevation=0 class="mb-5" style="height: 800px;">
+                                <v-stepper-content step="2" v-if="!switch2" lazy>
+                                    <v-card color="grey lighten-5" elevation=0 class="mb-5" height="auto">
                                         <v-container grid-list-lg>
                                             <v-layout wrap justify-space-between>
                                                 <v-flex  xs12 md5 lg5>
@@ -550,6 +560,7 @@
                                                         attach
                                                         chips
                                                         deletable-chips
+                                                        menu-props="top"
                                                     ></v-autocomplete>
                                                 </v-flex>
                                             </v-layout>
@@ -569,8 +580,15 @@
                                             <v-layout wrap justify-space-between>
                                                 <v-flex  xs12 md5 lg5>
     
-    
-                                                    <v-text-field label="Calle:"
+                                                    <v-autocomplete
+                                                        name="tipo vialidad"
+                                                        :items="vialidades"
+                                                        v-model="vialidad"
+                                                        label="Tipo de vialidad:" 
+                                                        :error-messages="errors.collect('tipo vialidad')" 
+                                                    />
+
+                                                    <v-text-field label="Nombre:"
                                                                 name="calle"
                                                                 v-model="calle"
                                                                 v-if="switch2==false"
@@ -622,12 +640,19 @@
                                                                     return-object
                                                                     v-on:change="listarPorLocalidad">
                                                     </v-autocomplete>
+                                                    <v-autocomplete
+                                                            name="tipo asentamiento"
+                                                            :items="asentamientos"
+                                                            v-model="asentamiento"
+                                                            label="Tipo de asentamiento:" 
+                                                            :error-messages="errors.collect('tipo asentamiento')" 
+                                                    />
                                                     <v-text-field
                                                         label="Código postal:"
                                                         v-if="switch2==false"
                                                         name="cp"
                                                         v-model="cp"
-                                                        @keyup.enter="buscarPorCP()"  >
+                                                        @keyup.enter="buscarPorCP(1,cp)"  >
                                                         </v-text-field>
                                                         <v-layout wrap justify-space-between>
                                                             <v-flex  xs6 md6 lg6>
@@ -645,7 +670,7 @@
                                                             ></v-text-field>
                                                             </v-flex>
                                                          </v-layout>
-                                                    <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc2" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn>
+                                                     <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc2" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
     
     
     
@@ -672,7 +697,14 @@
                                                 <v-flex  xs12 md5 lg5>
     
                                                     <v-switch v-model="duplicarDireccion" @change="dupdiresc()" label="¿La dirección de notificación es la misma que la dirección personal?:" color="success"  hide-details></v-switch>
-                                                    <v-text-field label="Calle:"
+                                                    <v-autocomplete
+                                                        name="tipo vialidad"
+                                                        :items="de_vialidades"
+                                                        v-model="de_vialidad"
+                                                        label="Tipo de vialidad:" 
+                                                        :error-messages="errors.collect('tipo vialidad')" 
+                                                    />
+                                                    <v-text-field label="Nombre:"
                                                                 name="calle"
                                                                 v-model="de_calle"
                                                                 v-if="switch2==false"
@@ -723,6 +755,13 @@
                                                                     return-object
                                                                     v-on:change="de_listarPorLocalidad">
                                                     </v-autocomplete>
+                                                    <v-autocomplete
+                                                            name="tipo asentamiento"
+                                                            :items="de_asentamientos"
+                                                            v-model="de_asentamiento"
+                                                            label="Tipo de asentamiento:" 
+                                                            :error-messages="errors.collect('tipo asentamiento')" 
+                                                    />
                                                     <v-text-field
                                                         label="Código postal:"
                                                         v-if="switch2==false"

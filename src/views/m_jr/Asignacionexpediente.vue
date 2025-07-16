@@ -604,6 +604,7 @@
                     :label="switchLabel"
                     color="success"
                     hide-details
+                    @change="modulos = ''"
                   />
                 </div>
                 <v-flex xs12 sm12 md12>
@@ -612,7 +613,32 @@
                     <v-flex xs12 md12 lg12>
                       <v-card elevation="0">
                         <v-card-text>
-                          <!-- Campos para No Espontaneo -->
+                          <!-- Apartado de selección de agencia -->
+                          <v-autocomplete
+                            name="modulos"
+                            :items="v_agencias"
+                            v-model="v_agencia"
+                            prepend-icon="perm_identity"
+                            label="Agencia:"
+                            :rules="[v => !!v||'La agencia es requerida']"    
+                            return-object
+                          ></v-autocomplete>
+                          <!-- Apartado de selección del modulo -->
+                          <v-autocomplete
+                            name="modulos"
+                            :items="v_modulos"
+                            v-model="modulos"
+                            prepend-icon="perm_identity"
+                            label="Modulo:"
+                            :no-data-text="textoNoDataM"
+                            :rules="[v => !!v||'El modulo es requerido']"
+                            @change="
+                              switch2
+                                ? listarFacilitadores(modulos)
+                                : disponibilidadFacilitador()
+                            "
+                          ></v-autocomplete>
+                          <!-- Apartado para la selección de la fecha -->
                           <v-dialog
                             v-if="switch2 == false"
                             ref="dialog_f"
@@ -629,6 +655,8 @@
                                 label="Fecha de la Cita:"
                                 prepend-icon="event"
                                 readonly
+                                v-validate="'required'"
+                                :rules="[v => !!v||'Fecha de la cita es requerida']"
                                 v-on="on"
                               ></v-text-field>
                             </template>
@@ -654,8 +682,55 @@
                             </v-date-picker>
                           </v-dialog>
 
+
+                          <!-- Apartado de facilitadores con sus horarios -->
+                          <template v-if="moduloSeleccionado != '' && fCita != '' && switch2 == false">
+                            <v-expansion-panel class="mb-3 mt-3" v-model="panel">
+                              <v-expansion-panel-content class="grey lighten-5">
+                                <template v-slot:header>
+                                  <div>Horarios Ocupados de {{ moduloSeleccionado }}</div>
+                                </template>
+                                <template>
+                                  <v-layout pa-3 v-if="horariosFacilitadores.length > 0">
+                                    <v-flex xs2 md2 lg2 v-for="(item, i) in horariosFacilitadores" :key="i">
+                                      <v-card>
+                                        <v-card-title>
+                                          {{ item.nombre }}
+                                        </v-card-title>
+                                        <v-card-text>
+                                          <template>
+                                            <v-layout wrap align-center justify-center v-if="item.sesiones.length > 0">
+                                              <v-flex align-center justify-center class="d-inline-flex" v-for="(hora, y) in item.sesiones" :key="y">
+                                                <label class="labelHorario">{{ hora.horaFormateada }}</label>
+                                              </v-flex>
+                                            </v-layout>
+                                            <v-layout wrap align-center justify-center v-else>
+                                              <v-flex align-center justify-center class="d-inline-flex">
+                                                <label class="labelHorario">No cuenta con sesiones agendadas</label>
+                                              </v-flex>
+                                            </v-layout>
+                                          </template>
+                                        </v-card-text>
+                                      </v-card>
+                                    </v-flex>
+                                  </v-layout>
+                                  <v-layout v-else>
+                                    <v-flex>
+                                      <v-card>                                        
+                                        <v-card-text>
+                                          <label class="labelHorario">No hay facilitadores asignados a este modulo</label>
+                                        </v-card-text>
+                                      </v-card>
+                                    </v-flex>
+                                  </v-layout>
+                                </template>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                          </template>
+                          <!-- Apartado de selección de hora -->
+
                           <v-dialog
-                            v-if="switch2 == false"
+                            v-if="switch2 == false && horariosFacilitadores.length > 0"
                             ref="dialog_h"
                             v-model="modalTime"
                             :return-value.sync="h_horacita"
@@ -670,6 +745,8 @@
                                 label="Hora de la cita:"
                                 prepend-icon="access_time"
                                 readonly
+                                :v-validate="(switch2 == false && horariosFacilitadores.length > 0) ? valueR : ''"
+                                :rules="[v => !!v||'Hora de la cita es requerida']"
                                 v-on="on"
                               ></v-text-field>
                             </template>
@@ -693,62 +770,56 @@
                               >
                             </v-time-picker>
                           </v-dialog>
+                          <!-- Apartado para la selección de tiempo de duración -->
                           <v-select
-                            v-if="switch2 == false"
+                            v-if="switch2 == false && horariosFacilitadores.length > 0"
                             :items="duracions"
                             v-model="duracion"
                             name="tiempo de duración"
                             label="Tiempo de duración de la cita:"
                             prepend-icon="hourglass_empty"
-                            v-validate="'required'"
-                            :error-messages="
-                              errors.collect('tiempo de duración')
-                            "
+                            :v-validate="(switch2 == false && horariosFacilitadores.length > 0) ? valueR : ''"
+                            :rules="[v => !!v||'Duración de la cita es requerida']"
                             v-on:change=""
                           >
                           </v-select>
+                          <!-- Apartado para la edición del lugar de la cita -->
                           <v-text-field
-                            v-if="switch2 == false"
+                            v-if="switch2 == false && horariosFacilitadores.length > 0"
                             name="lugar de la cita"
                             label="Lugar de la cita:"
                             v-model="v_lugarcita"
                             prepend-icon="pin_drop"
-                            v-validate="'required'"
-                            :error-messages="errors.collect('lugar de la cita')"
+                            :v-validate="(switch2 == false && horariosFacilitadores.length > 0) ? valueR : ''"
+                            :rules="[v => !!v||'Lugar de la cita es requerida']"
                           >
                           </v-text-field>
-                          <!-- Formulario para Espontaneo -->
-                          <v-autocomplete
-                            name="modulos"
-                            :items="v_modulos"
-                            v-model="modulos"
-                            prepend-icon="perm_identity"
-                            label="Modulos:"
-                            @change="
-                              switch2
-                                ? listarFacilitadores(modulos)
-                                : disponibilidadFacilitador()
-                            "
-                          >
-                          </v-autocomplete>
-                          <v-autocomplete
+                          <!-- Apartado para la selección del facilitador -->
+                          <v-select
+                            v-if="horariosFacilitadores.length > 0 || switch2 == true"
                             name="facilitadores"
                             :items="v_facilitadores"
                             v-model="v_facilitador"
+                            :no-data-text="textoNoData"
                             prepend-icon="perm_identity"
-                            label="Facilitadores:"
+                            label="Facilitadores disponibles:"
+                            :rules="[v => !!v||'Tiene que seleccionar un facilitador']"
                             return-object
                           >
-                          </v-autocomplete>
-                          <v-autocomplete
+                          </v-select>
+                           <!-- Apartado para la selección del notificador     -->
+                          <v-select
+                            v-if="horariosFacilitadores.length > 0 || switch2 == true"
                             name="notificadores"
                             :items="v_notificadores"
                             v-model="v_notificador"
+                            :no-data-text="textoNoDataN"
                             prepend-icon="perm_identity"
-                            label="Notificadores:"
+                            label="Notificadores disponibles:"
+                            :rules="[v => !!v||'Tiene que seleccionar un notificador']"
                             return-object
                           >
-                          </v-autocomplete>
+                         </v-select>
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -759,7 +830,7 @@
             <v-card-actions v-if="switch2 == true">
               <v-spacer></v-spacer>
               <v-btn @click.native="close()">Cancelar</v-btn>
-              <v-btn @click.native="guardar()" class="success">Guardar</v-btn>
+              <v-btn @click.native="guardarNoEspontaneo()" class="success" >Guardar</v-btn>
             </v-card-actions>
             <!-- Botones para guardar datos de NO Espontaneo -->
             <v-card-actions v-if="switch2 == false">
@@ -829,6 +900,25 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+     <v-dialog
+      v-model="loaderInterno"      
+      persistent
+      width="300"
+    >
+      <v-card
+        color="primary"
+        dark
+      >
+        <v-card-text>
+          Por favor espere
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -841,6 +931,7 @@ import VeeValidate from "vee-validate";
 import { error } from "util";
 
 //** COMPONENTES */
+import Vue from "vue"
 import n401 from "../../components/m_jr/401";
 import n403 from "../../components/m_jr/403";
 import SolicitantesRequeridos from "../../components/m_jr/SolicitantesRequeridos";
@@ -852,6 +943,8 @@ import "moment/locale/es";
 import alertify from "alertifyjs";
 import { VueEditor } from "vue2-editor";
 import { generarQRCodeBase64 } from './crearQR'
+
+Vue.use(VeeValidate);
 
 export default {
   components: {
@@ -868,6 +961,7 @@ export default {
       showpage: true,
       componentKey: 0,
       filtros: false,
+      loaderInterno: false,
 
       v_menu1: false,
       v_fechaInicial: "",
@@ -920,8 +1014,12 @@ export default {
       nuc: "",
       fechaHoraSuceso: "",
       reseñaBreve: "",
+      textoNoData: "Completa el formulario para ver el listado",
+      textoNoDataN: "Completa el formulario para ver el listado",
+      textoNoDataM: "Selecciona una agencia para ver los modulos disponibles",
       narrativa: "",
       v_direccionHecho: "",
+      btnGuardar: true,
       u_nombrejr: "",
       //**************************************
       // VARIABLES DE LA TABLA DE ENVIO */
@@ -938,8 +1036,11 @@ export default {
       uqe_Puesto: "",
       StatusGeneralEnvio: "",
       EspontaneoNoEspontaneo: "",
+      panel: 0,
+      moduloSeleccionado: "",
       primeraVezSubsecuente: "",
       ContadorNODerivacion: "",
+      valueR: 'required',
       FechaRegistro: "",
       NoSolicitantes: "",
       //*************** */
@@ -1022,6 +1123,7 @@ export default {
       citatorio2: "",
       citatorio3: "",
       modulos: "",
+      horariosFacilitadores: [],
 
       //**************************************
       //VARIABLES REPORTE DE CITATORIO Y RECORDATORIO
@@ -1082,12 +1184,15 @@ export default {
       v_facilitadores: [],
       v_modulo: "",
       v_modulos: [],
+      v_agencia: "",
+      v_agencias: [],
       v_notificador: "",
       v_facilitadorFiltro: "",
       v_notificadores: [],
       idDistritoOrigen: '',
 
       v_delito: "",
+      v_delitosPDF: [],
       v_delitos: [],
       //************************************************ */
       //************************************************ */
@@ -1329,10 +1434,28 @@ export default {
     }
   },
   watch: {
-    fCita: "disponibilidadFacilitador",
+    fCita(val) {
+      if(val != '' && this.modulos != '') {
+        this.listarHorariosFacilitadores()
+      }
+    },
     h_horacita: "disponibilidadFacilitador",
     duracion: "disponibilidadFacilitador",
-    modulos: "disponibilidadFacilitador",
+    modulos(val) {
+      let me = this                 
+
+      if (val != '') {
+        me.disponibilidadFacilitador()  
+
+        if(me.v_modulos.length > 0) {
+          me.moduloSeleccionado = me.v_modulos.find(x => x.value == val).text
+        }      
+  
+        if (me.fCita != '') {
+          me.listarHorariosFacilitadores()
+        }         
+      }
+    },
     pdfs(val) {
       let me = this 
 
@@ -1371,12 +1494,42 @@ export default {
     qrCodeC(val) {
       let me = this 
 
-      if (val != 'Citatorio') {
+      if (val != 'Citatorio' && val != '') {
         if (me.docRemision == 'Citatorio') {          
           var dd = me.citatoriosPDF()
           me.pdfs.push({ name: 'Citatorio', delito: me.delitoparacitatorio, documento: dd })          
         }
       }
+    },
+    v_agencia(val) {      
+      let me = this
+
+      me.limpiarFormulario()
+
+      if (val != '') {        
+        var aux = val.valueM
+        me.v_modulos = []
+        me.v_facilitador = ''
+        me.v_notificador = ''
+        
+        if (aux.length > 0) {
+          aux.map(a => {
+            me.v_modulos.push({
+              text: a.nombre,
+              value: a.idModuloServicio
+            })          
+          })          
+        } else {
+          me.textoNoDataM = 'La agencia no cuenta con modulos'  
+        }
+      } else {        
+        me.textoNoDataM = 'Selecciona una agencia para ver los modulos disponibles'  
+      }
+    },
+    switch2(val) {
+      let me = this 
+      me.v_agencia = ''
+      me.limpiarFormulario()
     }
   },
   methods: {
@@ -2672,7 +2825,8 @@ export default {
         let s = response.data;
         me.derivacion = s;        
         
-        let soli = s[0].solicitadosC.replace(/;\s*/g, ",");
+        let soli = s[0].solicitadosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                    .replace(/\s+/g, ""); // Elimina espacios en blanco;
 
         let solicitanteResponse = await me.$cat.get(`api/RAPs/ListarPersonaPDF/${soli}`, configuracion);
         
@@ -2701,7 +2855,8 @@ export default {
           })
         );                
 
-        let requi = s[0].requeridosC.replace(/;\s*/g, ",");
+        let requi = s[0].requeridosC.replace(/;\s*/g, ",") // Reemplaza punto y coma con coma
+                                    .replace(/\s+/g, ""); // Elimina espacios en blanco;
 
         let requeridoResponse = await me.$cat.get(`api/RAPs/ListarPersonaPDF/${requi}`,configuracion);
 
@@ -2980,6 +3135,67 @@ export default {
           }
         });
     },
+
+
+
+    //* Función para ejecutar la petición para obtener las agencias del distrito y que corresponden a CJR
+    listarAgenciasDistrito() {
+      let me = this
+      let header = { Authorization: "Bearer " + this.$store.state.token };
+      let configuracion = { headers: header };
+
+      me.$justiciarestaurativa.get(`api/FacilitadorNotificadors/ListarAgenciasModulos/${me.u_iddistrito}`, configuracion)
+        .then(response => {          
+          response.data.map(function (x) {
+            me.v_agencias.push({
+              text: x.nombre,
+              value: x.idAgencia,
+              valueM: x.modulos
+            });
+          });
+        })
+        .catch(function (err) {
+          if (err.response.status == 400) {
+            me.$notify("No es un usuario válido", "error");
+          } else if (err.response.status == 401) {
+            me.$notify(
+              "Por favor inicie sesion para poder navegar en la aplicacion",
+              "error"
+            );
+            (me.e401 = true), (me.showpage = false);
+          } else if (err.response.status == 403) {
+            me.$notify("No esta autorizado para ver esta pagina", "error");
+            me.e403 = true;
+            me.showpage = false;
+          } else if (err.response.status == 404) {
+            me.$notify("El recuso no ha sido encontrado", "error");
+          } else {
+            me.$notify("Error al intentar listar los registros!!!", "error");
+          }
+        });
+    },
+    //* Función para ejecutar la petición para obtener los facilitadores por día y su horario
+    listarHorariosFacilitadores() {
+      let me = this 
+      let header = { Authorization: "Bearer " + this.$store.state.token };
+      let configuracion = { headers: header };
+
+      if (me.v_fechaI != null) {
+        me.horariosFacilitadores = [] 
+        me.$justiciarestaurativa.get(`api/FacilitadorNotificadors/ListarSesionesFecha/${me.modulos}/${me.fCita}`, configuracion)
+          .then(response => {            
+            me.horariosFacilitadores = response.data
+          })
+          .catch(function (error) {
+            me.$notify(error.message, "error");
+          });        
+      }
+
+    },
+
+
+
+
     crearPdfSoli() {      
       var pdfMake = require("pdfmake/build/pdfmake.js");
       var htmlToPdfmake = require("html-to-pdfmake");
@@ -4342,6 +4558,8 @@ export default {
       let configuracion = { headers: header };
 
       var arrayAsignacion = [];
+
+      me.loaderInterno = true
   
       me.$confirm
       (
@@ -4399,7 +4617,7 @@ export default {
                     uf_Agencia: me.u_agencia,
                     uf_Modulo: me.u_modulo,
                     uf_Nombre: me.v_facilitador.value,
-                    uf_Puesto: me.pdf_puesto,
+                    uf_Puesto: me.v_facilitador.valuep,
                     FechaHora: `${me.fCita} ${me.h_horacita}`,
                     Capturista: me.usuarioActual,
                     dirigidoa_Nombre: item.nombreR,
@@ -4478,7 +4696,13 @@ export default {
     },
     guardarNoEspontaneo() {
       let me = this;
-      me.questionPersona = true;
+      const isValid = me.$refs.form.validate();
+      
+      if (isValid) {
+        me.questionPersona = true;
+      } else {        
+        me.$notify("Favor de llenar los campos requeridos", "error");
+      } 
     },
     cerrarQuestionPersona() {
       this.questionPersona = false;
@@ -4501,11 +4725,11 @@ export default {
           me.derivaciones = response.data;
   
           //Validacion para filtrar los expedientes con ADO solo para mujeres y cavi
-          if(me.idCavi !== me.u_idagencia && me.idMujeres !== me.u_idagencia)
+          /*if(me.idCavi !== me.u_idagencia && me.idMujeres !== me.u_idagencia)
           {
             me.derivaciones = me.derivaciones.filter(derivacion => !derivacion.noExpediente.includes('ADO'));
 
-          }
+          }*/
           me.filtros = false;
           me.contador = response.data.length;
         })
@@ -4640,6 +4864,7 @@ export default {
                 response.data.map((c) => { me.idConjuntos.push({ value: c.idConjuntoDerivaciones }); });
                 me.conjunto = response.data;
                 me.aux1 = me.conjunto.length;
+                me.v_delitosPDF = response.data[0].nombreD.split(';')
 
             }).catch(function (error) 
             {
@@ -4975,7 +5200,8 @@ export default {
         //*********************************************************** Aqui termina  Traer si es conjunto o no y su informacion ************************************************** */
 
         me.listarNotificadores();
-        me.listarModulos();
+        //me.listarModulos();
+        me.listarAgenciasDistrito()
         me.dialogform = true;
       })
       .catch(function (error) {
@@ -5001,6 +5227,7 @@ export default {
       let configuracion = { headers: header };
       var facilitadoresarray = [];
       me.v_facilitadores = [];
+      me.v_facilitador = ''
 
       me.$justiciarestaurativa
         .get(
@@ -5014,15 +5241,19 @@ export default {
         )
         .then(function (response) {
           facilitadoresarray = response.data;
-          facilitadoresarray.map(function (x) {
-            me.v_facilitadores.push({
-              text: x.nombreUsuario,
-              value: x.nombreUsuario,
-              value2: x.moduloServicioId,
-              value3: x.idFacilitadorNotificador,
-              valuep: x.puesto,
+          if (facilitadoresarray.length > 0) {
+            facilitadoresarray.map(function (x) {
+              me.v_facilitadores.push({
+                text: x.nombreUsuario,
+                value: x.nombreUsuario,
+                value2: x.moduloServicioId,
+                value3: x.idFacilitadorNotificador,
+                valuep: x.puesto,
+              });
             });
-          });
+          } else {
+            me.textoNoData = 'Sin facilitadores asignados a este modulo'  
+          }
         })
         .catch(function (error) {
           me.$notify(error.message, "error");
@@ -5039,17 +5270,21 @@ export default {
           configuracion
         )
         .then(function (response) {
-          notificadoresarray = response.data;
-          notificadoresarray.map(function (x) {
-            me.v_notificadores.push({
-              text: x.nombreUsuario,
-              value: x.nombreUsuario,
-              value2: x.moduloServicioId,
-              value3: x.idUsuario,
-              value4: x.nombreModulo,
-              value5: x.puesto,
+          if (response.data.length > 0) {
+            notificadoresarray = response.data;
+            notificadoresarray.map(function (x) {
+              me.v_notificadores.push({
+                text: x.nombreUsuario,
+                value: x.nombreUsuario,
+                value2: x.moduloServicioId,
+                value3: x.idUsuario,
+                value4: x.nombreModulo,
+                value5: x.puesto,
+              });
             });
-          });
+          }else{
+            me.textoNoData = `No hay notificadores disponibles`
+          }
         })
         .catch(function (error) {
           me.$notify(error.message, "error");
@@ -5351,6 +5586,10 @@ export default {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
+
+      const isValid = me.$refs.form.validate();      
+      
+      if (isValid) {   
       me.$confirm(
         "Esperando confirmación",
         "Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios",
@@ -5418,7 +5657,7 @@ export default {
                       configuracion
                     )
                     .then(function (response) {
-                      if (response.data.fhnd == 1) {
+                      if (response.data.fhnd) {
                         me.$notify(
                           "La fecha y hora seleccionada ya no esta disponible para este facilitador",
                           "error"
@@ -5429,9 +5668,9 @@ export default {
                           "Se ha Asignado Correctamente",
                           "Asignación Creada"
                         );
-                        me.limpiar();
                         me.dialogform = false;
                         me.listarDerivacionesInicial();
+                        me.limpiar();
                       }
                     })
                     .catch(function (error) {
@@ -5464,6 +5703,9 @@ export default {
           alertify.warning("Verifica la información");
         }
       ).set("labels", { ok: "Guardar", cancel: "Cancelar" });
+      } else {
+        me.$notify("Favor de llenar los campos requeridos", "error");
+      }
     },
     //? Función para generar los citatorios
     citatoriosPDF() {      
@@ -5479,11 +5721,11 @@ export default {
       var listadelito = "";
       var ddd = [];
 
-      me.v_delitos.map(qw => {
+      me.v_delitosPDF.map(qw => {
         if (listadelito == "") {
-          listadelito += qw.text.trim()
+          listadelito += qw.trim()
         } else {
-          listadelito += `, ${qw.text.trim()}`  
+          listadelito += `, ${qw.trim()}`  
         }
       })    
 
@@ -5515,7 +5757,7 @@ export default {
         var fechaCita = `${dia} de ${mes} del ${año}`;        
         var pdf_distrito = me.u_distrito;
         var pdf_dirsubproc = me.u_dirSubPro;
-        var pdf_agencia = me.u_dgencia;
+        var pdf_agencia = me.u_agencia;
         var pdf_usuario = me.u_nombre;
         var pdf_puesto = me.u_puesto;
         var pdf_modulo = me.u_modulo;
@@ -5591,7 +5833,7 @@ export default {
           },
           "\n",
           {
-            text:`El motivo de su cita es por una denuncia penal interpuesta en su contra por ${me.personasconRepresentantesPDF(me.solicitanteC)} por ${me.v_delitos.length > 1 ? 'los delitos de' : 'el delito de'} ${listadelito} de conformidad con el Código Penal del Estado de Hidalgo, dicho delito es sancionable.`,
+            text:`El motivo de su cita es por una denuncia penal interpuesta en su contra por ${me.personasconRepresentantesPDF(me.solicitanteC)} por ${me.delitoparacitatorio.split(',').length > 1 ? 'los delitos de' : 'el delito de'} ${this.delitoparacitatorio} de conformidad con el Código Penal del Estado de Hidalgo, dicho delito es sancionable.`,
             style: "texto",
           },
           "\n",
@@ -5760,7 +6002,7 @@ export default {
             },
             "\n",
             {
-              text:`El motivo de su cita es por una denuncia penal interpuesta por usted y para reunirse con ${me.personasconRepresentantesPDF(me.requeridoC)} por ${me.v_delitos.length > 1 ? 'los delitos de' : 'el delito de'} ${listadelito}, de conformidad con el Código Penal del Estado de Hidalgo.`,
+              text:`El motivo de su cita es por una denuncia penal interpuesta por usted y para reunirse con ${me.personasconRepresentantesPDF(me.requeridoC)} por ${me.delitoparacitatorio.split(',').length > 1 ? 'los delitos de' : 'el delito de'} ${delitoparacitatorio}, de conformidad con el Código Penal del Estado de Hidalgo.`,
               style: "texto",
             },
             "\n",
@@ -6047,7 +6289,7 @@ export default {
           },
           {
             text:
-              `Su cita es a las ${me.formatearfechahora(me.fechaHoraCita).substr(10, 6)} del dia ${me.formatearfechaTexo(me.fechaHoraCita)}`,
+              `Su cita es a las ${me.formatearfechahora(me.fechaHoraCita).substr(10, 6)} del día ${me.formatearfechaTexo(me.fechaHoraCita)}`,
             alignment: "center",
           },
           {
@@ -6111,7 +6353,7 @@ export default {
                   image: me.qrCodeR,
                   width: 80, // Ajusta el ancho según tu diseño
                   height: 80, // Ajusta la altura según tu diseño
-                  absolutePosition: { x: 5, y: -280 }, // Ajusta las coordenadas según tu diseño
+                  absolutePosition: { x: 5, y: -370 }, // Ajusta las coordenadas según tu diseño
               }
               : "",
             ],
@@ -6214,7 +6456,7 @@ export default {
       me.filtros = true;
     },
     formatearfechahora: function (fecha) {
-      return moment(fecha).format("DD/MM/YYYY hh:mm:ss a");
+      return moment(fecha).format("DD/MM/YYYY HH:mm:ss a");
     },
     formatearfecha: function (fecha) {
       return moment(fecha).format("DD/MM/YYYY");
@@ -6241,20 +6483,26 @@ export default {
         (this.statusSolicitud = "Procedente");
       this.motivo = "";
       this.v_solicitantes = [];
+      this.v_fechaI = ''
       this.v_requeridos = [];
+      this.horariosFacilitadores = []
       this.v_requerido = "";
       this.v_modulo = "";
-      this.v_facilitador = "";
-      this.v_notificador = "";
-      this.v_facilitador = "";
+      this.moduloSeleccionado = ""
+      this.panel = 0
+      this.textoNoData = "Completa el formulario para ver el listado",
+      this.textoNoDataN = "Completa el formulario para ver el listado",
+      this.textoNoDataM = "Selecciona una agencia para ver los modulos disponibles",        
+      this.v_facilitadores = []
       this.modulos = "";
       this.fCita = "";
+      this.v_agencia = ""
       this.h_menu = "";
       this.h_horacita = "";
       this.duracion = "";
       this.v_lugarcita = this.direAgencia;
       this.switch2 = false;
-      this.pdfs = []      
+      //this.pdfs = []      
     },
     limpiar() {
       let me = this;
@@ -6267,8 +6515,12 @@ export default {
       me.v_fechac = "";
 
       me.v_menu2 = false;
+      me.panel = 0
       me.v_horacita = "";
       me.v_horac = "";
+      me.v_fechaI = ''
+      me.moduloSeleccionado = ""
+      me.horariosFacilitadores = []
 
       me.v_lugarcita =
         "SALA DE MEDIACIÓN  NÚMERO I (Agregar dirección de la sede correspondiente)";
@@ -6277,11 +6529,15 @@ export default {
 
       me.citatorio1v1 = "";
       me.citatorio1v2 = "";
+      me.v_agencia = ""
+      me.textoNoData = "Completa el formulario para ver el listado",
+      me.textoNoDataN = "Completa el formulario para ver el listado",
+      me.textoNoDataM = "Selecciona una agencia para ver los modulos disponibles", 
 
       me.citatorio2 = "";
       me.citatorio3 = "";
 
-      me.fechaHoraCita = "";
+      //me.fechaHoraCita = "";
       me.v_statusAsistencia = false;
       me.nombre = "";
       me.direccionS = "";
@@ -6293,11 +6549,14 @@ export default {
       me.statussesion = "";
       me.descripcion = "";
       me.v_modulo = "";
-      me.v_facilitador = "";
-      me.v_notificador = "";
+      me.v_facilitadores = []  
+      //me.v_facilitador = "";
+      //me.v_notificador = "";
 
       me.asignaciones = [];
-      
+      me.modulos = ""
+      me.switch2 = false;
+
       me.conjuntosDetalles = [];
       me.idSesions = [];
       me.solicitadosHR = [];
@@ -6306,7 +6565,21 @@ export default {
       me.idConjuntos = [];
       me.uf_Nombre = ""
 
-      me.editedIndex = -1;
+      //me.editedIndex = -1;
+    },
+    //* Función para limpiar parcialmente el formulario de asignación
+    limpiarFormulario() {
+      let me = this
+
+      me.listarNotificadores()  
+      me.fCita = ''
+      me.v_modulo = ''      
+      me.v_modulos = []
+      me.h_horacita = ''
+      me.horariosFacilitadores = []
+      me.duracion = ''            
+      me.v_facilitadores = []            
+      me.v_notificadores = []      
     },
     cerrarFull() {
       let me = this;
@@ -6353,7 +6626,17 @@ export default {
 
       const zipContent = await zip.generateAsync({ type: 'blob' })
       
-      saveAs(zipContent, `Oficios de sesión - ${me.noExpediente}.zip`)      
+      saveAs(zipContent, `Oficios de sesión - ${me.noExpediente}.zip`)  
+      
+      this.pdfs = []      
+      me.qrCode = ''
+      me.qrCodeC = ''
+      me.qrCodeR = ''
+      me.editedIndex = -1;
+      me.loaderInterno = false
+      me.v_notificador = "";
+      me.v_facilitador = "";
+      me.fechaHoraCita = "";
     },
     //? Función para generar el código QR
     async generarQR(tipodo,nuc,nombrefirma,fechadoc,id) 
@@ -6414,15 +6697,29 @@ export default {
             configuracion
           )
           .then(function (response) {
-            response.data.map((x) => {
-              me.v_facilitadores.push({
-                text: x.nombreUsuario,
-                value: x.nombreUsuario,
-                value2: x.moduloServicioId,
-                value3: x.idFacilitadorNotificador,
-                valuep: x.puesto,
+            if (response.data.length == 0) {
+              let [hora, minuto] = me.h_horacita.split(":").map(Number)
+
+              let date = new Date()
+
+              date.setHours(hora)
+              date.setMinutes(minuto + parseInt(me.duracion))
+
+              let horaN = date.getHours().toString().padStart(2, '0')
+              let minutoN = date.getMinutes().toString().padStart(2, '0')
+              
+              me.textoNoData = `No hay facilitadores disponibles entre ${me.h_horacita} y ${horaN}:${minutoN}`
+            } else {
+              response.data.map((x) => {
+                me.v_facilitadores.push({
+                  text: x.nombreUsuario,
+                  value: x.nombreUsuario,
+                  value2: x.moduloServicioId,
+                  value3: x.idFacilitadorNotificador,
+                  valuep: x.puesto,
+                });
               });
-            });
+            }
           }, configuracion)
           .catch(function (error) {
             if (error.response.status == 401) {
@@ -6474,5 +6771,15 @@ export default {
   position: absolute;
   right: 0px;
   margin-right: 0px;
+}
+
+
+.labelHorario{
+  background-color: #691c3e;
+  color: white;  
+  display: inline-block;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 10px;
 }
 </style>

@@ -12,7 +12,8 @@
             <v-stepper v-model="step" non-linear vertical>
                 <v-stepper-step :complete="step > 1" step="1" :rules="[() => !errors.has('clasificacion de persona') && !errors.has('nombre') && !errors.has('apellido paterno') 
                                                                              && !errors.has('fecha de nacimiento') && !errors.has('Persona Desaparecida') 
-                                                                             && !errors.has('clasificacion de persona')]">
+                                                                             && !errors.has('clasificacion de persona') 
+                                                                             && (!['Victima directa', 'Victima indirecta'].includes(clasificacionpersona) || !errors.has('relacion victima'))]">
                     Captura de datos
                     <small>Datos del denunciante.</small>
                 </v-stepper-step>
@@ -35,9 +36,11 @@
                                     />
                                     <v-text-field 
                                         name="razón social"   
-                                        label="Razón social:" 
+                                        label="Razón social (máximo 200 caracteres):"
                                         v-model="razonsocial"   
                                         v-if="radios === 'Moral'  && !switch2" 
+                                        :counter="200"
+                                        :maxlength="200"
                                     />
                                     <v-autocomplete 
                                         name="clasificacion de persona"
@@ -126,22 +129,19 @@
                                         label="Sexo:" 
                                         v-if="switch2==false" 
                                     />
-                                    <v-switch 
-                                        v-if="clasificacionpersona == ('Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
-                                        v-model="relacion"  
-                                        :label="'La victima tiene relación con el imputado? '"  
-                                        color="success"  
-                                        hide-details 
-                                    />
                                     <v-autocomplete
+                                    name="relacion victima"
                                         :items="relacionados"
                                         v-model="relacionado"
-                                        label="Relación:" 
-                                        v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && relacion && !switch2" 
+                                        label="*Relación de la víctima con el imputado:" 
+                                        v-validate="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' ? 'required' : ''"
+                                        v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta'" 
+                                        v-if="switch2==false" 
+                                        :error-messages="errors.collect('relacion victima')"
                                     />
 
-                                    <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una poblacion afrodescendiente?:" v-if="switch2==false" color="success"  hide-details></v-switch>
-                                    
+                                    <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una población afrodescendiente?:" v-if="switch2==false" color="success"  hide-details></v-switch>
+
                                 </v-flex>
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>    
                                     <v-autocomplete
@@ -433,8 +433,15 @@
                         <v-container grid-list-md>
                             <v-layout row wrap>  
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>
+                                    <v-autocomplete
+                                        name="tipo vialidad"
+                                        :items="vialidades"
+                                        v-model="vialidad"
+                                        label="Tipo de vialidad:" 
+                                        :error-messages="errors.collect('tipo vialidad')" 
+                                    />
                                     <v-text-field 
-                                        label="Calle:" 
+                                        label="Nombre:"  
                                         name="calle" 
                                         v-model="calle" 
                                         v-if="switch2==false"
@@ -502,6 +509,13 @@
                                         v-if="switch2==false"
                                         return-object
                                         v-on:change="listarPorLocalidad"
+                                    />
+                                    <v-autocomplete
+                                        name="tipo asentamiento"
+                                        :items="asentamientos"
+                                        v-model="asentamiento"
+                                        label="Tipo de asentamiento:" 
+                                        :error-messages="errors.collect('tipo asentamiento')" 
                                     />
                                     <v-text-field 
                                         label="Código postal:" 

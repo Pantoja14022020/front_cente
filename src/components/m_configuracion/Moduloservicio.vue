@@ -18,7 +18,7 @@
                         <span>Agregar Registro </span>
                         
                     </v-tooltip>
-                    <v-dialog   v-model="dialog"  max-width="750px"> 
+                    <v-dialog   v-model="dialog"  max-width="750px" persistent> 
                          
                         <v-card>
                             <v-toolbar card dark color="grey lighten-4 primary--text">
@@ -174,7 +174,7 @@
             </v-data-table>
 
             <!-- Modal para activar, desactivar ModuloServicio -->
-            <v-dialog v-model="modalModActDes" max-width="400px">
+            <v-dialog v-model="modalModActDes" max-width="400px" persistent>
                         <v-card>
                             <v-card-title class="subheading thin" v-if="!this.condicion"><v-icon>security</v-icon>¿Activar Modulo?</v-card-title>
                             <v-card-title class="subheading thin" v-if="this.condicion"><v-icon>security</v-icon>¿Desactivar Modulo?</v-card-title>
@@ -182,7 +182,7 @@
                                 Estás a punto de 
                                 <span v-if="!this.condicion">Activar </span>
                                 <span v-if="this.condicion">Desactivar </span>
-                                el Modulo servicio con  el nombre: <b>{{ moduloNombre }}</b>
+                                el Modulo servicio con  el nombre: <b>{{ nombre }}</b>
                                 de la agencia: <b>{{ agenciaNombre }}</b>
                             </v-card-text>
                             <v-card-actions>
@@ -271,7 +271,8 @@
                 modalModActDes: false,
                 moduloNombre: '',
                 agenciaNombre: '',
-                condicion: '',
+                condicion: true,
+                proceso:'',
                 idModulo:'',
                 
                 
@@ -382,10 +383,11 @@
                 var dspArray=[];
                 var iddistrito='';
                 me.dsps=[];
-                debugger
-                if (me.editedIndex==1)
+                if (!me.distritoId.value)
                 {
                     iddistrito=me.distritoId;
+                    me.dspId ="";
+                    me.agenciaId ="";
                 }
                 else
                 {
@@ -420,13 +422,14 @@
                 let configuracion= {headers : header};
                 var agenciasArray=[];
                 var dspid='';
-                if (me.editedIndex==1)
+                if (!me.dspId.value)
                 {
                    dspid=me.dspId;
                 }
                 else
                 {
                     dspid=me.dspId.value;
+                    me.agenciaId ="";
                 }
                 me.agencias=[];
                 this.$conf.get('api/Agencias/ListarPorDirSub/' + dspid,configuracion).then(function(response){
@@ -464,13 +467,17 @@
                 this.tipo = item.tipo;
                 this.nombre=item.nombre; 
                 this.serviciointerno = item.servicioInterno;  
-                this.dialog = true
+                this.condicion = item.condicion;
+                this.dialog = true;
             }, 
             close () {
                 this.dialog = false;
                 this.limpiar();
             },  
             limpiar(){
+                this.serviciointerno = false;
+                this.editedIndex=-1;
+                this.modalModActDes = false;
                 this.distritoId=""; 
                 this.dspId=""; 
                 this.agenciaId=""; 
@@ -478,109 +485,150 @@
                 this.clave="";
                 this.tipo = "";
                 this.nombre="";  
-                this.serviciointerno = false;
-                this.editedIndex=-1;
+                this.agenciaNombre = "";
+                this.condicion = true;
             },
-            guardar () {
-                this.$validator.validate().then(result => {
-                    if (result) { 
+            async guardar () {
+                const result = await this.$validator.validate();
+                    if (!result) return;
+                    let primer_id = null;
+                    let me = this;
+                    let header = { "Authorization": "Bearer " + this.$store.state.token };
+                    let configuracion = { headers: header };
                         if (this.editedIndex > -1) {
-                            //Código para editar 
-                            let me=this;
-                            let header={"Authorization" : "Bearer " + this.$store.state.token};
-                            let configuracion= {headers : header};
-                            this.$conf.put('api/ModuloServicios/Actualizar',{
-                                'idModuloServicio': me.idModuloServicio,
-                                'clave': me.clave,
-                                'agenciaId': me.agenciaId,
-                                'tipo': me.tipo,
-                                'nombre': me.nombre, 
-                                'servicioInterno': me.serviciointerno,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se actualizo correctamente !!!','success')  
-                                me.listar();
-                                me.limpiar();     
-                            }).catch(err => { 
-                                if (err.response.status==400){
-                                    me.$notify("No es un usuario válido", 'error')
-                                } else if (err.response.status==401){
-                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                    me.e401 = true,
-                                    me.showpage= false
-                                } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                    me.e403= true
-                                    me.showpage= false 
-                                } else if (err.response.status==404){
-                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                }else{
-                                    me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                } 
-                            });
+                            // Código para editar
+                            this.proceso = "Actualizar";
+                            try {
+                                const response = await this.$conf.put('api/ModuloServicios/Actualizar',{
+                                    'idModuloServicio': me.idModuloServicio,
+                                    'clave': me.clave,
+                                    'agenciaId': me.agenciaId,
+                                    'tipo': me.tipo,
+                                    'nombre': me.nombre, 
+                                    'servicioInterno': me.serviciointerno,
+                                    'condicion': me.condicion
+                                }, configuracion);
+                                primer_id = 1;
+                            } catch (err) {
+                                this.close();
+                                this.$notify(`No se pudo actualizar el registro en el distrito principal`, 'error');
+                                this.listar();
+                                this.limpiar();
+                                return;
+                            }
+                            if (primer_id) {
+                                for (const distrito of this.distritos) {
+                                    await this.replicarRegistro(distrito, this.idModuloServicio);
+                                }
+                                this.close();
+                                this.$notify('La información se actualizó correctamente!!!', 'success');
+                                this.listar();
+                                this.limpiar();
+                            }
                         } else {
-                            //Código para guardar
-                            let me=this;
-                            let header={"Authorization" : "Bearer " + this.$store.state.token};
-                            let configuracion= {headers : header};
-                            this.$conf.post('api/ModuloServicios/Crear',{
-                                'agenciaId': me.agenciaId,
-                                'clave': me.clave,
-                                'tipo': me.tipo,
-                                'nombre': me.nombre, 
-                                'servicioInterno' : me.serviciointerno,
-                            },configuracion).then(function(response){
-                                me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
-                                me.listar();
-                                me.limpiar();                        
-                            }).catch(err => { 
-                                if (err.response.status==400){
-                                    me.$notify("No es un usuario válido", 'error')
-                                } else if (err.response.status==401){
-                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                    me.e401 = true,
-                                    me.showpage= false
-                                } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                    me.e403= true
-                                    me.showpage= false 
-                                } else if (err.response.status==404){
-                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                }else{
-                                    me.$notify('Error al intentar crear el  registro!!!','error')     
-                                } 
-                            });
+                            // Código para guardar
+                            this.proceso = "Guardar";
+                            try {
+                                const response = await this.$conf.post('api/ModuloServicios/Crear',{
+                                    'agenciaId': me.agenciaId,
+                                    'clave': me.clave,
+                                    'tipo': me.tipo,
+                                    'nombre': me.nombre, 
+                                    'servicioInterno' : me.serviciointerno,
+                                     'condicion': me.condicion
+                        }, configuracion)
+                        primer_id = response.data.id;
+                    } catch (err) {
+                        this.close();
+                        this.$notify(`No se pudo crear el registro en el distrito principal`, 'error');
+                        this.listar();
+                        this.limpiar();
+                        return;
+                    }if(primer_id){
+                        for (const distrito of this.distritos) {
+                            await this.replicarRegistro(distrito, primer_id);
                         }
-                    }  
-                })
-            },  
-            activarDesactivarModulo(item){
+                        this.close();
+                        this.$notify('La información se guardo correctamente !!!','success')  
+                        this.listar();
+                        this.limpiar();
+                    }
+                }
+            },async replicarRegistro(distrito, _primer_id) {
+                let me = this;
+                let header = { "Authorization": "Bearer " + this.$store.state.token };
+                let configuracion = { headers: header };
 
+                try {
+                    const response = await axios.post(`api/ModuloServicios/Replicar`, {
+                        'distritoId': distrito.value,
+                        'idModuloServicio': _primer_id,
+                        'clave': me.clave,
+                        'agenciaId': me.agenciaId,
+                        'tipo': me.tipo,
+                        'nombre': me.nombre, 
+                        'servicioInterno': me.serviciointerno,
+                        'condicion': me.condicion
+                    }, configuracion)
+                    
+                    if(response.status == 200)
+                    {
+                        await this.error_registro({IdRegistro: _primer_id, IdDistrito: distrito.value,NombreDistrito: distrito.text, ActRegistro: true});
+                    }
+                } catch (err) {
+                    this.$notify(`El distrito ${distrito.text} tiene problemas en conexion`, 'error');
+                    await this.error_registro({IdRegistro: _primer_id, IdDistrito: distrito.value,NombreDistrito: distrito.text, ActRegistro: false});
+                }
+            },
+            async error_registro(error) {
+                let me = this;
+                let header = { "Authorization": "Bearer " + this.$store.state.token };
+                let configuracion = { headers: header };
+
+                try {
+                    const reponse = await axios.post(`api/ErroresReplicacion/RegistrarError`, {
+                        'ActualizaRegistro': error.ActRegistro,
+                        'RegistroErrorId': error.IdRegistro,
+                        'DistritoId': error.IdDistrito,
+                        'NombreDistrito': error.NombreDistrito,
+                        'Proceso': me.proceso,
+                        'Modulo': 'Modulo o Servicio',
+                        'Status': true
+                    }, configuracion)
+
+                    if(reponse.status == 201)
+                    {
+                        me.$notify(reponse.data.mensaje, 'warning');
+                    }
+                } catch (err) {
+                    this.$notify("No se pudo crear o actualizar el registro del error.", 'error');
+                }
+            },
+            activarDesactivarModulo(item){
                 this.modalModActDes = true;
-                this.moduloNombre = item.nombre;
                 this.agenciaNombre = item.agencia;
+                this.dspId = item.dspId;
+                this.idModuloServicio = item.idModuloServicio;  
+                this.agenciaId= item.agenciaId; 
+                this.clave= item.clave;
+                this.tipo = item.tipo;
+                this.nombre=item.nombre; 
+                this.serviciointerno = item.servicioInterno;  
                 this.condicion = item.condicion;
-                this.idModulo = item.idModuloServicio;
             },
             modalClose(){
                 this.modalModActDes = false;
             },
-            actdesModulo(){
+            async actdesModulo(){
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
 
                 if (this.condicion) {
                     
-                    this.$conf.put('api/ModuloServicios/DesactivarModulo/'+this.idModulo,{},configuracion).then(function(response){
-                        me.modalModActDes = false;
-                        me.moduloNombre = "";
-                        me.agenciaNombre = "";
-                        me.condicion = "";
-                        me.idModulo = "";
-                        me.listar();                       
-                    }).catch(err => {  
+                    this.proceso = "Desactivar Modulo";
+                    const response = await this.$conf.put('api/ModuloServicios/DesactivarModulo/'+this.idModuloServicio,{},configuracion)
+                    .catch(err => {  
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
                         } else if (err.response.status==401){
@@ -597,17 +645,21 @@
                             me.$notify('Error al intentar actualizar el registro!!!','error')   
                         }  
                     });
+                    if(response.status == 200){
+                        me.condicion = false;
+                        for (const distrito of this.distritos) {
+                            await me.replicarRegistro(distrito, me.idModuloServicio);
+                        }
+                        me.$notify('La información se actualizo correctamente !!!','success')  
+                        me.listar();
+                        me.limpiar();
+                    }
                 }
                 else
                 {
-                    this.$conf.put('api/ModuloServicios/ActivarModulo/'+this.idModulo,{},configuracion).then(function(response){
-                        me.modalModActDes = false;
-                        me.moduloNombre = "";
-                        me.agenciaNombre = "";
-                        me.condicion = "";
-                        me.idModulo = "";
-                        me.listar();                       
-                    }).catch(err => {  
+                    this.proceso = "Activar Modulo";
+                    const response = await this.$conf.put('api/ModuloServicios/ActivarModulo/'+this.idModuloServicio,{},configuracion) 
+                    .catch(err => {  
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
                         } else if (err.response.status==401){
@@ -624,6 +676,15 @@
                             me.$notify('Error al intentar actualizar el registro!!!','error')   
                         }  
                     });
+                    if(response.status == 200){
+                        me.condicion = true;
+                        for (const distrito of this.distritos) {
+                            await me.replicarRegistro(distrito, me.idModuloServicio);
+                        }
+                        me.$notify('La información se actualizo correctamente !!!','success')  
+                        me.listar();
+                        me.limpiar();
+                    }
                 }
 
             },

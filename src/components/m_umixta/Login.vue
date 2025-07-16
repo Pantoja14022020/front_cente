@@ -8,9 +8,13 @@
                                 
                                <v-spacer></v-spacer>
                                 <v-navigation-drawer  
-                                    right width="450"
-                                    class="primary"
-                                    app dark=""
+                                    
+                                    right
+                                  width="450"
+                                  class="primary"
+                                  app
+                                  dark
+                                  permanent
                                     >
                                     
 

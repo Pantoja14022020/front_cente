@@ -29,20 +29,20 @@
           ></v-text-field>
         </v-flex>
         <v-btn
-          class="mx-2"
+          class="mx-2 pt-2"
           @click="cerrarcarpeta"
           fab
           dark
           small
           color="primary"
         >
-          <v-icon dark>close</v-icon>
+           <v-icon class="mt-1" dark>close</v-icon>
         </v-btn>
 
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="agregar()"
@@ -51,7 +51,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -954,6 +954,7 @@ export default {
               DireccionP: x.direccionP,
               RepresentanteActivo: x.representanteActivo,
               NombreRepresentanteLegal: x.nombreRepresentanteLegal,
+              DireccionRepresentanteLegal: x.direccionRepresentante,
               TelefonoReL: x.telefonoReL,
               CorreoReL: x.correoReL,
               NombreRepresentanteJuridico: x.nombreRepresentanteJuridico,
@@ -1006,6 +1007,7 @@ export default {
               DireccionP: x.direccionP,
               RepresentanteActivo: x.representanteActivo,
               NombreRepresentanteParticular: x.nombreRepresentanteParticular,
+              DireccionRepresentante: x.direccionRepresentante,
               TelefonoRe: x.telefonoRe,
               CorreoRe: x.correoRe,
             });
@@ -1043,7 +1045,7 @@ export default {
             ", Representada por  " +
             this.victimas[i].NombreRepresentanteLegal +
             " con domicilio para oir y recibir notificaciones el ubicado en " +
-            this.victimas[i].DireccionE +
+            this.victimas[i].DireccionRepresentanteLegal +
             ", " +
             this.victimas[i].TelefonoReL +
             ", " +
@@ -1127,7 +1129,7 @@ export default {
               "<b>Datos del Defensor Particular: </b>" +
               this.imputado[i].NombreRepresentanteParticular +
               ", con domicilio para oir y recibir notificaciones " +
-              this.imputado[i].DireccionE +
+              this.imputado[i].DireccionRepresentante +
               ", " +
               this.imputado[i].TelefonoRe +
               ", " +
@@ -1184,7 +1186,7 @@ export default {
               "<b>Datos del Defensor Particular: </b>" +
               this.imputado[i].NombreRepresentanteParticular +
               ", con domicilio para oir y recibir notificaciones " +
-              this.imputado[i].DireccionE +
+              this.imputado[i].DireccionRepresentante +
               ", " +
               this.imputado[i].TelefonoRe +
               ", " +

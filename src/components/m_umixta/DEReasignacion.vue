@@ -429,8 +429,9 @@
                 'localidad': item.localidad,
                 'cp': item.cp,
                 'lat': item.lat,
-                'lng': item.lng
-
+                'lng': item.lng,
+                'tipoVialidad': item.tipoVialidad,
+                'tipoAsentamiento': item.tipoAsentamiento,
         
             },configuracion).then(function(){   
                 me.$notify('La información se actualizo correctamente !!!','success') 

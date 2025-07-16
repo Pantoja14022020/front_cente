@@ -28,7 +28,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -37,7 +37,7 @@
               small
               color="primary"
             >
-              <v-icon dark>close</v-icon>
+              <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar carpeta</span>
@@ -45,7 +45,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="agregar"
@@ -54,7 +54,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -289,7 +289,7 @@
                         <v-tooltip bottom>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              class="mx-2"
+                              class="mx-2 pt-2"
                               slot="activator"
                               v-on="on"
                               @click="generatextodoc()"
@@ -299,7 +299,7 @@
                               fab
                               color="primary"
                             >
-                              <v-icon dark>remove_red_eye</v-icon>
+                               <v-icon class="mt-3" dark>remove_red_eye</v-icon>
                             </v-btn>
                           </template>
                           <span>Generar texto de documento</span>
@@ -480,6 +480,8 @@ export default {
     referenciap: "",
     telefonop: "",
     fechap: "",
+    vialidades:[],
+    vialidadNombre: "",
     citatorionotificacion: 0,
     menu2: false,
     agenciap: '"domicilio de la agencia y datos completos de la agencia"',
@@ -573,6 +575,7 @@ export default {
       me.listarrHecho();
       me.listarPersonas();
       me.listardelitos();
+      me.listarVialidad();
     }
     axios.interceptors.request.use(
       (config) => {
@@ -842,13 +845,14 @@ export default {
           this.citatorionotificacion = 1;
           this.personanombrec = this.persona.nombreCompleto;
           this.dicc1 =
-            "Calle " +
+            this.vialidadNombre +
+            " " +
             this.direccionesc["calle"] +
             ", No.Interior: " +
             this.direccionesc["noint"] +
             ", No.Exterior: " +
             this.direccionesc["noext"] +
-            "Colonia " +
+            " Colonia " +
             this.direccionesc["localidad"] +
             ", Codigo postal " +
             this.direccionesc["cp"] +
@@ -879,6 +883,7 @@ export default {
       console.log("vista previa del citatorio")
       this.$validator.validate().then((result) => {
         if (result) {
+          this.dicc1 = this.direnccioninfo;
           this.mostrarpdf(this.acnombre, this.acpuesto, this.acagencia);
         }
       });
@@ -938,6 +943,8 @@ export default {
       this.fechacita = new Date().toISOString().substr(0, 10);
       this.lugardecita = "";
       this.delito = "";
+      this.fechacita = "";
+      this.horacita = "";
       this.descripcion = this.descripcioni;
       this.camposactivos = true;
       this.textodecitatorio = false;
@@ -953,6 +960,7 @@ export default {
       this.estadodireccion = false;
       this.qrCode = null;
       this.vistaPreviaTF = true;
+      this.vialidadNombre = "";
     },
     listarPersonas() {
       let me = this;
@@ -1007,14 +1015,17 @@ export default {
           .then(function (response) {
             me.direccionesc = response.data;
             me.comprobaciondireccionescucha = true;
+            let vialidadEncontrada = me.vialidades.find(v => v.value == me.direccionesc["tipoVialidad"]);
+            me.vialidadNombre = vialidadEncontrada ? vialidadEncontrada.text : "";
             me.direnccioninfo =
-              " Calle " +
+              me.vialidadNombre +
+              " " +
               me.direccionesc["calle"] +
               ", No.Interior: " +
               me.direccionesc["noint"] +
               ", No.Exterior: " +
               me.direccionesc["noext"] +
-              "Colonia " +
+              " Colonia " +
               me.direccionesc["localidad"] +
               ", Codigo postal " +
               me.direccionesc["cp"] +
@@ -1051,14 +1062,17 @@ export default {
           .then(function (response) {
             me.direccionesc = response.data;
             me.comprobaciondireccionescucha = true;
+            let vialidadEncontrada = me.vialidades.find(v => v.value == me.direccionesc["tipoVialidad"]);
+            me.vialidadNombre = vialidadEncontrada ? vialidadEncontrada.text : "";
             me.direnccioninfo =
-              " Calle " +
+              me.vialidadNombre +
+              " " +
               me.direccionesc["calle"] +
               ", No.Interior: " +
               me.direccionesc["noint"] +
               ", No.Exterior: " +
               me.direccionesc["noext"] +
-              "Colonia " +
+              " Colonia " +
               me.direccionesc["localidad"] +
               ", Codigo postal " +
               me.direccionesc["cp"] +
@@ -1156,6 +1170,32 @@ export default {
           }
         });
     },
+    listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+            me.vialidades.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
     guardar() {
       let me = this;
       let header = { Authorization: "Bearer " + this.$store.state.token };
@@ -1180,13 +1220,14 @@ export default {
                   rhechoId: me.rHechoId,
                   nombrePersona: me.persona.text,
                   domicilioPersona:
-                    " Calle " +
+                    me.vialidadNombre +
+                    " " +
                     me.direccionesc["calle"] +
                     ", No.Interior: " +
                     me.direccionesc["noint"] +
                     ", No.Exterior: " +
                     me.direccionesc["noext"] +
-                    "Colonia " +
+                    " Colonia " +
                     me.direccionesc["localidad"] +
                     ", Codigo postal  " +
                     me.direccionesc["cp"] +
@@ -1347,13 +1388,14 @@ export default {
               textofinal: me.texto,
               Hora: me.horacita,
               domicilioPersona:
-                " Calle " +
+                me.vialidadNombre +
+                " " +
                 me.direccionesc["calle"] +
                 ", No.Interior: " +
                 me.direccionesc["noint"] +
                 ", No.Exterior: " +
                 me.direccionesc["noext"] +
-                "Colonia " +
+                " Colonia " +
                 me.direccionesc["localidad"] +
                 ", Codigo postal " +
                 me.direccionesc["cp"] +

@@ -30,7 +30,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -47,7 +47,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="agregar"
@@ -56,7 +56,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -133,7 +133,7 @@
                 >Vista previa</v-btn
               >
               <v-btn icon @click="modalAdd = false">
-                <v-icon>close</v-icon>
+                <v-icon class="mt-1">close</v-icon>
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
@@ -571,6 +571,8 @@ export default {
     fechasuceso: "",
     direccionsuceso: "",
     direccionsucesof: "",
+    vialidades:[],
+    vialidadNombre: "",
     //********************************/
     rac: "",
     //-----CLAIM------------------------------------------
@@ -640,6 +642,7 @@ export default {
       me.listarIdentificacion();
       me.obtenerdirectorPI();
       me.listardireccionhecho();
+      me.listarVialidad();
     }
     axios.interceptors.request.use(
       (config) => {
@@ -867,7 +870,12 @@ export default {
           configuracion
         )
         .then(function (response) {
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let vialidadN = vialidadEncontrada ? vialidadEncontrada.text : "";
+
           me.direccionsucesof =
+           vialidadN +
+            " "  +
             response.data.calle +
             " " +
             response.data.noint +
@@ -999,7 +1007,12 @@ export default {
           me.$CAT
             .get("api/RAPs/ListarDP/" + me.personaId.value, configuracion)
             .then(function (response) {
+              let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+              me.vialidadNombre = vialidadEncontrada ? vialidadEncontrada.text : "";
+
               me.direccionpersonal =
+              me.vialidadNombre +
+                " " +
                 response.data.calle +
                 " " +
                 response.data.noint +
@@ -1120,6 +1133,32 @@ export default {
           }
         });
     },
+    listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+          response.data.forEach(x => {
+            me.vialidades.push({text: x.nombre, value: x.clave});
+          });
+      }).catch(err => {
+              if (err.response.status==400){
+                  me.$notify("No es un usuario válido", 'error')
+              } else if (err.response.status==401){
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                  me.e401 = true,
+                  me.showpage= false
+              } else if (err.response.status==403){
+                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.e403= true
+                  me.showpage= false
+              } else if (err.response.status==404){
+                  me.$notify("El recuso no ha sido encontrado", 'error')
+              }else{
+                  me.$notify('Error al intentar listar los registros!!!','error')
+              }
+          });
+    },
     CalcularRepresentante(representante) {
       let me = this;
       if (representante > 0) {
@@ -1225,21 +1264,21 @@ export default {
             this.personaId.value4 != "ADOLECENCIA (13 A 17 AÑOS)"
           ) {
             this.texto =
-              "Lugar:" +
+              "Lugar: " +
               this.u_municipio +
               "<p class=" +
               this.comilla +
               "ql-align-justify" +
               this.comilla +
               "><br></p>" +
-              "Fecha:" +
+              "Fecha: " +
               this.fechas +
               "<p class=" +
               this.comilla +
               "ql-align-justify" +
               this.comilla +
               "><br></p>" +
-              "Hora:" +
+              "Hora: " +
               this.horas +
               "<p class=" +
               this.comilla +
@@ -2172,21 +2211,21 @@ export default {
             this.personaId.value4 != "ADOLECENCIA (13 A 17 AÑOS)"
           ) {
             this.texto =
-              "Lugar:" +
+              "Lugar: " +
               this.u_municipio +
               "<p class=" +
               this.comilla +
               "ql-align-justify" +
               this.comilla +
               "><br></p>" +
-              "Fecha:" +
+              "Fecha: " +
               this.fechas +
               "<p class=" +
               this.comilla +
               "ql-align-justify" +
               this.comilla +
               "><br></p>" +
-              "Hora:" +
+              "Hora: " +
               this.horas +
               "<p class=" +
               this.comilla +
@@ -2694,21 +2733,21 @@ export default {
         this.tipo2 = 3;
 
         this.texto =
-          "Lugar:" +
+          "Lugar: " +
           item.uSubproc +
           "<p class=" +
           this.comilla +
           "ql-align-justify" +
           this.comilla +
           "><br></p>" +
-          "Fecha:" +
+          "Fecha: " +
           item.fechaS +
           "<p class=" +
           this.comilla +
           "ql-align-justify" +
           this.comilla +
           "><br></p>" +
-          "Hora:" +
+          "Hora: " +
           item.horaS +
           "<p class=" +
           this.comilla +
@@ -3501,6 +3540,7 @@ export default {
       this.texto =  'Vista Previa';
       this.qrCode =  null;
       this.vistaPreviaTF =  true;
+      this.vialidadNombre = "";
     },
     listarIdentificacion() {
       let me = this;
@@ -3912,7 +3952,12 @@ export default {
         )
         .then(function (response) {
           console.log("Entre a direccionhecho3");
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let vialidadNS = vialidadEncontrada ? vialidadEncontrada.text : "";
+
           me.direccionsuceso =
+          vialidadNS +
+            " " +
             response.data.calle +
             " " +
             response.data.noint +
@@ -3963,7 +4008,12 @@ export default {
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           console.log(response.data);
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let vialidadN = vialidadEncontrada ? vialidadEncontrada.text : ""; 
+
           me.direccion =
+          vialidadN +
+            " " +
             response.data.calle +
             " " +
             response.data.noint +

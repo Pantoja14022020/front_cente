@@ -18,11 +18,11 @@
                         filled
                     />
                 </v-flex>
-                <v-btn class="mx-2" @click="cerrarcarpeta" fab dark small color="primary">
-                    <v-icon dark>close</v-icon>
+                <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                    <v-icon class="mt-1" dark>close</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-                    <v-icon dark>add</v-icon>
+                <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                    <v-icon class="mt-1" dark>add</v-icon>
                 </v-btn>
             </v-toolbar>
             <v-data-table
@@ -76,20 +76,24 @@
                                     class="mr-2" v-on="on"  
                                     @click="actualizarstatus(props.item)"
                                     >
-                                    update
+                                    {{ props.item.tipo1 < 0 ? 'closed_caption' : 'block' }}
                                 </v-icon> 
                             </template>
-                            <span>Actualizar Status T1</span>
+                            <span>{{ props.item.tipo1 < 0 ? 'Activar T1' : 'Desactivar T1' }}</span>
                         </v-tooltip>
 
                         <div v-if="props.item.tipo2 != 0" class="justify-center layout px-0">
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on }">
-                                    <v-icon class="mr-2" v-on="on" @click="actualizarstatus2(props.item)">
-                                        update
+                                    <v-icon 
+                                        class="mr-2"
+                                        v-on="on"
+                                        @click="actualizarstatus2(props.item)" 
+                                    >
+                                        {{ props.item.tipo2 < 0 ? 'closed_caption' : 'block' }}
                                     </v-icon> 
                                 </template>
-                                <span>Actualizar Status T2</span>
+                                <span>{{ props.item.tipo2 < 0 ? 'Activar T2' : 'Desactivar T2' }}</span>
                             </v-tooltip>
                         </div>
 
@@ -405,12 +409,16 @@
                                 <v-container grid-list-md text-xs-center>
                                     <v-layout row wrap> 
                                         <v-flex class="espaciado" xs12 sm12 md6 lg6> 
-                                            <v-autocomplete 
-                                                name="medio de notificación"
+                                            <v-autocomplete name="medio de notificación"
                                                 :items="medionotificaciones"
-                                                v-model="medionotificacion"
-                                                label="Medio de notificación:" 
-                                            />
+                                                v-model="medionotificacion" 
+                                                multiple
+                                                return-object
+                                                attach
+                                                chips
+                                                deletable-chips
+                                                label="Medio de notificación:"
+                                            ></v-autocomplete>
                                             <v-text-field 
                                                 label="Telefono :"  
                                                 v-model="telefono1" 
@@ -452,8 +460,15 @@
                                 <v-container grid-list-md text-xs-center>
                                     <v-layout row wrap> 
                                         <v-flex class="espaciado"  xs12 sm12 md6 lg6>
+                                            <v-autocomplete
+                                                name="tipo vialidad"
+                                                :items="de_vialidades"
+                                                v-model="de_vialidad"
+                                                label="Tipo de vialidad:" 
+                                                :error-messages="errors.collect('tipo vialidad')" 
+                                            />
                                             <v-text-field 
-                                                label="Calle:" 
+                                                label="Nombre:" 
                                                 name="calle" 
                                                 v-model="de_calle" 
                                                 :error-messages="errors.collect('calle')" 
@@ -480,6 +495,8 @@
                                                 label="Referencia:"   
                                                 v-model="de_referencia" 
                                             /> 
+                                            </v-flex>
+                                        <v-flex class="espaciado" xs12 sm12 md6 lg6>
                                             <v-text-field 
                                                 label="Pais:" 
                                                 name="pais" 
@@ -487,8 +504,7 @@
                                                 v-if="switch2==false"
                                                 value="México" 
                                             />
-                                        </v-flex>
-                                        <v-flex class="espaciado" xs12 sm12 md6 lg6>
+                                        
                                             <v-autocomplete 
                                                 label="Estado:" 
                                                 name="estado"     
@@ -515,6 +531,13 @@
                                                 v-if="switch2==false"
                                                 return-object
                                                 v-on:change="de_listarPorLocalidad"
+                                            />
+                                            <v-autocomplete
+                                                name="tipo asentamiento"
+                                                :items="de_asentamientos"
+                                                v-model="de_asentamiento"
+                                                label="Tipo de asentamiento:" 
+                                                :error-messages="errors.collect('tipo asentamiento')" 
                                             />
                                             <v-text-field 
                                                 label="Código postal:" 
@@ -813,6 +836,7 @@ import pdf from 'vue-pdf';
 
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQR';
+import { Console } from 'console';
 
 
 var assert, curp, persona;
@@ -997,6 +1021,15 @@ export default {
         de_localidadid:0,
         de_localidades:[],
 
+
+        de_vialidad:'',
+        de_vialidades:[],
+        de_vialidadNombre: '',
+        
+        de_asentamiento:'',
+        de_asentamientos:[],
+        de_asentamientoNombre: '',
+
         de_cp:'', 
         de_lat:'',
         de_lng:'',
@@ -1132,6 +1165,8 @@ export default {
                 me.listarPersonas();
                 // DIRECCION PERSONAL 
                 me.listarCiudades();
+                 me.listarVialidad();
+                me.listarAsentamiento();
                 // DIRECCION ESCUCHA 
                 me.de_listarCiudades();
                 me.listarLogo();
@@ -1337,7 +1372,8 @@ export default {
 
                 //**************INFORMACION COMPLEMETARIA******************* */
             
-                me.medionotificacion = item.medioNotificacion;
+                var arrayMediosNotifiacion = item.medioNotificacion.split(",");
+                me.medionotificacion = arrayMediosNotifiacion;
                 me.telefono1 = item.telefono;
                 me.correo = item.correoElectronico;
                 me.nacionalidad = item.nacionalidad;
@@ -1345,6 +1381,7 @@ export default {
 
                 //***************DIRECCION DE NOTIFICACION****************** */
 
+                me.de_vialidad = item.tipoVialidad;
                 me.de_calle = item.calle;
                 me.de_noExt = item.noExt;
                 me.de_noInt = item.noInt;
@@ -1358,6 +1395,7 @@ export default {
                 me.de_municipio = item.municipio;
                 me.de_selectLocalidad(item.localidad);
                 me.de_localidad = item.localidad;
+                me.de_asentamiento = item.tipoAsentamiento
                 me.de_cp = item.cp;
                 me.de_lat = item.lat;
                 me.de_lng = item.lng;
@@ -1516,12 +1554,16 @@ export default {
             this.estado="";
             this.municipioid=0;
             this.municipio="";
+            this.municipios=[];
             this.localidadid=0; 
             this.localidad="";
+            this.localidades=[];
             this.cp=""; 
             this.lat="";
             this.lng="";
                 //step no4
+                this.de_vialidad="";
+            this.de_vialidadNombre="";
             this.de_calle="";
             this.de_noInt="";
             this.de_noExt="";
@@ -1533,8 +1575,12 @@ export default {
             this.de_estado="";
             this.de_municipioid=0;
             this.de_municipio="";
+            this.de_municipios=[];
             this.de_localidadid=0; 
             this.de_localidad="";
+            this.de_localidades=[];
+            this.de_asentamiento="";
+            this.de_asentamientoNombre="";
             this.de_cp=""; 
             this.de_lat="";
             this.de_lng="";
@@ -1921,6 +1967,60 @@ export default {
                         me.$notify('Error al intentar listar los registros!!!','error')    
                     } 
             });
+        },
+        listarVialidad(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.de_vialidades.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
+        },
+        listarAsentamiento(){
+            let me=this;
+            let header={"Authorization" : "Bearer " + this.$store.state.token};
+            let configuracion= {headers : header};
+            this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                response.data.forEach(x => {
+                    const item = {text: x.nombre, value: x.clave};
+                    me.de_asentamientos.push(item);
+                });
+            }).catch(err => {
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros!!!','error')
+                    }
+                });
         },
         onCapture() {
             this.imageUrl = this.$refs.webcam.capture();  
@@ -2439,6 +2539,13 @@ export default {
             if (!me.de_estadoid.value== 0){
                 me.de_estado = me.de_estadoid.text;
                 me.de_estadoid = me.de_estadoid.value;
+                me.de_municipio = '';
+                me.de_municipioid = '';
+                me.de_municipios = [];
+                me.de_localidad = '';
+                me.de_localidadid = '';
+                me.de_localidades = [];
+                me.de_cp = '';
             }
                 var municipiosArray=[];
                 me.de_municipios.length = 0;
@@ -2484,6 +2591,12 @@ export default {
             if (!me.de_municipioid.value== 0){
             me.de_municipio = me.de_municipioid.text;
             me.de_municipioid = me.de_municipioid.value;
+            me.de_localidad = '';
+                me.de_localidadid = '';
+                me.de_localidades = [];
+                me.de_cp = '';
+            } else if (!me.de_municipioid) {
+                return;
             }
 
             var localidadArray=[];
@@ -2524,8 +2637,12 @@ export default {
             let me=this;  
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
+            if (!me.de_localidadid.value == 0) {
             me.de_localidad = me.de_localidadid.text;
             me.de_localidadid = me.de_localidadid.value;
+            } else if (!me.de_localidadid) {
+                return;
+            }
             this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.de_localidadid,configuracion).then(function(response){
                 me.de_cp=response.data.cp;  
                 
@@ -2654,7 +2771,7 @@ export default {
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
-                        me.idireccionescuha=me.persona[0].value
+                        //me.idireccionescuha=me.persona[0].value
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros!!!','error')    
@@ -2974,6 +3091,93 @@ export default {
 
                             var personasnombre = "";
 
+
+                            // Poder listar al actualizar y crear la lista de medios de notificacion
+                        var listaMediosNotificacion='';
+                        if(me.medionotificacion.length <=0)
+                        {
+                            listaMediosNotificacion='';
+                        }
+                        else
+                        {
+                            me.medionotificacion.forEach(function(notificacion)
+                            {
+                                if (typeof notificacion !== null && typeof notificacion !== undefined){
+                                   if (notificacion == '[object Object]')
+                                      {
+                                          listaMediosNotificacion+=notificacion.text+',';
+                                      }
+                                      else {
+                                             listaMediosNotificacion+=notificacion+',';
+                                           }
+                                };
+                            });
+                            if (listaMediosNotificacion.endsWith(',')) {
+                                listaMediosNotificacion = listaMediosNotificacion.slice(0, -1);
+                            }
+
+                            if (listaMediosNotificacion.startsWith(',')) {
+                                listaMediosNotificacion = listaMediosNotificacion.substring(1);
+                            }
+                        };
+
+
+                        if (me.trepresentante && me.trepresentante[0] && me.trepresentante[0].value)
+                        {
+                            if (me.trepresentante[0].value == '7' || me.trepresentante[0].value == '1')
+                            {
+                                if (listaMediosNotificacion == '') {
+                                    me.$notify('El medio de notificación es obligatorio.', 'error');
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (me.trepresentante && me.trepresentante[1] && me.trepresentante[1].value)
+                        {
+                            if (me.trepresentante[1].value == '7' || me.trepresentante[1].value == '1')
+                            {
+                                if (listaMediosNotificacion == '') {
+                                    me.$notify('El medio de notificación es obligatorio.', 'error');
+                                    return;
+                                }
+                            }
+                        }
+                        
+                        if (listaMediosNotificacion.includes('Domicilio')) {
+                            if (me.de_vialidad == '' || me.de_vialidad == null ||
+                                me.de_calle == '' || me.de_calle == null || 
+                                me.de_estado == '' || me.de_estado == null || 
+                                me.de_municipio == '' || me.de_municipio == null ||
+                                me.de_localidad == '' || me.de_localidad == null) {
+                                me.$notify('Los campos "Vialidad", "Nombre", "Estado", "Municipio" y "Localidad" es obligatorio.', 'error');
+                                return;
+                            }
+                        }
+
+                        if (listaMediosNotificacion.includes('Correo electrónico')) {
+                            if (me.correo == '' || me.correo == null) {
+                                me.$notify('El campo "Correo Electrónico" es obligatorio.', 'error');
+                                return;
+                            }
+                        }
+                        
+                        if (listaMediosNotificacion.includes('Teléfono')) {
+                            if (me.telefono1 == '' || me.telefono1 == null) {
+                                me.$notify('El campo "Teléfono" es obligatorio.', 'error');
+                                return;
+                            }
+                        }
+                        
+                        if (me.correo !== '') 
+                        {
+                            var regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            if (!regexCorreo.test(me.correo)) {
+                                me.$notify('El correo proporcionado no es válido.', 'error');
+                                return;
+                            }
+                        }
+
                         if (this.editedIndex > -1)
                             {
                                 for(var i=0; i<me.persona.length; i++){
@@ -3008,7 +3212,7 @@ export default {
                                         'entidadFeNacimiento': me.abreviacion.text,
                                         'tipoDocumento' : me.docidentificacion,
                                         'curp': me.curp,
-                                        'medioNotificacion': me.medionotificacion,
+                                        'medioNotificacion': listaMediosNotificacion,
                                         'telefono': me.telefono1,
                                         'correoElectronico': me.correo,
                                         'nacionalidad': me.nacionalidad,
@@ -3023,6 +3227,7 @@ export default {
                                         'usuario' : me.u_nombre,
                                         'uPuesto' : me.u_puesto,
                                         'uModulo' : me.u_modulo,
+                                        'tipoVialidad': me.de_vialidad,
                                         'calle': me.de_calle,
                                         'noint': me.de_noInt,
                                         'noext': me.de_noExt,
@@ -3033,14 +3238,15 @@ export default {
                                         'estado': me.de_estado,
                                         'municipio': me.de_municipio,
                                         'localidad': me.de_localidad,
-                                        'cp': me.de_cp.toString(),
-                                        'lat': me.de_lat.toString(),
-                                        'lng': me.de_lng.toString(),
+                                        'tipoAsentamiento': me.de_asentamiento,
+                                        'cp': me.de_cp,
+                                        'lat': me.de_lat,
+                                        'lng': me.de_lng,
                                         'ArticulosPenales' : me.articulosv,
                                         'representados' : representados,
                                         //--------------------------------
                                         'nombreDocumento' : me.GUID,                                       
-                                        //'fecha' : me.generarfecha,
+                                        'fecha' : me.generarfecha,
 
                                     },configuracion).then((response)=>{
                                         me.imageFile2 = me.imageFile
@@ -3051,9 +3257,10 @@ export default {
                                         me.idrepresentante = response.data.idrepresentante
                                         me.$notify('La información se guardo correctamente !!!','success')
 
-                                        me.obteneridde()
+                                        //me.obteneridde()
                                         me.$cat.put('api/RAPs/Actualizardireccionescucha',{
-                                            'idDEscucha': me.idireccionescuha?me.idireccionescuha:me.persona[0].value,
+                                            'idDEscucha': me.idireccionescuha,
+                                            'tipoVialidad': me.de_vialidad,
                                             'calle': me.de_calle,
                                             'noint': me.de_noInt,
                                             'noext': me.de_noExt,
@@ -3064,9 +3271,10 @@ export default {
                                             'estado': me.de_estado,
                                             'municipio': me.de_municipio,
                                             'localidad': me.de_localidad,
+                                            'tipoAsentamiento': me.de_asentamiento,
                                             'cp': me.de_cp,
-                                            'lat': me.de_lat.toString(),
-                                            'lng': me.de_lng.toString(),
+                                            'lat': me.de_lat,
+                                            'lng': me.de_lng,
                                         
                                             },configuracion).then(()=>{
                                             me.$notify('La información se actualizo correctamente !!!','success') 
@@ -3149,7 +3357,7 @@ export default {
                                         'sexo' : me.sexo,
                                         'entidadFeNacimiento': me.abreviacion.text,
                                         'curp': me.curp,
-                                        'medioNotificacion': me.medionotificacion,
+                                        'medioNotificacion': listaMediosNotificacion,
                                         'telefono': me.telefono1,
                                         'correoElectronico': me.correo,
                                         'nacionalidad': me.nacionalidad,
@@ -3164,6 +3372,7 @@ export default {
                                         'usuario' : me.u_nombre,
                                         'uPuesto' : me.u_puesto,
                                         'uModulo' : me.u_modulo,
+                                        'tipoVialidad': me.de_vialidad,
                                         'calle': me.de_calle,
                                         'noint': me.de_noInt,
                                         'noext': me.de_noExt,
@@ -3174,9 +3383,10 @@ export default {
                                         'estado': me.de_estado,
                                         'municipio': me.de_municipio,
                                         'localidad': me.de_localidad,
-                                        'cp': me.de_cp.toString(),
-                                        'lat': me.de_lat.toString(),
-                                        'lng': me.de_lng.toString(),
+                                        'tipoAsentamiento': me.de_asentamiento,
+                                        'cp': me.de_cp,
+                                        'lat': me.de_lat,
+                                        'lng': me.de_lng,
                                         'ArticulosPenales' : me.articulosv,
                                         'representados' : representados 
 
@@ -3189,9 +3399,10 @@ export default {
                                         me.crearRegistroTableroI(descripcionRegTabI);
                                         me.idrepresentante = response.data.idrepresentante
                                         me.$notify('La información se guardo correctamente !!!','success')
-                                        me.obteneridde()
+                                        //me.obteneridde()
                                         this.$cat.put('api/RAPs/Actualizardireccionescucha',{
-                                            'idDEscucha': me.idireccionescuha?me.idireccionescuha:me.persona[0].value,
+                                            'idDEscucha': me.idireccionescuha,
+                                            'tipoVialidad': me.de_vialidad,
                                             'calle': me.de_calle,
                                             'noint': me.de_noInt,
                                             'noext': me.de_noExt,
@@ -3202,6 +3413,7 @@ export default {
                                             'estado': me.de_estado,
                                             'municipio': me.de_municipio,
                                             'localidad': me.de_localidad,
+                                            'tipoAsentamiento': me.de_asentamiento,
                                             'cp': me.de_cp,
                                             'lat': me.de_lat,
                                             'lng': me.de_lng,
@@ -3444,11 +3656,14 @@ export default {
             me.vistaPreviaTF = false;
             me.generarQR(nomdoc,me.nuc,item.usuario,item.fechasys,item.idRepresentante);
 
+            let VialidadEnocntrada = me.de_vialidades.find(d => d.value === item.tipoVialidad);
+            me.de_vialidadNombre = VialidadEnocntrada ? VialidadEnocntrada.text : "";
+
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var ident = "Ninguna";
 
-            this.datos = "<b>DOMICILIO:</b> " + item.calle + ", No.Interior " + item.noInt + ", No.Exterior: " + item.noExt + ", Codigo postal " + item.cp +" "+ item.municipio + " " + item.referencia +
+            this.datos = "<b>DOMICILIO:</b> " + me.de_vialidadNombre + " " + item.calle + ", No.Interior " + item.noInt + ", No.Exterior: " + item.noExt + ", Codigo postal " + item.cp +" "+ item.municipio + " " + item.referencia +
             "<p class="+this.comilla+"ql-align-justify"+this.comilla+"><br></p>"+
             "<p class="+this.comilla+"ql-align-justify"+this.comilla+"><br></p>"+
             "<b>TELÉFONO A TRAVÉS DE CUALQUIERA DE SUS APLICACIONES:</b> "+ item.telefono+
@@ -3479,6 +3694,9 @@ export default {
             me.vistaPreviaTF = false;
             me.generarQR(nomdoc,me.nuc,item.usuario,item.fechasys,item.idRepresentante);
 
+            let VialidadEnocntrada = me.de_vialidades.find(d => d.value === item.tipoVialidad);
+            me.de_vialidadNombre = VialidadEnocntrada ? VialidadEnocntrada.text : "";
+
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var ident = "Ninguna";
@@ -3489,7 +3707,7 @@ export default {
                 {pubpriv = "NOMBRAMIENTO Y ACEPTACIÓN DE CARGO DE DEFENSOR PÚBLICO"};
             
 
-            this.datos = "<b>DOMICILIO:</b> " + item.calle + ", No.Interior " + item.noInt + ", No.Exterior: " + item.noExt + ", Codigo postal " + item.cp +" "+ item.municipio + " " + item.referencia +
+            this.datos = "<b>DOMICILIO:</b> " + me.de_vialidadNombre + " " + item.calle + ", No.Interior " + item.noInt + ", No.Exterior: " + item.noExt + ", Codigo postal " + item.cp +" "+ item.municipio + " " + item.referencia +
             "<p class="+this.comilla+"ql-align-justify"+this.comilla+"><br></p>"+
             "<p class="+this.comilla+"ql-align-justify"+this.comilla+"><br></p>"+
             "<b>TELÉFONO A TRAVÉS DE CUALQUIERA DE SUS APLICACIONES:</b> "+ item.telefono+

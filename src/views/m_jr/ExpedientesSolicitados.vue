@@ -670,7 +670,7 @@
           <span>Delito(s)</span>
         </v-tooltip> 
         
-        <v-dialog v-model="DialogoProcedente" max-width="1000px">
+        <v-dialog v-model="DialogoProcedente" max-width="800px">
           <v-card>
             <v-toolbar card dark color="grey lighten-4 primary--text">
               <v-avatar size="30">
@@ -686,24 +686,65 @@
                 <v-container grid-list-md text-xs-center>
                   <v-layout row wrap>
                     
-            <v-container fluid class="justify-center">
-                <div class="d-flex flex-row">
-                  <v-text-field
-                    name="nombre"
-                    label="No Expediente (solo número)"
-                    v-model="uqe_Expediente"
-                    v-validate="'required'"
-                    :error-messages="errors.collect('No Expediente')"
-                    class="mr-3"
-                  />
-                  <v-text-field
-                    name="anioExpediente"
-                    label="Año expediente(solo número)"
-                    v-model="uqe_anioExpediente"
-                    v-validate="'required'"
-                    :error-messages="errors.collect('Sin año de Expediente')"
-                  />
+            <v-container fluid class="justify-center m-3">
+                <div class="contenedor_opciones" >
+                    <v-flex class="espaciado" xs12 sm12 md6 lg6 > 
+                        <v-radio-group v-model="reparatorio" v-on:change="updateExp()" denso :mandatory="false">
+                            <v-radio label="Acuerdo Reparatorio" color="success" value='1' /> 
+                            <v-radio label="Plan de Reparación" color="success" value='2' />
+                        </v-radio-group>
+                        <v-text-field
+                            name="nombre"
+                            label="No Expediente (solo número)"
+                            v-model="uqe_Expediente"
+                            prepend-icon = "tag"
+                            :rules="rules"
+                            maxlength="4"
+                            v-on:change="updateExp()"
+                            class="mr-3"
+                        />
+                    </v-flex>
+                    <v-flex class="espaciado" xs12 sm12 md6 lg6 > 
+                        <div class="mb-3"  style="height: 70px;">
+                            <v-switch 
+                                v-model="adolecente" 
+                                v-show="!mujeres" 
+                                v-on:change="updateExp()" 
+                                label="Adolecentes" 
+                                color="success"  
+                                hide-details>
+                            </v-switch>
+                            <v-switch 
+                                v-model="mujeres" 
+                                v-show="!adolecente" 
+                                v-on:change="updateExp()" 
+                                label="Centro de Justicia para Mujeres" 
+                                color="success"  
+                                hide-details>
+                            </v-switch> 
+                        </div>
+                        <v-text-field
+                         name="anioExpediente"
+                         label="Año expediente(solo número)"
+                         v-model="uqe_anioExpediente"
+                         maxlength="4"
+                         :rules="rulesA"
+                         prepend-icon="event_available"
+                         v-on:change="updateExp()"
+                        />              
+                    </v-flex> 
                 </div>
+                <div> 
+                    <v-flex class="ml-4 mr-4" md12 lg12 > 
+                    <v-text-field
+                        name="NoExpediente"
+                        label="No Expediente"
+                        v-model="NoExpedienteCompleto"
+                        readonly
+                        prepend-icon="folder"
+                    />
+                    </v-flex>
+                </div> 
             </v-container>
           
                   </v-layout>
@@ -711,7 +752,7 @@
                 <v-card-actions>
                   <v-spacer />
                   <v-btn @click="DialogoProcedente = false">Cancelar</v-btn>
-                  <v-btn @click="aceptarExpediente()" class="success">Guardar</v-btn>
+                  <v-btn @click="aceptarExpediente()" v-if="uqe_Expediente && uqe_anioExpediente && isValid" class="success">Guardar</v-btn>
                 </v-card-actions>
               </v-form>
             </v-card-text>
@@ -1408,6 +1449,23 @@
         qrCode: '',
         docRemision: 'Remisión',
         vistaPreviaTF: true,
+        reparatorio: '1',
+        adolecente: false,
+        mujeres: false,
+        NoExpedienteCompleto: 'CJR/',
+        rules: [
+         value => !!value || 'Campo requerido.',
+         value => /^[0-9]+$/.test(value) || 'Sólo se permiten números',
+         value => parseInt(value) > 0 || 'Debe ser un número mayor a 0',
+        ],
+        rulesA: [
+         value => !!value || 'Campo requerido.',
+         value => {
+            const year = parseInt(value, 10);
+            const currentYear = new Date().getFullYear();
+            return (year >= 2014 && year <= currentYear) || `El año debe estar entre 2014 y ${currentYear}`;
+            }
+        ],
       };
     },
     created () {
@@ -1463,6 +1521,11 @@
         },
         btnTitle () {
             return this.statusSolicitud === "Procedente" ? 'Aceptar solicitud' : 'Rechazar solicitud'
+        },
+        isValid() {
+            const noExp = this.rules.every((rule) => rule(this.uqe_Expediente) === true);
+            const year = this.rulesA.every((ruleA) => ruleA(this.uqe_anioExpediente) === true);
+            return noExp && year;
         },
         logueado(){
       return this.$store.state.usuario;
@@ -1585,6 +1648,7 @@
         ModalAceptado(){
           let me = this;
           me.DialogoProcedente = true;
+          me.limpiarDeriPro();
         },
         ModalRechazado(){
           let me = this;
@@ -3345,7 +3409,7 @@
             let configuracion= {headers : header};
             me.$confirm('Esperando confirmación', 'Estas seguro de  que deseas guardar información. Una vez realizada esta accion no prodra realizar cambios',
                 function(){
-                  me.$justiciarestaurativa.put('api/Envios/StatusModuloRespuesta',{
+                  me.$justiciarestaurativa.put('api/Envios/AceptacionDerivacion',{
                     'idExpediente': me.expedienteId,
                     'idEnvio': me.envioId,
                     'statusGeneralEnvio': "Procedente",
@@ -3354,7 +3418,9 @@
                     'Cosecutivo':me.uqe_Expediente,
                     'anioEx':me.uqe_anioExpediente,
                     'Agenciaid': me.u_idagencia,
-                    'distritoOrigen': me.idDistritoOrigen
+                    'distritoOrigen': me.idDistritoOrigen,
+                    'prefijo': 'CJR',
+                    'noExpediente': me.NoExpedienteCompleto
                 }, configuracion).then(function(response){
 
                         me.noExpediente = response.data.noe;
@@ -3780,6 +3846,21 @@
             };
             return dd;
     },
+    updateExp(){
+        var adolecentes = this.adolecente === true? '/ADO':'';
+        var cjm = this.mujeres === true?'/CJM':'';
+        var noExp = this.uqe_Expediente.length < 4? this.uqe_Expediente.padStart(4, '0'): this.uqe_Expediente; 
+        this.NoExpedienteCompleto = `CJR/${this.reparatorio === '2'?'PR/':''}${noExp}-${this.uqe_anioExpediente}/${this.u_nombrejr}${this.adolecente === true?adolecentes:cjm}`;
+    },
+    limpiarDeriPro(){
+
+        this.reparatorio = '1';
+        this.adolecente = false;
+        this.mujeres = false;
+        this.uqe_Expediente = '';
+        this.NoExpedienteCompleto = '';
+        this.uqe_anioExpediente = moment(new Date).format('YYYY');
+    }
     }
 }
 </script>
@@ -3817,6 +3898,12 @@
     right: 0px;
     margin-right: 0px;
   }
-
+.contenedor_opciones{
+    width: 100%;
+    display: flex;    
+}
+.opcionuno .opciondos{
+   border: #00ACC1;
+}
 
 </style>

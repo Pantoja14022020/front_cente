@@ -95,8 +95,19 @@
                   Sp / Pi pertenecientes
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>
-          </v-list-group>
+            </v-list-tile> 
+            <v-list-tile :to="{ name: 'errorreplicacion'== '#' ? '' :  'errorreplicacion'}"   active-class="secondary">  
+              <v-list-tile-action>
+                   <v-icon class="centenarioMenuIcon">error</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Errores de replicacion
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile> 
+            
+           </v-list-group>
         </template>
         <template  v-if="esAdministrador">
           <v-list-group >

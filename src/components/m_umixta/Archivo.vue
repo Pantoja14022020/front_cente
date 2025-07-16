@@ -40,7 +40,7 @@
           </template>
           <span>Agregar registro</span>
         </v-tooltip>
-      </v-toolbar>|
+      </v-toolbar>
       <v-data-table
         :headers="headers"
         :items="archivos"
@@ -69,71 +69,71 @@
         </template>
       </v-data-table>
       <v-dialog v-model="dialogo" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-toolbar dark color="primary">
-          <v-toolbar-title>SUBIR ARCHIVOS.</v-toolbar-title>
-          <v-spacer />
-          <v-toolbar-items>
-            <v-btn color=success text @click="guardar()" :disabled='clikeado'>Guardar</v-btn>
-            <v-btn icon @click="dialogo = false">
-              <v-icon>close</v-icon>
-            </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
+        
         <v-card>
-         <v-card-text>
-           <v-form ref="form">
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm12 md12>
-                  <v-card>
-                    <v-container fluid grid-list-md>
-                      <v-layout row wrap>
-                        <v-flex class="text-md-center">
-                          <img :src="imageUrl" height="250px" />
-                          <pdf :src='imageUrl' height='150px' />
-                        </v-flex>
-                      </v-layout>
-                    </v-container>
-                  </v-card>
-                  <v-text-field
-                    name="imagen"
-                    label="Selecciona la imagen del documento de identificacion"
-                    @click='pickFile'
-                    v-model='imageName'
-                    prepend-icon='attach_file'
-                    :error-messages="errors.collect('imagen')"
-                  />
-                  <input
-                    type="file"
-                    style="display: none"
-                    ref="image"
-                    accept="image/*, .pdf, .doc, .docx"
-                    @change="onFilePicked"
-                  >
-                  <v-autocomplete
-                    name="tipo de archivo"
-                    :items="tiposdocumentos"
-                    v-model="tiposdocumento"
-                    return-object
-                    v-validate="'required'"
-                    label="*Tipo de archivo:"
-                    :error-messages="errors.collect('tipo de archivo')"
-                  />
-                  <v-text-field
-                    name="descripcíon de documento"
-                    label="*Descripcíon del documento"
-                    v-model='descripciondocumento'
-                    v-validate="'required'"
-                    :error-messages="errors.collect('descripcíon de documento')"
-                  />
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-form>
-        </v-card-text>
-        <v-divider />
-      </v-card>
-    </v-dialog>
+         <v-toolbar dark color="primary">
+            <v-toolbar-title>SUBIR ARCHIVOS.</v-toolbar-title>
+            <v-spacer />
+            <v-toolbar-items>
+              <v-btn color=success text @click="guardar()" >Guardar</v-btn>
+              <v-btn icon @click="dialogo = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
+        
+              <v-container grid-list-md>
+                <v-layout wrap>
+                  <v-flex class="espaciado" xs6 sm6 md6 lg6> 
+                      
+                      <v-autocomplete
+                        name="tipo de archivo"
+                        :items="tiposdocumentos"
+                        v-model="tiposdocumento"
+                        return-object
+                        v-validate="'required'"
+                        label="*Tipo de archivo:"
+                        :error-messages="errors.collect('tipo de archivo')"
+                      />
+                      <v-text-field
+                        name="descripcíon de documento"
+                        label="*Descripcíon del documento"
+                        v-model='descripciondocumento'
+                        v-validate="'required'"
+                        :error-messages="errors.collect('descripcíon de documento')"
+                      />
+                  </v-flex>
+                  <v-flex class="espaciado" xs6 sm6 md6 lg6> 
+                    <v-card>
+                      <v-container fluid grid-list-md>
+                        <v-layout row wrap>
+                          <v-flex class="text-md-center">
+                            <img :src="imageUrl" height="150px" />
+                            <pdf :src='imageUrl' height='50px' />
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-card>
+                    <v-text-field
+                        name="imagen"
+                        label="Selecciona la imagen del documento de identificacion"
+                        @click='pickFile'
+                        v-model='imageName'
+                        prepend-icon='attach_file'
+                        :error-messages="errors.collect('imagen')"
+                      />
+                      <input
+                        type="file"
+                        style="display: none"
+                        ref="image"
+                        accept="image/*, .pdf, .doc, .docx"
+                        @change="onFilePicked"
+                      >
+                  </v-flex>
+                </v-layout>
+              </v-container>
+        </v-card>
+      </v-dialog>
       <v-dialog v-model="dialogimagen" max-width="1000px">
         <v-card>
           <v-toolbar card dark color="grey lighten-4 primary--text">
@@ -236,7 +236,6 @@
       pdf
     },
     data: () => ({
-      clikeado: false,
       alert: false,
       dialog: false,
       rAtencionId: '',
@@ -379,12 +378,12 @@
 
     },
     methods: {
-      doSomething: function() {
+      /*doSomething: function() {
         if (this.clikeado) {
           return
         }
         this.clikeado = true
-      },
+      },*/
       pickFile () {
         this.removeImage()
         this.$refs.image.click()
@@ -392,21 +391,62 @@
       removeImage () {
         this.$refs.image.value = ''
       },
-      onFilePicked (e) {
+      /*onFilePicked (e) {
         const files = e.target.files
-        if (files[0] !== undefined) {
-          this.imageName = files[0].name
-          if (this.imageName.lastIndexOf('.') <= 0) {
+        if (files[0] !== undefined) {*/
+        onFilePicked (e) 
+      {
+        const files = e.target.files;
+        const maxSizeMB = 25;
+        const maxSizeBytes = maxSizeMB * 1024 * 1024;
+        const file = files[0];
+
+        //Validar tipo de archivo
+        const allowedTypes = [
+          'application/pdf',
+          'application/msword', // .doc
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        ];
+
+        if (!file.type.startsWith('image/') && !allowedTypes.includes(file.type)) {
+          this.imageName = '';
+          this.imageFile = '';
+          this.imageUrl = '';
+          this.$refs.image.value = ''; // limpia el input
+          this.errors.add({
+            field: 'imagen',
+            msg: 'Solo se permiten imágenes, PDF o archivos Word.',
+          });
+          return;
+        }
+        if (files[0] !== undefined) 
+        {
+          // Validar tamaño del archivo
+          if (files[0].size > maxSizeBytes) 
+          {
+            this.imageName = '';
+            this.imageFile = '';
+            this.imageUrl = '';
+            this.$refs.image.value = ''; // limpia el input
+            this.errors.add
+            ({
+              field: 'imagen',
+              msg: `El archivo no debe superar los ${maxSizeMB}MB.`,
+            });
+            return;
+          }
+          this.imageName = files[0].name;
+          if (this.imageName.lastIndexOf('.') <= 0) 
+          {
             return
           }
           const fr = new FileReader()
           fr.readAsDataURL(files[0])
           fr.addEventListener('load', () => {
               this.imageUrl = fr.result
-              //this.imageUrl = new FileReader().readAsDataURL(new File('../assets/pdf.jpg','pdf'))
-              //if(files[])
               this.imageFile = files[0] // this is an image file that can be sent to server...
-          })
+          });
+          this.errors.remove('imagen');
         } else {
           this.imageName = ''
           this.imageFile = ''
@@ -577,7 +617,7 @@
             }
           }
         })
-        this.doSomething()
+        //this.doSomething()
       },
       crearRegistroTableroI(descripcionRegTabI){
                 

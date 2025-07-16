@@ -47,7 +47,7 @@
             <td>{{ props.item.tipoFuero }}</td>
             <td>{{ props.item.tipoDeclaracion}}</td>
             <td>{{ props.item.resultadoDelito}}</td>
-            <td>{{ props.item.graveNoGrave }}</td>
+            <td style="text-align: center;">{{ props.item.graveNoGrave }}</td>
             <td>{{ props.item.violenciaSinViolencia }}</td>
             <td>{{ props.item.tipo }}</td> 
             <td>
@@ -114,47 +114,51 @@
   
             <v-divider></v-divider>
   
-  
+            <v-form ref="form">
             <v-card    elevation=0 class="mb-5" height="auto" >
-                          <v-container grid-list-md text-xs-center    :rules="[() =>  !errors.has('descripción de lo robado') && !errors.has('monto de lo robado')]">
+                          <v-container grid-list-md text-xs-center>
                               <v-layout row wrap>
                                  
-                                  <v-flex class="espaciado" xs12 sm12 md6 lg6 > 
+                                  <v-flex class="espaciado" xs6 sm6 md6 lg6 > 
                                       
                                       <v-autocomplete
                                           name="delito"
                                           :items="delitos"
                                           v-model="delitoId"
                                           label="*Delito:"
-                                          v-validate="'required'" 
+                                          
                                           return-object
                                           v-on:change="listarPorDelito" 
-                                          :menu-props="{ maxWidth: '530px' }"
+                                          :menu-props="{ maxWidth: '820px' }"
+                                              @change="resetDE()"
+                                              v-validate="'required'"
                                           :error-messages="errors.collect('delito')"
                                       ></v-autocomplete>
                                       <v-text-field
                                           name="descripción de lo robado"
                                           label="*Descripción de lo robado:"
                                           v-model="tipoRobado" 
-                                          v-if="tipoMontoRobo==true"  
+                                           v-show="tipoMontoRobo==true"  
+                                              v-validate="requeridoR"
                                           :error-messages="errors.collect('descripción de lo robado')"
                                       ></v-text-field>
                                       <v-text-field
+                                      v-show="tipoMontoRobo" 
+                                              type="number"
                                           name="monto de lo robado"
-                                          label="Monto de lo robado:" 
+                                          label="*Monto de lo robado:" 
                                           v-model="montoRobado"
-                                          v-validate="'decimal'"
-                                          v-if="tipoMontoRobo==true" 
+                                          v-validate="requeridoMR"
                                           :error-messages="errors.collect('monto de lo robado')"
                                       ></v-text-field>
                                       <v-autocomplete
                                           name="especificación del delito"
                                           :items="delitoespecificos"
                                           v-model="delitoespecifico"
+                                          label="*Especificación del delito:"
+                                              :menu-props="{ maxWidth: '800px' }"
                                           v-validate="'required'" 
-                                          label="Especificación del delito:"
-                                          :menu-props="{ maxWidth: '530px' }"
-                                          :error-messages="errors.collect('delito')"
+                                          :error-messages="errors.collect('especificación del delito')"
                                       ></v-autocomplete>
   
                                       <v-autocomplete
@@ -222,10 +226,19 @@
                                           name="clasificación del delito por la ejecución"
                                           :items="clasificaOrdenResults"
                                           v-model="clasificaOrdenResult"
-                                          v-validate="'required'"
+                                          
                                           label="*Clasificación del delito por la ejecución:" 
+                                          v-validate="'required'"
                                           :error-messages="errors.collect('clasificación del delito por la ejecución')"
                                       ></v-autocomplete>
+                                      <v-autocomplete
+                                              name="Grado delito"
+                                              :items="gradoDelito"
+                                              v-model="gradoDelitoM"
+                                              label="*Grado del delito:" 
+                                              v-validate="'required'"
+                                              :error-messages="errors.collect('Grado delito')"
+                                          ></v-autocomplete>
                                     <v-autocomplete
                                           name="violencia"
                                           :items="violenciaSinViolencias"
@@ -233,34 +246,35 @@
                                           label="*Violencia:"
                                           return-object
                                           v-validate="'required'"
+                                          v-on:change="limpiarCamposIC()"
                                           :error-messages="errors.collect('violencia')"
                                       ></v-autocomplete>
                                       <v-autocomplete
-                                          v-if="violenciaSinViolencia.value == 'Con violencia'"
-                                          name="Tviolencia"
+                                          v-show="violenciaSinViolencia && violenciaSinViolencia.value == 'Con violencia'"
+                                          name="tipoViolencia"
                                           :items="tipoViolencias"
                                           v-model="TViolencia"
-                                          label="*Tipo violencia (Puede seleccionar uno o varios):"
-                                          v-validate="'required'" 
+                                          label="*Tipo violencia(Puede seleccionar uno o varios):" 
                                           attach
                                           chips
                                           deletable-chips
                                           multiple
                                           return-object
-                                          :error-messages="errors.collect('Tviolencia')"
+                                          v-validate="requeridoTV"
+                                              :error-messages="errors.collect('tipoViolencia')"
                                       ></v-autocomplete>
                                       <v-autocomplete
-                                          v-if="SexualSeleccionado || sexualSelect"
-                                          name="violenciaS"
+                                          v-show="SexualSeleccionado || sexualSelect"
+                                              name="Subtipo"
                                           :items="violenciaSexual"
                                           v-model="TSexual"
                                           label="*Subtipo:"
                                           return-object
-                                          v-validate="'required'" 
-                                          :error-messages="errors.collect('violenciaS')"
+                                           v-validate="requeridoS"
+                                              :error-messages="errors.collect('Subtipo')"
                                       ></v-autocomplete>
                                       <v-autocomplete
-                                          v-if="DigitalSeleccionado || digitalSelect"
+                                          v-show="DigitalSeleccionado || digitalSelect"
                                           name="digital"
                                           :items="infoDigital"
                                           v-model="TDigital"
@@ -270,11 +284,11 @@
                                           deletable-chips
                                           multiple
                                           return-object
-                                          v-validate="'required'" 
+                                          v-validate="requeridoD" 
                                           :error-messages="errors.collect('digital')"
                                       ></v-autocomplete>
                                       <v-autocomplete
-                                          v-if="DigitalSeleccionado || digitalSelect"
+                                          v-show="DigitalSeleccionado || digitalSelect"
                                           name="medio"
                                           :items="medioDigital"
                                           v-model="TMedio"
@@ -284,41 +298,38 @@
                                           deletable-chips
                                           multiple
                                           return-object
-                                          v-validate="'required'" 
+                                          v-validate="requeridoD" 
                                           :error-messages="errors.collect('medio')"
                                       ></v-autocomplete>
                                       
-                                      <div class="switch-container">
-                                      <v-switch
-                                          v-model="armaFuego"
-                                          label="¿Arma de fuego?:"
-                                          color="success"
-                                          hide-details
-                                          v-if="violenciaSinViolencia.value =='Con violencia'"
-                                      ></v-switch>
-                                      <v-switch
-                                          v-model="armaBlanca"
-                                          label="¿Arma blanca?:"
-                                          color="success"
-                                          hide-details
-                                          v-if="violenciaSinViolencia.value =='Con violencia'"
-                                      ></v-switch>
-                                    </div>
+                                      <v-autocomplete
+                                               name="Instrumentos Comision"
+                                               :items="instrumentos"
+                                               v-model="instrumentosComision"
+                                               label="*Instrumentos para la comisión(Puede seleccionar uno o varios.)"
+                                               attach
+                                               chips
+                                               deletable-chips
+                                               multiple
+                                               v-validate="'required'"
+                                               :error-messages="errors.collect('Instrumentos Comision')"
+                                          ></v-autocomplete>
+
                                       <v-text-field
                                           name="alguna parte del cuerpo"
                                           label="*Con alguna parte del cuerpo:"
                                           v-model="conAlgunaParteCuerpo"
-                                          v-validate="'required'" 
-                                          v-if="violenciaSinViolencia.value =='Con violencia'"
+                                           v-show="cuerpo"
+                                              v-validate="requeridoPC"
                                           :error-messages="errors.collect('alguna parte del cuerpo')"
                                       ></v-text-field> 
                                       <v-text-field
-                                          name="con otro elemento"
-                                          label="*Con otro elemento:"
-                                          v-model="conOtroElemento"
-                                          v-validate="'required'" 
-                                          v-if="violenciaSinViolencia.value =='Con violencia'"
-                                          :error-messages="errors.collect('con otro elemento')"
+                                           name="con otro instrumento"
+                                              label="*Con otro instrumento:"
+                                              v-model="conOtroElemento"
+                                              v-show="elemento"
+                                              v-validate="requeridoEL"
+                                              :error-messages="errors.collect('con otro instrumento')"
                                       ></v-text-field>
                                   </v-flex>      
                                   <v-flex xs12 sm12 md12 lg12 >
@@ -343,190 +354,440 @@
                               
                           </v-container>
                       </v-card>
+                      </v-form>
   
            
           </v-card>
         </v-dialog>
   
-        <v-dialog   v-model="dialog2"  max-width="980px"> 
+        <v-dialog  v-model="dialog2"  max-width="1000px" persistent>
                   
                   <v-card>
                       <v-toolbar card dark color="grey lighten-4 primary--text">
-                          <v-avatar  size="40">
-                              <v-icon class="grey lighten-2">report_problem</v-icon>
-                          </v-avatar> 
+                          
                   <v-toolbar-title class="subheading">Información detallada</v-toolbar-title>
                   <v-spacer></v-spacer>
+                   <v-spacer></v-spacer>
               
                   
                   </v-toolbar>
                   <v-card-text>
+                    <v-stepper elevation-0 v-model="step" non-linear vertical>
+                            <v-stepper-step step="1" @click="step = 1" style="cursor: pointer">
+                                <template v-slot:step>1</template>
+                                Información General del Delito.
+                            </v-stepper-step>
+                            <v-stepper-content step="1">
                       <v-form ref="form">
-                          <v-container grid-list-md>
-                              <v-layout wrap justify-space-between>
+                          <v-container grid-list-md text-xs-center>
+                              <v-layout wrap>
                                   
-                                  <v-flex xs3 sm3 md3>
-                                      <v-text-field
-                                          v-model="nombreDelito"
-                                          label="Delito:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-model="delitoespecifico"
-                                          label="Especificación del delito:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-if="tipoRobado!=0"
-                                          v-model="tipoRobado"
-                                          label="¿Descripción de lo robado?"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-if="tipoRobado!=0"
-                                          v-model="montoRobado"
-                                          label="¿Monto de lo robado?"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-model="tipoFuero"
-                                          label="Tipo de fuero:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-model="OfiNoOfi"
-                                          label="Oficioso no oficioso:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-model="altoImpacto"
-                                          label="¿Es de alto impacto?:" 
-                                          disabled   
-                                      ></v-text-field>
-                                       
+                                  <v-flex xs6 sm6 md6 lg6>
+
+
+
+
+
+
+
+
+                                    <v-card auto-grow elevation="0">
+                                                    <v-card-text >
+                                                        <v-list one-line>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title>
+                                                                        <p class="body-2 font-weight-bold"><a>Delito:</a></p>
+                                                                    </v-list-tile-title>
+                                                                    <v-list-tile-sub-title>
+                                                                        <v-tooltip top>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <p class="caption font-weight-regular texto-truncado" v-bind="attrs" v-on="on">
+                                                                                    <a>{{ detalledelito.nombreDelito }}</a>
+                                                                                </p>
+                                                                            </template>
+                                                                            <span>{{ detalledelito.nombreDelito }}</span>
+                                                                        </v-tooltip>
+                                                                    </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile v-if="tipoRobado!=0">
+                                                               <v-list-tile-action>
+                                                                   <v-icon color="success">view_day</v-icon>
+                                                               </v-list-tile-action>
+                                                               <v-list-tile-content>
+                                                                   <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Descripción de lo robado?:</a></p> </v-list-tile-title>
+                                                                   <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.tipoRobado}}</a></p></v-list-tile-sub-title>
+                                                               </v-list-tile-content>
+                                                           </v-list-tile>
+                                                           <v-list-tile v-if="tipoRobado!=0">
+                                                               <v-list-tile-action>
+                                                                   <v-icon color="success">view_day</v-icon>
+                                                               </v-list-tile-action>
+                                                               <v-list-tile-content>
+                                                                   <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Monto de lo robado?:</a></p> </v-list-tile-title>
+                                                                   <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.montoRobado}}</a></p></v-list-tile-sub-title>
+                                                               </v-list-tile-content>
+                                                           </v-list-tile>                                                            
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title>
+                                                                        <p class="body-2 font-weight-bold"><a>Especificación del delito:</a></p>
+                                                                    </v-list-tile-title>
+                                                                    <v-list-tile-sub-title>
+                                                                        <v-tooltip top>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <p class="caption font-weight-regular texto-truncado" v-bind="attrs" v-on="on">
+                                                                                    <a>{{ detalledelito.delitoEspecifico }}</a>
+                                                                                </p>
+                                                                            </template>
+                                                                            <span>{{ detalledelito.delitoEspecifico }}</span>
+                                                                        </v-tooltip>
+                                                                    </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Forma de comisión:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.intensionDelito}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                              </v-list>
+                                                    </v-card-text>
+                                                </v-card>
+
                                   </v-flex>
-                                  <v-flex xs3 sm3 md3>
-                                    <v-text-field
-                                          v-model="suceptibleMASC"
-                                          label="¿Es suceptible a Medios Alternos de Solución de Conflictos ?:"
-                                          disabled
-                                      ></v-text-field>
-                                        
-                                    <v-text-field
-                                          v-model="intensionDelito"
-                                          label="Forma de comisión"
-                                          disabled
-                                      ></v-text-field>
-                                    <v-text-field
-                                          v-model="tipoDeclaracion"
-                                          label="Requisito de procedibilidad:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-model="modalidad"
-                                          label="Modalidad"
-                                          disabled
-                                      ></v-text-field>
-                                        <v-text-field
-                                          v-model="concurso"
-                                          label="Concurso:"
-                                          disabled
-                                      ></v-text-field>
-                                      
-                                  </v-flex>
-                                  <v-flex xs3 sm3 md3>
-                                    <v-text-field
-                                          v-model="clasifOrdenResult"
-                                          label="Clasificación del delito por la ejecución:"
-                                          disabled
-                                      ></v-text-field>
-                                    <v-text-field
-                                        v-model="tipoViolencia"
-                                        label="El hecho fue:"
-                                        disabled
-                                    ></v-text-field>
-                                    <v-text-field
-                                        v-if="tipoViolencia && tipoViolencia == 'Con violencia'"
-                                        v-model="tipoViolencia2"
-                                        label="Tipo de violencia:"
-                                        disabled
-                                    ></v-text-field>
-                                    <v-text-field
-                                        v-if="tipoViolencia2 && tipoViolencia2.includes('Sexual')"
-                                        v-model="subtipo"
-                                        label="Subtipo:"
-                                        disabled
-                                    ></v-text-field>
-                                    <v-text-field
-                                        v-model="tipoinformacion"
-                                        label="Tipo de información:"
-                                        disabled
-                                        v-if="tipoViolencia2 && tipoViolencia2.includes('Digital')"
-                                    ></v-text-field>
-        
-                                </v-flex>
-                                    <v-flex xs3 sm3 md3>
-                                       
-                                    <v-text-field
-                                        v-if="tipoViolencia2 && tipoViolencia2.includes('Digital')"
-                                        v-model="medio"
-                                        label="Medio:"
-                                        disabled
-                                    ></v-text-field>
-                                        <v-text-field
-                                            v-if="tipoViolencia && tipoViolencia == 'Con violencia'"
-                                            v-model="armablanca"
-                                            label="¿Arma blanca?"
-                                            disabled
-                                        ></v-text-field>
-                                        <v-text-field
-                                          v-if="tipoViolencia && tipoViolencia == 'Con violencia'"
-                                          v-model="conAlgunaParteCuerpo"
-                                          label="¿Con alguna parte de cuerpo?"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-if="tipoViolencia && tipoViolencia == 'Con violencia'"
-                                          v-model="armafuego"
-                                          label="¿Arma de fuego?:"
-                                          disabled
-                                      ></v-text-field>
-                                      <v-text-field
-                                          v-if="tipoViolencia && tipoViolencia == 'Con violencia'"
-                                          v-model="conOtroElemento"
-                                          label="¿Con otro elemento"
-                                          disabled
-                                      ></v-text-field>
-                                  
-                                  </v-flex>
-                                  <v-flex xs12 sm12 md12 lg12>
-                                    <v-card    auto-grow elevation="0">                                
+                                <v-flex xs6 sm6 md6 lg6>
+                                    <v-card auto-grow elevation="0">
                                         <v-card-text >
-                                            <v-list one-line   > 
-                                                <p class="text-lg-center font-weight-bold"><a>Observaciones.</a></p> 
-                                                <v-list-tile>  
+                                            <v-list one-line>
+                                                <v-list-tile>
                                                     <v-list-tile-action>
-                                                        <v-icon color="success">info</v-icon>
-                                                    </v-list-tile-action> 
-                                                    <v-list-tile-content   >  
-                                                        <v-list-tile-title> <p class="body-2 font-weight-bold"><a></a></p> </v-list-tile-title> 
-                                                        <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular" v-html="observaciones "></p>  </v-list-tile-sub-title>  
-                                                    </v-list-tile-content> 
-                                                </v-list-tile>                                                                                                        
-                                            </v-list>           
-                                        </v-card-text>                                             
+                                                        <v-icon color="success">view_day</v-icon>
+                                                    </v-list-tile-action>
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-title><p class="body-2 font-weight-bold"><a>Clasificación del delito por ejecución:</a></p></v-list-tile-title>
+                                                        <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.clasificaOrdenResult}}</a></p></v-list-tile-sub-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                                <v-list-tile>
+                                                    <v-list-tile-action>
+                                                        <v-icon color="success">view_day</v-icon>
+                                                    </v-list-tile-action>
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-title><p class="body-2 font-weight-bold"><a>Modalidad:</a></p></v-list-tile-title>
+                                                        <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.tipo }}</a></p></v-list-tile-sub-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                                <v-list-tile>
+                                                    <v-list-tile-action>
+                                                        <v-icon color="success">view_day</v-icon>
+                                                    </v-list-tile-action>
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-title><p class="body-2 font-weight-bold"><a>Concurso:</a></p> </v-list-tile-title>
+                                                        <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.concurso}}</a></p></v-list-tile-sub-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                            </v-list>
+                                        </v-card-text>
                                     </v-card>
-                                  </v-flex>
-  
+                                </v-flex>
                                 
                               </v-layout>
                           </v-container> 
-                          <br>
+                          </v-form>
+                          </v-stepper-content>
+
+
+                           <v-stepper-step step="2" @click="step = 2" style="cursor: pointer">
+                                <template v-slot:step>2</template>
+                                Información General del Delito.
+                            </v-stepper-step>
+                            <v-stepper-content step="2">
+                                <v-form ref="form" >
+                                    <v-container grid-list-md text-xs-center>
+                                        <v-layout wrap>
+                                           <v-flex xs6 sm6 md4 lg4>
+                                                <v-card auto-grow elevation="0">
+                                                    <v-card-text>
+                                                        <v-list one-line>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Tipo de fuero:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.tipoFuero}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                        </v-list>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Oficioso o no oficioso:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.ofiNoOfic }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Es de alto impacto?:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.altoImpacto?'Si':'No'}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                            <v-flex xs6 sm6 md6 lg6>
+                                                <v-card auto-grow elevation="0">
+                                                    <v-card-text>
+                                                        <v-list one-line>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Es susceptible a medios alternos de solución?:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.suceptibleMASC?'Si':'No'}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                        </v-list>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Requisito de procedibilidad:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.tipoDeclaracion }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                             <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Prisión preventiva oficiosa:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.graveNoGrave }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-stepper-content>
+
+
+
+                            <v-stepper-step step="3" @click="step = 3" style="cursor: pointer">
+                                <template v-slot:step>3</template>
+                                Detalles del Hecho
+                            </v-stepper-step>
+                            <v-stepper-content step="3">
+                                <v-form ref="form" >
+                                    <v-container grid-list-md text-xs-center>
+                                        <v-layout wrap>
+                                            <v-flex xs6 sm6 md4 lg4>
+                                                <v-card auto-grow elevation="0">
+                                                    <v-card-text>
+                                                        <v-list one-line>
+                                                             <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Grado de ejecución:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.resultadoDelito}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Grado del delito:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.gradoDelito}}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>El hecho fue:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.violenciaSinViolencia }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile v-if="detalledelito.violenciaSinViolencia && detalledelito.violenciaSinViolencia == 'Con violencia'">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title>
+                                                                        <p class="body-2 font-weight-bold"><a>Tipo de violencia:</a></p>
+                                                                    </v-list-tile-title>
+                                                                    <v-list-tile-sub-title>
+                                                                        <v-tooltip top>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <p class="caption font-weight-regular texto-truncado" v-bind="attrs" v-on="on">
+                                                                                    <a>{{ detalledelito.tipoViolencia }}</a>
+                                                                                </p>
+                                                                            </template>
+                                                                            <span>{{ detalledelito.tipoViolencia }}</span>
+                                                                        </v-tooltip>
+                                                                    </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile v-if="detalledelito.tipoViolencia && detalledelito.tipoViolencia.includes('Sexual')">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>Subtipo:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.subtipoSexual }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                        </v-list>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                            <v-flex   xs6 sm6 md6 lg6>
+                                                <v-card auto-grow elevation="0">
+                                                    <v-card-text >
+                                                        <v-list one-line>
+                                                            <v-list-tile v-if="detalledelito.tipoViolencia && detalledelito.tipoViolencia.includes('Digital')">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Medio:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{detalledelito.medioDigital}}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile v-if="detalledelito.tipoViolencia && detalledelito.tipoViolencia.includes('Digital')">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de información:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{detalledelito.tipoInfoDigital}}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title>
+                                                                        <p class="body-2 font-weight-bold"><a>Instrumentos de comisión:</a></p>
+                                                                    </v-list-tile-title>
+                                                                    <v-list-tile-sub-title>
+                                                                        <v-tooltip top>
+                                                                            <template v-slot:activator="{ on, attrs }">
+                                                                                <p class="caption font-weight-regular texto-truncado" v-bind="attrs" v-on="on">
+                                                                                    <a>{{ detalledelito.instrumentosComision }}</a>
+                                                                                </p>
+                                                                            </template>
+                                                                            <span>{{ detalledelito.instrumentosComision }}</span>
+                                                                        </v-tooltip>
+                                                                    </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+
+                                                            <v-list-tile v-if="detalledelito.instrumentosComision && detalledelito.instrumentosComision.includes('Con alguna parte del cuerpo')">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Con alguna parte del cuerpo?:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.conAlgunaParteCuerpo }}</a></p></v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile v-if="detalledelito.instrumentosComision && detalledelito.instrumentosComision.includes('Con otro instrumento')">
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content>
+                                                                    <v-list-tile-title><p class="body-2 font-weight-bold"><a>¿Con otro elemento?:</a></p></v-list-tile-title>
+                                                                    <v-list-tile-sub-title><p class="caption font-weight-regular"><a>{{detalledelito.conotroElemento}}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                        </v-list>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+    
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-stepper-content>
+
+
+
+
+
+                            <v-stepper-step step="4" @click="step = 4" style="cursor: pointer">
+                                <template v-slot:step>4</template>
+                                Observaciones
+                            </v-stepper-step>
+                            <v-stepper-content step="4">
+                                <v-form ref="form" >
+                                    <v-container  fluid>
+                                        <v-layout wrap>
+                                            <v-flex xs12 sm12 md12 lg12>
+                                                <v-card auto-grow elevation="0">
+                                                    <v-card-text >
+                                                           <v-list-tile>  
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">info</v-icon>
+                                                                </v-list-tile-action> 
+                                                                <v-list-tile-content>  
+                                                                    <v-list-tile-title>
+                                                                        <p class="body-2 font-weight-bold"><a></a></p>
+                                                                    </v-list-tile-title> 
+                                                                    <v-list-tile-sub-title
+                                                                        v-html="detalledelito.observaciones?detalledelito.observaciones:'Sin observaciones'"
+                                                                        class="caption font-weight-regular"
+                                                                        style="white-space: normal; word-break: break-word; max-height: 100px; overflow-y: auto;">
+                                                                    </v-list-tile-sub-title>  
+                                                                </v-list-tile-content> 
+                                                            </v-list-tile>
+
+                                                    </v-card-text>
+                                                </v-card>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                     <br>
+                                </v-form>
+                            </v-stepper-content>
+                        </v-stepper>
+
                           <v-card-actions>
                               <v-spacer></v-spacer> 
                               <v-btn  @click.native="close()" >Cerrar</v-btn>
                           </v-card-actions>
-                      </v-form>
+                      
                   
                   </v-card-text> 
                   </v-card>
@@ -575,7 +836,7 @@
               { text: 'Tipo de fuero', value: 'tipofuero' }, 
               { text: 'Requisito de procebilidad', value: 'tipodeclaracion' }, 
               { text: 'Grado', value: 'resultado' }, 
-              { text: 'Gravedad', value: 'gravedad',  },  
+              { text: 'Prisión preventiva oficiosa', value: 'Prisión preventiva oficiosa',  },  
               { text: 'Violencia', value: 'violencia',  },    
               { text: 'Modalidad', value: 'modalidad',  },  
               { text: 'Estatus', value: 'equiparado',  },    
@@ -683,8 +944,6 @@
           clasifOrdenResult:'',
           armafuego:'',
           armablanca:'',
-          conAlgunaParteCuerpo:'',
-          conOtroElemento:'',
           tipoRobado:'',
           montoRobado :0,
           tipoMontoRobo:false,
@@ -693,13 +952,15 @@
           hipotesi:'',
           tipoViolencias:[],
           TViolencia: [],
-          TSexual: [],
+          TSexual: '',
           TDigital: [],
           TMedio: [],
           tipoViolencia2:'',
           subtipo: '',
           tipoinformacion:'',
           medio:'',
+          gradoDelito:['Grave', 'No grave','No especifica'],
+          gradoDelitoM:'',
           violenciaSexual:['Derechos sexuales','Derechos Reproductivos'],
           infoDigital:[
             {text: 'Audiograbaciones', value:'Audiograbaciones'},
@@ -722,7 +983,20 @@
           showpage:true,
           e401:false,
           e403:false,
-  
+          requeridoTV: '',
+          requeridoS: '',
+          requeridoD: '',
+          requeridoR:'',
+          requeridoEL: '',
+          requeridoPC: '',
+          instrumentos: [],
+          instrumentosComision: [],
+          cuerpo: '',
+          elemento: '',
+          InstrumentosC: '',
+          vaciosIC:'',
+          requeridoMR:'',
+          detalledelito:[]
       }),
    
       created () {  
@@ -760,7 +1034,7 @@
   
                   //*********************************************** */
                   me.listarRDeliotosHecho();
-              
+                    me.listarInstrumentos();
                   me.listarDelitos();
                   me.listarTipoFuero();
                   me.listarTipoDeclaracion();
@@ -815,14 +1089,18 @@
       },
       watch: {
         violenciaSinViolencia(val){
-            if(val.value === 'Con violencia'){
+            if(val && val.value === 'Con violencia'){
                 this.listarTViolencia();
+                this.requeridoTV = 'required';
             }else{
                 this.sinviolencia();
             }
         },
         delitoId(val){
-            if(val.value != 'ROBO'){
+            this.requeridoR = val && val.value === 'ROBO'?'required':'';
+            this.requeridoMR = val && val.value == 'ROBO'?'required':'';
+
+            if(val && val.value != 'ROBO'){
                 this.sinRobo();
             }
         },
@@ -830,10 +1108,46 @@
             if(val.every(item => item.value !== 'Digital')){
                 this.sinDigital();
             }
-        }
+
+            if (val.some(item => item.value == 'Sexual') && this.TSexual == 'Na') {
+                this.TSexual = '';
+            }
+            
+            if (val.some(item => item.value == 'Sexual')){
+                this.requeridoS = 'required';
+            }
+            else{
+                this.requeridoS = '';
+                this.TSexual = '';
+            }
+            this.requeridoD = val.some(item => item.value == 'Digital')? 'required': '';
+        },
+        instrumentosComision(val){
+            this.cuerpo = val.includes('Con alguna parte del cuerpo');
+            this.elemento = val.includes('Con otro instrumento');
+            
+            this.requeridoPC = this.cuerpo?'required':'';
+            this.requeridoEL = this.elemento?'required': '';
+
+            if(this.cuerpo && this.conAlgunaParteCuerpo === 'Na'){
+                this.conAlgunaParteCuerpo = '';
+            }
+            if(this.elemento && this.conOtroElemento === 'Na'){
+                this.conOtroElemento = '';
+            }
+            if (!this.cuerpo) {
+                this.conAlgunaParteCuerpo = 'Na';
+            }
+            if (!this.elemento) {
+                this.conOtroElemento = 'Na';
+            }
+        },
     
       },
       methods:{
+        resetDE(){
+            this.delitoespecifico = '';
+        },
         sinDigital(){
             this.TDigital = [];
             this.TMedio = [];
@@ -844,13 +1158,10 @@
         },
           sinviolencia(){
             this.TViolencia = [];
-            this.TSexual = [];
+            this.TSexual = '';
             this.TDigital = [];
             this.TMedio = [];
-             this.armaFuego = false;
-            this.armaBlanca = false; 
-            this.conAlgunaParteCuerpo = "Na"; 
-            this.conOtroElemento = "Na"; 
+            this.requeridoTV = ''; 
           },
           cerrarcarpeta () {
               this.$store.state.rHechoId = null;
@@ -864,7 +1175,7 @@
               this.control = true
              // this.listarTViolencia();
           },
-          editr(item){
+          async editr(item){
             
               let me = this;
               //Separamos los valores por ; para guardarlos en un arreglo, mapearlos, eliminar espacios y al final mostrarlos
@@ -903,6 +1214,12 @@
                 me.digitalSelect = true;
               }
             }
+            //Instrumentos para la Comisión
+            if(item.instrumentosComision){
+                me.instrumentosComision = item.instrumentosComision.split(";").map(s => s.trim());
+            } else{
+                await me.VacioInstrumentoC(item);
+            }
               
               me.delitoId = new Object()
               me.delitoId.value = item.nombreDelito
@@ -929,9 +1246,8 @@
               me.modalAdd = 1;
               me.control = false
               me.delitoespecifico = item.delitoEspecifico
-              
-              me.TSexual = item.subtipoSexual
-             
+             me.TSexual = item.subtipoSexual;
+              me.gradoDelitoM = item.gradoDelito;
               
           },
           guardar(){ 
@@ -939,23 +1255,23 @@
             let header={"Authorization" : "Bearer " + this.$store.state.token};
             let configuracion= {headers : header};
             var descripcionRegTabI = 'Registro de delito por ' + me.delitoId.text;
+            me.TipoV = "";
+            me.TipoD = "";
+            me.TipoM = "";
+            me.InstrumentosC = "";
 
             if (me.tipoMontoRobo==false)
             {
               me.tipoRobado=0;
               me.montoRobado=0;
             }
-            if(me.violenciaSinViolencia.value2 == 1){
-                me.armaFuego = false;
-                me.armaBlanca = false;
-                me.conAlgunaParteCuerpo = "Na"
-                me.conOtroElemento = "Na"
+            if(me.violenciaSinViolencia && me.violenciaSinViolencia.value2 == 1){
                 me.TSexual = "Na"
                 me.TipoV = "Na"
                 me.TipoD = "Na"
                 me.TipoM = "Na"
             }
-            else if(me.violenciaSinViolencia.value2 == 3){
+            else if(me.violenciaSinViolencia && me.violenciaSinViolencia.value2 == 3){
             //Si existe violencvia concatenamos los valores con ; para guardarlos en un cadena
             //Tipo Violencia
                 for(var i=0; i<me.TViolencia.length; i++){
@@ -982,8 +1298,10 @@
                 } 
             }
            
-  
-              me.$validator.validate().then(result => {
+            //Instrumentos para la Comisión
+            me.InstrumentosC = me.instrumentosComision.join("; ");
+
+              this.$validator.validate().then(result => {
                       if (result) { 
                                this.$cat.post('api/RDHs/Crear',{
                                   'rHechoId': me.rHechoId,
@@ -1010,7 +1328,9 @@
                                   'tipoViolencia': me.TipoV,
                                   'subtipoSexual': me.TSexual,
                                   'tipoInfoDigital': me.TipoD,
-                                  'medioDigital': me.TipoM
+                                  'medioDigital': me.TipoM,
+                                  'instrumentosComision': me.InstrumentosC,
+                                  'gradoDelito': me.gradoDelitoM
                               },configuracion).then(function(response){
                                   me.close();
                                   me.$notify('La información se guardo correctamente !!!','success')  
@@ -1034,6 +1354,8 @@
                                           me.$notify('Error al intentar crear el  registro!!!','error')  
                                       } 
                                   });
+                                  }else{
+                        alertify.error('Faltan campos obligatorios por completar.');
                       }
               })   
           },
@@ -1079,6 +1401,7 @@
               this.limpiar();
               this.modalAdd = 0; 
               this.dialog2=0;
+              this.step=1;
           }, 
           limpiar(){    
               let me=this;      
@@ -1099,7 +1422,7 @@
               me.conAlgunaParteCuerpo= "";
               me.conOtroElemento= "";
               me.tipoRobado= "";
-              me.montoRobado= "";
+              me.montoRobado= 0;
               me.observaciones = "";
               me.delitoespecifico = ""
               me.TViolencia = [];
@@ -1111,6 +1434,11 @@
               me.TipoV = "";
               me.TipoD = "";
               me.TipoM = "";
+              me.tipoMontoRobo = false;
+              me.instrumentosComision =[];
+              me.cuerpo ="";
+              me.elemento="";
+              me.gradoDelitoM = "";
           },
           listarRDeliotosHecho(){
               let me=this; 
@@ -1382,43 +1710,8 @@
                   });
           },  
           detalles(item){  
-              this.nombreDelito= item.nombreDelito,
-              this.OfiNoOfi= item.ofiNoOfic
-              if(item.altoImpacto)
-                  this.altoImpacto = "Si"
-              else
-                  this.altoImpacto = "No"
-              if(item.suceptibleMASC)
-                  this.suceptibleMASC = "Si"
-              else
-                  this.suceptibleMASC = "No" 
-              this.tipoFuero= item.tipoFuero,
-              this.tipoDeclaracion= item.tipoDeclaracion,
-              this.intensionDelito= item.intensionDelito,
-              this.tipoViolencia= item.violenciaSinViolencia,
-              this.equiparado= item.equiparado,
-              this.modalidad= item.tipo,
-              this.concurso= item.concurso,
-              this.clasifOrdenResult= item.clasificaOrdenResult
-              if(item.armaFuego)
-                  this.armafuego = "Si"
-              else
-                  this.armafuego = "No"
-              if(item.armaBlanca)
-                  this.armablanca = "Si"
-              else
-                  this.armablanca = "No" 
-              this.conAlgunaParteCuerpo= item.conAlgunaParteCuerpo,
-              this.conOtroElemento= item.conotroElemento,
-              this.tipoRobado=item.tipoRobado,
-              this.montoRobado= item.montoRobado
-              this.delitoespecifico = item.delitoEspecifico
+              this.detalledelito = item;
               this.dialog2=1;
-              this.observaciones = item.observaciones;
-              this.tipoViolencia2 = item.tipoViolencia;
-              this.subtipo = item.subtipoSexual;
-              this.tipoinformacion = item.tipoInfoDigital;
-              this.medio = item.medioDigital;
           },
           actualizarstatus(item){
               let me=this; 
@@ -1483,7 +1776,11 @@
           actualizar(){
               let me=this; 
               let header={"Authorization" : "Bearer " + this.$store.state.token};
-              let configuracion= {headers : header};  
+              let configuracion= {headers : header}; 
+              me.TipoV = '';
+              me.TipoD = '';
+              me.TipoM = '';
+              me.InstrumentosC = ""; 
                 
                 for(var i=0; i<me.TViolencia.length; i++){
                     me.TipoV += me.TViolencia[i].value;
@@ -1501,13 +1798,15 @@
                         if(i+1 != me.TMedio.length)
                             me.TipoM += "; ";
                 }
+
+                me.InstrumentosC = me.instrumentosComision.join("; ");
                    
                 if (!me.TipoV.includes('Sexual')) {
                     me.TSexual = "Na"
                     console.log("No hay sexual")
                 } 
 
-            me.$validator.validate().then(result => {
+            this.$validator.validate().then(result => {
                 if (result) { 
               
                     this.$cat.put('api/RDHs/Actualizar',{
@@ -1533,7 +1832,9 @@
                         'tipoViolencia': me.TipoV,
                         'subtipoSexual': me.TSexual,
                         'tipoInfoDigital': me.TipoD,
-                        'medioDigital': me.TipoM
+                        'medioDigital': me.TipoM,
+                        'instrumentosComision': me.InstrumentosC,
+                        'gradoDelito': me.gradoDelitoM
     
                 },configuracion).then(function(response){                            
                     me.$notify('La información se actualizo correctamente !!!','success')    
@@ -1557,6 +1858,8 @@
                         me.$notify('Error al intentar actualizar el registro!!!','error')   
                     } 
                 });
+                }else{
+                    alertify.error('Faltan campos obligatorios por completar.');
             }
             })   
                             
@@ -1617,8 +1920,73 @@
                       } 
                   });
 
+          },
+          listarInstrumentos(){
+              let me=this;
+              let header={"Authorization" : "Bearer " + this.$store.state.token};
+              let configuracion= {headers : header};
+              var ICArray=[];
+              me.$conf.get('api/InstrumentosComision/ListarInstrumentosC',configuracion).then(function(response){ 
+                ICArray=response.data;
+                ICArray.map(function(x){
+                          me.instrumentos.push(x.nombreInstrumento);
+                      });
+                  }).catch(err => { 
+                      if (err.response.status==400){
+                          me.$notify("No es un usuario válido", 'error')
+                      } else if (err.response.status==401){
+                          me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                          me.e401 = true,
+                          me.showpage= false
+                      } else if (err.response.status==403){ 
+                          me.$notify("No esta autorizado para ver esta pagina", 'error')
+                          me.e403= true
+                          me.showpage= false 
+                      } else if (err.response.status==404){
+                          me.$notify("El recuso no ha sido encontrado", 'error')
+                      }else{
+                          me.$notify('Error al intentar listar los registros!!!','error')    
+                      } 
+                  });
+
+          },
+
+          VacioInstrumentoC(item){
+            let me = this;
+            me.vaciosIC ="";
+            me.instrumentosComision =[];
+
+            if (item.armaFuego) {
+                me.instrumentosComision.push("Con arma de fuego");
+                }
+            if (item.armaBlanca) {
+                me.instrumentosComision.push("Con arma blanca");
+                }
+            if (item.conAlgunaParteCuerpo && item.conAlgunaParteCuerpo.length > 3) {
+                me.instrumentosComision.push("Con alguna parte del cuerpo");
+                }
+            if (item.conotroElemento && item.conotroElemento.length > 3) {
+                me.instrumentosComision.push("Con otro instrumento");
+                }
+            me.vaciosIC = me.instrumentosComision.join("; ");
+                if(me.vaciosIC){
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
+                    try{
+                        this.$cat.put('api/RDHs/InsertarInstrumentos',{
+                            'IdRDH': item.idRDH,
+                            'instrumentosComision': me.vaciosIC
+                        },configuracion);
+                    }catch(err){
+                        me.$notify('Error al intentar guardar Instrumentos de Comisión!!!','error')    
+                    }
+                }
+          },
+          limpiarCamposIC(){
+            this.instrumentosComision = [];
+            this.conAlgunaParteCuerpo = "Na";
+            this.conOtroElemento = "Na";
           }
-          
         } 
      }
   </script>
@@ -1648,5 +2016,10 @@
   display: flex;
   align-items: center;
 }
+.texto-truncado {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
   </style>
-  

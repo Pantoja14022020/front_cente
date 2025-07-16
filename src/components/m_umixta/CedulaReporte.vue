@@ -13,13 +13,13 @@
         <v-flex xs12 sm6 md3>
           <v-text-field class="font-weight-regular" v-model="nuc" disabled prepend-icon="folder" filled />
         </v-flex>
-        <v-btn class="mx-2" @click="cerrarcarpeta()" fab dark small color="primary">
-          <v-icon dark>
+        <v-btn class="mx-2 pt-2" @click="cerrarcarpeta()" fab dark small color="primary">
+          <v-icon class="mt-1" dark>
             close
           </v-icon>
         </v-btn>
-        <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-          <v-icon dark>
+        <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+          <v-icon class="mt-1" dark>
             add
           </v-icon>
         </v-btn>
@@ -285,7 +285,9 @@
                 <v-container grid-list-lg>
                   <v-layout wrap justify-space-between>
                     <v-flex xs12 md5 lg5>
-                      <v-text-field label="*Calle" name="calle" v-if="personaOcupacion" v-model="calleOcupacion"
+                      <v-autocomplete name="tipo vialidad" :items="vialidades" v-if="personaOcupacion" v-model="vialidadOcupacion" label="*Tipo de vialidad:" 
+                      v-validate="'required'" :error-messages="errors.collect('tipo vialidad')" />
+                      <v-text-field label="*Nombre" name="calle" v-if="personaOcupacion" v-model="calleOcupacion"
                         v-validate="'required'" :error-messages="errors.collect('calle')" />
                       <v-text-field name="noInt" label="No. Interior" v-if="personaOcupacion" v-model="noIntOcupacion" />
                       <v-text-field name="noExt" label="No. Exterior" v-if="personaOcupacion" v-model="noExtOcupacion" />
@@ -310,6 +312,8 @@
                       <v-autocomplete label="*Localidad" name="localidad" v-model="localidadid" :items="localidades"
                         return-object v-if="personaOcupacion" v-on:change="listarPorLocalidad" v-validate="'required'"
                         :error-messages="errors.collect('localidad')" />
+                        <v-autocomplete name="tipo asentamiento" v-if="personaOcupacion" :items="asentamientos" v-model="asentamientoOcupacion" 
+                        label="Tipo de asentamiento:" :error-messages="errors.collect('tipo asentamiento')" />
                       <v-text-field label="Código postal" name="cp" v-if="personaOcupacion" v-model="cpOcupacion"
                         disabled />
                     </v-flex>
@@ -561,6 +565,8 @@ export default {
     referencia: '',
     pais: 'México',
     /* Direccion donde desempeña la ocupacion */
+    vialidadOcupacion: '',
+    vialidadNombreOcupacion: '',
     calleOcupacion: '',
     noIntOcupacion: '',
     noExtOcupacion: '',
@@ -572,6 +578,8 @@ export default {
     estadoOcupacion: '',
     municipioOcupacion: '',
     localidadOcupacion: '',
+    asentamientoOcupacion: '',
+    asentamientoNombreOcupacion: '',
     /* Direccion persona denuncia */
     calleD: '',
     numeroD: '',
@@ -581,6 +589,8 @@ export default {
     paisD: '',
     cpD: '',
     referenciaD: '',
+    vialidadD: '',
+    vialidadNombreD: '',
     /* Consumo */
     estados: [],
     estado: '',
@@ -595,6 +605,10 @@ export default {
     localidad: '',
     localidadid: '',
     localidades: [],
+    vialidad:'',
+    vialidades:[],
+    asentamientos: [],
+    vialidadNombre: '',
     /* Vehiculo */
     marcas: [],
     marca: '',
@@ -640,7 +654,8 @@ export default {
       { text: 'Tio(a)', value: 'Tio(a)' },
       { text: 'Vecino(a)', value: 'Vecino(a)' },
       { text: 'Conocido(a)', value: 'Conocido(a)' },
-      { text: 'Ninguno', value: 'Ninguno' }
+      { text: 'Ninguno', value: 'Ninguno' },
+      { text: 'Se desconoce',value: 'Se desconoce' },
     ],
     /* Ultima Ubicacion */
     calleH: '',
@@ -652,6 +667,8 @@ export default {
     municipioH: '',
     localidadH: '',
     cpH: '',
+    vialidadH: '',
+    vialidadNombreH: '',
     /* redeso sociales */
     catalogoRedesSociales: [],
     redesSocialesBusqueda: [],
@@ -916,6 +933,8 @@ export default {
       this.relacionPersonaAcompanaba = ''
       this.localizacionPersonaAcompanaba = ''
       this.vestimentaAccesorios = ''
+      this.vialidadOcupacion = '',
+      this.vialidadNombreOcupacion = '',
       this.calleOcupacion = ''
       this.noIntOcupacion = ''
       this.noExtOcupacion = ''
@@ -924,7 +943,9 @@ export default {
       this.referenciaOcupacion = ''
       this.estadoOcupacion = '',
       this.municipioOcupacion = '',
-      this.localidadOcupacion = ''
+      this.localidadOcupacion = '',
+      this.asentamientoOcupacion = '',
+      this.asentamientoNombreOcupacion = '',
       this.imageName = '',
       this.imageFile = '',
       this.imageUrl = '',
@@ -934,6 +955,8 @@ export default {
       this.estado = ''
       this.estadoid = ''
       this.ciudades = []
+      this.vialidad = '',
+      this.vialidadNombre = '',
       this.calle = ''
       this.cp = ''
       this.municipio = ''
@@ -970,6 +993,8 @@ export default {
       this.municipioH = ''
       this.localidadH = ''
       this.cpH = ''
+      this.vialidadH = '',
+      this.vialidadNombreH = '',
       this.idPersonaDesaparecida = ''
       this.ExisteredSocial = false;
       this.redSocial = [];
@@ -996,6 +1021,7 @@ export default {
         Promise.all(personasPromises).then(() => {
             // Este bloque solo se ejecutará cuando todas las peticiones hayan terminado
             if (response.data != null && response.data.length !== 0 && me.personas.length !== 0) {
+                me.limpiar();
                 me.editedIndex = -1;
                 me.modalAdd = 1;
             } else {
@@ -1127,6 +1153,11 @@ export default {
             me.localidadOcupacion = response.data.localidad
             me.paisOcupacion = response.data.pais
             me.cpOcupacion = response.data.cp
+            me.vialidadOcupacion = response.data.tipoVialidad
+            me.asentamientoOcupacion = response.data.tipoAsentamiento
+
+            let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidadOcupacion);
+            me.vialidadNombreOcupacion = vialidadEncontrada ? vialidadEncontrada.text : "";
             //me.selectEstado(me.estadoOcupacion)
           }
           resolve();
@@ -1160,11 +1191,13 @@ export default {
     },
     asignarValoresOcupacionDefecto() {
       let me = this;
+      me.vialidadOcupacion = 'N/A';
       me.calleOcupacion = 'N/A';
       me.paisOcupacion = 'N/A';
       me.estadoid = 'N/A';
       me.municipioid = 'N/A';
       me.localidadid = 'N/A';
+      me.asentamientoOcupacion = 'N/A';
       me.cpOcupacion = 'N/A';
     }
     ,
@@ -1232,6 +1265,11 @@ export default {
             me.municipio = response.data.municipio
             me.localidad = response.data.localidad
             me.pais = response.data.pais
+            me.vialidad = response.data.tipoVialidad
+            me.asentamiento = response.data.tipoAsentamiento
+
+            let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidad);
+            me.vialidadNombre = vialidadEncontrada ? vialidadEncontrada.text : "";
           }).catch(err => {
             if (err.response.status == 400) {
               me.$notify("No es un usuario válido", 'error')
@@ -1370,6 +1408,11 @@ export default {
             me.municipio = response.data.municipio
             me.localidad = response.data.localidad
             me.pais = response.data.pais
+            me.vialidad = response.data.tipoVialidad
+            me.asentamiento = response.data.tipoAsentamiento
+
+            let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidad);
+            me.vialidadNombre = vialidadEncontrada ? vialidadEncontrada.text : "";
             me.verpdf()
           }).catch(err => {
             if (err.response.status == 400) {
@@ -1404,6 +1447,10 @@ export default {
       me.listaimputados.map(item => {
         item.personaId == (me.personaId.value == undefined ? me.personaId : me.personaId.value) ? media = item : null
       })
+
+      let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidadOcupacion);
+      me.vialidadNombreOcupacion = vialidadEncontrada ? vialidadEncontrada.text : "";
+
       me.$validator.validateAll('crear').then(result => {
         if (result) {
           me.fechas = me.generarfecha()
@@ -1419,6 +1466,11 @@ export default {
       if (!me.estadoid.value == '') {
         me.estadoOcupacion = me.estadoid.text;
         me.estadoid = me.estadoid.value;
+        me.municipioOcupacion = '';
+        me.municipioid = '';
+        me.localidadOcupacion = '';
+        me.localidadid = '';
+        me.cpOcupacion = '';
       }
       var municipiosArray = [];
       me.municipios.length = 0;
@@ -1592,6 +1644,11 @@ export default {
       if (!me.municipioid.value == '') {
         me.municipioOcupacion = me.municipioid.text;
         me.municipioid = me.municipioid.value;
+        me.localidadOcupacion = '';
+        me.localidadid = '';
+        me.cpOcupacion = '';
+      } else if (!me.municipioid) {
+          return;
       }
       var localidadArray = [];
       me.localidades.length = 0;
@@ -1691,8 +1748,12 @@ export default {
       let me = this;
       let header = { "Authorization": "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
-      me.localidadOcupacion = me.localidadid.text;
-      me.localidadid = me.localidadid.value;
+      if (!me.localidadid.value == 0) {
+        me.localidadOcupacion = me.localidadid.text;
+        me.localidadid = me.localidadid.value;
+      } else if (!me.localidadid) {
+        return;
+      }
       this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid, configuracion).then(function (response) {
         me.cpOcupacion = response.data.cp;
       }).catch(err => {
@@ -1811,6 +1872,11 @@ export default {
           me.paisD = response.data.pais,
           me.cpD = response.data.cp,
           me.referenciaD = response.data.referencia
+          me.vialidadD = response.data.tipoVialidad
+          me.asentamientoD = response.data.tipoAsentamiento
+
+          let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidadD);
+          me.vialidadNombreD = vialidadEncontrada ? vialidadEncontrada.text : "";
       }).catch(err => {
         if (err.response.status == 400) {
           me.$notify("No es un usuario válido", 'error')
@@ -2073,7 +2139,8 @@ export default {
       let header = { "Authorization": "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       try{
-
+        await me.listarVialidad();
+        await me.listarAsentamiento();
         const response = await this.$cat.get('api/DireccionDelitoes/ListarPoridHecho/' + me.rHechoId, configuracion);
           me.lugarespecificoH = response.data.lugarEspecifico;
           me.calleH = response.data.calle;
@@ -2085,6 +2152,8 @@ export default {
           me.municipioH = response.data.municipio;
           me.localidadH = response.data.localidad;
           me.cpH = response.data.cp;
+          me.vialidadH = response.data.tipoVialidad;
+          me.asentamientoH = response.data.tipoAsentamiento;
           me.listarrHecho()
           me.listaMediaAfiliacion()
           me.listarPersonas()
@@ -2097,6 +2166,8 @@ export default {
           me.listarColores()
           me.listarAnos()
           me.listarCatalogoRedesSociales()
+          let vialidadEncontrada = me.vialidades.find(v => v.value == me.vialidadH);
+          me.vialidadNombreH = vialidadEncontrada ? vialidadEncontrada.text : "";
       } catch(error){
         if(error){
           alertify.alert("Notificación","No se ha registrado la dirección del delito.",
@@ -2318,7 +2389,9 @@ export default {
           'municipio': me.municipioOcupacion,
           'localidad': me.localidadOcupacion,
           'cp': me.cpOcupacion,
-          'personaId': me.personaId.value
+          'personaId': me.personaId.value,
+          'tipoVialidad': me.vialidadOcupacion,
+          'tipoAsentamiento': me.asentamientoOcupacion,
         }, configuracion).
         then(function (response) {
           if (me.vehiculoInvolucrado) {
@@ -2567,7 +2640,9 @@ export default {
             'Localidad': me.localidadOcupacion,
             'CP': me.cpOcupacion,
             'PersonaId': me.personaId,
-            'idDOcupacion': me.idDocupacion
+            'idDOcupacion': me.idDocupacion,
+            'TipoVialidad': me.vialidadOcupacion,
+            'TipoAsentamiento': me.asentamientoOcupacion,
           }, configuracion).then(function (response) {
             this.$cat.put('api/VehiculoDesaparicionPersona/ActualizarVehiculo', {
               'IdVehDesaparicionPersona': me.idVehDesaparicionPersona,
@@ -2685,7 +2760,67 @@ export default {
       {
         me.redesSociales.splice(index, 1); 
       }
-    }
+    },
+    listarVialidad(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      return new Promise((resolve, reject) => {
+        this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+            response.data.forEach(x => {
+              me.vialidades.push({text: x.nombre, value: x.clave});
+            });
+            resolve();
+        }).catch(err => {
+            reject(err);
+            if (err.response.status==400){
+                me.$notify("No es un usuario válido", 'error')
+            } else if (err.response.status==401){
+                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                me.e401 = true,
+                me.showpage= false
+            } else if (err.response.status==403){
+                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.e403= true
+                me.showpage= false
+            } else if (err.response.status==404){
+                me.$notify("El recuso no ha sido encontrado", 'error')
+            }else{
+                me.$notify('Error al intentar listar los registros!!!','error')
+            }
+        });
+      });
+    },
+    listarAsentamiento(){
+      let me=this;
+      let header={"Authorization" : "Bearer " + this.$store.state.token};
+      let configuracion= {headers : header};
+      return new Promise((resolve, reject) => {
+        this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+            response.data.forEach(x => {
+              me.asentamientos.push({text: x.nombre, value: x.clave});
+            });
+            resolve();
+        }).catch(err => {
+            reject(err);
+            if (err.response.status==400){
+                me.$notify("No es un usuario válido", 'error')
+            } else if (err.response.status==401){
+                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                me.e401 = true,
+                me.showpage= false
+            } else if (err.response.status==403){
+                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.e403= true
+                me.showpage= false
+            } else if (err.response.status==404){
+                me.$notify("El recuso no ha sido encontrado", 'error')
+            }else{
+                me.$notify('Error al intentar listar los registros!!!','error')
+            }
+        });
+      });
+    },
   }
 }
 </script>

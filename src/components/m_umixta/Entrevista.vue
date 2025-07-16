@@ -1054,6 +1054,7 @@ export default {
       numeromaximo: [],
       agencias: [],
       agencia: "",
+      vialidades:[],
       //
       idDDerivacion: "",
       nombrederivacion: "",
@@ -1157,6 +1158,7 @@ export default {
     this.listarderivacion();
     this.informacionagencia();
     this.listarSP();
+    this.listarVialidad();
 
     // Add a request interceptor
     axios.interceptors.request.use(
@@ -1390,7 +1392,11 @@ export default {
         .get("api/RAPs/ListarDP/" + me.personaId, configuracion)
         .then(function (response) {
           console.log(response.data);
+          let vialidadEncontrada = me.vialidades.find(v => v.value == response.data.tipoVialidad);
+          let nombreVialidad = vialidadEncontrada ? vialidadEncontrada.text : "";
           me.direccion =
+           nombreVialidad +
+            " " +
             response.data.calle +
             " " +
             response.data.noint +
@@ -1426,6 +1432,33 @@ export default {
             me.$notify("Error al intentar listar los registros!!!", "error");
           }
         });
+    },
+    listarVialidad(){
+        let me=this;
+        let header={"Authorization" : "Bearer " + this.$store.state.token};
+        let configuracion= {headers : header};
+        this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+            response.data.forEach(x => {
+                const item = {text: x.nombre, value: x.clave};
+                me.vialidades.push(item);
+            });
+        }).catch(err => {
+                if (err.response.status==400){
+                    me.$notify("No es un usuario válido", 'error')
+                } else if (err.response.status==401){
+                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                    me.e401 = true,
+                    me.showpage= false
+                } else if (err.response.status==403){
+                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.e403= true
+                    me.showpage= false
+                } else if (err.response.status==404){
+                    me.$notify("El recuso no ha sido encontrado", 'error')
+                }else{
+                    me.$notify('Error al intentar listar los registros!!!','error')
+                }
+            });
     },
     ActualizarSi() {
       this.contencionvictima = true;
@@ -1969,16 +2002,19 @@ export default {
       if (me.switch1 == false && me.switch2 == false) {
         //**************************************************** */
         //ACTUALIZAMOS LA HORA DE CIERRE
+        
+        me.$CAT.put("api/RAtencions/AHCierre",
+        {
+          idratencion: me.rAtencionId,
 
-        me.$CAT
-          .put(
-            "api/RAtencions/AHCierre",
-            {
-              idratencion: me.rAtencionId,
-            },
-            configuracion
-          )
-          .then(function (response) {})
+        },configuracion).then(function (response) 
+        {
+          me.$store.state.rac= me.rac;  
+          me.$store.state.ratencionid2 = me.rAtencionId;
+          me.$store.state.rhechoid2 = me.rHechoId ;
+          me.resetForm();
+          me.$router.replace('./umixtainformacionrac') 
+        })
           .catch((err) => {
             if (err.response.status == 400) {
               me.$notify("No es un usuario válido", "error");
@@ -2003,7 +2039,7 @@ export default {
           });
         //**************************************************** */
 
-        me.$router.push("./umixta-listaregistros");
+        //me.$router.push("./umixta-listaregistros");
       }
 
       if (me.switch1 == true || me.switch2 == true) {
@@ -2057,7 +2093,16 @@ export default {
                       "success"
                     );
                     me.crearRegistroTableroI(descripcionRegTabI);
-                    me.$router.push("./umixta-entrevistainicial");
+                    //me.$router.push("./umixta-entrevistainicial");
+                    
+                    // Limpiar el estado del componente
+                    me.resetForm();
+                    // Redirigir a la lista de registros y reemplazar la entrada en el historial
+                    if (me.switch1 == true) 
+                    {
+                      // Si "El hecho constituye un delito" es verdadero, redirigir a la carpeta de NUCs
+                      me.$router.replace("./umixta-entrevistainicial");
+                    }
                   })
                   .catch((err) => {
                     if (err.response.status == 400) {
@@ -2131,6 +2176,15 @@ export default {
             }
           });
       }
+    },
+    resetForm() 
+    {
+      this.reseña = "";
+      this.textocontencion = "";
+      this.rAtencionId = 0;
+      this.rHechoId = 0;
+      this.personaId = 0;
+      // Restablecer otros datos según sea necesario
     },
     crearRegistroTableroI(descripcionRegTabI) {
       let me = this;

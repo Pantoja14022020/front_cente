@@ -32,13 +32,13 @@
                                 <v-container grid-list-md>
                                     <v-layout wrap>
                                         <v-flex xs12 sm12 md12>
-                                            <v-select name="distrito"
+                                            <v-autocomplete name="distrito"
                                                       label="Distrito" 
                                                       v-model="distritoId"
                                                       :items="distritos"  
                                                       v-validate="'required'"
                                                       :error-messages="errors.collect('distrito')" >
-                                            </v-select>
+                                            </v-autocomplete>
                                         </v-flex>
                                         <v-flex xs12 sm12 md12>
                                             <v-text-field name="clave" 
@@ -209,7 +209,7 @@
 
                         </v-card>
                     </v-dialog>
-
+                    <v-dialog   v-model="bloqueo" max-width="600px" persistent></v-dialog>
 
         </v-flex>
     </v-layout>
@@ -283,6 +283,9 @@
                 distritoNombre: '',
                 statusDSP: '',
                 idDSP: '',
+                DistritoCxn: [],
+                proceso: '',
+                bloqueo: false
             }
         },
         computed: {
@@ -332,6 +335,7 @@
                 let configuracion= {headers : header};
                 this.$conf.get('api/DSPs/Listar',configuracion).then(function(response){
                     me.dsps=response.data;
+                    me.bloqueo = false;
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -360,6 +364,7 @@
                     distritosArray.map(function(x){
                         me.distritos.push({text: x.nombre,value:x.idDistrito});
                     });
+                    me.DistritoCxn = me.distritos;
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -388,7 +393,7 @@
                 this.statusInicioCarpeta=item.statusInicioCarpeta;   
                 this.distritoId=item.distritoId;
                 this.tipo = item.tipo;
-
+                this.statusDSP = item.statusDSP;
                 this.editedIndex=1;
                 this.dialog = true
             },
@@ -413,6 +418,7 @@
             guardar () {
                 this.$validator.validate().then(result => {
                     if (result) { 
+                        this.bloqueo = true;
                         if (this.editedIndex > -1) {
                             //Código para editar 
                             let me=this;
@@ -428,27 +434,15 @@
                                 'telefono': me.telefono, 
                                 'statusInicioCarpeta': me.statusInicioCarpeta,
                                 'tipo' : me.tipo
-                            },configuracion).then(function(response){
+                            },configuracion).then(async function(response){
+                                let newDSP = response.data.id;
+                                await me.clonacionDSP(newDSP);
                                 me.close();
                                 me.$notify('La información se actualizo correctamente !!!','success')  
                                 me.listar();
                                 me.limpiar();     
                                 }).catch(err => { 
-                                    if (err.response.status==400){
-                                        me.$notify("No es un usuario válido", 'error')
-                                    } else if (err.response.status==401){
-                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                        me.e401 = true,
-                                        me.showpage= false
-                                    } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
-                                        me.e403= true
-                                        me.showpage= false 
-                                    } else if (err.response.status==404){
-                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                    }else{
-                                        me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                    } 
+                                    me.$notify(`Error al actualizar distrito en Pachuca`, 'error');
                                 });
                         } else {
                             //Código para guardar
@@ -501,67 +495,121 @@
             modalClose(){
                 this.modalActDesDSP = false;
             },
-            actdesDSP(){
-                let me=this;
+            async actdesDSP(){
+                let me = this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-
-                if (this.statusDSP) {
-                    
-                    this.$conf.put('api/DSPs/DesactivarDSP/'+this.idDSP,{},configuracion).then(function(response){
-                        me.modalActDesDSP = false;
-                        me.dspNombre = "";
-                        me.distritoNombre = "";
-                        me.statusDSP = "";
-                        me.idDSP = "";
-                        me.listar();                       
+                me.bloqueo = true;
+               if (me.statusDSP) {
+                    me.editedIndex = -2;
+                    await this.$conf.put('api/DSPs/DesactivarDSP/'+me.idDSP,{},configuracion).then(async function(response){
+                        await me.actdesDSPxDis(); 
+                        me.$notify(`Se Desactivo DSP en Pachuca`, 'success');                     
                     }).catch(err => {  
-                        if (err.response.status==400){
-                            me.$notify("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false 
-                        } else if (err.response.status==404){
-                            me.$notify("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.$notify('Error al intentar actualizar el registro!!!','error')   
-                        }  
+                        me.$notify(`Error al Desactivar DSP en Pachuca ${err.message}`, 'error');
                     });
                 }
                 else
                 {
-                    this.$conf.put('api/DSPs/ActivarDSP/'+this.idDSP,{},configuracion).then(function(response){
-                        me.modalActDesDSP = false;
-                        me.dspNombre = "";
-                        me.distritoNombre = "";
-                        me.statusDSP = "";
-                        me.idDSP = "";
-                        me.listar();                       
-                    }).catch(err => {  
-                        if (err.response.status==400){
-                            me.$notify("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false 
-                        } else if (err.response.status==404){
-                            me.$notify("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.$notify('Error al intentar actualizar el registro!!!','error')   
-                        }  
-                    });
+
+                    me.editedIndex = -3;
+                    await  this.$conf.put('api/DSPs/ActivarDSP/'+this.idDSP,{},configuracion).then(async function(response){
+                            await me.actdesDSPxDis();
+                            me.$notify(`Se Activo DSP en Pachuca`, 'success');                     
+                        }).catch(err => {  
+                            me.$notify(`Error al Activar DSP en Pachuca ${err.message}`, 'error');
+                        });
                 }
 
             },
+            async clonacionDSP(newDSP){
+                let me = this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+
+                for (let i = 0; i < me.DistritoCxn.length; i++) { 
+                    var idErrorG = me.DistritoCxn[i]; 
+                    try{
+                       const response = await this.$conf.post('api/DSPs/ClonarDSPs',{ 
+                                'idDSP':newDSP, 
+                                'distritoId': me.distritoId,
+                                'clave': me.clave,
+                                'nombreSubDir': me.nombreDir, 
+                                'NombreSub': me.nombreSub,
+                                'responsable': me.responsable,
+                                'telefono': me.telefono, 
+                                'statusInicioCarpeta': me.statusInicioCarpeta,
+                                'tipo' : me.tipo,
+                                'statusDSP': me.statusDSP,
+                                'distritoCnx': me.DistritoCxn[i].value
+                            },configuracion);
+
+                            if(response.status == 200){
+                                var ActR = true;
+                                await me.guardarErrorReplic(idErrorG,newDSP, ActR)
+                            }
+                    } catch(error) {
+                        me.$notify(`Error al guardar DSP en: ${me.DistritoCxn[i].text}`, 'error');          
+                        var ActR = false;
+                        await me.guardarErrorReplic(idErrorG,newDSP, ActR)
+                    }             
+                }    
+            },
+            async actdesDSPxDis(){
+                    let me=this;
+                    let header={"Authorization" : "Bearer " + this.$store.state.token};
+                    let configuracion= {headers : header};
+                    let newDSP = me.idDSP;
+
+                    for (let i = 0; i < me.DistritoCxn.length; i++) { 
+                    var idErrorG = me.DistritoCxn[i]; 
+                    try{
+                        const response = await this.$conf.put('api/DSPs/ActDesDSPxDis/'+me.idDSP+'/'+ me.DistritoCxn[i].value,{},configuracion);
+
+                        if(response.status == 200){
+                            var ActR = true;
+                            await me.guardarErrorReplic(idErrorG,newDSP, ActR)
+                        }
+                    }
+                    catch(error){
+                        me.$notify(`Error al Actualizar Status de DSP en: ${me.DistritoCxn[i].text}`, 'error');          
+                        var ActR = false;
+                        await me.guardarErrorReplic(idErrorG,newDSP, ActR)
+                    }
+                }      
+            },
+            async guardarErrorReplic(idErrorG,newDSP, ActR){
+                let me = this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                const procesos = {
+                     '1': 'Actualizar',
+                    '-1': 'Guardar',
+                    '-2': 'Desactivar DSP',
+                    '-3': 'Activar DSP',
+                };
+                me.proceso = procesos[me.editedIndex];
+                
+                try{
+                   const response =  await this.$conf.post('api/ErroresReplicacion/RegistrarError',{
+                        'registroErrorId': newDSP,
+                        'distritoId': idErrorG.value,
+                        'nombreDistrito': idErrorG.text,
+                        'modulo': "DSP",
+                        'proceso': me.proceso,
+                        'status': true,
+                        'ActualizaRegistro': ActR
+                    }, configuracion);
+
+                    if(response.status == 201){
+                         me.$notify(response.data.mensaje, 'warning');
+                    }
+                }
+                catch(error){
+                    me.$notify("No se pudo crear o actualizar el registro del error.", 'error');
+                }
+               
+            }
         }        
     }
 </script>

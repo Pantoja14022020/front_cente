@@ -163,28 +163,28 @@
                     </v-flex>
                     <v-tooltip bottom>
                             <template v-slot:activator="{ on }"> 
-                                <v-btn class="mx-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
-                                    <v-icon dark>close</v-icon>
+                                <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
+                                    <v-icon class="mt-1" dark>close</v-icon>
                                 </v-btn>
                             </template>
                             <span>Cerrar carpeta</span>
                     </v-tooltip>
-                    <v-tooltip bottom>
+                    <!--<v-tooltip bottom>
                         <template v-slot:activator="{ on }"> 
-                            <v-btn class="mx-2" slot="activator" v-on="on"    @click="activardialogostatus()" fab dark small color="success">
-                                <v-icon dark>update</v-icon>
+                            <v-btn class="mx-2 pt-2" slot="activator" v-on="on"    @click="activardialogostatus()" fab dark small color="success">
+                                <v-icon class="mt-1" dark>update</v-icon>
                             </v-btn>
                         </template>
                         <span>Actualizar status y etapa de la carpeta</span>
                     </v-tooltip>       
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on }"> 
-                            <v-btn class="mx-2" slot="activator" v-on="on"    @click="verhistorial()" fab dark small color="success">
-                                <v-icon dark>chrome_reader_mode</v-icon>
+                            <v-btn class="mx-2 pt-2" slot="activator" v-on="on"    @click="verhistorial()" fab dark small color="success">
+                                <v-icon class="mt-1" dark>chrome_reader_mode</v-icon>
                             </v-btn>
                         </template>
                         <span>Ver historial de la carpeta</span>
-                    </v-tooltip>                  
+                    </v-tooltip>-->                  
             </v-toolbar>
 
             <v-container grid-list-md >
@@ -216,19 +216,31 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Medio de notificación:</td>
-                                                    <td><b>{{medionotificacion}} </b></td>
+                                                    <td>
+                                                        <b v-if="medionotificacion">{{ medionotificacion }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Teléfonos:</td>
-                                                    <td><b> {{tel}}</b></td>
+                                                    <td>
+                                                        <b v-if='tel'>{{ tel }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Correo:</td>
-                                                    <td><b>{{email}} </b></td>
+                                                    <td>
+                                                        <b v-if='email'>{{ email }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Dirección:</td>
-                                                    <td><b>{{direccion}} </b></td>
+                                                    <td>
+                                                        <b v-if='direccion'>{{ direccion }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <br>
                                             </table>
@@ -241,31 +253,52 @@
                                                 </tr>
                                                     <tr>
                                                     <td>Estado familiar:</td>
-                                                    <td><b> {{estadocivil}}</b></td>
+                                                    <td>
+                                                        <b v-if='estadocivil'>{{ estadocivil }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td > Género: </td>
-                                                    <td><b> {{genero}}</b></td> 
+                                                    <td>
+                                                        <b v-if='genero'>{{ genero }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Ocupación:</td>
-                                                    <td><b> {{ocupacion}}</b></td>
+                                                    <td>
+                                                        <b v-if='ocupacion'>{{ ocupacion }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Nivel de estudios:</td>
-                                                    <td><b>{{nivelestudio}} </b></td>
+                                                    <td>
+                                                        <b v-if='nivelestudio'>{{ nivelestudio }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Lengüa</td>
-                                                    <td><b> {{lengua}}</b></td>
+                                                    <td>
+                                                        <b v-if='lengua'>{{ lengua }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Religión:</td>
-                                                    <td><b> {{religion }}</b></td>
+                                                    <td>
+                                                        <b v-if='religion'>{{ religion }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     <tr>
                                                     <td>Discapacidad:</td>
-                                                    <td><b>{{tipodiscapacidad}} </b></td>
+                                                    <td>
+                                                        <b v-if='tipodiscapacidad'>{{ tipodiscapacidad }}</b>
+                                                        <span class="text-grey-light" v-else>No registrado</span>
+                                                    </td>
                                                 </tr>
                                                     
                                                     <br>
@@ -814,7 +847,7 @@
             cerrarcarpeta () {
                 this.$store.state.rhechoid = null;
                 this.$store.state.nuc= null;
-                this.$router.push('./listacarpetas')
+                this.$router.push('./registro')
             },
             listarrHecho(){
                
@@ -908,7 +941,10 @@
                     me.curp = response.data.curp;
                     me.nombre = response.data.nombre + " " + response.data.apellidoPaterno + " " + response.data.apellidoMaterno;
                     me.alias=response.data.alias;
-                    me.tel = response.data.telefono1 + " , " + response.data.telefono2;
+                    me.tel = [
+                        response.data.telefono1 !== "0" && response.data.telefono1.trim() ? response.data.telefono1.trim() : "",
+                        response.data.telefono2 !== "0" && response.data.telefono2.trim() ? response.data.telefono2.trim() : ""
+                    ].filter(Boolean).join(", ");
                     me.email = response.data.correo; 
                     me.rac= response.data.rac;
                     me.fhreg = response.data.fechaHoraInicio;
@@ -1157,4 +1193,9 @@
 }
 </script>
  
- 
+ <style>
+    .text-grey-light {
+        color: #b0b0b0;
+        font-weight: normal;
+    }
+</style>

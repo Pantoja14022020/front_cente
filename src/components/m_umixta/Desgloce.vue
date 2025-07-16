@@ -32,7 +32,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="cerrarcarpeta"
@@ -41,7 +41,7 @@
               small
               color="primary"
             >
-              <v-icon dark>close</v-icon>
+              <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar carpeta</span>
@@ -49,7 +49,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="comprobarinfoR"
@@ -58,7 +58,7 @@
               small
               color="success"
             >
-              <v-icon dark>add</v-icon>
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -263,12 +263,6 @@
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title>Documento.</v-toolbar-title>
-            <v-spacer/>
-            <v-btn @click.native="prevPage()"><</v-btn>
-            <div class="d-flex align-center">
-              <p class="ma-0">{{this.numpage}}/{{this.currentpdfpages}}</p>
-            </div>
-            <v-btn @click.native="nextPage()">></v-btn>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn color="success" v-if="Unclick" text @click.native="guardarM()"
@@ -280,9 +274,9 @@
             </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
-            <canvas id="canvaspdf"
+            <!--<canvas id="canvaspdf"
                     style="border: 2px solid black; width: 50%; height: 50%; margin-left: 25%"
-            ></canvas>
+            ></canvas>-->
             <iframe
               id="iframepdf"
               type="application/pdf"
@@ -538,7 +532,7 @@ export default {
     //funciones pdf to canvas
     async renderPdfToCanvas(base64pdf, canvasId, numpage) {
       // Importación clásica compatible con v2.x
-      // ✅ Usa la versión legacy transpilada
+      // Usa la versión legacy transpilada
       const pdfjsLib = require('pdfjs-dist/legacy/build/pdf');
 
 
@@ -1024,7 +1018,7 @@ export default {
         //Se espera una sola respuesta con cada dato obligatorio donde solo evbalua el true o false
         if (response.data.estatus == true && response.data.fechaSuceso == true &&   
             response.data.imputado == true && response.data.victima == true &&
-            response.data.delito == true) 
+            response.data.delito == true && response.data.direccionDelito == true) 
         {
           //En caso de todo ser true procede a la remisión
           me.agregar();
@@ -1037,6 +1031,7 @@ export default {
             "Te hace falta " + 
             (response.data.fechaSuceso == false ? "\n■ Ingresar la fecha y hora del suceso" :"") +
             (response.data.delito == false ? "\n■ Ingresar un delito" :"") +
+            (response.data.direccionDelito == false ? "\n■ Ingresar la direccion del delito" :"") +
             (response.data.imputado == false ? "\n■ Dar de de alta un imputado" :"") +
             (response.data.victima == false ? "\n■ Dar de de alta una victima" :"") +
             (response.data.estatus == false ? "\n■ Cambiar el estatus y etapa de la carpeta" :"") 
@@ -1294,333 +1289,267 @@ export default {
           //Se guarda el nuevo id de atencion para su posterior uso
           newIdRAtencion = response.data.idatencion;
 
-          var recorridoPersonas = personaC.split(";");
-
-          var primeraRecorrido = true;
-          var inicio = true;
+          let recorridoPersonas = personaC.split(";");
+          console.log(recorridoPersonas)
+          
+          let primeraRecorrido = true;
+          let inicio = true;
 
           //Aqui inicio un recorrido de abtraer las informacion de las personas que hayan seleccionado para del desglose y posteriormente hacer una copia de ellas
-          for (var i = 0; i < recorridoPersonas.length; i++) 
-          {
-            var personasarray = [];
-            var idpersonanew = "";
-            var idrapnew = "";
-            var documentospersonaarray = [];
-            var dppersonaarray = [];
-            var idtemporal = "";
-            idtemporal = recorridoPersonas[i];
-
-            //-------------------------------------------------CREACION DE LA RAP, PERSONAS Y DIRECCIONES------------------------------------------------------
-            //Api para abtraer informacion y guardarlo en el arreglo de informacion de personas
-            me.$cat.get("api/Desgloses/ListarpersonaPD/" + recorridoPersonas[i],configuracion).then( (response)=>
-            {
-              personasarray = response.data;
-
-              // Verificar si es el primer recorrido
-              if (primeraRecorrido) 
-              {
-                inicio = true;
-                primeraRecorrido = false; // Desactivar para los siguientes recorridos
-              } else 
-              {
-                inicio = false;
-              }
-
-              //Recorrido del arreglo de informacion de personas y posterior guardado con ids diferentes
-              me.$cat.post("api/Desgloses/GuardarPersonasD",
-              {
-                RAtencionId: newIdRAtencion,
-                ClasificacionPersona:personasarray.clasificacionPersona,
-                PInicio: inicio,
-
-                StatusAnonimo: personasarray.statusAnonimo,
-                TipoPersona: personasarray.tipoPersona,
-                RFC: personasarray.rfc,
-                RazonSocial: personasarray.razonSocial,
-                Nombre: personasarray.nombre,
-                ApellidoPaterno: personasarray.apellidoPaterno,
-                ApellidoMaterno: personasarray.apellidoMaterno,
-                Alias: personasarray.alias,
-                StatusAlias: personasarray.statusAlias,
-                FechaNacimiento: personasarray.fechaNacimiento,
-                EntidadFederativa: personasarray.entidadFederativa,
-                DocIdentificacion: personasarray.docIdentificacion,
-                CURP: personasarray.curp,
-                Sexo: personasarray.sexo,
-                Genero: personasarray.genero,
-                EstadoCivil: personasarray.estadoCivil,
-                Telefono1: personasarray.telefono1,
-                Telefono2: personasarray.telefono2,
-                Correo: personasarray.correo,
-                MedioNotificacion: personasarray.medionotificacion,
-                Nacionalidad: personasarray.nacionalidad,
-                Ocupacion: personasarray.ocupacion,
-                NivelEstudio: personasarray.nivelEstudio,
-                Lengua: personasarray.lengua,
-                Religion: personasarray.religion,
-                Discapacidad: personasarray.discapacidad,
-                TipoDiscapacidad: personasarray.tipoDiscapacidad,
-                Parentesco: personasarray.parentesco,
-                DatosProtegidos: personasarray.datosProtegidos,
-                InstitutoPolicial: personasarray.institutoPolicial,
-                Numerornd: personasarray.numerornd,
-                InformePolicial: personasarray.institutoPolicial,
-                Relacion: personasarray.relacion,
-                Edad: personasarray.edad,
-                DatosFalsos: personasarray.datosFalsos,
-                DocPoderNotarial: personasarray.docPoderNotarial,
-                CumpleRequisitoLey: personasarray.cumpleRequisitoLey,
-                DecretoLibertad: personasarray.decretoLibertad,
-                DispusoLibertad: personasarray.dispusoLibertad,
-                InicioDetenido: personasarray.inicioDetenido,
-                VerR: personasarray.verR,
-                VerI: personasarray.verI,
-                Registro: personasarray.registro,
-                PoblacionAfro: personasarray.poblacionAfro,
-                RangoEdad: personasarray.rangoEdad,
-                RangoEdadTF: personasarray.rangoEdadTF,
-                PoliciaDetuvo: personasarray.policiaDetuvo,
-
-              },configuracion).then( (response) =>
-              {
-                //A la par que se va guardando la persona proceso a guardar el id que obtuvo y guardo sus documentos de identificacion
-                idpersonanew = response.data.idpersonar;
-                idrapnew = response.data.idrapr;
-
-                //Api para abtraer la informacion de sus documentos de identificacion
-                me.$cat.get("api/Desgloses/ListardocumentospersonaPD/" + idtemporal, configuracion).then( (response)=>
-                {
-                  documentospersonaarray = response.data;
-
-                  var documentosexiste = response.data.ruta;
-
-                  //Claro, si es que existe documentos de indentificacion, de lo contrario se salta esta insercion
-                  if (documentosexiste != "") 
-                  {
-                    me.$cat.post("api/Desgloses/GuardarDocumentosPersonasD",
-                    {
-                          PersonaId: idpersonanew,
-                          TipoDocumento:documentospersonaarray.tipoDocumento,
-                          NombreDocumento:documentospersonaarray.nombreDocumento,
-                          Descripcion:documentospersonaarray.descripcion,
-                          FechaRegistro:documentospersonaarray.fechaRegistro,
-                          Ruta: documentospersonaarray.ruta,
-                          Distrito: documentospersonaarray.distrito,
-                          DirSubProc:documentospersonaarray.dirSubProc,
-                          Agencia: documentospersonaarray.agencia,
-                          Usuario: documentospersonaarray.usuario,
-                          Puesto: documentospersonaarray.puesto,
-
-                    },configuracion).then( (response) =>
-                    {
-                      //No hay respuesta aqui, no es necesario
-                    }).catch((err) => 
-                    {
-                      if (err.response.status == 400) {
-                        me.$notify(
-                          "No es un usuario válido",
-                          "error"
-                        );
-                      } else if (err.response.status == 401) {
-                        me.$notify(
-                          "Por favor inicie sesion para poder navegar en la aplicacion",
-                          "error"
-                        );
-                        (me.e401 = true), (me.showpage = false);
-                      } else if (err.response.status == 403) {
-                        me.$notify(
-                          "No esta autorizado para ver esta pagina",
-                          "error"
-                        );
-                        me.e403 = true;
-                        me.showpage = false;
-                      } else if (err.response.status == 404) {
-                        me.$notify(
-                          "El recuso no ha sido encontrado",
-                          "error"
-                        );
-                      } else {
-                        me.$notify(
-                          "Error al intentar listar los registros!!!",
-                          "error"
-                        );
-                      }
-                    });
-                  }
-                }).catch((err) => 
-                {
-                  if (err.response.status == 400) {
-                    me.$notify("No es un usuario válido", "error");
-                  } else if (err.response.status == 401) {
-                    me.$notify(
-                      "Por favor inicie sesion para poder navegar en la aplicacion",
-                      "error"
-                    );
-                    (me.e401 = true), (me.showpage = false);
-                  } else if (err.response.status == 403) {
-                    me.$notify(
-                      "No esta autorizado para ver esta pagina",
-                      "error"
-                    );
-                    me.e403 = true;
-                    me.showpage = false;
-                  } else if (err.response.status == 404) {
-                    me.$notify(
-                      "El recuso no ha sido encontrado",
-                      "error"
-                    );
-                  } else {
-                    me.$notify(
-                      "Error al intentar listar los registros!!!",
-                      "error"
-                    );
-                  }
-                });
-
-                //Al mismo tiempo del mismo recorrido de personas listo su direccion personal y al mismo tiempo recorro para guardar la copia
-                me.$cat.get("api/RAPs/ListarDP/" + idtemporal, configuracion).then( (response)=>
-                {
-                  dppersonaarray = response.data;
-
-                  //Aqui estoy guardado la copia 
-                  me.$cat.post("api/Desgloses/GuardarDireccionPersonasD",
-                  {
-                    calle: dppersonaarray.calle,
-                    noint: dppersonaarray.noint,
-                    noext: dppersonaarray.noext,
-                    entrecalle1: dppersonaarray.entrecalle1,
-                    entrecalle2: dppersonaarray.entrecalle2,
-                    referencia: dppersonaarray.referencia,
-                    pais: dppersonaarray.pais,
-                    estado: dppersonaarray.estado,
-                    municipio: dppersonaarray.municipio,
-                    localidad: dppersonaarray.localidad,
-                    cp: dppersonaarray.cp,
-                    lat: dppersonaarray.lat,
-                    lng: dppersonaarray.lng,
-                    idPersona: idpersonanew,
-                    RAPId: idrapnew,
-
-
-                  },configuracion).then( (response) =>
-                  {
-                    //Este tampoco requiere uyna respuesta, no la necesita
-                  }).catch((err) => 
-                  {
-                    if (err.response.status == 400) {
-                      me.$notify(
-                        "No es un usuario válido",
-                        "error"
-                      );
-                    } else if (err.response.status == 401) {
-                      me.$notify(
-                        "Por favor inicie sesion para poder navegar en la aplicacion",
-                        "error"
-                      );
-                      (me.e401 = true), (me.showpage = false);
-                    } else if (err.response.status == 403) {
-                      me.$notify(
-                        "No esta autorizado para ver esta pagina",
-                        "error"
-                      );
-                      me.e403 = true;
-                      me.showpage = false;
-                    } else if (err.response.status == 404) {
-                      me.$notify(
-                        "El recuso no ha sido encontrado",
-                        "error"
-                      );
-                    } else {
-                      me.$notify(
-                        "Error al intentar listar los registros!!!",
-                        "error"
-                      );
-                    }
-                  });
-                }).catch((err) => 
-                {
-                  if (err.response.status == 400) {
-                    me.$notify("No es un usuario válido", "error");
-                  } else if (err.response.status == 401) {
-                    me.$notify(
-                      "Por favor inicie sesion para poder navegar en la aplicacion",
-                      "error"
-                    );
-                    (me.e401 = true), (me.showpage = false);
-                  } else if (err.response.status == 403) {
-                    me.$notify(
-                      "No esta autorizado para ver esta pagina",
-                      "error"
-                    );
-                    me.e403 = true;
-                    me.showpage = false;
-                  } else if (err.response.status == 404) {
-                    me.$notify(
-                      "El recuso no ha sido encontrado",
-                      "error"
-                    );
-                  } else {
-                    me.$notify(
-                      "Error al intentar listar los registros!!!",
-                      "error"
-                    );
-                  }
-                });
-              }).catch((err) => 
-              {
+          for (const idtemporal of recorridoPersonas) {
+            try {
+              console.log(`Procesando persona con ID: ${idtemporal}`);
+              
+              // Obtener información de la persona
+              let personasarray = await me.$cat.get(`api/Desgloses/ListarpersonaPD/${idtemporal}`, configuracion)
+              .catch((err) => {
                 if (err.response.status == 400) {
                   me.$notify("No es un usuario válido", "error");
                 } else if (err.response.status == 401) {
-                  me.$notify(
-                    "Por favor inicie sesion para poder navegar en la aplicacion",
-                    "error"
-                  );
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
                   (me.e401 = true), (me.showpage = false);
                 } else if (err.response.status == 403) {
-                  me.$notify(
-                    "No esta autorizado para ver esta pagina",
-                    "error"
-                  );
+                  me.$notify("No esta autorizado para ver esta pagina", "error");
                   me.e403 = true;
                   me.showpage = false;
                 } else if (err.response.status == 404) {
-                  me.$notify(
-                    "El recuso no ha sido encontrado",
-                    "error"
-                  );
+                  me.$notify("El recuso no ha sido encontrado", "error");
                 } else {
-                  me.$notify(
-                    "Error al intentar listar los registros!!!",
-                    "error"
-                  );
+                  me.$notify("Error al intentar crear el  registro!!!", "error");
                 }
               });
-            }).catch((err) => 
-            {
+              let personaInfo = personasarray.data;
+              
+              let inicio = primeraRecorrido;
+              primeraRecorrido = false; // Solo será `true` en la primera iteración
+              
+              // Guardar nueva persona
+              let respuestaPersona = await me.$cat.post("api/Desgloses/GuardarPersonasD",
+              {
+                RAtencionId: newIdRAtencion,
+                ClasificacionPersona: personaInfo.clasificacionPersona,
+                PInicio: inicio,
+
+                StatusAnonimo: personaInfo.statusAnonimo,
+                TipoPersona: personaInfo.tipoPersona,
+                RFC: personaInfo.rfc,
+                RazonSocial: personaInfo.razonSocial,
+                Nombre: personaInfo.nombre,
+                ApellidoPaterno: personaInfo.apellidoPaterno,
+                ApellidoMaterno: personaInfo.apellidoMaterno,
+                Alias: personaInfo.alias,
+                StatusAlias: personaInfo.statusAlias,
+                FechaNacimiento: personaInfo.fechaNacimiento,
+                EntidadFederativa: personaInfo.entidadFederativa,
+                DocIdentificacion: personaInfo.docIdentificacion,
+                CURP: personaInfo.curp,
+                Sexo: personaInfo.sexo,
+                Genero: personaInfo.genero,
+                EstadoCivil: personaInfo.estadoCivil,
+                Telefono1: personaInfo.telefono1,
+                Telefono2: personaInfo.telefono2,
+                Correo: personaInfo.correo,
+                MedioNotificacion: personaInfo.medionotificacion,
+                Nacionalidad: personaInfo.nacionalidad,
+                Ocupacion: personaInfo.ocupacion,
+                NivelEstudio: personaInfo.nivelEstudio,
+                Lengua: personaInfo.lengua,
+                Religion: personaInfo.religion,
+                Discapacidad: personaInfo.discapacidad,
+                TipoDiscapacidad: personaInfo.tipoDiscapacidad,
+                Parentesco: personaInfo.parentesco,
+                DatosProtegidos: personaInfo.datosProtegidos,
+                InstitutoPolicial: personaInfo.institutoPolicial,
+                Numerornd: personaInfo.numerornd,
+                InformePolicial: personaInfo.institutoPolicial,
+                Relacion: personaInfo.relacion,
+                Edad: personaInfo.edad,
+                DatosFalsos: personaInfo.datosFalsos,
+                DocPoderNotarial: personaInfo.docPoderNotarial,
+                CumpleRequisitoLey: personaInfo.cumpleRequisitoLey,
+                DecretoLibertad: personaInfo.decretoLibertad,
+                DispusoLibertad: personaInfo.dispusoLibertad,
+                InicioDetenido: personaInfo.inicioDetenido,
+                VerR: personaInfo.verR,
+                VerI: personaInfo.verI,
+                Registro: personaInfo.registro,
+                PoblacionAfro: personaInfo.poblacionAfro,
+                RangoEdad: personaInfo.rangoEdad,
+                RangoEdadTF: personaInfo.rangoEdadTF,
+                PoliciaDetuvo: personaInfo.policiaDetuvo,
+
+              }, configuracion)
+               .catch((err) => {
+                    if (err.response.status == 400) {
+                  me.$notify("No es un usuario válido", "error");
+                } else if (err.response.status == 401) {
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
+                  (me.e401 = true), (me.showpage = false);
+                } else if (err.response.status == 403) {
+                  me.$notify("No esta autorizado para ver esta pagina", "error");
+                  me.e403 = true;
+                  me.showpage = false;
+                } else if (err.response.status == 404) {
+                  me.$notify("El recuso no ha sido encontrado", "error");
+                } else {
+                  me.$notify("Error al intentar crear el  registro!!!", "error");
+                }
+                    });
+                 let idpersonanew = respuestaPersona.data.idpersonar;
+              let idrapnew = respuestaPersona.data.idrapr;
+
+              // Obtener documentos de identificación
+              let documentospersonaarray = await me.$cat.get(`api/Desgloses/ListardocumentospersonaPD/${idtemporal}`, configuracion)
+              .catch((err) => {
+                  if (err.response.status == 400) {
+                    me.$notify("No es un usuario válido", "error");
+                  } else if (err.response.status == 401) {
+                      me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
+                    (me.e401 = true), (me.showpage = false);
+                  } else if (err.response.status == 403) {
+                     me.$notify("No esta autorizado para ver esta pagina", "error");
+                    me.e403 = true;
+                    me.showpage = false;
+                  } else if (err.response.status == 404) {
+                    me.$notify("El recuso no ha sido encontrado", "error");
+                  } else {
+                     me.$notify("Error al intentar crear el  registro!!!", "error");
+                  }
+                });
+
+                
+                
+
+
+                let documentosPersonInfo = documentospersonaarray.data
+
+              if (documentosPersonInfo.ruta) {
+                await me.$cat.post("api/Desgloses/GuardarDocumentosPersonasD", {
+                  PersonaId: idpersonanew,
+                  TipoDocumento: documentosPersonInfo.tipoDocumento,
+                  NombreDocumento: documentosPersonInfo.nombreDocumento,
+                  Descripcion: documentosPersonInfo.descripcion,
+                  FechaRegistro: documentosPersonInfo.fechaRegistro,
+                  Ruta: documentosPersonInfo.ruta,
+                  Distrito: documentosPersonInfo.distrito,
+                  DirSubProc: documentosPersonInfo.dirSubProc,
+                  Agencia: documentosPersonInfo.agencia,
+                  Usuario: documentosPersonInfo.usuario,
+                  Puesto: documentosPersonInfo.puesto,
+                }, configuracion)
+                .catch((err) => {
+                  
+                    if (err.response.status == 400) {
+                      me.$notify("No es un usuario válido", "error");
+                    } else if (err.response.status == 401) {
+                      me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
+                      (me.e401 = true), (me.showpage = false);
+                    } else if (err.response.status == 403) {
+                      me.$notify("No esta autorizado para ver esta pagina", "error");
+                      me.e403 = true;
+                      me.showpage = false;
+                    } else if (err.response.status == 404) {
+                      me.$notify("El recuso no ha sido encontrado", "error");
+                    } else {
+                      me.$notify("Error al intentar crear el  registro!!!", "error");
+                    }
+                  });
+                }
+
+                // Obtener dirección de la persona
+              let dppersonaarray = await me.$cat.get(`api/Desgloses/ListarDireccionPE/${idtemporal}`, configuracion)
+              .catch((err) => {
+                  if (err.response.status == 400) {
+                    me.$notify("No es un usuario válido", "error");
+                  } else if (err.response.status == 401) {
+                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
+                    (me.e401 = true), (me.showpage = false);
+                  } else if (err.response.status == 403) {
+                    me.$notify("No esta autorizado para ver esta pagina", "error");
+                    me.e403 = true;
+                    me.showpage = false;
+                  } else if (err.response.status == 404) {
+                    me.$notify("El recuso no ha sido encontrado", "error");
+                  } else {
+                    me.$notify("Error al intentar crear el  registro!!!", "error");
+                  }
+                });
+                let dpPersonaInfo = dppersonaarray.data
+
+              console.log(`Dirección obtenida para ${idtemporal}:`, dpPersonaInfo);
+
+              // Guardar la dirección con el nuevo `idPersona`
+              await me.$cat.post("api/Desgloses/GuardarDireccionPersonasD", {
+                idPersona: idpersonanew,
+                RAPId: idrapnew,
+                calle: dpPersonaInfo.calle,
+                noint: dpPersonaInfo.noint,
+                noext: dpPersonaInfo.noext,
+                entrecalle1: dpPersonaInfo.entrecalle1,
+                entrecalle2: dpPersonaInfo.entrecalle2,
+                referencia: dpPersonaInfo.referencia,
+                pais: dpPersonaInfo.pais,
+                estado: dpPersonaInfo.estado,
+                municipio: dpPersonaInfo.municipio,
+                localidad: dpPersonaInfo.localidad,
+                cp: dpPersonaInfo.cp,
+                lat: dpPersonaInfo.lat,
+                lng: dpPersonaInfo.lng,
+                tipoVialidad: dpPersonaInfo.tipoVialidad,
+                tipoAsentamiento: dpPersonaInfo.tipoAsentamiento,
+                de_calle: dpPersonaInfo.de_calle,
+                de_noint: dpPersonaInfo.de_noint,
+                de_noext: dpPersonaInfo.de_noext,
+                de_entrecalle1: dpPersonaInfo.de_entrecalle1,
+                de_entrecalle2: dpPersonaInfo.de_entrecalle2,
+                de_referencia: dpPersonaInfo.de_referencia,
+                de_pais: dpPersonaInfo.de_pais,
+                de_estado: dpPersonaInfo.de_estado,
+                de_municipio: dpPersonaInfo.de_municipio,
+                de_localidad: dpPersonaInfo.de_localidad,
+                de_cp: dpPersonaInfo.de_cp,
+                de_lat: dpPersonaInfo.de_lat,
+                de_lng: dpPersonaInfo.de_lng,
+                de_tipoVialidad: dpPersonaInfo.de_tipoVialidad,
+                de_tipoAsentamiento: dpPersonaInfo.de_tipoAsentamiento,
+              }, configuracion)
+
+              .catch((err) => {
+                if (err.response.status == 400) {
+                  me.$notify("No es un usuario válido", "error");
+                } else if (err.response.status == 401) {
+                  me.$notify("Por favor inicie sesion para poder navegar en la aplicacion","error");
+                  (me.e401 = true), (me.showpage = false);
+                } else if (err.response.status == 403) {
+                  me.$notify("No esta autorizado para ver esta pagina", "error");
+                  me.e403 = true;
+                  me.showpage = false;
+                } else if (err.response.status == 404) {
+                  me.$notify("El recuso no ha sido encontrado", "error");
+                } else {
+                  me.$notify("Error al intentar crear el  registro!!!", "error");
+                }
+              });
+
+               console.log(`Persona ${idtemporal} procesada con éxito`);
+
+
+            } catch( err ) {
               if (err.response.status == 400) {
                 me.$notify("No es un usuario válido", "error");
               } else if (err.response.status == 401) {
-                me.$notify(
-                  "Por favor inicie sesion para poder navegar en la aplicacion",
-                  "error"
-                );
+                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", "error");
                 (me.e401 = true), (me.showpage = false);
               } else if (err.response.status == 403) {
-                me.$notify(
-                  "No esta autorizado para ver esta pagina",
-                  "error"
-                );
+                me.$notify("No esta autorizado para ver esta pagina", "error");
                 me.e403 = true;
                 me.showpage = false;
               } else if (err.response.status == 404) {
                 me.$notify("El recuso no ha sido encontrado", "error");
               } else {
-                me.$notify(
-                  "Error al intentar listar los registros!!!",
-                  "error"
-                );
+                me.$notify("Error al intentar crear el  registro!!!", "error");
               }
-            });
+            }
           }
           //Fin del recorrido de las personas
 
@@ -1664,6 +1593,33 @@ export default {
               
             },configuracion).then( (response) =>
             {
+              newidrhecho = response.data.idrhecho;
+
+              //Una vez obtenido el nuevo id consultaremos y copiaremos la direccion del delito 
+              me.$cat.post('api/Desgloses/CrearDireccionDelito/'+ me.rHechoId + '/'+ newidrhecho,configuracion
+              ).then(function (response) {
+                console.log("Direccion delito guardado");
+              })
+              .catch((err) => {
+                if (err.response.status == 400) {
+                  me.$notify("No es un usuario válido", "error");
+                } else if (err.response.status == 401) {
+                  me.$notify(
+                    "Por favor inicie sesion para poder navegar en la aplicacion",
+                    "error"
+                  );
+                  (me.e401 = true), (me.showpage = false);
+                } else if (err.response.status == 403) {
+                  me.$notify("No esta autorizado para ver esta pagina", "error");
+                  me.e403 = true;
+                  me.showpage = false;
+                } else if (err.response.status == 404) {
+                  me.$notify("El recuso no ha sido encontrado", "error");
+                } else {
+                  me.$notify("Error al intentar crear el  registro!!!", "error");
+                }
+              });
+
               //Una vez creado genero un registro en el historia que esta carpeta proviene de un desglose
               me.$cat.post("api/Historialcarpeta/Crear",
               {
@@ -1706,6 +1662,7 @@ export default {
                     "api/RAPs/Clonar",
                     "api/RDHs/Clonar",
                     "api/Historialcarpeta/Clonar",
+                    "api/DireccionDelitoes/Clonar"
                   ];
                   const serviceNames = 
                   [
@@ -1716,6 +1673,7 @@ export default {
                     "RAP",
                     "Delitos",
                     "Historial de Carpeta",
+                    "Direccion del Delito",
                   ];
 
                   console.log("SERVICIOS:");
@@ -1723,7 +1681,7 @@ export default {
 
                   me.activarAnimacionCarga();
                   //A travez de este archivo inicio el proceso de clonado para la nueva base de datos
-                  copiarCarpeta(configuracion,services,serviceNames,0,newnuc,newidrhecho,newIdRAtencion,me.distritoSeleccionado,me.u_idmoduloservicio,me.u_idagencia,idRemEnDesglose).then( (response)=>
+                  copiarCarpeta(configuracion,services,serviceNames,0,newnuc,newidrhecho,newIdRAtencion,me.distritoSeleccionado,me.u_idmoduloservicio,me.u_idagencia,idRemEnDesglose).then(function (response)
                   {
                     //Compruebo por medios de esta funcion si el desglose o las clonaciones de llevaron a cabo de manera correcta
                     me.comprobarRemision(newidrhecho);
@@ -1731,9 +1689,9 @@ export default {
                     
                   }).catch((err) => 
                   {
-                    me.desactivarAnimacionCarga();
+                    //me.desactivarAnimacionCarga();
 
-                    if(err.response && err.response.status){
+                    //if(err.response && err.response.status){
                     if (err.response.status == 400) {
                       me.$notify(
                         "No es un usuario válido",
@@ -1763,9 +1721,9 @@ export default {
                         "error"
                       );
                     }
-                    }else {
+                    /*}else {
                       me.$notify("Ocurrió un error inesperado", "error");
-                    }
+                    }*/
                   });
                 }
                 else
@@ -1802,7 +1760,7 @@ export default {
                 }
               });
 
-              newidrhecho = response.data.idrhecho;
+              //newidrhecho = response.data.idrhecho;
 
               var recorridoDelitos = delitoC.split(";");
 

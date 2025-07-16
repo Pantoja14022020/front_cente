@@ -10,6 +10,7 @@ import ControlAccesoPanelcontrol from '@/views/control_acceso/Panelcontrol.vue'
 import ControlAccesoRol from '@/views/control_acceso/Rol.vue'
 import ControlAccesoUsuario from '@/views/control_acceso/Usuario.vue' 
 import ControlAccesoAlmacenamiento from '@/views/control_acceso/Almacenamiento.vue'
+import ControlAccesoClonacionesFallidas from '@/views/control_acceso/ClonacionesFallidas.vue'
 /* Modulo. Panel de Control. Componentes */
 import Turnador from '@/components/panel_control/Turnador.vue'
 import Entrevista from '@/components/panel_control/Entrevista.vue'
@@ -86,6 +87,7 @@ import Etapa from "@/components/m_configuracion/Etapa.vue";
 import Mproteccion from "@/components/m_configuracion/Mproteccion.vue";
 import Mcautelares from "@/components/m_configuracion/Mcautelares.vue";
 import SpPiLigaciones from "@/components/m_configuracion/SpPiLigaciones.vue";
+import ErrorReplication from "@/components/m_configuracion/ErrorReplication.vue"
 import RFAdherenciaOreja from "@/components/m_configuracion/RFAdherenciaOreja.vue";
 import RFCalvicie from "@/components/m_configuracion/RFCalvicie.vue";
 import RfFormaOjo from "@/components/m_configuracion/RfFormaOjo.vue";
@@ -323,6 +325,7 @@ import mproteccion from '@/views/m_tools/mproteccion.vue'
 import personadesaparecida from '@/views/m_tools/personadesaparecida.vue'
 import remision from '@/views/m_tools/remision.vue'
 import derivacion from '@/views/m_tools/derivacion.vue'
+import desglose from '@/views/m_tools/desglose.vue'
 
 Vue.use(Router)
 
@@ -430,6 +433,11 @@ export default new Router({
       path:'/tools-derivacion',
       name: 'tools-derivacion',
       component:derivacion
+    },
+    {
+      path:'/tools-desglose',
+      name: 'tools-desglose',
+      component: desglose
     },
     /*Rutas. SP */
     {
@@ -1806,6 +1814,11 @@ export default new Router({
       component: SpPiLigaciones,
     },
     {
+      path :'/Configuracion-errorreplicacion',
+      name:'configuracionerrorreplicacion',
+      component: ErrorReplicacion,
+    },
+    {
       path: '/Configuracion-rfadherenciaoreja',
       name: 'configuracionrfadherenciaoreja',
       component: RFAdherenciaOreja,
@@ -1917,6 +1930,11 @@ export default new Router({
       path: '/control-acceso-almacenamiento',
       name: 'control-acceso-almacenamiento',
       component: ControlAccesoAlmacenamiento
+    },
+    {
+      path: '/clonacionesfallidas',
+      name: 'clonacionesfallidas',
+      component: ControlAccesoClonacionesFallidas
     }
   ]
 })
