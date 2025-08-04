@@ -1,5 +1,5 @@
 <template>
-    <v-app id="app">
+    <v-app id="app" v-if="isReady">
    
       <!--<v-toolbar flat app  class="grey lighten-4">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
@@ -83,7 +83,7 @@
         
       <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary"  >
         <div class="text-xl-center text-md-center text-xs-center my-4">
-          <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+          <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
         </div>
   
         <v-list dense dark class="pt-0 primary" >
@@ -306,7 +306,7 @@
         //drawer: true,  
         right: null, 
         title: 'Vuetify.js',
-        
+        isReady: false,
         data: function() {
           return {
               sideNav: false,
@@ -396,7 +396,20 @@
             return this.$store.state.drawer
         }
     },
+    mounted(){
+          
+        },
     created(){
+      if(!localStorage.getItem("token"))
+            {
+              window.location.href = "/"
+            }
+            else 
+            {
+              this.isReady = true;
+              this.$store.dispatch("guardarToken", localStorage.getItem("token"))
+              this.$store.dispatch("setLogin", localStorage.getItem("token"))
+            }
       this.$store.dispatch("autoLoginMC");
     },
     methods:{

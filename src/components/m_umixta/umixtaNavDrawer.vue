@@ -1,8 +1,8 @@
 
 
 <template>
-  <v-app id="app">
-    <v-toolbar flat app class="grey lighten-4">
+  <!--<v-app id="app">-->
+    <!--<v-toolbar flat class="grey lighten-4">
       <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text" />
       <v-toolbar-title class="text-uppercase grey--text">
         <span class="font-weight-light btn_sisC" @click="salir">SISTEMA CENTENARIO</span>
@@ -87,12 +87,12 @@
           </v-card-actions>
         </v-card>
       </v-menu>
-    </v-toolbar>
+    </v-toolbar>-->
 
-    <v-navigation-drawer permanent app class="primary">
+    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary">
 
       <div class="text-xl-center text-md-center text-xs-center my-4">
-        <a href="/"><img src="@/assets/Logo.png" height="110px" alt="" /></a>
+        <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt="" /></a>
       </div>
       <v-list dense dark class="pt-0 primary">
         <template>
@@ -1985,7 +1985,7 @@
 
       </v-list>
     </v-navigation-drawer>
-    <v-content class="grey lighten-4">
+    <!--<v-content class="grey lighten-4">
       <v-divider />
       <v-container fluid>
         <v-slide-y-transition mode="out-in">
@@ -1993,8 +1993,8 @@
         </v-slide-y-transition>
         <loader />
       </v-container>
-    </v-content>
-    </v-app>
+    </v-content>-->
+    <!--</v-app>-->
 </template>
 
 <script>

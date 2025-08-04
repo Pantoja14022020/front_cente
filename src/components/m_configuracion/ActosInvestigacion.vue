@@ -1,7 +1,7 @@
 <template>
     <v-layout align-start>
 
-
+        <ConfiguracionNavDrawer/>
       <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
@@ -117,17 +117,17 @@
     </v-layout>
 </template>
 <script>
-    import NavDrawer from './ConfiguracionNavDrawer.vue'
     import axios from 'axios' 
     import VeeValidate from 'vee-validate'
     import n401 from './401.vue'
     import n403 from './403.vue'
     import { error } from 'util';
+    import ConfiguracionNavDrawer from './ConfiguracionNavDrawer.vue'
     export default {
         components: {      
             n401,
             n403,
-            NavDrawer
+            ConfiguracionNavDrawer
         },
         data(){
             return {

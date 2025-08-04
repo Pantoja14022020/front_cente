@@ -1,9 +1,9 @@
 <template>
 
-    <v-layout align-start>
+    <v-layout align-start v-if="isReady">
         <v-navigation-drawer v-model="this.drawer" app  class="primary"  >
             <div class="text-xl-center text-md-center text-xs-center my-4">
-                <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+                <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
             </div>
   
             <v-list dense dark class="pt-0 primary" >
@@ -80,7 +80,7 @@
                         </v-list-tile-content>
                     </v-list-tile> 
 
-                    <v-list-tile :to="{ name: 'control-acceso-clonacionesfallidas'== '#' ? '' :  'control-acceso-clonacionesfallidas'}"  active-class="secondary">  
+                    <v-list-tile :to="{ name: 'clonacionesfallidas'== '#' ? '' :  'clonacionesfallidas'}"  active-class="secondary">  
                         <v-list-tile-action>
                             <v-icon class="centenarioMenuIcon">report</v-icon>
                         </v-list-tile-action>
@@ -242,7 +242,7 @@
                 e401:false, 
                 e403:false,
                 showpage:true,     
-
+                isReady: false,
                 dialog: false,
                 headers: [
                  
@@ -298,8 +298,17 @@
             val || this.close()
             }
         },
-
+        mounted(){
+        },
         created () {
+            if(!localStorage.getItem("token"))
+            {
+                window.location.href = "/"
+            }
+            else 
+            {
+              this.isReady = true;
+            }
             this.listar(); 
         },
         methods:{

@@ -979,7 +979,7 @@ export default {
       });
     },
     //Funcion para reimprimir el pdf generado del desglose
-    imprimirdoc(item)
+    async imprimirdoc(item)
     {
       let me = this;
       this.fechas = item.fechaDesglose.substring(8, 10) + " de " + this.obtenermes(item.fechaDesglose.substring(5, 7) - 1) + " del " + item.fechaDesglose.substring(0, 4);
@@ -1247,7 +1247,7 @@ export default {
 
       //-------------------------------------------------CREACION DE LA RAC y RAtencion------------------------------------------------------
       //Abstraccion de la informacion de RAC Y RATENCION
-      me.$cat.get("api/Desgloses/ListarRacRAtencion/" + me.rAtencionId,configuracion).then( (response)=>
+      me.$cat.get("api/Desgloses/ListarRacRAtencion/" + me.rAtencionId,configuracion).then( async (response)=>
       {
         //Este arreglo almacena toda la informacion de rac y ratencion
         racsRatencions = response.data;
@@ -1301,7 +1301,7 @@ export default {
               console.log(`Procesando persona con ID: ${idtemporal}`);
               
               // Obtener información de la persona
-              let personasarray = await me.$cat.get(`api/Desgloses/ListarpersonaPD/${idtemporal}`, configuracion)
+              let personasarray = /*await*/ me.$cat.get(`api/Desgloses/ListarpersonaPD/${idtemporal}`, configuracion)
               .catch((err) => {
                 if (err.response.status == 400) {
                   me.$notify("No es un usuario válido", "error");
@@ -1324,7 +1324,7 @@ export default {
               primeraRecorrido = false; // Solo será `true` en la primera iteración
               
               // Guardar nueva persona
-              let respuestaPersona = await me.$cat.post("api/Desgloses/GuardarPersonasD",
+              let respuestaPersona = /*await*/ me.$cat.post("api/Desgloses/GuardarPersonasD",
               {
                 RAtencionId: newIdRAtencion,
                 ClasificacionPersona: personaInfo.clasificacionPersona,
@@ -1399,7 +1399,7 @@ export default {
               let idrapnew = respuestaPersona.data.idrapr;
 
               // Obtener documentos de identificación
-              let documentospersonaarray = await me.$cat.get(`api/Desgloses/ListardocumentospersonaPD/${idtemporal}`, configuracion)
+              let documentospersonaarray = /*await*/ me.$cat.get(`api/Desgloses/ListardocumentospersonaPD/${idtemporal}`, configuracion)
               .catch((err) => {
                   if (err.response.status == 400) {
                     me.$notify("No es un usuario válido", "error");
@@ -1424,7 +1424,7 @@ export default {
                 let documentosPersonInfo = documentospersonaarray.data
 
               if (documentosPersonInfo.ruta) {
-                await me.$cat.post("api/Desgloses/GuardarDocumentosPersonasD", {
+                /*await*/ me.$cat.post("api/Desgloses/GuardarDocumentosPersonasD", {
                   PersonaId: idpersonanew,
                   TipoDocumento: documentosPersonInfo.tipoDocumento,
                   NombreDocumento: documentosPersonInfo.nombreDocumento,
@@ -1457,7 +1457,7 @@ export default {
                 }
 
                 // Obtener dirección de la persona
-              let dppersonaarray = await me.$cat.get(`api/Desgloses/ListarDireccionPE/${idtemporal}`, configuracion)
+              let dppersonaarray = /*await*/ me.$cat.get(`api/Desgloses/ListarDireccionPE/${idtemporal}`, configuracion)
               .catch((err) => {
                   if (err.response.status == 400) {
                     me.$notify("No es un usuario válido", "error");
@@ -1479,7 +1479,7 @@ export default {
               console.log(`Dirección obtenida para ${idtemporal}:`, dpPersonaInfo);
 
               // Guardar la dirección con el nuevo `idPersona`
-              await me.$cat.post("api/Desgloses/GuardarDireccionPersonasD", {
+              /*await*/ me.$cat.post("api/Desgloses/GuardarDireccionPersonasD", {
                 idPersona: idpersonanew,
                 RAPId: idrapnew,
                 calle: dpPersonaInfo.calle,

@@ -442,8 +442,8 @@
 
 <script>
     
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from './401.vue'
+    import n403 from './403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';

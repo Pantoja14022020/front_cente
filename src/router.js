@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 
+import Login from './components/control_acceso/Login.vue'
 /* Modulo. Panel de Control. Vistas */
 import Panel from '@/views/panel_control/Panel.vue' 
 /* Modulo. Control Acceso. Vistas */
@@ -87,7 +88,7 @@ import Etapa from "@/components/m_configuracion/Etapa.vue";
 import Mproteccion from "@/components/m_configuracion/Mproteccion.vue";
 import Mcautelares from "@/components/m_configuracion/Mcautelares.vue";
 import SpPiLigaciones from "@/components/m_configuracion/SpPiLigaciones.vue";
-import ErrorReplication from "@/components/m_configuracion/ErrorReplication.vue"
+import ErrorReplicacion from './components/m_configuracion/ErrorReplicacion.vue'
 import RFAdherenciaOreja from "@/components/m_configuracion/RFAdherenciaOreja.vue";
 import RFCalvicie from "@/components/m_configuracion/RFCalvicie.vue";
 import RfFormaOjo from "@/components/m_configuracion/RfFormaOjo.vue";
@@ -172,6 +173,7 @@ import HistorialEventos from "@/components/m_umixta/HistorialEventos.vue";
 import RotacionPersonal from "@/components/m_umixta/RotacionPersonal.vue";
 import HistorialActualizaciones from "@/components/m_umixta/HistorialActualizaciones.vue";
 import BusquedaNUC from "@/components/m_umixta/BusquedaNUC.vue";
+import ClonacionesFallidas from './components/m_umixta/ClonacionesFallidas.vue'
 import UmixtaEntrevista from "@/components/m_umixta/Entrevista.vue"
 import UmixtaDelito from "@/components/m_umixta/Delito.vue"
 import Terminacion from "@/components/m_umixta/Terminacion.vue"
@@ -333,6 +335,11 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/',
+      name: 'login',
+      component: Login
+    },
     /*Rutas. Tools */
     {
       path: '/tools',
@@ -1443,6 +1450,11 @@ export default new Router({
       name: 'umixtabusquedanuc',
       component: BusquedaNUC
     },
+    {
+      path: '/umixta-clonacionesfallidas',
+      name: 'umixta-clonacionesfallidas',
+      component: ClonacionesFallidas
+    },
     /*Rutas Configuración */
     {
       path: '/Configuracion',
@@ -1882,7 +1894,7 @@ export default new Router({
 
     /*Rutas Panel de Control */
     {
-      path: '/',
+      path: '/Panel',
       name: 'Panel',
       component: Panel
     },
@@ -1932,7 +1944,7 @@ export default new Router({
       component: ControlAccesoAlmacenamiento
     },
     {
-      path: '/clonacionesfallidas',
+      path: '/control-acceso-clonacionesfallidas',
       name: 'clonacionesfallidas',
       component: ControlAccesoClonacionesFallidas
     }

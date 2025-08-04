@@ -1365,9 +1365,28 @@ export default {
       vistaPreviaTF: true,
     }
   },
-
+  mounted(){
+      if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('pageReloaded');
+      }
+    },
   created() {
+    
     let me = this;
+    const token = me.$store.state.token || localStorage.getItem("token");
+      if(token)
+      { 
+        me.$store.dispatch("guardarToken", token)
+        me.$store.dispatch("setLogin", true, token)
+        console.log(token)
+      }
+      else 
+      { 
+        this.$router.push({ name: 'login' });
+      }
     me.expedienteId = me.$store.state.idExpediente;
     me.envioId = me.$store.state.idEnvio;
     me.noExpediente = me.$store.state.noExpediente;

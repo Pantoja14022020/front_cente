@@ -27,8 +27,9 @@ export default new Vuex.Store({
     {
         
         loader:false,
-        token: null,
+        token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
         usuario: null,
+        idusuario: null,
         drawer: true,
         menu:null,
         idExpediente:null,
@@ -37,7 +38,8 @@ export default new Vuex.Store({
         noExpediente:null,
         tipoModulo:null,
         select_moduloServicioId:null,
-        distrito: null
+        distrito: null,
+        logged: false
     },
     mutations: 
     {
@@ -49,13 +51,24 @@ export default new Vuex.Store({
 
         setToken(state,token)
         {
-            state.token=token
+            if(token)
+            {
+                state.token=token
+            }
+        },
+
+        setLogged(state, logged)
+        {   
+            state.logged = logged
         },
 
         setUsuario (state,usuario)
         {
             state.usuario=usuario
-            console.log("uiser: ",state.usuario)
+            state.idusuario = usuario.idusuario
+        },
+        setTokenCoordenadas(state, payload) {
+            state.tokenCoordenadas = payload;
         },
         setMenu (state,menu){
             state.menu=menu;
@@ -70,9 +83,32 @@ export default new Vuex.Store({
     {
         guardarToken({commit},token)
         {
-            commit("setToken", token)
-            commit("setUsuario", decode(token))
-            localStorage.setItem("token", token)
+            if(token)
+            {
+                commit("setToken", token)
+                commit("setUsuario", decode(token))
+                localStorage.setItem("token", token)
+            }
+        },
+
+
+        setLogin({ commit }, token) {
+            if (token) {
+                const usuario = decode(token)
+                commit("setUsuario", usuario)
+                commit("setLogged", true)
+            }
+        },
+
+
+        setLogout({commit})
+        {
+            commit("setLogged", false)
+            localStorage.removeItem("token")
+            localStorage.removeItem('pageReloaded');
+            router.push({ name: '/' }).then(() => {
+                window.location.reload()
+            })
         },
 
         guardarMenu({commit},menu)

@@ -1,5 +1,6 @@
  <template>
-  <v-layout row wrap  auto-grow>
+  <v-layout row wrap  auto-grow v-if="isReady">
+    <ConfiguracionNavDrawer/>
     <v-flex elevation-0>
         <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
             
@@ -82,17 +83,31 @@
 </template>
 
 <script>
-  import NavDrawer from '/src/components/m_configuracion/ConfiguracionNavDrawer.vue'
+  import ConfiguracionNavDrawer from '../../components/m_configuracion/ConfiguracionNavDrawer.vue';
 
 
   export default {
     data(){
         return {
-
+          isReady: false,
         }
     },
+    mounted(){
+        },
+        created(){
+          if(!localStorage.getItem("token"))
+            {
+              window.location.href = "/"
+            }
+            else 
+            {
+              this.isReady = true;
+              this.$store.dispatch("guardarToken", localStorage.getItem("token"))
+              this.$store.dispatch("setLogin", localStorage.getItem("token"))
+            }
+        },
     components: {
-      NavDrawer,
+      ConfiguracionNavDrawer,
     },
     methods: {
      

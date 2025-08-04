@@ -647,10 +647,27 @@ import { computed } from 'vue';
         watch: {
              
         },
-
+          mounted(){
+          if (!localStorage.getItem('pageReloaded')) {
+            localStorage.setItem('pageReloaded', 'true');
+            window.location.reload();
+          } else {
+            localStorage.removeItem('pageReloaded');
+          }
+        },
         created () {
            
-            
+            const token = this.$store.state.token || localStorage.getItem("token");
+          if(token)
+          { 
+            this.$store.dispatch("guardarToken", token)
+            this.$store.dispatch("setLogin", true, token)
+          }
+          else 
+          { 
+            this.$router.push({ name: 'login' });
+          }
+
             let me = this  
             me.u_iddistrito=me.$store.state.usuario.iddistrito;
             me.u_distrito=me.$store.state.usuario.distrito;

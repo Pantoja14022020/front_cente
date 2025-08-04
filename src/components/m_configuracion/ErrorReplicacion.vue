@@ -2,6 +2,7 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+        <ConfiguracionNavDrawer/>
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                     <v-toolbar-title class="font-weight-regular" >Errores de replicacion</v-toolbar-title>
@@ -88,13 +89,15 @@
 <script>
     import axios from 'axios' 
     import VeeValidate from 'vee-validate' 
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    import n401 from './401.vue'
+    import n403 from './403.vue'
     import { error } from 'util';
+import ConfiguracionNavDrawer from './ConfiguracionNavDrawer.vue';
     export default {
         components: {      
             n401,
-            n403
+            n403,
+            ConfiguracionNavDrawer
         },
         data(){
             return {

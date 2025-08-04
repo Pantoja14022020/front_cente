@@ -1,5 +1,5 @@
 <template>
-    <v-layout align-start>
+    <v-layout align-start v-if="isReady">
         <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
@@ -70,8 +70,8 @@
 </template>
 
 <script>
-    import n401 from '../components/401.vue'
-    import n403 from '../components/403.vue'
+    //import n401 from '@/components/401.vue'
+    //import n403 from '@/components/403.vue'
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
@@ -83,7 +83,7 @@
                 e401:false, 
                 e403:false,
                 showpage:true,   
-
+                isReady: false,
                 dialog: false,
                 headers: [
                     { text: 'Usuario', value: 'usuario' },
@@ -124,8 +124,17 @@
             val || this.close()
             }
         },
-
+        mounted(){
+        },
         created: function() {  
+            if(!localStorage.getItem("token"))
+            {
+                window.location.href = "/"
+            }
+            else 
+            {
+              this.isReady = true;
+            }
             this.listar(); 
             // Add a request interceptor
             axios.interceptors.request.use( (config)=> {

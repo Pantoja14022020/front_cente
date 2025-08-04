@@ -3,14 +3,14 @@
         <v-container transition="scale-transition" fluid fill-height class="my-5 py-5 "  > 
                     <v-layout align-center justify-center class="my-5 py-5"> 
                         <div  class="text-xl-center text-md-center text-xs-center my-5">
-                            <img src="@/assets/HIDALGO.png"  height="250px"  alt=""> 
+                            <img src="@/assets/Logo.png"  height="250px"  alt=""> 
                              <v-flex>
                             <v-card  >  
                                 
                                <v-spacer></v-spacer>
                                 <v-navigation-drawer  
                                     v-model="drawer"
-                                right
+                                left
                                 width="450"
                                 class="primary"
                                 app
@@ -84,46 +84,53 @@ export default {
         }
     },
      created: function() {  
-          
-            ///////////////////////////////////////////////////////////////
-             // Add a request interceptor
-            axios.interceptors.request.use( (config)=> {
-              // Do something before request is sent              
-              this.$store.commit('LOADER',true);
-              return config;
-            }, (error)=> {
-              // Do something with request error              
-              this.$store.commit('LOADER',false);
-              return Promise.reject(error);
-            });
-              ///////////////////////////////////////////////////////////////
-                     // Add a request interceptor
-            this.$conf.interceptors.request.use( (config)=> {
-              // Do something before request is sent
-              console.log(config); 
-              this.$store.commit('LOADER',true); 
-              return config;
-            }, (error)=> {
-              // Do something with request error
-              this.$store.commit('LOADER',false);
-              return Promise.reject(error);
-            });
-              // Add a response interceptor
-              this.$conf.interceptors.response.use((response)=>{
-                console.log(response);
-                this.$store.commit('LOADER',false);
-                // Do something with response data
-              return response;
-              },  (error)=> {
-                  // Do something with response error
-              return new Promise( (resolve, reject)=> {
-                this.$store.dispatch('logout').then(()=>{
-                  this.$router.push('/login')
-                })
-                throw err;
-              });
-             });
-             ///////////////////////////////////////////////////////////////
+
+      
+      const token = this.$store.state.token || localStorage.getItem("token");
+      
+      if(token)
+      { 
+        this.$router.push({ name: 'Panel' });
+      }
+      ///////////////////////////////////////////////////////////////
+        // Add a request interceptor
+      axios.interceptors.request.use( (config)=> {
+        // Do something before request is sent              
+        this.$store.commit('LOADER',true);
+        return config;
+      }, (error)=> {
+        // Do something with request error              
+        this.$store.commit('LOADER',false);
+        return Promise.reject(error);
+      });
+        ///////////////////////////////////////////////////////////////
+                // Add a request interceptor
+      this.$conf.interceptors.request.use( (config)=> {
+        // Do something before request is sent
+        console.log(config); 
+        this.$store.commit('LOADER',true); 
+        return config;
+      }, (error)=> {
+        // Do something with request error
+        this.$store.commit('LOADER',false);
+        return Promise.reject(error);
+      });
+        // Add a response interceptor
+        this.$conf.interceptors.response.use((response)=>{
+          console.log(response);
+          this.$store.commit('LOADER',false);
+          // Do something with response data
+        return response;
+        },  (error)=> {
+            // Do something with response error
+        return new Promise( (resolve, reject)=> {
+          this.$store.dispatch('logout').then(()=>{
+            this.$router.push('/')
+          })
+          throw err;
+        });
+        });
+        ///////////////////////////////////////////////////////////////
          
         },
     
@@ -132,19 +139,22 @@ export default {
     methods :{
         ingresar(){
                 this.$validator.validate().then(result => {
+                  
                     if (result) { 
                       this.error = null;
-                        
-                        this.$controlacceso.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: '001a72ec-64d4-4493-8504-71f5021b2c3f'})
-                        .then(respuesta => {                          
+                         this.$controlacceso.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: '001a72ec-64d4-4493-8504-71f5021b2c3f'})
+                        .then(respuesta => {                        
                           this.$store.commit('LOADER',false);
                             return respuesta.data
                         })
-                        .then(data => {        
+                        .then(data => {     
                             this.$store.dispatch("guardarToken", data.token)
-                            this.$router.push({ name: 'home' })
-                            this.CierreNav();
-                        }).catch(err => {                           
+                            this.$store.dispatch("setLogin", data.token)
+                            this.$router.push({ name: 'Panel' })
+                            //this.CierreNav();
+                        }).catch(err => {              
+                          console.log("error") 
+                          console.log(err)            
                           this.error = err.response.data;
                           this.$store.commit('LOADER',false);
                         })
@@ -163,8 +173,8 @@ export default {
           cerrarSesion() {
             //Funciones para eliminar el token pasando las 8hrs y reedirigir a login
             this.$store.dispatch("salir");
-            if (this.$route.path !== '/login') {
-              this.$router.push('/login');
+            if (this.$route.path !== '/') {
+              this.$router.push('/');
             }
           }
     }

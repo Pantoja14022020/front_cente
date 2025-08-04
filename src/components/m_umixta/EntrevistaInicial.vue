@@ -2,6 +2,7 @@
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+    <UmixtaNavDrawer/>
     <v-flex v-if="showpage">
       <v-toolbar flat color="white">
         <v-toolbar-title class="font-weight-regular"
@@ -1342,8 +1343,14 @@ import Swal from 'sweetalert2'
 import { firmarDocumento } from "../../helpers/efirma";
 import pdfMake from "pdfmake/build/pdfmake";
 import Loader from "./modulo/_loader.vue";
+import UmixtaNavDrawer from "./umixtaNavDrawer.vue";
 
 export default {
+  components: {
+        n401,
+        n403,
+        UmixtaNavDrawer
+      },
   data() {
     return {
       //variables de pdf
@@ -1353,10 +1360,6 @@ export default {
       canvasid: "",
 
       fechaEntre: "",
-      components: {
-        n401,
-        n403,
-      },
       showpage: true,
       modEditResena: false,
       e401: false,
@@ -4984,7 +4987,7 @@ export default {
         //En caso de si haberlo se debe obtener la geolocalizacion
         else
         {
-          await this.generarCoordenadas();
+          /*await*/ this.generarCoordenadas();
         }
 
 

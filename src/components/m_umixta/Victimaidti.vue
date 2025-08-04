@@ -767,7 +767,7 @@
                                                         v-if="switch2==false"
                                                         name="cp"
                                                         v-model="de_cp"
-                                                        @keyup.enter="buscarPorCP()"  >
+                                                        @keyup.enter="buscarPorCP(2,de_cp)"  >
                                                         </v-text-field>
                                                         <v-layout wrap justify-space-between>
                                                             <v-flex  xs6 md6 lg6>
@@ -785,13 +785,13 @@
                                                             ></v-text-field>
                                                             </v-flex>
                                                          </v-layout>
-                                                    <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc01" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn>
+                                                    <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc01" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
                                                 </v-flex>
     
                                             </v-layout>
                                             <div class="text-xs-right">
                                                 <v-btn flat @click.native="step = 3">Anterior</v-btn>
-    
+                                                <v-btn color="primary" @click.native="step = 5" v-if="agregarPoli==true">Continuar</v-btn>
     
                                             </div>
                                         </v-container>
@@ -865,7 +865,7 @@
     
                                             </v-layout>
                                             <div class="text-xs-right">
-    
+                                                <v-btn flat @click.native="step = 4">Anterior</v-btn>
                                             </div>
                                         </v-container>
     
@@ -1167,7 +1167,7 @@
                         </v-card>
             </v-dialog>
     
-            <v-dialog  v-model="dialogoactualizar"  max-width="700px" >
+            <v-dialog  v-model="dialogoactualizar"  max-width="700px" persistent>
                 <v-card>
                     <v-toolbar card dark color="grey lighten-4 primary--text">
                         <v-avatar  size="30">
@@ -1193,10 +1193,23 @@
                                         <v-autocomplete name="Persona Desaparecida"
                                             :items="tDesaparecidos"
                                             v-model="registro"
+                                            chips
                                             v-validate="requeridoPD"
                                             v-show="clasificacionpersona.value == 'Victima directa' || clasificacionpersona == 'Victima directa'"
                                             label="*¿Es un tema de personas desaparecidas?:"
                                             :error-messages="errors.collect('Persona Desaparecida')">
+                                        </v-autocomplete>
+
+                                        <v-autocomplete
+                                            name="relacion victima"
+                                            :items="relacionados"
+                                            v-model="relacionado"
+                                            return-object
+                                            label="*Relación de la víctima con el imputado:"
+                                            v-validate="relacionadoRequerido"
+                                            v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' || 
+                                                    clasificacionpersona.value == 'Victima directa' || clasificacionpersona.value == 'Victima indirecta'"
+                                            :error-messages="errors.collect('relacion victima')">
                                         </v-autocomplete>
                                     </v-flex>
     
@@ -1204,7 +1217,7 @@
                             </v-container>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn  @click.native="dialogoactualizar=false" >Cerrar</v-btn>
+                                <v-btn  @click.native="cerrarDialogoActualizar" >Cerrar</v-btn>
                                 <v-btn color="success"  @click.native="actualizarclasiapi" >Guardar</v-btn>
                             </v-card-actions>
                         </v-form>
@@ -1265,7 +1278,7 @@
                 </v-card>
             </v-dialog>
     
-            <v-dialog  v-model="dialogoinformacion"  max-width="1000px" >
+            <v-dialog  v-model="dialogoinformacion"  max-width="1000px" persistent>
     
                 <v-card>
                     <v-toolbar card dark color="grey lighten-4 primary--text">
@@ -1607,7 +1620,18 @@
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action>
                                                                 <v-list-tile-content   >
-                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Calle:</a></p> </v-list-tile-title>
+                                                                    
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Vialidad:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.tipoVialidadNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Nombre:</a></p> </v-list-tile-title>
+
                                                                     <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.calle }}</a></p>  </v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
@@ -1683,6 +1707,15 @@
                                                                     <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.localidad }}</a></p>  </v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Asentamiento:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.tipoAsentamientoNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
                                                     </v-card-text>
                                                 </v-card>
                                             </v-flex>
@@ -1743,7 +1776,16 @@
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action>
                                                                 <v-list-tile-content   >
-                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Calle:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de vialidad:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.tipoVialidadNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Nombre:</a></p> </v-list-tile-title>
                                                                     <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.calle }}</a></p>  </v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
@@ -1819,6 +1861,15 @@
                                                                     <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.localidad }}</a></p>  </v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Asentamiento:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.tipoAsentamientoNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
                                                     </v-card-text>
                                                 </v-card>
                                             </v-flex>
@@ -1883,7 +1934,11 @@
       import moment from 'moment'
       import 'moment/locale/es';
       import alertify from 'alertifyjs';
-    
+        import { generarTokenCoodenadas } from './crearTokenCoordenadas';
+
+    import { METHODS } from 'http';
+
+
       var assert, curp, persona;
       assert = require('assert');
       curp = require('curp.js');
@@ -1958,6 +2013,9 @@
             //****************************** */
             step:1,
             //********************************/
+            fechanacimientoRequerido: 'required',
+            rangoEdadRequerido: '',
+            relacionadoRequerido: '',
             //CAPTURA DE DATOS
             idPersona:'',
             radios: 'Fisica',
@@ -2060,10 +2118,13 @@
                 {text:'Tio(a)',value:'Tio(a)'},
                 {text:'Vecino(a)',value:'Vecino(a)'},
                 {text:'Conocido(a)',value:'Conocido(a)'},
+                {text:'Ninguna',value:'Ninguna'},
+                {text:'Se desconoce',value:'Se desconoce'},
             ],
             relacionado:'',
             relacion:false,
             //VARIABLES PARA LOS POLICIAS
+            policiaRequerido: '',
             impuDetenido:false,
             agregarPoli:false,
             policiaDetuvo:'',
@@ -2078,6 +2139,9 @@
             entreCalle2:'',
             referencia:'',
             pais:'Mexico',
+
+            vialidad:'',
+            vialidades:[],
     
             estado:'',
             estadoid:0,
@@ -2091,6 +2155,9 @@
             localidad:'',
             localidadid:0,
             localidades:[],
+
+            asentamiento:'',
+            asentamientos:[],
     
             cp:'',
             lat:'',
@@ -2104,6 +2171,9 @@
             de_entreCalle2:'',
             de_referencia:'',
             de_pais:'Mexico',
+
+            de_vialidad:'',
+            de_vialidades:[],
     
             de_estado:'',
             de_estadoid:0,
@@ -2117,6 +2187,9 @@
             de_localidad:'',
             de_localidadid:0,
             de_localidades:[],
+
+            de_asentamiento:'',
+            de_asentamientos:[],
     
             de_cp:'',
             de_lat:'',
@@ -2233,7 +2306,12 @@
             ],
             requeridoPD: '',
             requiredRZ: '',
-            personaid: ''
+            requiredRFC: '',
+            personaid: '',
+            countPersona :1,
+            direccionPersonal: {}, 
+            direccionNotificacion: {}, 
+            cambioDireccion:false,
         }),
     
         created () {
@@ -2284,6 +2362,8 @@
                         me.listarReligion();
                         me.listarDiscapacidad();
                         // DIRECCION PERSONAL
+                        me.listarVialidad();
+                        me.listarAsentamiento();
                         me.listarCiudades();
                         // DIRECCION ESCUCHA
                         me.de_listarCiudades();
@@ -2319,7 +2399,7 @@
         },//v-validate="'date_format:dd/MM/yyyy'"
         computed: {
             formTitle () {
-                    return this.editedIndex === -1 ? 'Registrar a una nueva persona' : 'Actualizar informacion de la persona'
+                return this.editedIndex === -1 ? 'Registrar a una nueva persona' : 'Actualizar información de la persona'
             },
             isInput3Required() {
                 return (this.nombres !== this.alias || this.datosprotegidos === false || this.amaterno !== '' )
@@ -2372,15 +2452,39 @@
                 this.verR = false;
 
             }
+            if(val !== 'Imputado') {
+                    this.impuDetenido = false;
+                    this.agregarPoli = false;
+                }
+
+                if (val !== 'Victima directa' && val !== 'Victima indirecta') {
+                    this.relacionado = " ";
+                    this.relacionadoRequerido = '';
+                } else {
+                    this.relacionadoRequerido = 'required';
+                }
+
+                this.$validator.reset();
+                // Randeriza tamaño stepper
+                this.$nextTick(() => {
+                    window.dispatchEvent(new Event('resize'));
+                });
         },
         radios(val) {
             this.verTP = val === 'Moral' ? 1 : 0;
 
             if (this.verTP === 1) {
                 this.requiredRZ = 'required';
-            }else{
+           this.requiredRFC = 'required';
+                } else {
                 this.requiredRZ = '';
+                this.requiredRFC = '';
             }
+            this.$validator.reset();
+                // Randeriza tamaño stepper
+                this.$nextTick(() => {
+                    window.dispatchEvent(new Event('resize'));
+                });
         },
         registro(valor){
             if(valor === true){
@@ -2400,14 +2504,19 @@
                     this.deviceId = first.deviceId;
                 }
             },
-        RangoEdadTF(val){
-            if(!val){
-                this.fnacimiento = '';
-                this.$nextTick(() => {
-                    this.rangoedad = ''; // Se limpia después de que Vue actualice la interfaz
-                  });
-            }
-        },
+        RangoEdadTF(val) {
+                if(val === false){
+                    this.rangoEdadRequerido = '';
+                    this.fechanacimientoRequerido = 'required';
+                } else {
+                    this.rangoEdadRequerido = 'required';
+                    this.fechanacimientoRequerido = '';
+                    this.fnacimiento = '';
+                    if (!this.rangosedad.some(item => item.value === this.rangoedad)) {
+                        this.rangoedad = '';
+                    }
+                }
+            },
         relacion(val){
             if(!val){
                 this.relacionado = '';
@@ -2420,15 +2529,42 @@
         },
         switch2(val){
             if(!val){
+                this.$validator.resume();
                 this.radios = 'Fisica'
                 this.limpiar();
-            }
+            } else {
+                    this.datosprotegidos = false;
+                    this.$validator.pause();
+                }
         },
         presexuales(val){
             if(!val){
                 this.genero = '';
             }
-        }
+        },
+        impuDetenido(val){
+                if(!val){
+                    this.policiaRequerido = ''
+                    this.agregarPoli = false;
+                } else {
+                    this.policiaRequerido = 'required'
+                }
+                // Randeriza tamaño stepper
+                this.$nextTick(() => {
+                    window.dispatchEvent(new Event('resize'));
+                });
+            },
+            agregarPoli(val){
+                if(!val && this.clasificacionpersona === 'Imputado' && this.impuDetenido === true){
+                    this.policiaRequerido = 'required'
+                } else {
+                    this.policiaRequerido = ''
+                }
+                // Randeriza tamaño stepper
+                this.$nextTick(() => {
+                    window.dispatchEvent(new Event('resize'));
+                });
+            },
         },
         methods:{
             cerrarcarpeta () {
@@ -2505,11 +2641,16 @@
     
                     //ESTAS SECCIONE DE CODIGO ARREGKAN EL FORMATO DE FECHA AL QUE SE USA EN LAS TABLAS
                     //DEBIDO A QUE EL TIPO DE COMPONENTE DE FECHA GUARDA LA FECHA CON - Y NO CON  /
+                    if (/^\d{2}\/\d{2}\/\d{4}$/.test(item.fechaNacimiento)) 
+                    {
                     const fechaParts = item.fechaNacimiento.split('/');
                     const dia = fechaParts[0];
                     const mes = fechaParts[1];
                     const anio = fechaParts[2];
                     me.fnacimiento = `${anio}-${mes}-${dia}`;
+                    } else {
+                        me.fnacimiento = '';
+                    }
     
                     //----------------------------------------------------------------
                     me.rangoedad = item.rangoEdad;
@@ -2553,6 +2694,10 @@
                     me.listarDireccionEscucha();
                     me.editedIndex=1;
                     me.modalAdd =1;
+                    // Randeriza tamaño stepper
+                    me.$nextTick(() => {
+                        window.dispatchEvent(new Event('resize'));
+                    });
     
                 }).catch(err => { 
                     if (err.response.status==400){
@@ -2620,10 +2765,18 @@
                     me.cp=response.data.cp;
                     me.lat=response.data.lat;
                     me.lng=response.data.lng;
-    
+                    me.vialidad = response.data.tipoVialidad;
+                    me.asentamiento = response.data.tipoAsentamiento;
                     me.selectEstado(me.estado);
     
-    
+                    me.direccionPersonal = {
+                        calle: response.data.calle,
+                        noExt: response.data.noext,
+                        cp: response.data.cp,
+                        localidad: response.data.localidad,
+                        municipio: response.data.municipio,
+                        estado: response.data.estado,
+                    };
                 }).catch(err => {
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
@@ -2663,9 +2816,18 @@
                     me.de_cp=response.data.cp;
                     me.de_lat=response.data.lat;
                     me.de_lng=response.data.lng;
+                    me.de_vialidad=response.data.tipoVialidad;
+                    me.de_asentamiento=response.data.tipoAsentamiento;
                     me.de_selectEstado(me.de_estado);
     
-    
+                    me.direccionNotificacion = {
+                        de_calle: response.data.calle,
+                        de_noExt: response.data.noext,
+                        de_cp: response.data.cp,
+                        de_localidad: response.data.localidad,
+                        de_municipio: response.data.municipio,
+                        de_estado: response.data.estado,
+                    };
                 }).catch(err => {
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
@@ -2703,11 +2865,24 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 me.step = 1;
-                this.$cat.get('api/RAPs/ListarDP/'+ item.personaId,configuracion).then(function(response){
+                 this.$cat.get('api/RAPs/ListarDP/'+ item.personaId,configuracion).then(function(response){
                     me.infodp = response.data;
     
+                    let vialidad = me.vialidades.find(v => v.value === me.infodp.tipoVialidad);
+                    me.infodp.tipoVialidadNombre = vialidad ? vialidad.text : "";
+
+                    let asentamiento = me.asentamientos.find(v => v.value === me.infodp.tipoAsentamiento);
+                    me.infodp.tipoAsentamientoNombre = asentamiento ? asentamiento.text : "";
+
                     this.$cat.get('api/RAPs/ListarDE/'+ item.idRAP,configuracion).then(function(response){
                             me.infode = response.data;
+                            
+                            let de_vialidad = me.de_vialidades.find(d => d.value === me.infode.tipoVialidad);
+                            me.infode.tipoVialidadNombre = de_vialidad ? de_vialidad.text : "";
+
+                            let de_asentamiento = me.de_asentamientos.find(d => d.value === me.infode.tipoAsentamiento);
+                            me.infode.tipoAsentamientoNombre = de_asentamiento ? de_asentamiento.text : "";
+
                         this.$cat.get('api/DocumentosPesonas/Listar2/' +item.personaId,configuracion).then(function(response){
                             me.rutaconsulta = response.data.ruta;
                             me.tdocumento = response.data.tipoDocumento
@@ -2768,11 +2943,18 @@
                 });
     
             },
+
             mostrarTP(){
-                this.verTP=1;
+                this.verTP = 1;
+                this.$nextTick(() => {  
+                    window.dispatchEvent(new Event("resize"))
+                })
             },
             ocultarTP (){
-                this.verTP=0;
+                this.verTP = 0;
+                    this.$nextTick(() => {
+                    window.dispatchEvent(new Event("resize"));
+                    });
             },
             limpiar(){
                 this.statusActualizar=false;
@@ -2817,6 +2999,7 @@
                 this.presexuales = "";
                 //************************************************************* */
                 //step no3
+                this.vialidad="";
                 this.calle="";
                 this.noInt="";
                 this.noExt="";
@@ -2828,12 +3011,16 @@
                 this.estado="";
                 this.municipioid=0;
                 this.municipio="";
+                this.municipios=[];
                 this.localidadid=0;
                 this.localidad="";
+                this.localidades=[];
+                this.asentamiento="";
                 this.cp="";
                 this.lat="";
                 this.lng="";
                     //step no4
+                    this.de_vialidad="";
                 this.de_calle="";
                 this.de_noInt="";
                 this.de_noExt="";
@@ -2845,8 +3032,11 @@
                 this.de_estado="";
                 this.de_municipioid=0;
                 this.de_municipio="";
+                this.de_municipios=[];
                 this.de_localidadid=0;
                 this.de_localidad="";
+                this.de_localidades=[];
+                this.de_asentamiento="";
                 this.de_cp="";
                 this.de_lat="";
                 this.de_lng="";
@@ -2866,6 +3056,12 @@
                 this.discapacidad = "";
                 this.requeridoPD = "";
                 this.requiredRZ = "";
+                this.fechanacimientoRequerido = 'required';
+                this.rangoEdadRequerido = '',
+                this.relacionadoRequerido = '',
+                this.policiaRequerido = '',
+                this.direccionPersonal = {}, 
+                this.direccionNotificacion = {},
                 this.$nextTick(() => {
                     this.registro = false;
                     this.RangoEdadTF = false;
@@ -2882,7 +3078,7 @@
                 let configuracion= {headers : header};
                 this.$cat.get('api/RAPs/ListarTodos/'+ me.rAtencionId,configuracion).then(function(response){
                     me.raps=response.data;
-    
+                    me.countPersona = response.data.length;
                 }).catch(err => {
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
@@ -3144,15 +3340,15 @@
                 this.hechos=[];
                 this.modalduplicidad= false;
             },
-            actualizarclasi(item){
-                this.limpiar();
+            async actualizarclasi(item){
+                await this.limpiar();
                 this.nombrep = item.nombreCompleto
                 this.idrapac = item.idRAP
                 this.clasificacionpersona = item.clasificacionPersona
                 this.dialogoactualizar = true
                 this.registro = item.registro
                 this.personaid = item.personaId
-    
+                this.relacionado = item.parentesco
             },
             infoadicionalpdetenida(item){
     
@@ -3170,16 +3366,34 @@
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 var clasificacionP = !me.clasificacionpersona.value? me.clasificacionpersona: me.clasificacionpersona.value;
-                me.registro = me.registro.length !== 0? me.registro: false;
+                let relacionadoP = !me.relacionado.value? me.relacionado: me.relacionado.value;
+                let registroP = !me.registro.value? me.registro: me.registro.value;
+                this.relacionadoRequerido = '';
+
+                if((relacionadoP == " " || relacionadoP == '') && (clasificacionP == 'Victima indirecta' || clasificacionP == 'Victima directa')) {
+                    this.relacionadoRequerido = 'required';
+                    this.$nextTick(() => {
+                        this.$validator.validate()
+                        alertify.error("Por favor complete los campos obligatorios marcados");
+                    });
+                    return;
+                } else
+                {
+                    if (clasificacionP != "Victima indirecta" && clasificacionP != "Victima directa")
+                    {
+                        registroP == false;
+                        relacionadoP = " ";
+                    }
                 
                 this.$cat.put('api/RAPs/ActualizarClasificacionD',{
     
                     'IdRAP' : me.idrapac,
                     'PersonaId': me.personaid,
                     'ClasificacionPersona' : clasificacionP,
-                    'Registro' : me.registro,
-                    'VerI': me.verI,
-                    'VerR': me.verR
+                     'Registro' : registroP,
+                        'VerI': me.verI,
+                        'VerR': me.verR,
+                        'Parentesco': relacionadoP
     
                 },configuracion).then(function(response){
                     me.$notify('La información se actualizo correctamente !!!','success')
@@ -3203,6 +3417,7 @@
                         me.$notify('Error al intentar actualizar el registro!!!','error')
                     }
                 });
+            }
             },
             actualizarinfoadicional(){
     
@@ -3650,6 +3865,13 @@
                 if (!me.estadoid.value== 0){
                     me.estado = me.estadoid.text;
                     me.estadoid = me.estadoid.value;
+                    me.municipio = '';
+                    me.municipioid = '';
+                    me.municipios = [];
+                    me.localidad = '';
+                    me.localidadid = '';
+                    me.localidades = [];
+                    me.cp = '';
                 }
                     var municipiosArray=[];
                     me.municipios.length = 0;
@@ -3693,6 +3915,12 @@
                 if (!me.municipioid.value== 0){
                 me.municipio = me.municipioid.text;
                 me.municipioid = me.municipioid.value;
+                me.localidad = '';
+                    me.localidadid = ''
+                    me.localidades = [];
+                    me.cp = ''
+                }else if (!me.municipioid) {
+                    return;
                 }
     
     
@@ -3733,8 +3961,12 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
+                if (!me.localidadid.value == 0) {
                 me.localidad = me.localidadid.text;
                 me.localidadid = me.localidadid.value;
+                } else if (!me.localidadid) {
+                    return;
+                }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response){
                       me.cp=response.data.cp;
     
@@ -3756,31 +3988,78 @@
                         }
                 });
             },
-            buscarPorCP(){
+            buscarPorCP(tipo,cp)
+            {
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                this.$conf.get('api/Localidads/MostrarPorCP/' + me.cp,configuracion).then(function(response){
-                      me.estadoid=response.data.idEstado;
-                      me.listarPorEstado();
-                      me.municipioid=response.data.idMunicipio;
-                      me.buscarPorCpMpo()
-                }).catch(err => {
-                        if (err.response.status==400){
-                            me.$notify("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.$notify("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                
+                me.$conf.get('api/Localidads/BuscarPorCP/' + cp,configuracion).then(function(response)
+                {
+                    var estado = response.data.idEstado;
+                    var municipio = response.data.idMunicipio;
+
+                    if(tipo ==1)
+                    {
+                        me.estadoid=response.data.idEstado;
+                        me.estado=response.data.estado;
+                        me.municipioid=response.data.idMunicipio;
+                        me.municipio=response.data.municipio;
+                        me.localidadid=response.data.idLocalidad;
+                        me.localidad=response.data.nombre;
+                    }
+                    if(tipo ==2)
+                    {
+                        me.de_estadoid=response.data.idEstado;
+                        me.de_estado=response.data.estado;
+                        me.de_municipioid=response.data.idMunicipio;
+                        me.de_municipio=response.data.municipio;
+                        me.de_localidadid=response.data.idLocalidad;
+                        me.de_localidad=response.data.nombre;
+                    }
+                    
+                    var municipiosArray=[];
+                    me.$conf.get('api/Municipios/ListarPorEstado/'+ estado,configuracion).then(function(response)
+                    {
+                        municipiosArray=response.data;
+
+                        if(tipo ==1)
+                        {
+                            municipiosArray.map(function(x){me.municipios.push({text: x.nombre,value: x.idMunicipio});});
                         }
+                        if(tipo ==2)
+                        {
+                            municipiosArray.map(function(x){me.de_municipios.push({text: x.nombre,value: x.idMunicipio});});
+                        }  
+
+                        var localidadArray=[];
+                        me.$conf.get('api/Localidads/MostrarPorMPO/' + municipio,configuracion).then(function(response)
+                        {
+                            localidadArray=response.data;
+
+                            if(tipo ==1)
+                            {
+                                localidadArray.map(function(x){me.localidades.push({text: x.nombre,value: x.idLocalidad});});
+                            }
+                            if(tipo ==2)
+                            {
+                                localidadArray.map(function(x){me.de_localidades.push({text: x.nombre,value: x.idLocalidad});});
+                            }
+                        
+                        }).catch(err => 
+                        {
+                            me.$notify('Error al intentar listar las localidades!!!','error')
+                        });
+
+                    }).catch(err => 
+                    {
+                        me.$notify('Error al intentar listar los municipios!!!','error')
+                    });
+
+
+                }).catch(err => 
+                {
+                    me.$notify('Error al intentar listar por codigo postal!!!','error')
                 });
             },
             buscarPorCpMpo(){
@@ -3810,7 +4089,63 @@
                         }else{
                             me.$notify('Error al intentar listar los registros!!!','error')
                         }
-                });
+                });    
+            },
+            listarVialidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.vialidades.push(item);
+                        me.de_vialidades.push(item);
+                    });
+                }).catch(err => {
+                        if (err.response.status==400){
+                            me.$notify("No es un usuario válido", 'error')
+                        } else if (err.response.status==401){
+                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                            me.e401 = true,
+                            me.showpage= false
+                        } else if (err.response.status==403){
+                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.e403= true
+                            me.showpage= false
+                        } else if (err.response.status==404){
+                            me.$notify("El recuso no ha sido encontrado", 'error')
+                        }else{
+                            me.$notify('Error al intentar listar los registros!!!','error')
+                        }
+                    });
+            },
+            listarAsentamiento(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.asentamientos.push(item);
+                        me.de_asentamientos.push(item);
+                    });
+                }).catch(err => {
+                        if (err.response.status==400){
+                            me.$notify("No es un usuario válido", 'error')
+                        } else if (err.response.status==401){
+                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                            me.e401 = true,
+                            me.showpage= false
+                        } else if (err.response.status==403){
+                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.e403= true
+                            me.showpage= false
+                        } else if (err.response.status==404){
+                            me.$notify("El recuso no ha sido encontrado", 'error')
+                        }else{
+                            me.$notify('Error al intentar listar los registros!!!','error')
+                        }
+                    });
             },
             selectEstado: function(val) {
     
@@ -3881,6 +4216,13 @@
                 if (!me.de_estadoid.value== 0){
                     me.de_estado = me.de_estadoid.text;
                     me.de_estadoid = me.de_estadoid.value;
+                    me.de_municipio = '';
+                    me.de_municipioid = '';
+                    me.de_municipios = [];
+                    me.de_localidad = '';
+                    me.de_localidadid = '';
+                    me.de_localidades = [];
+                    me.de_cp = '';
                 }
                     var municipiosArray=[];
                     me.de_municipios.length = 0;
@@ -3927,6 +4269,11 @@
                 if (!me.de_municipioid.value== 0){
                 me.de_municipio = me.de_municipioid.text;
                 me.de_municipioid = me.de_municipioid.value;
+                me.de_localidad = '';
+                    me.de_localidadid = '';
+                    me.de_cp = '';
+                }else if (!me.de_municipioid) {
+                    return;
                 }
     
     
@@ -3970,8 +4317,12 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
+                if (!me.de_localidadid.value == 0) {
                 me.de_localidad = me.de_localidadid.text;
                 me.de_localidadid = me.de_localidadid.value;
+                } else if (!me.de_localidadid) {
+                    return;
+                }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.de_localidadid,configuracion).then(function(response){
     
                       me.de_cp=response.data.cp;
@@ -4336,9 +4687,11 @@
                     me.de_cp= me.cp;
                     me.de_lat= me.lat;
                     me.de_lng=me.lng;
-    
+                    me.de_vialidad=me.vialidad;
+                    me.de_asentamiento=me.asentamiento;
                 }
                 else{
+                    me.de_vialidad="";
                     me.de_calle= "";
                     me.de_noExt="";
                     me.de_noInt="";
@@ -4348,6 +4701,7 @@
                     me.de_estado="";
                     me.de_municipio="";
                     me.de_localidad="";
+                    me.de_asentamiento="";
                     me.de_cp="";
                     me.de_lat="";
                     me.de_lng="";
@@ -4355,12 +4709,57 @@
     
             },
             guardar(){
-                       this.$validator.validate().then(result => {
+                       this.$validator.validate().then(async result => {
                         if (result) {
                             let me=this;
                             let header={"Authorization" : "Bearer " + this.$store.state.token};
                             let configuracion= {headers : header};
+
+                            const camposDireccion = ['calle', 'noExt', 'cp', 'localidad', 'municipio', 'estado'];
+
+                        console.log(this.localidad)
                         /*---------------------------------------------------------------------------------------------------------*/
+
+                        if(this.estado != '')
+                        {
+                            // Consultar coordenadas si hubo algun cambio
+                            if (this.hayCambiosDireciones(this.direccionPersonal, this, camposDireccion)) 
+                            {
+                                console.log()
+                                const CoordenadasP = await this.generarCoordenadas(this.calle, this.noExt, this.cp, this.localidad, this.municipio, this.estado);
+                                this.lat = CoordenadasP.lat || '';
+                                this.lng = CoordenadasP.lng || '';
+                            }
+                        }
+                        if(this.de_estado != '')
+                        {
+                            if (this.hayCambiosDireciones(this.direccionNotificacion, this, camposDireccion.map(c => `de_${c}`))) 
+                            {
+                                const CoordenadasN = await this.generarCoordenadas(this.de_calle, this.de_noExt, this.de_cp, this.de_localidad, this.de_municipio, this.de_estado);
+                                this.de_lat = CoordenadasN.lat || '';
+                                this.de_lng = CoordenadasN.lng || '';
+                            }
+                        }
+                            
+
+                        // Consultar coordenadas si son nulas o vacias pero que exista el estado
+                        const isEmptyCoord = (lat, lng) => 
+                        {
+                            return (!lat && !lng) || (lat === '0' && lng === '0');
+                        };
+
+                        if (isEmptyCoord(this.lat, this.lng) && this.estado) {
+                            const CoordenadasP = await this.generarCoordenadas(this.calle, this.noExt, this.cp, this.localidad, this.municipio, this.estado);
+                            this.lat = CoordenadasP.lat || '';
+                            this.lng = CoordenadasP.lng || '';
+                        }
+
+                        if (isEmptyCoord(this.de_lat, this.de_lng) && this.de_estado) {
+                            const CoordenadasN = await this.generarCoordenadas(this.de_calle, this.de_noExt, this.de_cp, this.de_localidad, this.de_municipio, this.de_estado);
+                            this.de_lat = CoordenadasN.lat || '';
+                            this.de_lng = CoordenadasN.lng || '';
+                        }
+
                         me.registro = me.registro.length !== 0? me.registro: false;
 
                         var listaMediosNotificacion='';
@@ -4418,7 +4817,12 @@
                             };
                         };
                         /*---------------------------------------------------------------------------------------------------------*/
-    
+                        
+                        if (me.clasificacionpersona === 'Victima directa' || me.clasificacionpersona === 'Victima indirecta') {
+                            me.relacion = true;
+                        } else {
+                            me.relacion = false;
+                        }
     
                         //ARREGLA LA FECHA PARA QUE SE GUARDEN CON /
                             const fechaParts = me.fnacimiento.split('-');
@@ -4436,10 +4840,13 @@
                             if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
     
                         //-------------------------------------------------
-                            if(me.fnacimiento != "")
+                            if(me.RangoEdadTF == false)
+                            {
                                 me.edadf = me.generaredad();
-                            else
-                                me.edadf = 99
+                            } else {
+                                me.edadf = 99;
+                                me.fnacimiento = '';
+                            }
     
     
                             //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
@@ -4447,8 +4854,8 @@
                                 me.edadf = 99;
                                 me.fnacimiento = '';
                             }                           
-                            else  
-                                me.edadf = me.generaredad();
+                            //else  
+                              //  me.edadf = me.generaredad();
                                                     
     
                             //ESTE IF VALORA SI EL RANGO DE EDAD CORRESPONDE AL DE UN MENOR DE EDAD SE PROTEGEN LOS DATOS
@@ -4557,6 +4964,7 @@
                                 me.religion='Anonimo'
                                 me.switch1= false
                                 me.discapacidad='Anonimo'
+                                me.vialidad=0
                                 me.calle='Anonimo'
                                 me.noExt='Anonimo'
                                 me.noInt='Anonimo'
@@ -4567,7 +4975,9 @@
                                 me.estado='Anonimo'
                                 me.municipio='Anonimo'
                                 me.localidad='Anonimo'
+                                me.asentamiento=0
                                 me.cp= 0
+                                me.de_vialidad=0
                                 me.de_calle='Anonimo'
                                 me.de_noExt='Anonimo'
                                 me.de_noInt='Anonimo'
@@ -4581,6 +4991,7 @@
                                 me.de_cp = 0
                                 me.de_lat= 0
                                 me.de_lng= 0
+                                this.$validator.resume();
                             }
                             if (this.editedIndex > -1) {
                                 
@@ -4756,7 +5167,7 @@
                                     'Edad': me.edadf,
                                     'DocPoderNotarial':me.documentoacredita,
                                     //***************************** DIRECCION*/
-    
+                                    'tipoVialidad': me.vialidad,
                                     'calle': me.calle,
                                     'noExt': me.noExt,
                                     'noInt': me.noInt,
@@ -4767,11 +5178,12 @@
                                     'estado': me.estado,
                                     'municipio': me.municipio,
                                     'localidad': me.localidad,
+                                    'tipoAsentamiento': me.asentamiento,
                                     'cp': me.cp,
-                                    'lat': me.lat.toString(),
-                                    'lng':me.lng.toString(),
+                                    'lat': me.lat,
+                                    'lng':me.lng,
                                     //************************************ DIRECCION ESCUCHA */
-    
+                                    'de_tipoVialidad': me.de_vialidad,
                                     'de_calle': me.de_calle,
                                     'de_noExt': me.de_noExt,
                                     'de_noInt': me.de_noInt,
@@ -4782,9 +5194,10 @@
                                     'de_estado': me.de_estado,
                                     'de_municipio': me.de_municipio,
                                     'de_localidad': me.de_localidad,
+                                    'de_tipoAsentamiento': me.de_asentamiento,
                                     'de_cp': me.de_cp,
-                                    'de_lat': me.de_lat.toString(),
-                                    'de_lng': me.de_lng.toString(),
+                                    'de_lat': me.de_lat,
+                                    'de_lng': me.de_lng,
                                     //*************************************/
                                 },configuracion).then(function(response){
     
@@ -4912,6 +5325,7 @@
                                         'personaId': me.idPersona,
                                         'clasificacionpersona': me.clasificacionpersona,
                                         'pInicio': false,
+                                        'de_tipoVialidad': me.de_vialidad,
                                         'de_calle': me.de_calle,
                                         'de_noExt': me.de_noExt,
                                         'de_noInt': me.de_noInt,
@@ -4922,6 +5336,7 @@
                                         'de_estado': me.de_estado,
                                         'de_municipio': me.de_municipio,
                                         'de_localidad': me.de_localidad,
+                                        'de_asentamiento': me.de_asentamiento,
                                         'de_cp': me.de_cp,
                                         'de_lat': me.de_lat,
                                         'de_lng': me.de_lng,
@@ -4973,6 +5388,7 @@
                                             'DocPoderNotarial':me.documentoacredita,
                                             //***************************** DIRECCION*/
                                             'rapid': rapid,
+                                            'tipoVialidad': me.vialidad,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
                                             'noInt': me.noInt,
@@ -4983,6 +5399,7 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng':me.lng,
@@ -5081,7 +5498,7 @@
                                                 //***************************** PERSONA*/
                                                 'rAtencionId': me.rAtencionId,
                                                 'clasificacionpersona': me.clasificacionpersona,
-                                                'pInicio': false,
+                                                'pInicio': (me.countPersona === 0 ? true : false),
     
                                                 'statusAnonimo': me.switch2,
                                                 'tipoPersona': me.radios,
@@ -5125,6 +5542,7 @@
                                                 'Edad': me.edadf,
                                                 'DocPoderNotarial':me.documentoacredita,
                                                 //***************************** DIRECCION PERSONAL */
+                                                'tipoVialidad': me.vialidad,
                                                 'calle': me.calle,
                                                 'noExt': me.noExt,
                                                 'noInt': me.noInt,
@@ -5135,10 +5553,12 @@
                                                 'estado': me.estado,
                                                 'municipio': me.municipio,
                                                 'localidad': me.localidad,
+                                                'tipoAsentamiento': me.asentamiento,
                                                 'cp': me.cp,
                                                 'lat': me.lat,
                                                 'lng': me.lng,
                                                 //************************************ DIRECCION ESCUCHA */
+                                                'de_tipoVialidad': me.de_vialidad,
                                                 'de_calle': me.de_calle,
                                                 'de_noExt': me.de_noExt,
                                                 'de_noInt': me.de_noInt,
@@ -5149,6 +5569,7 @@
                                                 'de_estado': me.de_estado,
                                                 'de_municipio': me.de_municipio,
                                                 'de_localidad': me.de_localidad,
+                                                'de_tipoAsentamiento': me.de_asentamiento,
                                                 'de_cp': me.de_cp,
                                                 'de_lat': me.de_lat,
                                                 'de_lng': me.de_lng,
@@ -5298,7 +5719,7 @@
                                         //***************************** PERSONA*/
                                         'rAtencionId': me.rAtencionId,
                                         'clasificacionpersona': me.clasificacionpersona,
-                                        'pInicio': false,
+                                        'pInicio': (me.countPersona == 0 ? true : false),
                                         'statusAnonimo': me.switch2,
                                         'tipoPersona': me.radios,
                                         'rfc': me.rfc,
@@ -5340,6 +5761,7 @@
                                         'Edad': me.edadf,
                                         'DocPoderNotarial':me.documentoacredita,
                                         //***************************** DIRECCION PERSONAL */
+                                        'tipoVialidad': me.vialidad,
                                         'calle': me.calle,
                                         'noExt': me.noExt,
                                         'noInt': me.noInt,
@@ -5350,10 +5772,12 @@
                                         'estado': me.estado,
                                         'municipio': me.municipio,
                                         'localidad': me.localidad,
+                                        'tipoAsentamiento': me.asentamiento,
                                         'cp': me.cp,
                                         'lat': me.lat,
                                         'lng': me.lng,
                                         //************************************ DIRECCION ESCUCHA */
+                                        'de_tipoVialidad': me.de_vialidad,
                                         'de_calle': me.de_calle,
                                         'de_noExt': me.de_noExt,
                                         'de_noInt': me.de_noInt,
@@ -5364,6 +5788,7 @@
                                         'de_estado': me.de_estado,
                                         'de_municipio': me.de_municipio,
                                         'de_localidad': me.de_localidad,
+                                        'de_tipoAsentamiento': me.de_asentamiento,
                                         'de_cp': me.de_cp,
                                         'de_lat': me.de_lat,
                                         'de_lng': me.de_lng,
@@ -5728,9 +6153,64 @@
                 disminuirzoom(){
                     this.zoom--;
                 },
+                cerrarDialogoActualizar() {
+                    this.dialogoactualizar = false;
+                    this.requeridoPD = '';
+                    this.relacionadoRequerido = '';
+                },
+                async generarCoordenadas(calle, noExt, cp, localidad, municipio, estado) 
+                {
+                    let tokenData = this.$store.state.tokenCoordenadas;
+
+        
+                    if (!tokenData || !tokenData.token || Date.now() > tokenData.expirationTime) 
+                    {
+                    await generarTokenCoodenadas(this.$store);
+                    tokenData = this.$store.state.tokenCoordenadas;
+                    }
+
+                    // Si sigue sin token, abortamos coordenadas pero sin interrumpir
+                    if (!tokenData || !tokenData.token) {
+                        this.lat = '';
+                        this.lng = '';
+                        return;
+                    }
+                    try 
+                    {
+                        // Consultamos la api para generar coordenadas
+                        const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+                        {
+                            id_user: tokenData.idUsuario,
+                            street: (localidad !== '' ? calle : ''),
+                            num: (localidad !== '' ? noExt : ''),
+                            suburb: localidad || '',
+                            zip: (localidad !== '' ? cp : ''),
+                            city: municipio || '',
+                            state: estado || '',
+                            systemName: tokenData.systemName,
+                        },
+                        {
+                            headers: {
+                            Authorization: `Bearer ${tokenData.token}`,
+                            'Content-Type': 'application/json',
+                            },
+                        }
+                        );
+
+                        return {
+                            lat: responseCoordenadas.data.latitude,
+                            lng: responseCoordenadas.data.longitude,
+                        };
+                    } catch (error) 
+                    {
+                        this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
+                        return { lat: '', lng: '' };
+                    }
+                },
+                hayCambiosDireciones(prev, current, campos) {
+                    return campos.some(campo => (current[campo] || '') !== (prev[campo] || ''));
+                },
             },
-    
-    
        }
     </script>
     <style>

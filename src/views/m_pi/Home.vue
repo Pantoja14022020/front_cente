@@ -83,7 +83,7 @@
       
     <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
       <div class="text-xl-center text-md-center text-xs-center my-4">
-        <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""> </a>
+        <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""> </a>
       </div>
 
       <v-list dense dark class="pt-0 primary" >
@@ -855,7 +855,25 @@ export default {
             return this.$store.state.drawer
         }
   },
+  mounted(){
+      if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('pageReloaded');
+      }
+    },
   created(){
+    const token = this.$store.state.token || localStorage.getItem("token");
+      if(token)
+      { 
+        this.$store.dispatch("guardarToken", token)
+        this.$store.dispatch("setLogin", true, token)
+      }
+      else 
+      { 
+        this.$router.push({ name: 'login' });
+      }
     this.$store.dispatch("autoLoginPI");
     this.esInteligenciaf();   
   },

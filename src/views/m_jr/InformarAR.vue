@@ -803,8 +803,25 @@
            
         };
     },
- 
+    mounted(){
+          if (!localStorage.getItem('pageReloaded')) {
+            localStorage.setItem('pageReloaded', 'true');
+            window.location.reload();
+          } else {
+            localStorage.removeItem('pageReloaded');
+          }
+        },
     created () { 
+      const token = this.$store.state.token || localStorage.getItem("token");
+          if(token)
+          { 
+            this.$store.dispatch("guardarToken", token)
+            this.$store.dispatch("setLogin", true, token)
+          }
+          else 
+          { 
+            this.$router.push({ name: 'login' });
+          }
             let me = this    
            
             me.expedienteId= me.$store.state.idExpediente;

@@ -1,4 +1,4 @@
-<template>
+<!--<template>
 
   <v-app class="app-fontstyle">
     <v-toolbar app class="elevation-2 d-flex align-center" style="box-shadow: none !important; background-color: #641529;" >
@@ -140,3 +140,96 @@
     font-style: normal;
   }
 </style>
+-->
+
+
+
+<template>
+  <v-app dark class="primary" style="display: block;">
+    <v-toolbar class="primary elevation-0">
+      <v-toolbar-title class="headline text-uppercase">
+        <span>SISTEMA CENTENARIO</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+
+      <v-chip
+        label
+        color="primary"
+        class="headline font-weight-thin"
+        text-color="white"
+      >
+        <v-icon @click="turnador()">schedule</v-icon>
+        {{ gethora }}
+      </v-chip>
+
+      <v-btn
+        v-if="$store.state.token"
+        class="primary"
+        @click="logout"
+        style="text-transform: uppercase; border-radius: 0.25rem; width: 100px; box-shadow: none;"
+      >
+        Salir
+      </v-btn>
+      
+    </v-toolbar>
+
+    <v-content dark>
+      <router-view></router-view>
+    </v-content>
+
+    <v-divider></v-divider>
+    <div dark height="auto" class="primary">
+      <v-card flat tile class="primary white--text">
+        <v-card-text color="#BC955C" class="text" style="text-align: right;">
+          Sistema Informático Integral de Gestión Procesal Penal
+        </v-card-text>
+      </v-card>
+    </div>
+  </v-app>
+</template>
+
+<script>
+import moment from "moment";
+import "moment/locale/es";
+export default {
+  name: "App",
+  components: {},
+  data: () => ({
+    horas: 0,
+    minutos: 0,
+    segundos: 0,
+  }),
+  created() {
+    var self = this;
+    setInterval(function() {
+      self.actualizartiempo();
+    }, 1000);
+  },
+
+  methods: {
+    actualizartiempo() {
+      var date = new Date(Date.now());
+      this.horas = date.getHours();
+      this.minutos = date.getMinutes();
+      this.segundos = date.getSeconds();
+
+      this.minutos =
+        this.minutos > 9 ? this.minutos : "0" + this.minutos.toString();
+      this.getSeconds =
+        this.segundos > 9 ? this.segundos : "0" + this.segundos.toString();
+    },
+    turnador() {
+      this.$router.push("./turnador");
+    },
+    logout(){
+      this.$store.dispatch("setLogout")
+    }
+  },
+  computed: {
+    gethora() {
+      var dia = moment().format("dddd LL");
+      return dia + " " + this.horas + ":" + this.minutos + ":" + this.segundos;
+    },
+  },
+};
+</script>

@@ -53,3 +53,27 @@
       </v-layout>
     </v-container>
 </template>
+<script>
+  export default{
+    mounted(){
+      if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('pageReloaded');
+      }
+    },
+    created(){
+      const token = this.$store.state.token || localStorage.getItem("token");
+      if(token)
+      { 
+        this.$store.dispatch("guardarToken", token)
+        this.$store.dispatch("setLogin", true, token)
+      }
+      else 
+      { 
+        this.$router.push({ name: 'login' });
+      }
+    }
+  }
+</script>

@@ -13,10 +13,10 @@
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+    <UmixtaNavDrawer/>
     <v-flex v-if="showpage">
-      
       <v-toolbar flat color="white">
-        <v-toolbar-title class="font-weight-regular" >Lista de carpetas con asignación de NUC.</v-toolbar-title>
+        <v-toolbar-title class="font-weight-regular primary" >Lista de carpetas con asignación de NUC.</v-toolbar-title>
         <v-divider class="mx-2" inset vertical />
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -236,14 +236,16 @@
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { error } from 'util'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   export default {
-    data () {
-      return {
-        components: {
+    components: {
           n401,
           n403,
+          UmixtaNavDrawer
         },
+    data () {
+      return {
         showpage: true,
         e401: false,
         e403: false,

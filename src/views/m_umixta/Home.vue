@@ -1,154 +1,155 @@
 <template>
-  <v-layout row wrap auto-grow>
+  <v-layout row wrap  auto-grow dark v-if="isReady">
     <n401 v-if="e401" />
     <n403 v-if="e403" />
-    <v-flex v-if="showpage" elevation-0>
-      <v-card
-        flat
-        color="white"
-        grow
-        class="d-flex align-content-start flex-wrap"
-      >
-        <v-card>
-          <v-card-text>
-            <v-icon size="400px" color="accent">account_balance</v-icon>
-          </v-card-text>
+
+    <UmixtaNavDrawer/>
+
+    <v-flex elevation-0 class="primary">
+      <!--<div v-if="showpage">-->
+        <v-card
+          flat
+          color="white"
+          grow
+          class="d-flex align-content-start flex-wrap primary"
+        >
+          <v-card class="primary" style="border: 0; box-shadow: none;">
+            <v-card-text>
+              <v-icon size="400px">account_balance</v-icon>
+            </v-card-text>
+          </v-card>
+          <v-card auto-grow class="primary" style="box-shadow: none;">
+            <v-card-title>
+              <div class="display-2 font-weight-thin" color="blue">
+                <p color="blue">{{ this.titulo }}</p>
+              </div>
+            </v-card-title>
+            <v-card-text class="primary">
+              <v-list class="primary">
+                <p class="text-md-left">Este modulo permite.........</p>
+                <v-list-tile>
+                  <v-list-tile-action>
+                    <v-icon color="white">how_to_reg</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content style="color: white;">
+                    <v-list-tile-title class="primary" style="height: 30px;">
+                      <p style="font-weight: 300;" class="font-weight-bold">Registro</p>
+                    </v-list-tile-title>
+                    <v-list-tile-sub-title>
+                      <p class="font-weight-regular">Texto ...</p>
+                    </v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile>
+                  <v-list-tile-action>
+                    <v-icon color="white">group</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title>
+                      <p class="font-weight-bold">Orientacion</p>
+                    </v-list-tile-title>
+                    <v-list-tile-sub-title>
+                      <p class="font-weight-regular">Texto....</p>
+                    </v-list-tile-sub-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <br />
+              </v-list>
+              <div />
+            </v-card-text>
+          </v-card>
         </v-card>
-        <v-card auto-grow>
-          <v-card-title class="accent">
-            <div class="display-2 font-weight-thin" color="blue">
-              <p color="blue">{{ this.titulo }}</p>
-            </div>
-          </v-card-title>
-          <v-card-text>
-            <v-list>
-              <p class="text-md-left">Este modulo permite.........</p>
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon color="success">how_to_reg</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    <p class="body-2 font-weight-bold"><a>Registro</a></p>
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    <p color="accent" class="caption font-weight-regular">
-                      <a>Texto.....</a>
-                    </p>
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-icon color="success">group</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    <p class="body-2 font-weight-bold"><a>Orientacion</a></p>
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title>
-                    <p color="accent" class="caption font-weight-regular">
-                      <a>Texto.....</a>
-                    </p>
-                  </v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <br />
-            </v-list>
-            <div />
-          </v-card-text>
-        </v-card>
-      </v-card>
-      <v-dialog v-model="dialog" max-width="1200px">
-        <v-card>
-          <v-toolbar card dark color="grey lighten-4 primary--text">
-            <v-avatar size="30">
-              <v-icon class="grey lighten-2"> calendar_today </v-icon>
-            </v-avatar>
-            <v-toolbar-title class="subheading">Eventos</v-toolbar-title>
-            <v-spacer />
-          </v-toolbar>
-          <v-card-text>
-            <v-form ref="form">
-              <v-container grid-list-md text-xs-center>
-                <v-layout row wrap>
-                  <v-flex xs4 sm4 md4 lg4>
-                    <v-data-table
-                      :headers="headers1"
-                      :items="diactual"
-                      hide-actions
-                      :rows-per-page-items="rowsPerPageItems"
-                      :pagination.sync="pagination"
-                    >
-                      <template slot="items" class="white" slot-scope="props">
-                        <td class="caption1">
-                          {{
-                            props.item.evento +
-                            " - " +
-                            props.item.fecha.substring(11, 16)
-                          }}
-                        </td>
-                      </template>
-                      <template v-slot:no-data>
-                        <td class="caption1">Sin eventos</td>
-                      </template>
-                    </v-data-table>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4 lg4>
-                    <v-data-table
-                      :headers="headers2"
-                      :items="manana"
-                      hide-actions
-                      :rows-per-page-items="rowsPerPageItems"
-                      :pagination.sync="pagination"
-                    >
-                      <template slot="items" class="white" slot-scope="props">
-                        <td class="caption1">
-                          {{
-                            props.item.evento +
-                            " - " +
-                            props.item.fecha.substring(11, 16)
-                          }}
-                        </td>
-                      </template>
-                      <template v-slot:no-data>
-                        <td class="caption1">Sin eventos</td>
-                      </template>
-                    </v-data-table>
-                  </v-flex>
-                  <v-flex xs4 sm4 md4 lg4>
-                    <v-data-table
-                      :headers="headers3"
-                      :items="pasadomanana"
-                      hide-actions
-                      :rows-per-page-items="rowsPerPageItems"
-                      :pagination.sync="pagination"
-                    >
-                      <template slot="items" class="white" slot-scope="props">
-                        <td class="caption1">
-                          {{
-                            props.item.evento +
-                            " - " +
-                            props.item.fecha.substring(11, 16)
-                          }}
-                        </td>
-                      </template>
-                      <template v-slot:no-data>
-                        <td class="caption1">Sin eventos</td>
-                      </template>
-                    </v-data-table>
-                  </v-flex>
-                </v-layout>
-              </v-container>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn @click.native="dialog = false">Cerrar</v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-    </v-flex>
+        <v-dialog v-model="dialog" max-width="1200px">
+          <v-card>
+            <v-toolbar card dark color="grey lighten-4 primary--text">
+              <v-avatar size="30">
+                <v-icon class="grey lighten-2"> calendar_today </v-icon>
+              </v-avatar>
+              <v-toolbar-title class="subheading">Eventos</v-toolbar-title>
+              <v-spacer />
+            </v-toolbar>
+            <v-card-text>
+              <v-form ref="form">
+                <v-container grid-list-md text-xs-center>
+                  <v-layout row wrap>
+                    <v-flex xs4 sm4 md4 lg4>
+                      <v-data-table
+                        :headers="headers1"
+                        :items="diactual"
+                        hide-actions
+                        :rows-per-page-items="rowsPerPageItems"
+                        :pagination.sync="pagination"
+                      >
+                        <template slot="items" class="white" slot-scope="props">
+                          <td class="caption1">
+                            {{
+                              props.item.evento +
+                              " - " +
+                              props.item.fecha.substring(11, 16)
+                            }}
+                          </td>
+                        </template>
+                        <template v-slot:no-data>
+                          <td class="caption1">Sin eventos</td>
+                        </template>
+                      </v-data-table>
+                    </v-flex>
+                    <v-flex xs4 sm4 md4 lg4>
+                      <v-data-table
+                        :headers="headers2"
+                        :items="manana"
+                        hide-actions
+                        :rows-per-page-items="rowsPerPageItems"
+                        :pagination.sync="pagination"
+                      >
+                        <template slot="items" class="white" slot-scope="props">
+                          <td class="caption1">
+                            {{
+                              props.item.evento +
+                              " - " +
+                              props.item.fecha.substring(11, 16)
+                            }}
+                          </td>
+                        </template>
+                        <template v-slot:no-data>
+                          <td class="caption1">Sin eventos</td>
+                        </template>
+                      </v-data-table>
+                    </v-flex>
+                    <v-flex xs4 sm4 md4 lg4>
+                      <v-data-table
+                        :headers="headers3"
+                        :items="pasadomanana"
+                        hide-actions
+                        :rows-per-page-items="rowsPerPageItems"
+                        :pagination.sync="pagination"
+                      >
+                        <template slot="items" class="white" slot-scope="props">
+                          <td class="caption1">
+                            {{
+                              props.item.evento +
+                              " - " +
+                              props.item.fecha.substring(11, 16)
+                            }}
+                          </td>
+                        </template>
+                        <template v-slot:no-data>
+                          <td class="caption1">Sin eventos</td>
+                        </template>
+                      </v-data-table>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn @click.native="dialog = false">Cerrar</v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      <!--</div>-->
+    </v-flex elevation-0>
   </v-layout>
 </template>
 
@@ -162,16 +163,19 @@ import { VueEditor } from "vue2-editor";
 import n401 from "@/components/m_umixta/401.vue"
 import n403 from "@/components/m_umixta/403.vue";
 import { error } from "util";
+import UmixtaNavDrawer from "../../components/m_umixta/umixtaNavDrawer.vue";
 
 export default {
   components: {
     n401,
     n403,
+    UmixtaNavDrawer
   },
   data: () => ({
     showpage: true,
     url: window.location,
     titulo: "",
+    isReady: false,
     e401: false,
     e403: false,
     dialog: true,
@@ -207,8 +211,37 @@ export default {
     u_puesto: "",
     u_email: "",
   }),
-
+  mounted(){
+    if (!localStorage.getItem('pageReloaded')) {
+      localStorage.setItem('pageReloaded', 'true');
+      window.location.reload();
+    } else {
+      localStorage.removeItem('pageReloaded');
+    }
+  },
   created() {
+
+    if(!localStorage.getItem("token"))
+    {
+      window.location.href = "/"
+    }
+    else 
+    {
+      this.isReady = true;
+    }
+
+
+    const token = this.$store.state.token || localStorage.getItem("token");
+    if(token)
+    { 
+      this.$store.dispatch("guardarToken", token)
+      this.$store.dispatch("setLogin", true, token)
+    }
+    else 
+    { 
+      this.$router.push({ name: 'login' });
+    }
+
     let me = this;
 
     me.titulo = "Bienvenido";
@@ -230,6 +263,7 @@ export default {
 
     me.listar(me.u_idmoduloservicio);
     me.mostrarModulo(me.u_claveAgencia);
+    me.ValidarToken();
 
     axios.interceptors.request.use(
       (config) => {
@@ -470,6 +504,20 @@ export default {
         });
     },
   },
+  async ValidarToken() {
+        let header = { Authorization: "Bearer " + this.$store.state.token };
+        let configuracion = { headers: header };
+        try{
+          await this.$controlacceso.get('api/Usuarios/ValidarToken2', configuracion);
+        }
+        catch(err){
+          this.$store.dispatch("salir");
+          this.$controlacceso.get('api/Usuarios/DistrictUser')
+          .then(response => {          
+          window.location.href = response.data.direccion
+          })
+        }
+      },
 };
 </script>
 

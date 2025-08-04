@@ -3,6 +3,7 @@
 
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+        <NavDrawer/>
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                     <v-toolbar-title class="font-weight-regular" >Dependecias de derivación.</v-toolbar-title>

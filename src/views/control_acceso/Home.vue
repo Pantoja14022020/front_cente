@@ -1,5 +1,5 @@
 <template>
-    <v-app id="app">
+    <v-app id="app" v-if="isReady">
    
       <!--<v-toolbar flat app  class="grey lighten-4">
         
@@ -83,7 +83,7 @@
 
       <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
       <div class="text-xl-center text-md-center text-xs-center my-4">
-        <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+        <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
 
       <v-list dense dark class="pt-0 primary" >
@@ -158,7 +158,7 @@
               </v-list-tile-content>
             </v-list-tile> 
 
-            <v-list-tile :to="{ name: 'control-acceso-clonacionesfallidas'== '#' ? '' :  'control-acceso-clonacionesfallidas'}"  active-class="secondary">  
+            <v-list-tile :to="{ name: 'clonacionesfallidas'== '#' ? '' :  'clonacionesfallidas'}"  active-class="secondary">  
                 <v-list-tile-action>
                     <v-icon class="centenarioMenuIcon">report</v-icon>
                 </v-list-tile-action>
@@ -206,43 +206,43 @@
                 <v-flex>
                     <v-card color="white" grow  class="d-flex align-content-start">
                       <v-card style="width: 40%;">
-                        <v-card-text> 
+                        <v-card-text class="primary" style="box-shadow: none;"> 
                             <v-icon size="400px" color="accent">lock_open</v-icon> 
                         </v-card-text>
                       </v-card>
 
-                      <v-card style="width: 60%;">
-                        <v-card-title  class="accent" >
+                      <v-card style="width: 60%; box-shadow: none;" class="primary">
+                        <v-card-title  class="primary" >
                             <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de Control de Acceso</p></div>
                         </v-card-title>
-                        <v-card-text>
-                        <v-list> 
+                        <v-card-text class="primary">
+                        <v-list class="primary"> 
                             <p class="text-md-left">Este modulo permite controlar el acceso a los diferentes modulos  por medio de autentificacions basada en token  asi  como tambien permite controlar el acceso  general por medio de un panel.</p> 
-                            <v-list-tile>  
-                            <v-list-tile-action>
-                                <v-icon color="success">view_module</v-icon>
+                            <v-list-tile class="primary">  
+                            <v-list-tile-action class="primary">
+                                <v-icon color="white">view_module</v-icon>
                             </v-list-tile-action> 
                             <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Panel de control</a></p> </v-list-tile-title> 
-                                <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Acceso a los recursos de este ámbito, active o desactive un modulo o entidad de servicio.</a></p>  </v-list-tile-sub-title>  
+                                <v-list-tile-title> <p class="body-2 font-weight-bold">Panel de control</p> </v-list-tile-title> 
+                                <v-list-tile-sub-title > <p color="accent" class="font-weight-regular">Acceso a los recursos de este ámbito, active o desactive un modulo o entidad de servicio.</p>  </v-list-tile-sub-title>  
                             </v-list-tile-content> 
                             </v-list-tile>
                             <v-list-tile>  
                             <v-list-tile-action>
-                                <v-icon    color="success">security</v-icon>
+                                <v-icon    color="white">security</v-icon>
                             </v-list-tile-action> 
                             <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Roles</a></p> </v-list-tile-title> 
-                                <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Consulte los roles, de las entidades de servicio   administradas que tienen asignaciones de roles que les conceden acceso en este ámbito.</a></p>  </v-list-tile-sub-title>  
+                                <v-list-tile-title> <p class="body-2 font-weight-bold">Roles</p> </v-list-tile-title> 
+                                <v-list-tile-sub-title > <p class="font-weight-regular">Consulte los roles, de las entidades de servicio   administradas que tienen asignaciones de roles que les conceden acceso en este ámbito.</p>  </v-list-tile-sub-title>  
                             </v-list-tile-content> 
                             </v-list-tile>
                             <v-list-tile>  
                             <v-list-tile-action>
-                                <v-icon   color="success">people_alt</v-icon>
+                                <v-icon   color="white">people_alt</v-icon>
                             </v-list-tile-action> 
                             <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Usuarios</a></p> </v-list-tile-title>   
-                                <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Consulte los usuarios, los grupos, las entidades de servicio y las identidades administradas a los que se les ha denegado el acceso a acciones específicas en este ámbito.</a></p>  </v-list-tile-sub-title> 
+                                <v-list-tile-title> <p class="body-2 font-weight-bold">Usuarios</p> </v-list-tile-title>   
+                                <v-list-tile-sub-title > <p class="font-weight-regular">Consulte los usuarios, los grupos, las entidades de servicio y las identidades administradas a los que se les ha denegado el acceso a acciones específicas en este ámbito.</p>  </v-list-tile-sub-title> 
                             </v-list-tile-content> 
                             </v-list-tile> 
                         </v-list> 
@@ -271,6 +271,7 @@
         //drawer: true,  
         right: null, 
         title: 'Vuetify.js',
+        isReady: false,
         
         data: function() {
           return {
@@ -349,9 +350,18 @@
         return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
       }
     },
-  
+    
+    mounted(){},
   
     created(){ //Me es utiol. Cuando se recarga la página, el created se ejcuta, en este caso para verificar si el user ya inicio sesion y entonces recuperar su jwt
+      if(!localStorage.getItem("token"))
+      {
+        window.location.href = "/"
+      }
+      else 
+      {
+        this.isReady = true;
+      }
       this.$store.dispatch("autoLoginCA");
     },
   

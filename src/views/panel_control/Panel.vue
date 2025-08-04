@@ -85,10 +85,26 @@
       };
     },
     mounted(){
-      this.Listar();
+      if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('pageReloaded');
+      }
     },
     created() {
-      
+      const token = this.$store.state.token || localStorage.getItem("token");
+      if(token)
+      { 
+        this.$store.dispatch("guardarToken", token)
+        this.$store.dispatch("setLogin", true, token)
+        console.log(token)
+        this.Listar();
+      }
+      else 
+      { 
+        this.$router.push({ name: 'login' });
+      }
       this.ObtenerDistrito();
       this.conprobarAvisos();
     },

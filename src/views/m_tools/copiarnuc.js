@@ -115,6 +115,14 @@ export default {
       nucgc: '',
     }
   },
+  mounted() {
+    if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        window.location.reload();
+      } else {
+        localStorage.removeItem('pageReloaded');
+      }
+  },
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'Nueva agencia' : 'Actualizar agencia'
@@ -141,6 +149,16 @@ export default {
     }
   },
   created() {
+    const token = this.$store.state.token || localStorage.getItem("token");
+      if(token)
+      { 
+        this.$store.dispatch("guardarToken", token)
+        this.$store.dispatch("setLogin", true, token)
+      }
+      else 
+      { 
+        this.$router.push({ name: 'login' });
+      }
     this.$store.state.nuc = null
     this.$store.state.ratencionid = null
     this.$store.state.rhechoid = null

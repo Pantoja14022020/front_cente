@@ -4,9 +4,9 @@
 
 <template>
 
-    <v-navigation-drawer class="primary" app>
+    <v-navigation-drawer v-model="drawer" class="primary" app v-if="logueado" >
       <div class="text-xl-center text-md-center text-xs-center my-4">
-        <a href="/"><img  src="@/assets/Logo.png" height="110px" alt=""></a>
+        <a href="/Panel"><img  src="@/assets/Logo.png" height="110px" alt=""></a>
       </div>
       <v-list dense dark class="pt-0 primary" >
         <template  >

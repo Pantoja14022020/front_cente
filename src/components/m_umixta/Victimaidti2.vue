@@ -18,11 +18,11 @@
                         filled
                     />
                 </v-flex>
-                <v-btn class="mx-2" @click="cerrarcarpeta" fab dark small color="primary">
-                    <v-icon dark>close</v-icon>
+                <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                    <v-icon class="mt-1" dark>close</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-                    <v-icon dark>add</v-icon>
+                <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                    <v-icon class="mt-1" dark>add</v-icon>
                 </v-btn> 
             </v-toolbar>
             <v-data-table
@@ -101,7 +101,8 @@
                             :complete="step > 1" 
                             step="1" 
                             editable 
-                            :rules="[() => !errors.has('tipo de persona') && !errors.has('nombre') && !errors.has('apellido paterno') ]"
+                            :rules="[() => !errors.has('tipo de persona') && !errors.has('nombre') && !errors.has('apellido paterno')
+                                           && (!['Victima directa', 'Victima indirecta'].includes(clasificacionpersona) || !errors.has('relacion victima'))]"
                         >
                             Captura de datos
                             <small>Datos generales de la víctima u ofendido.</small>
@@ -111,7 +112,7 @@
                                 <v-container grid-list-lg>
                                     <v-layout wrap justify-space-between>
                                         <v-flex xs12 md5 lg5> 
-                                            <v-switch v-model="switch2" label="¿Registro anonimo?:" color="success" hide-details />
+                                            <v-switch v-model="switch2" label="¿Registro anónimo?:" color="success" hide-details v-if="clasificacionpersona != 'Imputado'"/>
                                             <v-switch v-model="datosprotegidos" label="¿Datos protegidos?:" v-if="!switch2" color="success" hide-details />
                                             <v-radio-group v-model="radios" v-on:change="limpiar()" v-if="switch2==false" row :mandatory="false">
                                                 <v-radio label="Fisica" @change="ocultarTP" color="success" value="Fisica" />
@@ -182,7 +183,7 @@
                                             />
                                             <v-text-field 
                                                 name="fecha de nacimiento" 
-                                                label="Fecha de nacimiento:" 
+                                                label="*Fecha de nacimiento:" 
                                                 v-model="fnacimiento" 
                                                 type="date"
                                                 v-validate="'required'"
@@ -195,7 +196,7 @@
                                                 :items="rangosedad"
                                                 v-model="rangoedad"
                                                 v-validate="'required'"
-                                                label="Rango de edad:"
+                                                label="*Rango de edad:"
                                                 v-if="switch2==false && RangoEdadTF == true"
                                                 :error-messages="errors.collect('rangos')">
                                             </v-autocomplete>
@@ -206,18 +207,21 @@
                                                 label="Sexo:" 
                                                 v-if="switch2==false" 
                                             />
-                                            <v-switch 
+                                            <!--<v-switch 
                                                 v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
                                                 v-model="relacion"  
                                                 :label="'La victima tiene relación con el imputado? '"  
                                                 color="success" 
                                                 hide-details 
-                                            />
+                                            />-->
                                             <v-autocomplete
+                                                name="relacion victima"
                                                 :items="relacionados"
                                                 v-model="relacionado"
-                                                label="Relación:" 
-                                                v-if="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && relacion && !switch2" 
+                                                label="*Relación de la víctima con el imputado:" 
+                                                v-validate="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' ? 'required' : ''"
+                                                v-show="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
+                                                :error-messages="errors.collect('relacion victima')"  
                                             />
                                         </v-flex>
                                         <v-divider class="mx-2" inset vertical />
@@ -478,8 +482,15 @@
                                 <v-container grid-list-xl>
                                     <v-layout wrap justify-space-between>
                                         <v-flex xs12 md5 lg5>
+                                             <v-autocomplete
+                                                name="tipo vialidad"
+                                                :items="vialidades"
+                                                v-model="vialidad"
+                                                label="Tipo de vialidad:" 
+                                                :error-messages="errors.collect('tipo vialidad')" 
+                                            />
                                             <v-text-field 
-                                                label="Calle:" 
+                                                label="Nombre:" 
                                                 name="calle" 
                                                 v-model="calle" 
                                                 v-if="switch2==false"
@@ -549,6 +560,13 @@
                                                 return-object
                                                 v-on:change="listarPorLocalidad" 
                                             />
+                                            <v-autocomplete
+                                                name="tipo asentamiento"
+                                                :items="asentamientos"
+                                                v-model="asentamiento"
+                                                label="Tipo de asentamiento:" 
+                                                :error-messages="errors.collect('tipo asentamiento')" 
+                                            />
                                             <v-text-field 
                                                 label="Código postal:" 
                                                 v-if="switch2==false" 
@@ -599,8 +617,15 @@
                                                 color="success" 
                                                 hide-details 
                                             />
+                                            <v-autocomplete
+                                                name="tipo vialidad"
+                                                :items="de_vialidades"
+                                                v-model="de_vialidad"
+                                                label="Tipo de vialidad:" 
+                                                :error-messages="errors.collect('tipo vialidad')" 
+                                            />
                                             <v-text-field 
-                                                label="Calle:" 
+                                                label="Nombre:" 
                                                 name="calle" 
                                                 v-model="de_calle" 
                                                 v-if="switch2==false"
@@ -669,6 +694,13 @@
                                                 v-if="switch2==false"
                                                 return-object
                                                 v-on:change="de_listarPorLocalidad" 
+                                            />
+                                            <v-autocomplete
+                                                name="tipo asentamiento"
+                                                :items="de_asentamientos"
+                                                v-model="de_asentamiento"
+                                                label="Tipo de asentamiento:" 
+                                                :error-messages="errors.collect('tipo asentamiento')" 
                                             />
                                             <v-text-field 
                                                 label="Código postal:" 
@@ -965,7 +997,7 @@
                     </v-card>
                 </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogoactualizar" max-width="1000px">
+            <v-dialog v-model="dialogoactualizar" max-width="1000px" persistent>
                 <v-card>
                     <v-toolbar card dark color="grey lighten-4 primary--text">
                         <v-avatar size="30">
@@ -978,6 +1010,7 @@
                         <v-form ref="form" >
                             <v-container grid-list-md text-xs-center>
                                 <v-layout wrap>
+                                    <v-flex  xs12 md12 lg12>
                                     <v-autocomplete 
                                         name="clasificacion de persona"
                                         :items="clasificacionpersonas"
@@ -985,6 +1018,19 @@
                                         return-object
                                         label="Clasificación de persona:" 
                                     />
+                                    <v-autocomplete
+                                            name="relacion victima"
+                                            :items="relacionados"
+                                            v-model="relacionado"
+                                            return-object
+                                            label="*Relación de la víctima con el imputado:"
+                                            v-show="clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' || 
+                                                    clasificacionpersona.value == 'Victima directa' || clasificacionpersona.value == 'Victima indirecta'"
+                                            v-validate="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta' || 
+                                                        clasificacionpersona.value == 'Victima directa' || clasificacionpersona.value == 'Victima indirecta') ? 'required' : ''"
+                                            :error-messages="errors.collect('relacion victima')">
+                                        </v-autocomplete>
+                                    </v-flex>
                                 </v-layout>
                             </v-container>
                             <v-card-actions>
@@ -996,7 +1042,7 @@
                     </v-card-text> 
                 </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogoinformacion" max-width="1000px">
+            <v-dialog v-model="dialogoinformacion" max-width="1000px" persistent>
                 <v-card>
                     <v-toolbar card dark color="grey lighten-4 primary--text">
                         <v-avatar size="30">
@@ -1420,13 +1466,22 @@
                                                 <v-card auto-grow elevation="0">                                
                                                     <v-card-text>
                                                         <v-list one-line>
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Vialidad:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title> <p   color="accent" class="caption font-weight-regular"><a>{{infodp.tipoVialidadNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
                                                             <v-list-tile>  
                                                                 <v-list-tile-action>
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action> 
                                                                 <v-list-tile-content>
                                                                     <v-list-tile-title> 
-                                                                        <p class="body-2 font-weight-bold"><a>Calle:</a></p> 
+                                                                        <p class="body-2 font-weight-bold"><a>Nombre:</a></p> 
                                                                     </v-list-tile-title> 
                                                                     <v-list-tile-sub-title>
                                                                         <p color="accent" class="caption font-weight-regular"><a>{{ infodp.calle }}</a></p>
@@ -1531,6 +1586,24 @@
                                                                 <v-list-tile-sub-title>
                                                                     <p color="accent" class="caption font-weight-regular"><a>{{ infodp.localidad }}</a></p>
                                                                 </v-list-tile-sub-title>  
+                                                                </v-list-tile-content> 
+                                                        </v-list-tile>                                         
+                                                        <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Asentamiento:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.tipoAsentamientoNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content> 
+                                                        </v-list-tile>                                         
+                                                        <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Asentamiento:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infodp.tipoAsentamientoNombre }}</a></p>  </v-list-tile-sub-title>
                                                             </v-list-tile-content> 
                                                         </v-list-tile>                                         
                                                     </v-card-text> 
@@ -1598,13 +1671,22 @@
                                                 <v-card auto-grow elevation="0">                                
                                                     <v-card-text>
                                                         <v-list one-line> 
+                                                            <v-list-tile>
+                                                                <v-list-tile-action>
+                                                                    <v-icon color="success">view_day</v-icon>
+                                                                </v-list-tile-action>
+                                                                <v-list-tile-content   >
+                                                                    <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de vialidad:</a></p> </v-list-tile-title>
+                                                                    <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.tipoVialidadNombre }}</a></p>  </v-list-tile-sub-title>
+                                                                </v-list-tile-content>
+                                                            </v-list-tile>
                                                             <v-list-tile>  
                                                                 <v-list-tile-action>
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action> 
                                                                 <v-list-tile-content>  
                                                                     <v-list-tile-title>
-                                                                        <p class="body-2 font-weight-bold"><a>Calle:</a></p>
+                                                                        <p class="body-2 font-weight-bold"><a>Nombre:</a></p>
                                                                     </v-list-tile-title> 
                                                                     <v-list-tile-sub-title>
                                                                         <p color="accent" class="caption font-weight-regular"><a>{{ infode.calle }}</a></p>
@@ -1698,6 +1780,15 @@
                                                                 <v-list-tile-sub-title>
                                                                     <p color="accent" class="caption font-weight-regular"><a>{{ infode.localidad }}</a></p>
                                                                 </v-list-tile-sub-title>  
+                                                                </v-list-tile-content> 
+                                                        </v-list-tile>
+                                                        <v-list-tile>
+                                                            <v-list-tile-action>
+                                                                <v-icon color="success">view_day</v-icon>
+                                                            </v-list-tile-action>
+                                                            <v-list-tile-content   >
+                                                                <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Tipo de Asentamiento:</a></p> </v-list-tile-title>
+                                                                <v-list-tile-sub-title   > <p   color="accent" class="caption font-weight-regular"><a>{{infode.tipoAsentamientoNombre }}</a></p>  </v-list-tile-sub-title>
                                                             </v-list-tile-content> 
                                                         </v-list-tile>                                         
                                                     </v-card-text> 
@@ -1910,6 +2001,10 @@
             localidad: '',
             localidadid: 0,
             localidades: [],
+            vialidad: '',
+            vialidades: [],
+            asentamiento: '',
+            asentamientos: [],
             cp: '', 
             lat: '',
             lng: '',
@@ -1931,6 +2026,10 @@
             de_localidad: '',
             de_localidadid: 0,
             de_localidades: [],
+            de_vialidad: '',
+            de_vialidades: [],
+            de_asentamiento: '',
+            de_asentamientos: [],
             de_cp: '', 
             de_lat: '',
             de_lng: '',
@@ -1950,7 +2049,9 @@
                 { text: 'Sobrino(a)', value: 'Sobrino(a)' },
                 { text: 'Tio(a)', value: 'Tio(a)' },
                 { text: 'Vecino(a)', value: 'Vecino(a)' },
-                { text: 'Conocido(a)', value: 'Conocido(a)' },          
+                { text: 'Conocido(a)', value: 'Conocido(a)' }, 
+                { text:'Ninguna',value:'Ninguna' },
+                { text:'Se desconoce',value:'Se desconoce' },         
             ],
             relacionado: '',
             poblacionafro:false,
@@ -2083,6 +2184,8 @@
                 me.listarLengua();
                 me.listarReligion();
                 me.listarDiscapacidad();
+                me.listarVialidad();
+                me.listarAsentamiento();
                 // DIRECCION PERSONAL 
                 me.listarCiudades();
                 // DIRECCION ESCUCHA 
@@ -2113,7 +2216,7 @@
         },
         computed: {
             formTitle () {
-                return this.editedIndex === -1 ? 'Registrar a una nueva persona' : 'Actualizar informacion de la persona'
+                return this.editedIndex === -1 ? 'Registrar a una nueva persona' : 'Actualizar información de la persona'
             },
             formIcon () {
                 return this.editedIndex === -1 ? 'add' : 'edit'
@@ -2175,14 +2278,22 @@
             if(!val){
                 this.radios = 'Fisica'
                 this.limpiar();
+            } else {
+                this.datosprotegidos = false;
             }
         },
         presexuales(val){
             if(!val){
                 this.genero = '';
             }
-        }
         },
+        clasificacionpersona(val){
+            if (val !== 'Victima directa' && val !== 'Victima indirecta') {
+                this.relacionado = " ";
+            }
+            },
+        },
+
         methods: { 
             cerrarcarpeta () {
                 this.$store.state.rHechoId = null;
@@ -2319,6 +2430,8 @@
                     me.cp = response.data.cp;
                     me.lat = response.data.lat;
                     me.lng = response.data.lng;
+                    me.vialidad = response.data.tipoVialidad;
+                    me.asentamiento = response.data.tipoAsentamiento;
                     me.selectEstado(me.estado);
                 }).catch(err => {
                     if (err.response.status == 400) {
@@ -2359,6 +2472,8 @@
                     me.de_cp = response.data.cp;
                     me.de_lat = response.data.lat;
                     me.de_lng = response.data.lng; 
+                    me.de_vialidad = response.data.tipoVialidad;
+                    me.de_asentamiento = response.data.tipoAsentamiento;
                     me.de_selectEstado(me.de_estado);
                 }).catch(err => {
                     if (err.response.status == 400) {
@@ -2394,9 +2509,23 @@
                 me.step = 1;
                 this.$cat.get('api/RAPs/ListarDP/' + item.personaId, configuracion).then(function(response) {
                     me.infodp = response.data;
+
+                    let vialidad = me.vialidades.find(v => v.value === me.infodp.tipoVialidad);
+                    me.infodp.tipoVialidadNombre = vialidad ? vialidad.text : "";
+
+                    let asentamiento = me.asentamientos.find(v => v.value === me.infodp.tipoAsentamiento);
+                    me.infodp.tipoAsentamientoNombre = asentamiento ? asentamiento.text : "";
+
                     this.$cat.get('api/RAPs/ListarDE/' + item.idRAP, configuracion).then(function(response) {
                         me.infode = response.data;
-                        this.$cat.get('api/DocumentosPesonas/Listar2/' + item.personaId, configuracion).then(function(response) {
+
+                        let de_vialidad = me.de_vialidades.find(d => d.value === me.infode.tipoVialidad);
+                        me.infode.tipoVialidadNombre = de_vialidad ? de_vialidad.text : "";
+
+                        let de_asentamiento = me.de_asentamientos.find(d => d.value === me.infode.tipoAsentamiento);
+                        me.infode.tipoAsentamientoNombre = de_asentamiento ? de_asentamiento.text : "";
+
+                        this.$cat.get('api/DocumentosPesonas/Listar2/' + item.personaId, configuracion).then(function(response) {   
                             me.rutaconsulta = response.data.ruta;
                             me.tdocumento = response.data.tipoDocumento                      
                             me.datospersona = item;
@@ -2502,6 +2631,7 @@
                 this.documentoacredita = ""
                 this.presexuales=false
                 // step no3
+                this.vialidad = "";
                 this.calle = "";
                 this.noInt = "";
                 this.noExt = "";
@@ -2515,10 +2645,12 @@
                 this.municipio = "";
                 this.localidadid = 0; 
                 this.localidad = "";
+                this.asentamiento = "";
                 this.cp = 0; 
                 this.lat = "";
                 this.lng = "";
                 // step no4
+                this.de_vialidad = "";
                 this.de_calle = "";
                 this.de_noInt = "";
                 this.de_noExt = "";
@@ -2531,6 +2663,7 @@
                 this.de_municipioid = 0;
                 this.de_municipio = "";
                 this.de_localidadid = 0; 
+                this.de_asentamiento = "";
                 this.de_localidad = "";
                 this.de_cp = 0; 
                 this.de_lat = "";
@@ -2775,21 +2908,40 @@
                 this.hechos = [];
                 this.modalduplicidad = false;
             },
-            actualizarclasi (item) {
-                this.limpiar();
+            async actualizarclasi (item) {
+                await this.limpiar();
                 this.nombrep = item.nombreCompleto
                 this.idrapac = item.idRAP
                 this.clasificacionpersona = item.clasificacionPersona
+                this.personaid = item.personaId
+                this.relacionado = item.parentesco
                 this.dialogoactualizar = true
             },      
             actualizarclasiapi () {
                 let me = this; 
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header }; 
+
+                var clasificacionP = !me.clasificacionpersona.value? me.clasificacionpersona: me.clasificacionpersona.value;
+                let relacionadoP = !me.relacionado.value? me.relacionado: me.relacionado.value;
+
+                if(relacionadoP == " " && (clasificacionP == 'Victima indirecta' || clasificacionP == 'Victima directa')) {
+                    this.$validator.validate()
+                    alertify.error("Por favor complete los campos obligatorios marcados");
+                    return;
+                } else
+                {
+                    if (clasificacionP != "Victima indirecta" && clasificacionP != "Victima directa")
+                    {
+                        relacionadoP = " ";
+                    }
+
                 var aux;
                 this.$cat.put('api/RAPs/ActualizarClasificacion', {
-                    'IdRAP' : this.idrapac,
-                    'ClasificacionPersona' : this.clasificacionpersona.value,
+                    'IdRAP' : me.idrapac,
+                    'PersonaId': me.personaid,
+                    'ClasificacionPersona' : clasificacionP,
+                        'Parentesco': relacionadoP
                 },configuracion).then(function(response) {         
                     me.$notify('La información se actualizo correctamente !!!', 'success') 
                     me.limpiar();
@@ -2812,6 +2964,7 @@
                         me.$notify('Error al intentar actualizar el registro!!!', 'error')   
                     } 
                 });
+            }
             },
             listarRAtencioPersona () {
                 let me = this;
@@ -3225,6 +3378,11 @@
                 if (!me.estadoid.value== 0) {
                     me.estado = me.estadoid.text;
                     me.estadoid = me.estadoid.value;
+                    me.municipio = '';
+                    me.municipioid = '';
+                    me.localidad = '';
+                    me.localidadid = '';
+                    me.cp = '';
                 }
                     var municipiosArray = [];
                     me.municipios.length = 0;
@@ -3264,7 +3422,13 @@
                 if (!me.municipioid.value == 0) {
                     me.municipio = me.municipioid.text;
                     me.municipioid = me.municipioid.value;
+                    me.localidad = '';
+                    me.localidadid = ''
+                    me.cp = ''
+                }else if (!me.municipioid) {
+                    return;
                 }
+                
                 var localidadArray = [];
                 me.localidades.length = 0;
                 this.$conf.get('api/Localidads/MostrarPorMPO/' + me.municipioid, configuracion).then(function(response) {
@@ -3300,8 +3464,12 @@
                 let me = this;  
                 let header = {"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
-                me.localidad = me.localidadid.text;
-                me.localidadid = me.localidadid.value;
+                if (!me.localidadid.value == 0) {
+                    me.localidad = me.localidadid.text;
+                    me.localidadid = me.localidadid.value;
+                } else if (!me.localidadid) {
+                    return;
+                }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response) {
                     me.cp = response.data.cp;    
                 }).catch(err => { 
@@ -3379,6 +3547,62 @@
                     } 
                 });
             }, 
+            listarVialidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.vialidades.push(item);
+                        me.de_vialidades.push(item);
+                    });
+                }).catch(err => {
+                        if (err.response.status==400){
+                            me.$notify("No es un usuario válido", 'error')
+                        } else if (err.response.status==401){
+                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                            me.e401 = true,
+                            me.showpage= false
+                        } else if (err.response.status==403){
+                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.e403= true
+                            me.showpage= false
+                        } else if (err.response.status==404){
+                            me.$notify("El recuso no ha sido encontrado", 'error')
+                        }else{
+                            me.$notify('Error al intentar listar los registros!!!','error')
+                        }
+                    });
+            },
+            listarAsentamiento(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.asentamientos.push(item);
+                        me.de_asentamientos.push(item);
+                    });
+                }).catch(err => {
+                        if (err.response.status==400){
+                            me.$notify("No es un usuario válido", 'error')
+                        } else if (err.response.status==401){
+                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                            me.e401 = true,
+                            me.showpage= false
+                        } else if (err.response.status==403){
+                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.e403= true
+                            me.showpage= false
+                        } else if (err.response.status==404){
+                            me.$notify("El recuso no ha sido encontrado", 'error')
+                        }else{
+                            me.$notify('Error al intentar listar los registros!!!','error')
+                        }
+                    });
+            },
             selectEstado: function(val) {
                 let me = this;
                 for (var i = 0; i < me.ciudades.length; i++) {
@@ -3441,6 +3665,11 @@
                 if (!me.de_estadoid.value== 0) {
                     me.de_estado = me.de_estadoid.text;
                     me.de_estadoid = me.de_estadoid.value;
+                    me.de_municipio = '';
+                    me.de_municipioid = '';
+                    me.de_localidad = '';
+                    me.de_localidadid = '';
+                    me.de_cp = '';
                 }
                 var municipiosArray = [];
                 me.de_municipios.length = 0;
@@ -3483,7 +3712,13 @@
                 if (!me.de_municipioid.value == 0) {
                     me.de_municipio = me.de_municipioid.text;
                     me.de_municipioid = me.de_municipioid.value;
+                    me.de_localidad = '';
+                    me.de_localidadid = '';
+                    me.de_cp = '';
+                }else if (!me.de_municipioid) {
+                    return;
                 }
+                
                 var localidadArray = [];
                 me.de_localidades.length = 0;
                 this.$conf.get('api/Localidads/MostrarPorMPO/' + me.de_municipioid, configuracion).then(function(response) {
@@ -3522,8 +3757,12 @@
                 let me = this;
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
                 let configuracion = { headers : header };
+                if (!me.de_localidadid.value == 0) {
                 me.de_localidad = me.de_localidadid.text;
                 me.de_localidadid = me.de_localidadid.value;
+                } else if (!me.de_localidadid) {
+                    return;
+                }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.de_localidadid,configuracion).then(function(response) {
                     me.de_cp = response.data.cp;
                 }).catch(err => { 
@@ -3831,7 +4070,10 @@
                     me.de_cp = me.cp;
                     me.de_lat = me.lat;
                     me.de_lng = me.lng;
+                    me.de_vialidad = me.vialidad;
+                    me.de_asentamiento = me.asentamiento;
                 } else { 
+                     me.de_vialidad="";
                     me.de_calle = "";
                     me.de_noExt = "";
                     me.de_noInt = "";
@@ -3841,6 +4083,7 @@
                     me.de_estado = "";
                     me.de_municipio = "";
                     me.de_localidad = "";
+                    me.de_asentamiento = "";
                     me.de_cp = "";
                     me.de_lat = "";
                     me.de_lng = "";
@@ -3882,6 +4125,12 @@
                         };
                     };
                     console.log(listaDiscapacidades);
+
+                    if (me.clasificacionpersona === 'Victima directa' || me.clasificacionpersona === 'Victima indirecta') {
+                        me.relacion = true;
+                    } else {
+                        me.relacion = false;
+                    }
                      /*---------------------------------------------------------------------------------------------------------*/
 
                         if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
@@ -3945,6 +4194,9 @@
                         if(me.edadf >= 100)
                             me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
 
+                            if(me.cp=='') me.cp =0;
+                        if(me.de_cp == '') me.de_cp =0;
+
                         var idPoliciaDetuvo='';
                         idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
 
@@ -3985,6 +4237,7 @@
                             me.religion = 'Anonimo'
                             me.switch1 = false
                             me.discapacidad = 'Anonimo'
+                            me.vialidad = 0
                             me.calle = 'Anonimo'
                             me.noExt = 'Anonimo'
                             me.noInt = 'Anonimo'
@@ -3995,7 +4248,9 @@
                             me.estado = 'Anonimo'
                             me.municipio = 'Anonimo'
                             me.localidad = 'Anonimo'
+                            me.asentamiento = 0
                             me.cp = 0
+                            me.de_vialidad = 0
                             me.de_calle='Anonimo'
                             me.de_noExt='Anonimo'
                             me.de_noInt='Anonimo'
@@ -4006,6 +4261,7 @@
                             me.de_estadoid='Anonimo'
                             me.de_municipioid='Anonimo'
                             me.de_localidadid='Anonimo'
+                            me.de_asentamiento=0
                             me.de_cp=0
                         } 
                         if (this.editedIndex > -1) {
@@ -4070,6 +4326,7 @@
                                 'Edad': me.edadf, 
                                 'DocPoderNotarial':me.documentoacredita,
                                 //***************************** DIRECCION*/ 
+                                'tipoVialidad': me.vialidad,
                                 'calle': me.calle,
                                 'noExt': me.noExt,
                                 'noInt': me.noInt,
@@ -4080,10 +4337,12 @@
                                 'estado': me.estado,
                                 'municipio': me.municipio,
                                 'localidad': me.localidad,
+                                'tipoAsentamiento': me.asentamiento,
                                 'cp': me.cp,
                                 'lat': me.lat,
                                 'lng':me.lng,
                                 //************************************ DIRECCION ESCUCHA */
+                                'de_tipoVialidad': me.de_vialidad,
                                 'de_calle': me.de_calle,
                                 'de_noExt': me.de_noExt,
                                 'de_noInt': me.de_noInt,
@@ -4094,6 +4353,7 @@
                                 'de_estado': me.de_estado,
                                 'de_municipio': me.de_municipio,
                                 'de_localidad': me.de_localidad,
+                                'de_tipoAsentamiento': me.de_asentamiento,
                                 'de_cp': me.de_cp,
                                 'de_lat': me.de_lat,
                                 'de_lng': me.de_lng,
@@ -4161,6 +4421,7 @@
                                     'personaId': me.idPersona, 
                                     'clasificacionpersona': me.clasificacionpersona,  
                                     'pInicio': false,
+                                    'de_tipoVialidad': me.de_vialidad,
                                     'de_calle': me.de_calle,
                                     'de_noExt': me.de_noExt,
                                     'de_noInt': me.de_noInt,
@@ -4171,6 +4432,7 @@
                                     'de_estado': me.de_estado,
                                     'de_municipio': me.de_municipio,
                                     'de_localidad': me.de_localidad,
+                                    'de_tipoAsentamiento': me.de_asentamiento,
                                     'de_cp': me.de_cp,
                                     'de_lat': me.de_lat,
                                     'de_lng': me.de_lng,
@@ -4217,6 +4479,7 @@
                                             'Edad': me.edadf, 
                                             'DocPoderNotarial':me.documentoacredita,
                                             //***************************** DIRECCION*/ 
+                                            'tipoVialidad': me.vialidad,
                                             'rapid': rapid,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
@@ -4228,6 +4491,7 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng':me.lng,
@@ -4367,6 +4631,7 @@
                                                 'lat': me.lat,
                                                 'lng': me.lng,
                                                 //************************************ DIRECCION ESCUCHA */
+                                                'tipoVialidad': me.vialidad, 
                                                 'de_calle': me.de_calle,
                                                 'de_noExt': me.de_noExt,
                                                 'de_noInt': me.de_noInt,
@@ -4377,6 +4642,7 @@
                                                 'de_estado': me.de_estado,
                                                 'de_municipio': me.de_municipio,
                                                 'de_localidad': me.de_localidad,
+                                                'tipoAsentamiento': me.asentamiento,
                                                 'de_cp': me.de_cp,
                                                 'de_lat': me.de_lat,
                                                 'de_lng': me.de_lng,
@@ -4541,6 +4807,7 @@
                                             'Edad': me.edadf, 
                                             'DocPoderNotarial':me.documentoacredita,
                                             //***************************** DIRECCION PERSONAL */ 
+                                            'tipoVialidad': me.vialidad,
                                             'calle': me.calle,
                                             'noExt': me.noExt,
                                             'noInt': me.noInt,
@@ -4551,10 +4818,12 @@
                                             'estado': me.estado,
                                             'municipio': me.municipio,
                                             'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
                                             'cp': me.cp,
                                             'lat': me.lat,
                                             'lng': me.lng,
                                             //************************************ DIRECCION ESCUCHA */
+                                            'de_tipoVialidad': me.de_vialidad,
                                             'de_calle': me.de_calle,
                                             'de_noExt': me.de_noExt,
                                             'de_noInt': me.de_noInt,
@@ -4565,6 +4834,7 @@
                                             'de_estado': me.de_estado,
                                             'de_municipio': me.de_municipio,
                                             'de_localidad': me.de_localidad,
+                                            'de_tipoAsentamiento': me.de_asentamiento,
                                             'de_cp': me.de_cp,
                                             'de_lat': me.de_lat,
                                             'de_lng': me.de_lng,
