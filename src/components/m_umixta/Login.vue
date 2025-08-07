@@ -145,32 +145,27 @@ export default {
              ///////////////////////////////////////////////////////////////
 
         },
-    
-
-  
+      
     methods :{
         ingresar(){
-                this.$validator.validate().then(result => {
-                    if (result) { 
-                        this.error=null;
-                        this.$controlacceso.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: 'e4d1b17e-be22-4c1f-ab6b-01718b5fad0d'})
-                        .then(respuesta => {                            
-                            return respuesta.data
-                        })
-                        .then(data => {        
-                            this.$store.dispatch("guardarToken", data.token)
-                            this.$router.push({ name: 'home' })
-                            this.tiempoSesion();
-                            this.CierreNav();
-                            this.startInactivityTimer();
-                        }).catch(err => {
-                            this.error=err.response.data;
-                            
-                        })
-
-                    }
-                }) 
-          
+            this.$validator.validate().then(result => {
+                if (result) { 
+                    this.error=null;
+                    this.$controlacceso.post('api/Usuarios/Login', {usuario: this.usuario, password: this.password,  claveP: 'e4d1b17e-be22-4c1f-ab6b-01718b5fad0d'})
+                    .then(respuesta => {
+                        return respuesta.data
+                    })
+                    .then(data => {        
+                        this.$store.dispatch("guardarToken", data.token)
+                        this.$router.push({ name: 'home' })
+                        this.tiempoSesion();
+                        this.CierreNav();
+                        this.startInactivityTimer();
+                    }).catch(err => {
+                        this.error=err.response.data;                            
+                    })
+                }
+            }) 
         },
         tiempoSesion(){
             let me = this;

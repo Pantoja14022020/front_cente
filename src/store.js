@@ -85,21 +85,29 @@ export default new Vuex.Store({
         {
             if(token)
             {
-                commit("setToken", token)
-                commit("setUsuario", decode(token))
-                localStorage.setItem("token", token)
+                try {
+                    commit("setToken", token)
+                    commit("setUsuario", decode(token))
+                    localStorage.setItem("token", token)
+                }
+                catch (error) {
+                    console.error("Token inválido en guardarToken:", error);
+                }
             }
         },
-
 
         setLogin({ commit }, token) {
             if (token) {
-                const usuario = decode(token)
-                commit("setUsuario", usuario)
-                commit("setLogged", true)
+                try {
+                    const usuario = decode(token)
+                    commit("setUsuario", usuario)
+                    commit("setLogged", true)
+                }
+                catch (error) {
+                    console.error("Token inválido en setLogin:", error);
+                }
             }
         },
-
 
         setLogout({commit})
         {
@@ -184,6 +192,7 @@ export default new Vuex.Store({
             }
             router.push({name: 'tools'})
         },
+
         /*salir({commit})
         {
             commit("setToken", null)

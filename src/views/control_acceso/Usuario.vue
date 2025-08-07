@@ -529,15 +529,9 @@
                                     return-object
                                     :menu-props="{ offsetY: true, zIndex: 10000 }"
                                 />
-                            </div>
-                                        
-
-                                
-                    
-                    
+                            </div>                    
                     </v-list>
-
-
+                    
             </v-card-text>
                 <v-card-actions>
                             <v-spacer></v-spacer>

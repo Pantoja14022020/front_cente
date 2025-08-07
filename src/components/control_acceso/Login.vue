@@ -78,6 +78,7 @@ import { error } from 'util';
 export default {
     data(){
         return {
+            drawer: false,
             usuario: '',
             password: '', 
             error: null

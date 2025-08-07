@@ -1,7 +1,5 @@
 <template>
 
-
-
   <div class="Index">
 
 
@@ -11,7 +9,7 @@
       </v-toolbar-title>
 
       <v-layout row wrap>
-        <v-flex xs12 md4 xl2 class="pa-4" v-for="panel of panels" :key="panel.clave">
+        <v-flex xs12 md4 xl2 class="pa-4" v-for="panel of panels" :key="panel.clave2">
           
           <div v-if="panel.status">
             <div v-if="panel.abrev == 'CONF' || panel.abrev == 'CA' || panel.abrev == 'E' || panel.abrev == 'AR'">
@@ -65,10 +63,7 @@
       </v-dialog>
     </v-container>
 
-
   </div>
-
-
 
 </template>
 
@@ -88,17 +83,24 @@
       if (!localStorage.getItem('pageReloaded')) {
         localStorage.setItem('pageReloaded', 'true');
         window.location.reload();
+        return;
       } else {
         localStorage.removeItem('pageReloaded');
       }
     },
     created() {
-      const token = this.$store.state.token || localStorage.getItem("token");
+      
+      var token = this.$store.state.token || localStorage.getItem("token");
+
       if(token)
-      { 
-        this.$store.dispatch("guardarToken", token)
-        this.$store.dispatch("setLogin", true, token)
+      {
         console.log(token)
+
+        this.$store.dispatch("guardarToken", token)
+        this.$store.dispatch("setLogin", token)
+
+        console.log(token)
+
         this.Listar();
       }
       else 

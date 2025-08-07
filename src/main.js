@@ -19,7 +19,7 @@ import Keycloak from "./auth/keycloak";
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL =  'http://localhost:44313/'//'https://pccentenario.pgjhidalgo.gob.mx/'
+axios.defaults.baseURL = 'http://localhost:5006/' /*'http://localhost:44313/'*/ //'https://pccentenario.pgjhidalgo.gob.mx/'
 
 //const keycloakUser = axios.create({ baseURL: 'https://login-admin.pgjhidalgo.gob.mx/'})
 //Vue.prototype.$keycloakUser = keycloakUser
@@ -39,10 +39,10 @@ Vue.prototype.$cat = catInstance
 const CATInstance = axios.create({baseURL: 'http://localhost:44394/'/*'https://catcentenario.pgjhidalgo.gob.mx/'*/}) 
 Vue.prototype.$CAT = CATInstance
 
-const SPInstance = axios.create({baseURL:  'http://localhost:44336/'/*'https://spcentenario.pgjhidalgo.gob.mx/'*/})
+const SPInstance = axios.create({baseURL: 'http://localhost:5008/' /*'http://localhost:44336/'*/ /*'https://spcentenario.pgjhidalgo.gob.mx/'*/})
 Vue.prototype.$SP = SPInstance
 
-const panelInstance = axios.create({baseURL: 'http://localhost:44313/'/*'https://pccentenario.pgjhidalgo.gob.mx/' */ })
+const panelInstance = axios.create({baseURL: 'http://localhost:5006/' /*'http://localhost:44313/'*/ /*'https://pccentenario.pgjhidalgo.gob.mx/' */ })
 Vue.prototype.$panel = panelInstance
 
 const justiciarestaurativaInstance = axios.create({baseURL:   'http://localhost:44309/'/*'https://jrcentenario.pgjhidalgo.gob.mx/'*/ })
@@ -52,7 +52,7 @@ const ILInstance = axios.create({baseURL:  'http://localhost:44312/'/*'https://i
 Vue.prototype.$IL = ILInstance
 
 const PIInstance = axios.create({
-  baseURL:  'http://localhost:44315/' /*'https://picentenario.pgjhidalgo.gob.mx/' */
+  baseURL: 'http://localhost:5007/' /*'http://localhost:44315/'*/ /*'https://picentenario.pgjhidalgo.gob.mx/' */
 }) 
 Vue.prototype.$PI = PIInstance
 

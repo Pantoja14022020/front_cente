@@ -268,7 +268,7 @@
     components:{Loader},
     data () {
       return { 
-        //drawer: true,  
+        drawer: true,  
         right: null, 
         title: 'Vuetify.js',
         isReady: false,
