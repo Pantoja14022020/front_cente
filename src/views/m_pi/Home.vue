@@ -746,7 +746,7 @@ export default {
       right: null, 
       title: 'Vuetify.js',
       modulointerno:false,
-      
+        
       data: function() {
         return {
             sideNav: false,
@@ -754,52 +754,49 @@ export default {
             Loader:true,          
         }
       },
-     created: function() {  
-          
-            axios.interceptors.request.use( (config)=> {
-              this.$store.commit('LOADER',true);
-              return config;
-            }, (error)=> {
-              this.$store.commit('LOADER',false);
-              return Promise.reject(error);
-            });
 
-              axios.interceptors.response.use((response)=>{
-              this.$store.commit('LOADER',false);
-              return response;
-            },  (err)=> {
-              /*return new Promise( (resolve, reject)=> {
-                this.$store.dispatch('logout').then(()=>{
-                  this.$router.push('/login')
-                })
-                throw err;
-              });*/
-              console.log(err)
-              console.log("Error en el response de la API")
-            });
-
-            this.$conf.interceptors.request.use( (config)=> {
-              this.$store.commit('LOADER',true); 
-              return config;
-            }, (error)=> {
-              this.$store.commit('LOADER',false);
-              return Promise.reject(error);
-            });
-
-              this.$conf.interceptors.response.use((response)=>{
-                this.$store.commit('LOADER',false);
-              return response;
-              },  (error)=> {
-                /*return new Promise( (resolve, reject)=> {
-                  this.$store.dispatch('logout').then(()=>{
-                    this.$router.push('/login')
-                  })
-                  throw err;
-                });*/
-                console.log(error)
-                console.log("Error en el response de la API")
-             });
-        },
+      created: function() {  
+        axios.interceptors.request.use( (config)=> {
+          this.$store.commit('LOADER',true);
+          return config;
+        }, (error)=> {
+          this.$store.commit('LOADER',false);
+          return Promise.reject(error);
+        });
+        axios.interceptors.response.use((response)=>{
+          this.$store.commit('LOADER',false);
+          return response;
+        }, (err)=> {
+          /*return new Promise( (resolve, reject)=> {
+            this.$store.dispatch('logout').then(()=>{
+              this.$router.push('/login')
+            })
+            throw err;
+          });*/
+          console.log(err)
+          console.log("Error en el response de la API")
+        });
+        this.$conf.interceptors.request.use( (config)=> {
+          this.$store.commit('LOADER',true); 
+            return config;
+        }, (error)=> {
+          this.$store.commit('LOADER',false);
+          return Promise.reject(error);
+        });
+        this.$conf.interceptors.response.use((response)=>{
+          this.$store.commit('LOADER',false);
+          return response;
+        },  (error)=> {
+          /*return new Promise( (resolve, reject)=> {
+            this.$store.dispatch('logout').then(()=>{
+              this.$router.push('/login')
+            })
+            throw err;
+          });*/
+          console.log(error)
+          console.log("Error en el response de la API")
+        });
+      },
     }
   },
   computed: {
@@ -852,23 +849,23 @@ export default {
       return this.modulointerno
     },
     drawer(){
-            return this.$store.state.drawer
-        }
+      return this.$store.state.drawer
+    }
   },
   mounted(){
-      if (!localStorage.getItem('pageReloaded')) {
-        localStorage.setItem('pageReloaded', 'true');
-        window.location.reload();
-      } else {
-        localStorage.removeItem('pageReloaded');
-      }
-    },
+    if (!localStorage.getItem('pageReloaded')) {
+      localStorage.setItem('pageReloaded', 'true');
+      window.location.reload();
+    } else {
+      localStorage.removeItem('pageReloaded');
+    }
+  },
   created(){
     const token = this.$store.state.token || localStorage.getItem("token");
       if(token)
       { 
         this.$store.dispatch("guardarToken", token)
-        this.$store.dispatch("setLogin", true, token)
+        this.$store.dispatch("setLogin", token)
       }
       else 
       { 
@@ -899,13 +896,13 @@ export default {
               me.e401 = true,
               me.showpage= false
           } else if (err.response.status==403){ 
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403= true
               me.showpage= false 
           } else if (err.response.status==404){
               me.$notify("El recuso no ha sido encontrado", 'error')
           }else{
-              me.$notify('Error al intentar listar los registros!!!','error')    
+              me.$notify('Error al intentar listar los registros','error')    
           } 
       });
     },

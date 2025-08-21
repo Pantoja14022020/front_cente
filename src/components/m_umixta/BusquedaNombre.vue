@@ -2,6 +2,9 @@
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
     <v-flex v-if="showpage">
       <v-toolbar flat color="white">
         <v-toolbar-title class="font-weight-regular">Busqueda por Nombre.</v-toolbar-title>
@@ -118,14 +121,16 @@
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { error } from 'util'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue';
 
   export default {
+    components: {
+      n401,
+      n403,
+      UmixtaNavDrawer
+    },
     data () {
-      return {
-        components: {
-          n401,
-          n403
-        },
+      return {        
         showpage: true,
         e401: false,
         e403: false,
@@ -278,13 +283,13 @@
                 me.e401 = true,
                 me.showpage = false
               } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
               } else if (err.response.status == 404) {
                 me.$notify("El recuso no ha sido encontrado", 'error')
               } else {
-                me.$notify('Error al intentar listar los registros!!!','error')
+                me.$notify('Error al intentar listar los registros','error')
               }
             })
           }
@@ -316,13 +321,13 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recuso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -347,13 +352,13 @@
               me.e401 = true,
               me.showpage = false
             } else if (err.response.status == 403) {
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403 = true
               me.showpage = false
             } else if (err.response.status == 404) {
               me.$notify("El recuso no ha sido encontrado", 'error')
             } else {
-              me.$notify('Error al intentar listar los registros!!!', 'error')
+              me.$notify('Error al intentar listar los registros', 'error')
             }
           })
         }
@@ -379,13 +384,13 @@
               me.e401 = true,
               me.showpage = false
             } else if (err.response.status == 403) {
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403 = true
               me.showpage = false
             } else if (err.response.status == 404) {
               me.$notify("El recuso no ha sido encontrado", 'error')
             } else {
-              me.$notify('Error al intentar listar los registros!!!', 'error')
+              me.$notify('Error al intentar listar los registros', 'error')
             }
           })
         }

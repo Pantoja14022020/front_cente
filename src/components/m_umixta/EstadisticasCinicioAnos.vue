@@ -2,6 +2,9 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
       <v-flex v-if="showpage">
         <v-toolbar flat color="white">
                     <v-toolbar-title class="font-weight-regular" >Estadísticas por Años</v-toolbar-title>
@@ -104,8 +107,8 @@
                         <v-spacer></v-spacer>
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra1=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra1=true"    right  fab color="primary">
+                                            <v-icon class="mt-1" dark>assessment</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Gráfica de barras</span>
@@ -113,8 +116,8 @@
 
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
+                                            <v-icon class="mt-1" dark>timeline</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Gráfica de línea</span>
@@ -164,8 +167,8 @@
                         <v-spacer></v-spacer>
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra2=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra2=true"    right  fab color="primary">
+                                            <v-icon class="mt-1" dark>assessment</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Grafica de barras</span>
@@ -173,8 +176,8 @@
 
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea2=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea2=true"  right  fab  color="primary">
+                                            <v-icon class="mt-1" dark>timeline</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Grafica de línea</span>
@@ -373,21 +376,22 @@
   import VeeValidate from 'vee-validate' 
   import * as d3 from 'd3';
   import Chart from 'chart.js'
-
   import moment from 'moment'
-  import 'moment/locale/es';
+  import 'moment/locale/es'
   import alertify from 'alertifyjs';
-  import { VueEditor } from "vue2-editor";
-  import { error } from 'util';
+  import { VueEditor } from "vue2-editor"
+  import { error } from 'util'
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { all } from 'q'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   export default {
     components: {      
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -711,13 +715,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')      
+                        me.$notify('Error al intentar listar los registros','error')      
                     } 
                 });
         },  
@@ -1237,13 +1241,13 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
                                             me.$notify("El recuso no ha sido encontrado", 'error')
                                         }else{
-                                            me.$notify('Error al intentar listar los registros!!!','error')      
+                                            me.$notify('Error al intentar listar los registros','error')      
                                         } 
                                     });
                                 }).catch(err => { 
@@ -1254,13 +1258,13 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){
                                         me.$notify("El recuso no ha sido encontrado", 'error')
                                     }else{
-                                        me.$notify('Error al intentar listar los registros!!!','error')      
+                                        me.$notify('Error al intentar listar los registros','error')      
                                     } 
                                 });                       
                            
@@ -1272,13 +1276,13 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
                                 me.$notify("El recuso no ha sido encontrado", 'error')
                             }else{
-                                me.$notify('Error al intentar listar los registros!!!','error')      
+                                me.$notify('Error al intentar listar los registros','error')      
                             } 
                         });
                 }         

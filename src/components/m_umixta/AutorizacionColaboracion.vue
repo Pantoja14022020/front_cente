@@ -2,6 +2,9 @@
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
     <v-flex v-if="showpage">
       <v-toolbar flat color="white">
         <v-toolbar-title class="font-weight-regular">Autorización de colaboración</v-toolbar-title>
@@ -184,7 +187,8 @@
                             </p>
                           </v-list-tile-title>
                           <v-list-tile-sub-title>
-                            <p v-html="datos.texto" color="accent" class="caption font-weight-regular">
+                            <p color="accent" class="caption font-weight-regular">
+                              <span v-html="datos.texto"></span>
                               <a>{{ datos.texto }}</a>
                             </p>
                           </v-list-tile-sub-title>
@@ -298,6 +302,7 @@
   import 'moment/locale/es'
   import n401 from './401.vue'
   import n403 from './403.vue'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   var assert, curp, persona
   assert = require('assert')
@@ -307,7 +312,8 @@
     components: {
       "vue2-editor": VueEditor,
       n401,
-      n403
+      n403,
+      UmixtaNavDrawer
     },
     data: () => ({
       alert: false,
@@ -454,13 +460,13 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recuso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -482,13 +488,13 @@
             me.e401 = true,
             me.showpage= false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403= true
             me.showpage= false
           } else if (err.response.status == 404) {
             me.$notify("El recuso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -522,7 +528,7 @@
               'uModulo': me.u_modulo,
               'uAgencia': me.u_agencia,
             }, configuracion).then(function(response) {
-              me.$notify('La información se guardo correctamente !!!', 'success')
+              me.$notify('¡La información se guardo correctamente!', 'success')
                 this.$cat.put('api/SColaboracionMP/ActualizarStatus', {
                   'IdSColaboracionMP': me.idcolaboracion,
                   'Status': "Asignado",
@@ -537,7 +543,7 @@
                     me.e401 = true,
                     me.showpage = false
                   } else if (err.response.status == 403) {
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403 = true
                     me.showpage = false
                   } else if (err.response.status == 404) {
@@ -557,7 +563,7 @@
                 me.e401 = true,
                 me.showpage = false
               } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
               } else if (err.response.status == 404) {
@@ -593,7 +599,7 @@
                 me.e401 = true,
                 me.showpage = false
               } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
               } else if (err.response.status == 404) {

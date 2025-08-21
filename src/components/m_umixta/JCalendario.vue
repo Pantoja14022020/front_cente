@@ -2,15 +2,18 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
       <v-flex v-if="showpage">
         <v-toolbar flat color="white">
                     <v-toolbar-title class="font-weight-regular" >Agenda</v-toolbar-title>
                     
-                    <v-divider class="mx-2" inset vertical></v-divider>
+                    <v-divider class="mx-2 pt-2" inset vertical></v-divider>
                     <v-tooltip bottom> 
                         <template v-slot:activator="{ on }"> 
-                        <v-btn fab v-on="on"   small  color="success"  @click="$refs.calendar.prev()" >
-                            <v-icon dark>
+                        <v-btn class="mx-2 pt-2" fab v-on="on" small color="success"  @click="$refs.calendar.prev()" >
+                            <v-icon class="mt-1" dark>
                                 keyboard_arrow_left
                             </v-icon>
                         </v-btn>
@@ -20,8 +23,8 @@
 
                     <v-tooltip bottom> 
                         <template v-slot:activator="{ on }"> 
-                            <v-btn fab v-on="on"   small   color="success" @click="$refs.calendar.next()"  >
-                            <v-icon >
+                            <v-btn class="mx-2 pt-2" fab v-on="on" small color="success" @click="$refs.calendar.next()"  >
+                            <v-icon class="mt-1">
                                 keyboard_arrow_right
                             </v-icon>
                             </v-btn>
@@ -716,12 +719,14 @@
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { error } from 'util';
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue';
 
   export default {
     components: {      
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -933,13 +938,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         }, 
@@ -1045,7 +1050,7 @@
                                 'Status2' : me.statu2.value
 
                             },configuracion).then(function(response){
-                                me.$notify('La información se guardo correctamente !!!','success')                                 
+                                me.$notify('¡La información se guardo correctamente!','success')                                 
                                 if(me.pospuestoswitch){
                                     
                                     me.$IL.post('api/Agenda/Crear',{ 
@@ -1128,7 +1133,7 @@
                                                     
                                         
                                     },configuracion).then(function(response){
-                                        me.$notify('La información se guardo correctamente !!!','success')   
+                                        me.$notify('¡La información se guardo correctamente!','success')   
                                         me.dialogoactualizar = false;
                                         if(me.modulo == "")
                                         me.listar(me.u_idmoduloservicio);                                                           
@@ -1144,7 +1149,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
@@ -1177,7 +1182,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
@@ -1220,13 +1225,13 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar leer la lista roles!!!','error')   
+                        me.$notify('¡Error al intentar leer la lista roles!','error')   
                     } 
                 });
                 
@@ -1246,13 +1251,13 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar leer la lista roles!!!','error')   
+                        me.$notify('¡Error al intentar leer la lista roles!','error')   
                     } 
                 });
                 
@@ -1278,13 +1283,13 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar leer la lista roles!!!','error')   
+                        me.$notify('¡Error al intentar leer la lista roles!','error')   
                     } 
                 });
                 

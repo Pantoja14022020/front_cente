@@ -991,7 +991,7 @@ export default {
         if(token)
         { 
         this.$store.dispatch("guardarToken", token)
-        this.$store.dispatch("setLogin", true, token)
+        this.$store.dispatch("setLogin", token)
         }
         else 
         { 
@@ -1132,13 +1132,13 @@ export default {
                         me.e401 = true,
                         me.showpage = false
                     } else if (error.response.status == 403) { 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403 = true
                         me.showpage = false 
                     } else if (error.response.status == 404) {
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     } else {
-                        me.$notify('Error al intentar listar los registros!!!','error')  
+                        me.$notify('Error al intentar listar los registros','error')  
                     } 
                 }); 
         },
@@ -1425,7 +1425,7 @@ export default {
                             'respuestaCoordinadorJuridico': me.v_respuesta,
                         }, configuracion).then(function(response){
                             me.close();
-                            me.$notify('La información se guardo correctamente !!!','success')  
+                            me.$notify('¡La información se guardo correctamente!','success')  
                             me.listar();                        
                         }).catch(function(error){
                             if (err.response.status==400){
@@ -1435,7 +1435,7 @@ export default {
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
@@ -2071,13 +2071,13 @@ export default {
                             me.e401 = true,
                                 me.showpage = false
                         } else if (error.response.status == 403) {
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403 = true
                             me.showpage = false
                         } else if (error.response.status == 404) {
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         } else {
-                            me.$notify('Error al intentar listar los registros!!! ', 'error')
+                            me.$notify('Error al intentar listar los registros ', 'error')
                         }
                     });
             })            

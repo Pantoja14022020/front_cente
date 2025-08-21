@@ -1,0 +1,142 @@
+/* ESTA HOJA TRATARÁ DE MANTENER LOS COLORES PRINCIPALES DEL SISTEMA O AL MENOS LA MAYORÍA */
+
+.v-toolbar__title.headline.text-uppercase{
+    color: #ffffff !important; /* Color título proyecto */
+}
+
+.v-icon.material-icons.theme--dark {
+    color: #ffffff !important; /* Color principal de los iconos del menú */
+}
+
+.v-toolbar__content > .v-toolbar__title.font-weight-regular
+{
+    font-weight: bold !important; /* Negrita para los títulos de la barra de herramientas */
+    color: #691c32 !important; /* Color principal de los títulos de cada apartado */
+}
+
+.v-toolbar__title
+{
+    font-weight: bold !important; /* Negrita para los títulos de la barra de herramientas */
+    color: #691c32 !important; /* Color principal de los títulos de cada apartado */
+}
+
+label.v-label.theme--dark
+{
+    color: #691c32 !important; /* Color principal de labels de cada formulario */
+}
+
+.modal
+{
+    color: #ffffff !important; /* Color principal de los títulos de cada modal */
+}
+
+.v-input__append-inner > .v-input__icon.v-input__icon--append > .v-icon.material-icons.theme--dark {
+    color: #691c32 !important; /* Color principal de los iconos de cada input */
+}
+
+.theme--dark.v-text-field > .v-input__control > .v-input__slot:before {
+    border-color: #691c32 !important; /* Color principal de los bordes de cada input */
+}
+
+.theme--dark.v-input:not(.v-input--is-disabled) input, .theme--dark.v-input:not(.v-input--is-disabled) textarea {
+    color: #000000; /* Color principal de los textos activos */
+}
+
+.primary--text > .v-list__tile.v-list__tile--link.v-list__tile--active.theme--dark.primary--text{
+    color: #BC955C !important; /* Color principal del texto activo de los select */
+} 
+
+.avisos {
+    color: #e90604 !important; /* Color principal de los textos (mensajes) de cada apartado */
+}
+
+.v-card.v-sheet.theme--dark > .container.fluid.grid-list-md
+{
+    background-color: #ffffff !important; /* Color principal del fondo de las tarjetas */
+}
+
+/* Tamaño del contador de Usuarios*/
+.v-badge__badge { 
+    height: 100%;
+    width: 100%;
+}
+
+.v-btn.v-btn--block.v-btn--outline.v-btn--depressed.theme--dark.primary--text > .v-btn__content > .v-icon.material-icons.theme--dark{
+    color: #691c32 !important; /*Color de los íconos de los botónes*/
+}
+
+.v-input--selection-controls__input > .v-icon.material-icons.theme--dark{
+    color: #000000 !important; /*Color de los radio buttons*/
+}
+
+.v-card__text > .v-form{
+    background-color: #ffffff; /*Color de fondo de modal*/
+}
+
+.theme--dark.v-select.v-select__selections {
+    color: #000000; /*Color de texto de select*/
+}
+
+.v-input__icon.v-input__icon--prepend > .v-icon.material-icons.theme--dark{
+    color: #691c32 !important; /* Color iconos fecha y hora*/
+}
+
+.theme--dark.v-input--is-disabled input{
+    color: #000000 !important; /*Color número de carpeta*/
+}
+
+.layout.row.wrap {
+    background-color: #ffffff; /*Color de fondo de los card de los model*/
+}
+
+.v-toolbar.theme--dark.primary > .v-toolbar__content > .v-toolbar__title{
+    color: #ffffff !important /*Color de los títulos de los modal*/
+}
+
+.v-select__selection.v-select__selection--comma{
+    color: #000000 !important; /*Color del texto de los select*/
+}
+
+.body-2.font-weight-bold a{
+    color: #ffffff !important;
+}
+
+.container.grid-list-md{
+    background-color: #ffffff;
+}
+
+.ql-editor{
+    color: #000000 !important; /*Color del texto de los editores de texto*/
+}
+
+.v-card__title.font-weight-regular{
+    color: #e90604 !important;
+}
+
+.caption.font-weight-regular a{
+    color: #ffffff !important;
+}
+
+.v-stepper__items{
+    background-color: #ffffff !important; /*Color del fondo en las  cards de formularios*/
+}
+
+.v-datatable__expand-content{
+    color: #000000; /*Color del texto al expandir contenido de una tabla*/
+}
+
+.v-content.grey.lighten-4 >.v-content__wrap{
+    background-color: #ffffff !important; /*Color del fondo en las páginas de Inicio*/
+}
+
+/*.v-content > .v-content__wrap {
+    background-color: #691c32 !important;
+}
+
+.layout.row.wrap{
+    background-color: #691c32 !important;
+}*/
+
+.background-panel{
+    background-color: #691c32 !important;
+}

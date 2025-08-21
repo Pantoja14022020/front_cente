@@ -6,22 +6,24 @@
   cursor: pointer;
 }
 .selected {
-  fill: yellow;
+  fill: yellow !important;
 }
 </style>
 <template>
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
     <UmixtaNavDrawer/>
+
     <v-flex v-if="showpage">
       <v-toolbar flat color="white">
-        <v-toolbar-title class="font-weight-regular primary" >Lista de carpetas con asignación de NUC.</v-toolbar-title>
+        <v-toolbar-title class="font-weight-regular" >Lista de carpetas con asignación de NUC.</v-toolbar-title>
         <v-divider class="mx-2" inset vertical />
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="listar()"
@@ -30,7 +32,7 @@
               small
               color="primary"
             >
-              <v-icon dark>refresh</v-icon>
+              <v-icon class="mt-1" dark>refresh</v-icon>
             </v-btn>
           </template>
           <span>Recargar el listado de carpetas</span>
@@ -332,6 +334,7 @@
       this.$store.state.ratencionid = null
       this.$store.state.rhechoid = null
       if (this.esAMPOAMP) this.listar()
+      if (this.esAdministrador) this.listar()
       if (this.esCoordinador) this.listarmodulos2()
       this.listaragencias()
       axios.interceptors.request.use((config) => {
@@ -398,10 +401,24 @@
       },
       listar () {
         let me = this
+
+        //Verificar si ya hay datos en cache
+        /*const cacheKey = "carpetas_" + me.u_idmoduloservicio;
+        const datosCache = localStorage.getItem(cacheKey);
+
+        if (datosCache) {
+            console.log("Datos obtenidos desde cache");
+            me.carpetas = JSON.parse(datosCache);
+            return; // Salir para no llamar la API
+        }*/
+
+        //Si no hay cache, llamar a la API
         let header = { "Authorization" : "Bearer " + this.$store.state.token }
         let configuracion = { headers : header }
-        this.$cat.get('api/RHechoes/ListarPorModuloCarpetas/' + me.u_idmoduloservicio,configuracion).then(function(response) {
-          me.carpetas=response.data;
+
+        this.$cat.get('api/RHechoes/ListarPorModuloCarpetas/' + me.u_idmoduloservicio, configuracion).then(function(response) {
+          me.carpetas=response.data;          
+          //localStorage.setItem(cacheKey, JSON.stringify(response.data)); //Guardar en cache para futuras llamadas
         }).catch(err => {
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", 'error')
@@ -410,16 +427,17 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recuso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         });
       },
+
       listarconfiltro () {
         let me = this
         let header = { "Authorization" : "Bearer " + this.$store.state.token }
@@ -479,13 +497,13 @@
             me.e401 = true,
             me.showpage= false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status==404){
             me.$notify("El recuso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         });
       },
@@ -523,13 +541,13 @@
                 me.e401 = true,
                 me.showpage = false
             } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
             } else if (err.response.status == 404) {
                 me.$notify("El recuso no ha sido encontrado", 'error')
             } else {
-                me.$notify('Error al intentar listar los registros!!!', 'error')
+                me.$notify('Error al intentar listar los registros', 'error')
             }
           });
       },
@@ -554,13 +572,13 @@
               me.e401 = true,
               me.showpage = false
             } else if (err.response.status == 403) {
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403 = true
               me.showpage = false
             } else if (err.response.status == 404) {
               me.$notify("El recuso no ha sido encontrado", 'error')
             } else {
-              me.$notify('Error al intentar listar los registros!!!', 'error')
+              me.$notify('Error al intentar listar los registros', 'error')
             }
           });
         }
@@ -586,13 +604,13 @@
               me.e401 = true,
               me.showpage = false
             } else if (err.response.status == 403) {
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403 = true
               me.showpage = false
             } else if (err.response.status == 404) {
               me.$notify("El recuso no ha sido encontrado", 'error')
             } else {
-              me.$notify('Error al intentar listar los registros!!!','error')
+              me.$notify('Error al intentar listar los registros','error')
             }
           });
         }

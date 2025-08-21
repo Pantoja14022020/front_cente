@@ -356,7 +356,7 @@ import { DEFAULT_ENCODING } from 'crypto'
         {   
              let me=this;
             console.log("cerrando desde componente padre")
-            me.$notify('La información se guardo correctamente !!!','success'); 
+            me.$notify('¡La información se guardo correctamente!','success'); 
             me.listar();
             me.modalclose();
             me.$router.push({ name: 'informacionexpediente' })
@@ -391,13 +391,13 @@ import { DEFAULT_ENCODING } from 'crypto'
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!! ' + error.message,'error')   
+                    me.$notify('Error al intentar listar los registros ' + error.message,'error')   
                 }      
             });
                       
@@ -515,7 +515,7 @@ import { DEFAULT_ENCODING } from 'crypto'
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){
@@ -538,7 +538,7 @@ import { DEFAULT_ENCODING } from 'crypto'
                                 'curp': me.rcurp,
                             },configuracion).then(function(response){
                                 me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
+                                me.$notify('¡La información se guardo correctamente!','success')  
                                 me.listar();
                                 me.rnombre="";
                                 me.rnacionalidad="";
@@ -554,7 +554,7 @@ import { DEFAULT_ENCODING } from 'crypto'
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
@@ -854,13 +854,13 @@ import { DEFAULT_ENCODING } from 'crypto'
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -883,13 +883,13 @@ import { DEFAULT_ENCODING } from 'crypto'
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 

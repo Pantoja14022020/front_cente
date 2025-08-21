@@ -32,10 +32,6 @@
 </template>
 
 
-
-
-
-
 <script>
 
   import moment from "moment";
@@ -127,11 +123,6 @@
 
 </script>
 
-
-
-
-
-
 <style>
   .app-fontstyle{
     font-family: "Inter", sans-serif;
@@ -142,14 +133,13 @@
 </style>
 -->
 
-
-
 <template>
   <v-app dark class="primary" style="display: block;">
     <v-toolbar class="primary elevation-0">
       <v-toolbar-title class="headline text-uppercase">
         <span>SISTEMA CENTENARIO</span>
-      </v-toolbar-title>
+      </v-toolbar-title> 
+
       <v-spacer></v-spacer>
 
       <v-chip
@@ -159,7 +149,7 @@
         text-color="white"
       >
         <v-icon @click="turnador()">schedule</v-icon>
-        {{ gethora }}
+          {{ gethora }}
       </v-chip>
 
       <v-btn

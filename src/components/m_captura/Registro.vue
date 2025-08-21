@@ -1,159 +1,162 @@
-<template>  
-<v-layout align-start>
-    <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary"  >
-        <div class="text-xl-center text-md-center text-xs-center my-4">
-            <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
-        </div>
-  
-        <v-list dense dark class="pt-0 primary" >
-          <template>
-            <v-list-tile  :to="{name:'mcaptura'}">
-              <v-list-tile-action>
-                <v-icon class="centenarioMenuIcon">home</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
-            </v-list-tile>
-          </template>  
-            
+<template>
+    <v-layout align-start>
+        <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary">
+            <div class="text-xl-center text-md-center text-xs-center my-4">
+              <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a>
+            </div>
+    
+            <v-list dense dark class="pt-0 primary" >
+              <template>
+                <v-list-tile  :to="{name:'mcaptura'}">
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">home</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                </v-list-tile>
+              </template>
+    
+              <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
+                <v-list-group>
+                  <v-list-tile slot="activator">   
+                    <v-list-tile-content >
+                      <v-list-tile-title class="centenarioMenuAreas">
+                        Carpetas
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-registro'== '#' ? '' :  'mcaptura-registro'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">group</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Registro
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile> 
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-listacarpetas'== '#' ? '' :  'mcaptura-listacarpetas'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">view_list</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Lista de carpetas asignadas
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile> 
+                </v-list-group>
+              </template>
+    
+              <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
+                <v-list-group>
+                  <v-list-tile slot="activator">   
+                    <v-list-tile-content >
+                      <v-list-tile-title class="centenarioMenuAreas">
+                      Seguimiento a carpeta
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-informaciongeneral'== '#' ? '' :  'mcaptura-informaciongeneral'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Información general.
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile> 
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-victimaimputado'== '#' ? '' :  'mcaptura-victimaimputado'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">face</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Víctima(s) directa, indirecta, testigo y/o imputado.
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile> 
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-delito'== '#' ? '' :  'mcaptura-delito'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">dashboard</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Delito
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile> 
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-vehiculo'== '#' ? '' :  'mcaptura-vehiculo'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">commute</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Vehiculo
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esFacilitador" :to="{ name: 'mcaptura-justiciarestaurativa'== '#' ? '' :  'mcaptura-justiciarestaurativa'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">event_seat</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Justicia restaurativa
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidasproteccion'== '#' ? '' :  'mcaptura-medidasproteccion'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">description</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Medidas de protección
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidascautelares'== '#' ? '' :  'mcaptura-medidascautelares'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">label</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Medidas cautelares
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-resolucion'== '#' ? '' :  'mcaptura-resolucion'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                      <v-icon class="centenarioMenuIcon">verified_user</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                      <v-list-tile-title class="centenarioMenuModules">
+                        Resolución
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list-group>
+              </template>
           
-  
-          <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                    Carpetas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-registro'== '#' ? '' :  'mcaptura-registro'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">group</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Registro
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-listacarpetas'== '#' ? '' :  'mcaptura-listacarpetas'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">view_list</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Lista de carpetas asignadas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-            </v-list-group>
-          </template>
-  
-          <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Seguimiento a carpeta
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-informaciongeneral'== '#' ? '' :  'mcaptura-informaciongeneral'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Información general.
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-victimaimputado'== '#' ? '' :  'mcaptura-victimaimputado'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">face</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Víctima(s) directa, indirecta, testigo y/o imputado.
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-delito'== '#' ? '' :  'mcaptura-delito'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">dashboard</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Delito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-vehiculo'== '#' ? '' :  'mcaptura-vehiculo'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">commute</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Vehiculo
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esFacilitador" :to="{ name: 'mcaptura-justiciarestaurativa'== '#' ? '' :  'mcaptura-justiciarestaurativa'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">event_seat</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Justicia restaurativa
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidasproteccion'== '#' ? '' :  'mcaptura-medidasproteccion'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">description</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Medidas de protección
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidascautelares'== '#' ? '' :  'mcaptura-medidascautelares'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">label</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Medidas cautelares
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-resolucion'== '#' ? '' :  'mcaptura-resolucion'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">verified_user</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Resolución
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list-group>
-          </template>
-        
-        </v-list>
-      </v-navigation-drawer>
+            </v-list>
+        </v-navigation-drawer>
+
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title class="font-weight-regular">Datos carpeta de investigación</v-toolbar-title>
                 <v-divider class="mx-2" inset vertical />
                 <v-spacer />
+                <div class="text-xs-right">                            
+                    <v-btn color="primary" :to="{name: 'mcaptura'}">Cancelar</v-btn>
+                </div>
             </v-toolbar>
             <v-stepper v-model="step" non-linear vertical>
-               <v-stepper-step :editable="step !== 1"  :complete="step > 1" step="1" @click="step = 1" :rules="[() => !errors.has('distrito inicia') && !errors.has('subprocuraduría/dirección general inicia') && !errors.has('agencia inicia') 
-                                                                                                                    && !errors.has('unidad de investigación que inicia') && !errors.has('nombre persona que inicio') && !errors.has('puesto persona que inicio')]">
+                <v-stepper-step :editable="step !== 1"  :complete="step > 1" step="1" @click="step = 1" :rules="[() => !errors.has('distrito inicia') && !errors.has('subprocuraduría/dirección general inicia') && !errors.has('agencia inicia') 
+                                                                                                                        && !errors.has('unidad de investigación que inicia') && !errors.has('nombre persona que inicio') && !errors.has('puesto persona que inicio')]">
                     <div class="d-flex align-center">
                         Datos de la unidad que inicia
                         <v-btn v-show="step === 1" icon small @click.stop="ayuda = true">
@@ -213,7 +216,7 @@
                                         :error-messages="errors.collect('unidad de investigación que inicia')" 
                                         no-data-text="No se encontraron datos"
                                     />
-                                    </v-flex>
+                                </v-flex>
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>
                                     <v-text-field 
                                         name="nombre persona que inicio"
@@ -240,9 +243,9 @@
                         </div>
                     </v-card>
                 </v-stepper-content>
-                 <v-stepper-step :editable="step !== 2" :complete="step > 2" step="2" @click="step = 2"
+                <v-stepper-step :editable="step !== 2" :complete="step > 2" step="2" @click="step = 2"
                                 :rules="[() => !errors.has('distrito integra') && !errors.has('subprocuraduría/dirección general integra') && !errors.has('agencia integra') 
-                                            && !errors.has('unidad de investigación que integra') && !errors.has('fecha de radicación')]">
+                                                && !errors.has('unidad de investigación que integra') && !errors.has('fecha de radicación')]">
                     <div class="d-flex align-center">
                         Datos de la unidad donde se encuentra la carpeta
                         <v-btn v-show="step === 2" icon small @click.stop="ayuda = true">
@@ -313,7 +316,7 @@
                                         :error-messages="errors.collect('unidad de investigación que integra')" 
                                         no-data-text="No se encontraron datos"
                                     />
-                                    </v-flex>
+                                </v-flex>
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>
                                     <v-menu
                                         ref="menu2"
@@ -338,11 +341,11 @@
                                                 :error-messages="errors.collect('fecha de radicación')"
                                             />
                                         </template>
-                                        <v-date-picker locale="es" v-model="fecharadicacion" no-title scrollable>
-                                            <v-spacer />
-                                            <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-                                            <v-btn text color="primary" @click="fechainif('menu2')">OK</v-btn>
-                                        </v-date-picker>
+                                            <v-date-picker locale="es" v-model="fecharadicacion" no-title scrollable>
+                                                <v-spacer />
+                                                <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+                                                <v-btn text color="primary" @click="fechainif('menu2')">OK</v-btn>
+                                            </v-date-picker>
                                     </v-menu>
                                 </v-flex>  
                             </v-layout>
@@ -354,7 +357,7 @@
                     </v-card>
                 </v-stepper-content>
                 <v-stepper-step :editable="step !== 3" :complete="step > 3" step="3" @click="step = 3" :rules="[() => !errors.has('NUC') && !errors.has('fecha de inicio') && !errors.has('fecha de detención') && !errors.has('medio de denuncia')&& !errors.has('corporación que realizo detención') 
-                                                                                   && !errors.has('medio reporte') && !errors.has('narrativa') && !errors.has('nomenclatura')]">
+                                                                                    && !errors.has('medio reporte') && !errors.has('narrativa') && !errors.has('nomenclatura')]">
                     <div class="d-flex align-center">
                         Datos de la carpeta de investigación
                         <v-btn v-show="step === 3" icon small @click.stop="ayuda = true">
@@ -387,52 +390,52 @@
                                         no-data-text="No se encontraron datos"
                                     />
                                     <div class="switch-container">
-                                    <v-autocomplete 
-                                        label="*Distrito de carpeta:" 
-                                        name="distrito"     
-                                        v-model="cveDistrito"
-                                        :items="distritosh" 
-                                        prepend-icon="location_city"
-                                        v-validate="'required'"
-                                        return-object
-                                        v-on:change="permisoActualizarNuc()"
-                                        :disabled="(nucDif && !nucValue) || distritoValidado" 
-                                        :error-messages="errors.collect('distrito')"
-                                        no-data-text="No se encontraron datos"
-                                    />
-                                    <v-autocomplete 
-                                        label="*Año de carpeta:" 
-                                        name="anocarpeta"     
-                                        v-model="yearcarpeta"
-                                        :items="yearsfile" 
-                                        prepend-icon="event_available" 
-                                        v-validate="'required'"
-                                        return-object
-                                        v-on:change="permisoActualizarNuc()" 
-                                        :disabled="nucDif && !nucValue"
-                                        :error-messages="errors.collect('anocarpeta')"
-                                        no-data-text="No se encontraron datos"
-                                    />
-                                   </div>
-                                   <div class="switch-container">
-                                    <v-text-field 
-                                        name="Numero carpeta"
-                                        v-model="numcarpeta" 
-                                        v-validate="'required'"
-                                        label="*Número de carpeta:"
-                                        prepend-icon = "tag"
-                                        @change="consultadenuc = false"
-                                        @input="permisoActualizarNuc()"
-                                        @keypress="soloNumerosKeypress"
-                                        @paste.prevent
-                                        @keyup.enter="validarceros('numcarpeta')"
-                                        @blur="validarceros('numcarpeta')"
-                                        counter
-                                        :maxlength="nucRango"
-                                        :disabled="nucDif && !nucValue"
-                                        :error-messages="errors.collect('Numero carpeta')"  
-                                    /> 
-                                    <v-text-field 
+                                        <v-autocomplete 
+                                            label="*Distrito de carpeta:" 
+                                            name="distrito"     
+                                            v-model="cveDistrito"
+                                            :items="distritosh" 
+                                            prepend-icon="location_city"
+                                            v-validate="'required'"
+                                            return-object
+                                            v-on:change="permisoActualizarNuc()"
+                                            :disabled="(nucDif && !nucValue) || distritoValidado" 
+                                            :error-messages="errors.collect('distrito')"
+                                            no-data-text="No se encontraron datos"
+                                        />
+                                        <v-autocomplete 
+                                            label="*Año de carpeta:" 
+                                            name="anocarpeta"     
+                                            v-model="yearcarpeta"
+                                            :items="yearsfile" 
+                                            prepend-icon="event_available" 
+                                            v-validate="'required'"
+                                            return-object
+                                            v-on:change="permisoActualizarNuc()" 
+                                            :disabled="nucDif && !nucValue"
+                                            :error-messages="errors.collect('anocarpeta')"
+                                            no-data-text="No se encontraron datos"
+                                        />
+                                    </div>
+                                    <div class="switch-container">
+                                        <v-text-field 
+                                            name="Numero carpeta"
+                                            v-model="numcarpeta" 
+                                            v-validate="'required'"
+                                            label="*Número de carpeta:"
+                                            prepend-icon = "tag"
+                                            @change="consultadenuc = false"
+                                            @input="permisoActualizarNuc()"
+                                            @keypress="soloNumerosKeypress"
+                                            @paste.prevent
+                                            @keyup.enter="validarceros('numcarpeta')"
+                                            @blur="validarceros('numcarpeta')"
+                                            counter
+                                            :maxlength="nucRango"
+                                            :disabled="nucDif && !nucValue"
+                                            :error-messages="errors.collect('Numero carpeta')"  
+                                        />
+                                        <v-text-field 
                                             name="Numero unidad"
                                             v-model="nucUnidad" 
                                             v-validate="requiereUnidad ? 'required' : ''"
@@ -448,38 +451,37 @@
                                             counter
                                             maxlength="1"
                                             :disabled="nucDif && !nucValue"
-                                            :error-messages="errors.collect('Numero unidad')" 
+                                            :error-messages="errors.collect('Numero unidad')"
                                         />
                                     </div>
                                     <div class="switch-container">
-                                    <v-text-field 
-                                        name="NUC"
-                                        label="*NUC"
-                                        v-model="nuc" 
-                                        v-validate="'required'"
-                                        readonly
-                                        prepend-icon="folder"
-                                        :disabled="nucDif && !nucValue"
-                                        :error-messages="getNucErrorMessages"
-                                        autocomplete="off"
-                                        :success="nucdisponible === true"
-                                        :error="nucdisponible === false"
-                                        :success-messages="nucdisponible === true ? ['NUC válido'] : []"
-                                        :append-icon="nucdisponible === true ? 'check' : nucdisponible === false ? 'close' : ''"
-                                    /> 
-                                    <v-btn color="success" @click.native="validarnuc()" :disabled="!puedeValidarNUC">Validar NUC</v-btn>
-                                </div>
-                                <v-flex xs12 sm12 md12 lg12 class="mb-4" v-if="nucValue==3">
-                                    <v-switch 
-                                        v-model="nucMomentanea" 
-                                        :label="`Deseas agregar ${nucClaveMomentanea} a tu nomenclatura`" 
-                                        color="success" 
-                                        hide-details>
-                                    </v-switch>
-                                </v-flex>
+                                        <v-text-field 
+                                            name="NUC"
+                                            label="*NUC"
+                                            v-model="nuc" 
+                                            v-validate="'required'"
+                                            readonly
+                                            prepend-icon="folder"
+                                            :disabled="nucDif && !nucValue"
+                                            :error-messages="getNucErrorMessages"
+                                            autocomplete="off"
+                                            :success="nucdisponible === true"
+                                            :error="nucdisponible === false"
+                                            :success-messages="nucdisponible === true ? ['NUC válido'] : []"
+                                            :append-icon="nucdisponible === true ? 'check' : nucdisponible === false ? 'close' : ''"
+                                        /> 
+                                        <v-btn color="success" @click.native="validarnuc()" :disabled="!puedeValidarNUC">Validar NUC</v-btn>
+                                    </div>
+                                    <v-flex xs12 sm12 md12 lg12 class="mb-4" v-if="nucValue==3">
+                                        <v-switch 
+                                            v-model="nucMomentanea" 
+                                            :label="`Deseas agregar ${nucClaveMomentanea} a tu nomenclatura`" 
+                                            color="success" 
+                                            hide-details>
+                                        </v-switch>
+                                    </v-flex>
                                 </v-flex>
                                 <v-flex class="espaciado" xs12 sm12 md6 lg6>
-
                                     <v-menu
                                         ref="menu1"
                                         v-model="menu1"
@@ -541,17 +543,17 @@
                                         min-width="290px"
                                     >
                                         <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            name='fecha de detención'
-                                            :value="fechad"
-                                            label="*Fecha de detención:"
-                                            prepend-icon="event"
-                                            clearable 
-                                            readonly
-                                            v-on="on"
-                                            v-validate="'required'"                                   
-                                            :error-messages="errors.collect('fecha de detención')"
-                                        />
+                                            <v-text-field
+                                                name='fecha de detención'
+                                                :value="fechad"
+                                                label="*Fecha de detención:"
+                                                prepend-icon="event"
+                                                clearable 
+                                                readonly
+                                                v-on="on"
+                                                v-validate="'required'"                                   
+                                                :error-messages="errors.collect('fecha de detención')"
+                                            />
                                         </template>
                                         <v-date-picker locale="es" v-model="fechadetencion" no-title scrollable>
                                             <v-spacer />
@@ -576,8 +578,8 @@
                                                 />
                                             </v-form>
                                             <small v-show="errors.has('narrativa')" class="error--text">
-                                                    {{ errors.first('narrativa') }}
-                                                </small>
+                                                {{ errors.first('narrativa') }}
+                                            </small>
                                         </v-card-text>
                                     </v-card>
                                 </v-flex>
@@ -718,18 +720,18 @@
                                                         v-if="RangoEdadTF == false"
                                                         :error-messages="errors.collect('fecha de nacimiento')" 
                                                     />
-                                                    
+                                                        
                                                     <v-switch v-model="RangoEdadTF" :label="'¿Desconoce la fecha de nacimiento? Agregar un rango de edad'"  color="success" hide-details></v-switch>
 
                                                     <v-autocomplete
-                                                                    name="rangos"
-                                                                    :items="rangosedad"
-                                                                    v-model="rangoedad"
-                                                                    v-validate="'required'"
-                                                                    label="*Rango de edad:"
-                                                                    v-if="RangoEdadTF == true"
-                                                                    :error-messages="errors.collect('rangos')"
-                                                                    no-data-text="No se encontraron datos"
+                                                        name="rangos"
+                                                        :items="rangosedad"
+                                                        v-model="rangoedad"
+                                                        v-validate="'required'"
+                                                        label="*Rango de edad:"
+                                                        v-if="RangoEdadTF == true"
+                                                        :error-messages="errors.collect('rangos')"
+                                                        no-data-text="No se encontraron datos"
                                                     />
                                                     <v-autocomplete
                                                         name="sexo"
@@ -778,8 +780,8 @@
                                                                     <v-avatar size="30">
                                                                         <v-icon class="grey lighten-2">camera</v-icon>
                                                                     </v-avatar> 
-                                                                <v-toolbar-title class="subheading">Escanear documento</v-toolbar-title>
-                                                                <v-spacer /> 
+                                                                    <v-toolbar-title class="subheading">Escanear documento</v-toolbar-title>
+                                                                    <v-spacer /> 
                                                                 </v-toolbar>
                                                                 <v-card-text>
                                                                     <v-form ref="form"> 
@@ -849,41 +851,41 @@
                                                     </v-card>
                                                     <v-text-field label="Selecciona la imagen del documento de identificación" @click='pickFile'  v-model='imageName' prepend-icon='attach_file'></v-text-field>
 
-                                                    <input
-                                                        type="file"
-                                                        style="display: none"
-                                                        ref="image"
-                                                        accept="image/jpeg, image/jpg"
-                                                        @change="onFilePicked"
-                                                    >
-                                                    <v-autocomplete 
-                                                        name="documento que acredita su personalidad"
-                                                        :items="documentoacreditas"
-                                                        v-model="documentoacredita" 
-                                                        v-if="radios == 'Moral'"
-                                                        label="Documento que acredita su personalidad:"
-                                                        :error-messages="errors.collect('documento que acredita su personalidad')" 
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field 
-                                                        name="curp" 
-                                                        v-model="curp" 
-                                                        label="CURP:"  
-                                                    />
-                                                    <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una población afrodescendiente?:" color="success"  hide-details></v-switch>
-                                                </v-flex>
-                                            </v-layout>
-                                            <v-spacer />
-                                            <div class="text-xs-right">
-                                                <v-btn text @click="step = 3">Regresar</v-btn>
-                                                <v-btn color="primary" @click="substep = 2">Siguiente</v-btn>
-                                            </div>
-                                        </v-stepper-content>
+                                                        <input
+                                                            type="file"
+                                                            style="display: none"
+                                                            ref="image"
+                                                            accept="image/jpeg, image/jpg"
+                                                            @change="onFilePicked"
+                                                        >
+                                                        <v-autocomplete 
+                                                            name="documento que acredita su personalidad"
+                                                            :items="documentoacreditas"
+                                                            v-model="documentoacredita" 
+                                                            v-if="radios == 'Moral'"
+                                                            label="Documento que acredita su personalidad:"
+                                                            :error-messages="errors.collect('documento que acredita su personalidad')" 
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-text-field 
+                                                            name="curp" 
+                                                            v-model="curp" 
+                                                            label="CURP:"  
+                                                        />
+                                                        <v-switch name="afrodecendiente" v-model="poblacionafro"   label="¿Pertenece a una población afrodescendiente?:" color="success"  hide-details></v-switch>
+                                                    </v-flex>
+                                                </v-layout>
+                                                <v-spacer />
+                                                <div class="text-xs-right">
+                                                    <v-btn text @click="step = 3">Regresar</v-btn>
+                                                    <v-btn color="primary" @click="substep = 2">Siguiente</v-btn>
+                                                </div>
+                                            </v-stepper-content>
 
-                                        <v-stepper-content step="2">
-                                            <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
-                                                <v-flex  xs12 md5 lg5>
-                                                    <v-autocomplete name="medio de notificación"
+                                            <v-stepper-content step="2">
+                                                <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
+                                                    <v-flex  xs12 md5 lg5>
+                                                        <v-autocomplete name="medio de notificación"
                                                             :items="medionotificaciones"
                                                             v-model="medionotificacion"
                                                             multiple
@@ -893,475 +895,475 @@
                                                             deletable-chips
                                                             label="Medio de notificación:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field label="Teléfono móvil:" maxlength="50" v-model="telefono1"/>
-                                                    <v-text-field label="Teléfono fijo:" maxlength="50" v-model="telefono2"/>
-                                                    <v-text-field label="Correo electrónico:" maxlength="100" v-model="correo"/>
-                                                    <v-autocomplete name="nacionalidad"
+                                                        />
+                                                        <v-text-field label="Teléfono móvil:" maxlength="50" v-model="telefono1"/>
+                                                        <v-text-field label="Teléfono fijo:" maxlength="50" v-model="telefono2"/>
+                                                        <v-text-field label="Correo electrónico:" maxlength="100" v-model="correo"/>
+                                                        <v-autocomplete name="nacionalidad"
                                                             :items="nacionalidades"
                                                             v-model="nacionalidad"
                                                             label="Nacionalidad:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete name="estado familiar"
+                                                        />
+                                                        <v-autocomplete name="estado familiar"
                                                             :items="estadosciviles"
                                                             v-model="estadocivil"
                                                             label="Estado familiar:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                </v-flex>
-                                                <v-divider class="mx-2" inset vertical></v-divider>
-                                                <v-flex  xs12 md6 lg6>
-                                                    <v-autocomplete name="ocupación"
+                                                        />
+                                                    </v-flex>
+                                                    <v-divider class="mx-2" inset vertical></v-divider>
+                                                    <v-flex  xs12 md6 lg6>
+                                                        <v-autocomplete name="ocupación"
                                                             :items="ocupaciones"
                                                             v-model="ocupacion"
                                                             label="Ocupación:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete name="nivel de estudios"
+                                                        />
+                                                        <v-autocomplete name="nivel de estudios"
                                                             :items="nivelestudios"
                                                             v-model="nivelestudio"
                                                             label="Nivel de estudios:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete name="lengua"
+                                                        />
+                                                        <v-autocomplete name="lengua"
                                                             :items="lenguas"
                                                             v-model="lengua"
                                                             label="Lengua:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete name="religión"
+                                                        />
+                                                        <v-autocomplete name="religión"
                                                             :items="religiones"
                                                             v-model="religion"
                                                             label="Religión:"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete name="género"
+                                                        />
+                                                        <v-autocomplete name="género"
                                                             :items="generos"
                                                             v-model="genero"
                                                             label="Género:"
                                                             v-if="presexuales"
                                                             no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-switch
-                                                        v-model="presexuales"
-                                                        label="¿Pertenece a la comunidad LGBTTTIQA?"
-                                                        color="success"
-                                                        hide-details
-                                                    />
-                                                    <v-switch v-model="switch1" label="¿Tiene alguna discapacidad?:" color="success"  hide-details />
+                                                        />
+                                                        <v-switch
+                                                            v-model="presexuales"
+                                                            label="¿Pertenece a la comunidad LGBTTTIQA?"
+                                                            color="success"
+                                                            hide-details
+                                                        />
+                                                        <v-switch v-model="switch1" label="¿Tiene alguna discapacidad?:" color="success"  hide-details />
+                                                        <v-autocomplete
+                                                            name="discapacidad"
+                                                            :items="discapaciodades"
+                                                            v-model="discapacidad"
+                                                            label="¿Que discapacidad tiene?:"
+                                                            v-show="switch1"
+                                                            multiple
+                                                            return-object
+                                                            attach
+                                                            chips
+                                                            deletable-chips
+                                                            :menu-props="{ top: true }"
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                    </v-flex>
+                                                </v-layout>
+                                                <div class="text-xs-right">
+                                                    <v-btn text @click="substep = 1">Regresar</v-btn>
+                                                    <v-btn color="primary" @click="substep = 3">Siguiente</v-btn>
+                                                </div>
+                                            </v-stepper-content>
 
-                                                    <v-autocomplete
-                                                        name="discapacidad"
-                                                        :items="discapaciodades"
-                                                        v-model="discapacidad"
-                                                        label="¿Que discapacidad tiene?:"
-                                                        v-show="switch1"
-                                                        multiple
-                                                        return-object
-                                                        attach
-                                                        chips
-                                                        deletable-chips
-                                                        :menu-props="{ top: true }"
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                </v-flex>
-                                            </v-layout>
-                                            <div class="text-xs-right">
-                                                <v-btn text @click="substep = 1">Regresar</v-btn>
-                                                <v-btn color="primary" @click="substep = 3">Siguiente</v-btn>
-                                            </div>
-                                        </v-stepper-content>
-
-                                        <v-stepper-content step="3">
-                                            <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
-                                                <v-flex  xs12 md5 lg5>
-                                                    <v-autocomplete
-                                                        name="tipo vialidad"
-                                                        :items="vialidades"
-                                                        v-model="vialidad"
-                                                        label="Tipo de vialidad:" 
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field 
-                                                        label="Nombre:"
-                                                        name="calle"
-                                                        v-model="calle"
-                                                        maxlength="100"
-                                                        :error-messages="errors.collect('calle')"
-                                                    />
-                                                    <v-text-field 
-                                                        name="numero exterior"
-                                                        label="No. exterior:"
-                                                        v-model="noExt"
-                                                        maxlength="100"
-                                                        :error-messages="errors.collect('numero exterior')"
-                                                    />
-                                                    <v-text-field label="No. Interior:" maxlength="100" v-model="noInt"/>
-                                                    <v-text-field label="Entre calle 1:" maxlength="200" v-model="entreCalle1"/>
-                                                    <v-text-field label="Entre calle 2:" maxlength="200" v-model="entreCalle2"/>
-                                                    <v-text-field label="Referencia:" maxlength="300" v-model="referencia"/>
-                                                </v-flex>
-                                                <v-divider class="mx-2" inset vertical></v-divider>
-                                                <v-flex  xs12 md6 lg6>
-                                                    <v-text-field 
-                                                        label="Pais:"
-                                                        name="pais"
-                                                        v-model="pais"
-                                                        value="México"
-                                                        maxlength="100"
-                                                    />
-                                                    <v-autocomplete
-                                                        label="Estado:"
-                                                        name="estado"
-                                                        v-model="estadoidP"
-                                                        :items="ciudadesP"
-                                                        return-object
-                                                        v-on:change="listarPorEstado"
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete 
-                                                        label="Municipio:"
-                                                        name="municipio"
-                                                        v-model="municipioidP"
-                                                        :items="municipiosP"
-                                                        return-object
-                                                        v-on:change="listarPorMunicipio"
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete 
-                                                        label="Localidad:"
-                                                        name="localidad"
-                                                        v-model="localidadidP"
-                                                        :items="localidadesP"
-                                                        return-object
-                                                        v-on:change="listarPorLocalidad"
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete
-                                                        name="tipo asentamiento"
-                                                        :items="asentamientos"
-                                                        v-model="asentamiento"
-                                                        label="Tipo de asentamiento:" 
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field
-                                                        label="Código postal:"
-                                                        name="cp"
-                                                        v-model="cp"
-                                                        @keypress="soloNumerosKeypress"
-                                                        @keyup.enter="buscarPorCP()"  
-                                                    />
-                                                    <v-layout wrap justify-space-between>
-                                                        <v-flex  xs6 md6 lg6>
-                                                            <v-text-field
-                                                                v-model="lat"
-                                                                label="Latitud:"
-                                                                disabled
-                                                            ></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex  xs6 md6 lg6>
-                                                            <v-text-field
-                                                                v-model="lng"
-                                                                label="Longitud:"
-                                                                disabled
-                                                        ></v-text-field>
-                                                        </v-flex>
-                                                    </v-layout>
-                                                    <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc2" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
-                                                </v-flex>
-                                            </v-layout>
-                                            <div class="text-xs-right">
-                                                <v-btn text @click="substep = 2">Regresar</v-btn>
-                                                <v-btn color="primary" text @click="substep = 4"">Siguiente</v-btn>
-                                            </div>
-                                        </v-stepper-content>
-
-                                        <v-stepper-content step="4">
-                                            <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
-                                                <v-flex  xs12 md5 lg5>
-                                                    <v-switch v-model="duplicarDireccion" @change="dupdiresc()" label="¿La dirección de notificación es la misma que la dirección personal?:" color="success"  hide-details></v-switch>
-                                                    <v-autocomplete
-                                                        name="tipo vialidad"
-                                                        :items="de_vialidades"
-                                                        v-model="de_vialidad"
-                                                        label="Tipo de vialidad:" 
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field label="Calle:"
-                                                                name="calle"
-                                                                v-model="de_calle"
-                                                                maxlength="100"
-                                                                :error-messages="errors.collect('calle')"
-                                                    />
-                                                    <v-text-field name="numero exterior"
-                                                                label="No. exterior:"
-                                                                v-model="de_noExt"
-                                                                maxlength="100"
-                                                                :error-messages="errors.collect('numero exterior')"
-                                                    />
-                                                    <v-text-field label="No. Interior:" maxlength="100" v-model="de_noInt"/>
-                                                    <v-text-field label="Entre calle 1:" maxlength="200" v-model="de_entreCalle1"/>
-                                                    <v-text-field label="Entre calle 2:" maxlength="200" v-model="de_entreCalle2"/>
-                                                    <v-text-field label="Referencia:" maxlength="300" v-model="de_referencia"/>
-                                                </v-flex>
-                                                <v-divider class="mx-2" inset vertical></v-divider>
-                                                <v-flex  xs12 md6 lg6>
-                                                    <v-text-field label="Pais:"
+                                            <v-stepper-content step="3">
+                                                <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
+                                                    <v-flex  xs12 md5 lg5>
+                                                        <v-autocomplete
+                                                            name="tipo vialidad"
+                                                            :items="vialidades"
+                                                            v-model="vialidad"
+                                                            label="Tipo de vialidad:" 
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-text-field 
+                                                            label="Nombre:"
+                                                            name="calle"
+                                                            v-model="calle"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('calle')"
+                                                        />
+                                                        <v-text-field 
+                                                            name="numero exterior"
+                                                            label="No. exterior:"
+                                                            v-model="noExt"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('numero exterior')"
+                                                        />
+                                                        <v-text-field label="No. Interior:" maxlength="100" v-model="noInt"/>
+                                                        <v-text-field label="Entre calle 1:" maxlength="200" v-model="entreCalle1"/>
+                                                        <v-text-field label="Entre calle 2:" maxlength="200" v-model="entreCalle2"/>
+                                                        <v-text-field label="Referencia:" maxlength="300" v-model="referencia"/>
+                                                    </v-flex>
+                                                    <v-divider class="mx-2" inset vertical></v-divider>
+                                                        <v-flex  xs12 md6 lg6>
+                                                            <v-text-field 
+                                                                label="Pais:"
                                                                 name="pais"
-                                                                v-model="de_pais"
+                                                                v-model="pais"
                                                                 value="México"
                                                                 maxlength="100"
-                                                    />
-                                                    <v-autocomplete label="Estado:"
-                                                                    name="estado"
-                                                                    v-model="de_estadoid"
-                                                                    :items="de_ciudades"
-                                                                    return-object
-                                                                    v-on:change="de_listarPorEstado"
-                                                                    no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete label="Municipio:"
-                                                                    name="municipio"
-                                                                    v-model="de_municipioid"
-                                                                    :items="de_municipios"
-                                                                    return-object
-                                                                    v-on:change="de_listarPorMunicipio"
-                                                                    no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete label="Localidad:"
-                                                                    name="localidad"
-                                                                    v-model="de_localidadid"
-                                                                    :items="de_localidades"
-                                                                    return-object
-                                                                    v-on:change="de_listarPorLocalidad"
-                                                                    no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-autocomplete
-                                                        name="tipo asentamiento"
-                                                        :items="de_asentamientos"
-                                                        v-model="de_asentamiento"
-                                                        label="Tipo de asentamiento:" 
-                                                        no-data-text="No se encontraron datos"
-                                                    />
-                                                    <v-text-field
-                                                        label="Código postal:"
-                                                        name="cp"
-                                                        v-model="de_cp"
-                                                        @keypress="soloNumerosKeypress"
-                                                        @keyup.enter="buscarPorCP()"
-                                                    />
-                                                    <v-layout wrap justify-space-between>
-                                                        <v-flex  xs6 md6 lg6>
+                                                            />
+                                                            <v-autocomplete
+                                                                label="Estado:"
+                                                                name="estado"
+                                                                v-model="estadoidP"
+                                                                :items="ciudadesP"
+                                                                return-object
+                                                                v-on:change="listarPorEstado"
+                                                                no-data-text="No se encontraron datos"
+                                                            />
+                                                            <v-autocomplete 
+                                                                label="Municipio:"
+                                                                name="municipio"
+                                                                v-model="municipioidP"
+                                                                :items="municipiosP"
+                                                                return-object
+                                                                v-on:change="listarPorMunicipio"
+                                                                no-data-text="No se encontraron datos"
+                                                            />
+                                                            <v-autocomplete 
+                                                                label="Localidad:"
+                                                                name="localidad"
+                                                                v-model="localidadidP"
+                                                                :items="localidadesP"
+                                                                return-object
+                                                                v-on:change="listarPorLocalidad"
+                                                                no-data-text="No se encontraron datos"
+                                                            />
+                                                            <v-autocomplete
+                                                                name="tipo asentamiento"
+                                                                :items="asentamientos"
+                                                                v-model="asentamiento"
+                                                                label="Tipo de asentamiento:" 
+                                                                no-data-text="No se encontraron datos"
+                                                            />
                                                             <v-text-field
-                                                                v-model="de_lat"
-                                                                label="Latitud:"
-                                                                disabled
-                                                            ></v-text-field>
-                                                        </v-flex>
-                                                        <v-flex  xs6 md6 lg6>
-                                                            <v-text-field
-                                                                v-model="de_lng"
-                                                                label="Longitud:"
-                                                                disabled
-                                                            ></v-text-field>
+                                                                label="Código postal:"
+                                                                name="cp"
+                                                                v-model="cp"
+                                                                @keypress="soloNumerosKeypress"
+                                                                @keyup.enter="buscarPorCP()"  
+                                                            />
+                                                            <v-layout wrap justify-space-between>
+                                                                <v-flex  xs6 md6 lg6>
+                                                                    <v-text-field
+                                                                        v-model="lat"
+                                                                        label="Latitud:"
+                                                                        disabled
+                                                                    ></v-text-field>
+                                                                </v-flex>
+                                                                <v-flex  xs6 md6 lg6>
+                                                                    <v-text-field
+                                                                        v-model="lng"
+                                                                        label="Longitud:"
+                                                                        disabled
+                                                                ></v-text-field>
+                                                                </v-flex>
+                                                            </v-layout>
+                                                            <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc2" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
                                                         </v-flex>
                                                     </v-layout>
-                                                    <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc01" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
-                                                </v-flex>
-                                            </v-layout>
-                                            <div class="text-xs-right">
-                                                <v-btn text @click="substep = 3">Regresar</v-btn>
-                                                <v-btn color="primary" text @click="substep = 5" v-if="mediodenuncia == 'Con detenido'">Siguiente</v-btn>
-                                                <v-btn color="primary" @click.native="step = 5" v-if="mediodenuncia != 'Con detenido'">Continuar</v-btn>
-                                            </div>
-                                        </v-stepper-content>
+                                                    <div class="text-xs-right">
+                                                        <v-btn text @click="substep = 2">Regresar</v-btn>
+                                                        <v-btn color="primary" text @click="substep = 4"">Siguiente</v-btn>
+                                                    </div>
+                                            </v-stepper-content>
 
-                                        <v-stepper-content step="5">
-                                            <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
-                                                <v-flex class="espaciado" xs12 md5 lg5>
-                                                    <v-text-field 
-                                                        name="Nombre de policia" 
-                                                        label="*Nombre(s):" 
-                                                        v-model="nombrep"   
-                                                        v-validate="'required'"
-                                                        v-if="mediodenuncia == 'Con detenido'"
-                                                        maxlength="100"
-                                                        :error-messages="errors.collect('Nombre de policia')"
-                                                    />
-                                                    <v-text-field 
-                                                        name="apellido paterno del policia" 
-                                                        label="*Apellido paterno:" 
-                                                        v-model="apaternop" 
-                                                        v-validate="'required'"
-                                                        v-if="mediodenuncia == 'Con detenido'"
-                                                        maxlength="100"
-                                                        :error-messages="errors.collect('apellido paterno del policia')"
-                                                    />
-                                                </v-flex>
-                                                <v-flex class="espaciado" xs12 sm12 md6 lg6  >
-                                                    <v-text-field 
-                                                        name="apellido materno del policia" 
-                                                        label="*Apellido materno:" 
-                                                        v-model="amaternop"
-                                                        v-validate="'required'"
-                                                        v-if="mediodenuncia == 'Con detenido'"
-                                                        maxlength="100"
-                                                        :error-messages="errors.collect('apellido materno del policia')"
-                                                    />
-                                                    <v-autocomplete 
-                                                        name="institucíon"  
-                                                        :items="institucionesp"
-                                                        v-model="institucionp"
-                                                        v-validate="'required'" 
-                                                        label="*Institución:"
-                                                        v-if="mediodenuncia == 'Con detenido'"
-                                                        :error-messages="errors.collect('institucíon')"
-                                                    />
-                                                </v-flex>
-                                                <v-flex class="espaciado" xs12 sm12 md12 lg12  >
-                                                    <v-text-field 
-                                                        name="informe policial" 
-                                                        label="*Informe policial:" 
-                                                        v-model="informep"
-                                                        v-validate="'required'"
-                                                        v-if="mediodenuncia == 'Con detenido'"
-                                                        :error-messages="errors.collect('informe policial')"
-                                                    />
-                                                </v-flex>
-                                            </v-layout>
-                                            <div class="text-xs-right">
-                                                <v-btn text @click="substep = 3">Regresar</v-btn>
-                                                <v-btn color="primary" @click="step =5">Continuar</v-btn>
-                                            </div>
-                                        </v-stepper-content>
-                                    </v-stepper-items>
-                                </v-stepper>
-                            </v-sheet>
-                            <!-- Fin del stepper interno -->
-                        </v-container> 
-                    </v-card>
-                </v-stepper-content>
-                <v-stepper-step :editable="step !== 5" :complete="step > 5" step="5" @click="step = 5" :rules="[() => !errors.has('entidad') && !errors.has('localidad o colonia') && !errors.has('Hora de hechos') && !errors.has('municipios') && !errors.has('fecha de los hechos')]">
-                    <div class="d-flex align-center">
-                        Datos de los hechos
-                        <v-btn v-show="step === 5" icon small @click.stop="ayuda = true">
-                            <v-icon color="primary">help_outline</v-icon>
-                        </v-btn>
-                    </div>
-                </v-stepper-step>
-                <v-stepper-content step="5">
-                    <v-card  color="grey lighten-5" elevation=2>
-                        <v-container grid-list-md>
-                            <v-layout row wrap>
-                                <v-flex class="espaciado" xs12 sm12 md6 lg6>
-                                    <v-autocomplete 
-                                        name="entidad"
-                                        :items="entidades"
-                                        v-model="entidad" 
-                                        v-validate="'required'"
-                                        label="*Entidad:"
-                                        return-object
-                                        prepend-icon="public"
-                                        @change="listarmunicipios()"
-                                        :error-messages="errors.collect('entidad')" 
-                                        no-data-text="No se encontraron datos"
-                                    />
-                                    <v-autocomplete 
-                                        name="municipios"
-                                        :items="municipios"
-                                        v-model="municipio" 
-                                        v-validate="'required'"
-                                        label="*Municipios:"
-                                        return-object
-                                        prepend-icon="map"
-                                        @change="listarlocalidades()"
-                                        :error-messages="errors.collect('municipios')" 
-                                        no-data-text="No se encontraron datos"
-                                    />
-                                    <v-autocomplete 
-                                        name="localidad o colonia"
-                                        :items="localidades"
-                                        v-model="localidad" 
-                                        v-validate="'required'"
-                                        label="*Localidad o colonia:"
-                                        return-object
-                                        prepend-icon="location_on"
-                                        :error-messages="errors.collect('localidad o colonia')" 
-                                        no-data-text="No se encontraron datos"
-                                    />
-                                    </v-flex>
-                                <v-flex class="espaciado" xs12 sm12 md6 lg6>
-                                    <v-menu
-                                        ref="menu5"
-                                        v-model="menu5"
-                                        :close-on-content-click="false"
-                                        :nudge-right="40"
-                                        :return-value.sync="horas"
-                                        transition="scale-transition"
-                                        offset-y
-                                        max-width="290px"
-                                        min-width="290px"
-                                    >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                name= 'Hora de hechos'
-                                                v-model="horas"
-                                                label="*Hora  de hechos:"
-                                                prepend-icon="access_time"
-                                                readonly
-                                                v-on="on"
-                                                v-validate="'required'"                                   
-                                                :error-messages="errors.collect('Hora de hechos')"
-                                            />
-                                        </template>
-                                        <v-time-picker v-model="horas" full-width />
-                                        <v-card>
-                                            <v-card-actions>
-                                                <v-spacer />
-                                                <v-btn text color="primary" @click="$refs.menu5.save(horas)">OK</v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </v-menu>
-                                    <v-menu
-                                        ref="menu4"
-                                        v-model="menu4"
-                                        :close-on-content-click="false"
-                                        :return-value.sync="fechahechos"
-                                        transition="scale-transition"
-                                        offset-y
-                                        min-width="290px"
-                                    >
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                name='fecha de los hechos'
-                                                :value="fechah"
-                                                label="*Fecha de los hechos:"
-                                                prepend-icon="event"
-                                                clearable 
-                                                readonly
-                                                v-on="on"
-                                                v-validate="'required'"                                   
-                                                :error-messages="errors.collect('fecha de los hechos')"
-                                            />
-                                        </template>
-                                        <v-date-picker locale="es" v-model="fechahechos" no-title scrollable>
-                                            <v-spacer />
-                                            <v-btn text color="primary" @click="menu4 = false">Cancel</v-btn>
-                                            <v-btn text color="primary" @click="fechainif('menu4')">OK</v-btn>
-                                        </v-date-picker>
-                                    </v-menu>
-                                </v-flex>
-                            </v-layout>
-                        </v-container> 
-                        <div class="text-xs-right">
-                            <v-btn @click.native="step = 4">Regresar</v-btn>
-                            <v-btn color="primary" @click.native="guardar()">Guardar</v-btn>
+                                            <v-stepper-content step="4">
+                                                <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
+                                                    <v-flex  xs12 md5 lg5>
+                                                        <v-switch v-model="duplicarDireccion" @change="dupdiresc()" label="¿La dirección de notificación es la misma que la dirección personal?:" color="success"  hide-details></v-switch>
+                                                        <v-autocomplete
+                                                            name="tipo vialidad"
+                                                            :items="de_vialidades"
+                                                            v-model="de_vialidad"
+                                                            label="Tipo de vialidad:" 
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-text-field label="Calle:"
+                                                            name="calle"
+                                                            v-model="de_calle"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('calle')"
+                                                        />
+                                                        <v-text-field name="numero exterior"
+                                                            label="No. exterior:"
+                                                            v-model="de_noExt"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('numero exterior')"
+                                                        />
+                                                        <v-text-field label="No. Interior:" maxlength="100" v-model="de_noInt"/>
+                                                        <v-text-field label="Entre calle 1:" maxlength="200" v-model="de_entreCalle1"/>
+                                                        <v-text-field label="Entre calle 2:" maxlength="200" v-model="de_entreCalle2"/>
+                                                        <v-text-field label="Referencia:" maxlength="300" v-model="de_referencia"/>
+                                                    </v-flex>
+                                                    <v-divider class="mx-2" inset vertical></v-divider>
+                                                    <v-flex  xs12 md6 lg6>
+                                                        <v-text-field label="Pais:"
+                                                            name="pais"
+                                                            v-model="de_pais"
+                                                            value="México"
+                                                            maxlength="100"
+                                                        />
+                                                        <v-autocomplete label="Estado:"
+                                                            name="estado"
+                                                            v-model="de_estadoid"
+                                                            :items="de_ciudades"
+                                                            return-object
+                                                            v-on:change="de_listarPorEstado"
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-autocomplete label="Municipio:"
+                                                            name="municipio"
+                                                            v-model="de_municipioid"
+                                                            :items="de_municipios"
+                                                            return-object
+                                                            v-on:change="de_listarPorMunicipio"
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-autocomplete label="Localidad:"
+                                                            name="localidad"
+                                                            v-model="de_localidadid"
+                                                            :items="de_localidades"
+                                                            return-object
+                                                            v-on:change="de_listarPorLocalidad"
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-autocomplete
+                                                            name="tipo asentamiento"
+                                                            :items="de_asentamientos"
+                                                            v-model="de_asentamiento"
+                                                            label="Tipo de asentamiento:" 
+                                                            no-data-text="No se encontraron datos"
+                                                        />
+                                                        <v-text-field
+                                                            label="Código postal:"
+                                                            name="cp"
+                                                            v-model="de_cp"
+                                                            @keypress="soloNumerosKeypress"
+                                                            @keyup.enter="buscarPorCP()"
+                                                        />
+                                                        <v-layout wrap justify-space-between>
+                                                            <v-flex  xs6 md6 lg6>
+                                                                <v-text-field
+                                                                    v-model="de_lat"
+                                                                    label="Latitud:"
+                                                                    disabled
+                                                                ></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex  xs6 md6 lg6>
+                                                                <v-text-field
+                                                                    v-model="de_lng"
+                                                                    label="Longitud:"
+                                                                    disabled
+                                                                ></v-text-field>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                        <!-- <v-btn block="" v-if="switch2==false"  @click.native="btn_geoloc01" outline color="primary"><v-icon>location_on</v-icon>   Croquis</v-btn> -->
+                                                    </v-flex>
+                                                </v-layout>
+                                                <div class="text-xs-right">
+                                                    <v-btn text @click="substep = 3">Regresar</v-btn>
+                                                    <v-btn color="primary" text @click="substep = 5" v-if="mediodenuncia == 'Con detenido'">Siguiente</v-btn>
+                                                    <v-btn color="primary" @click.native="step = 5" v-if="mediodenuncia != 'Con detenido'">Continuar</v-btn>
+                                                </div>
+                                            </v-stepper-content>
+
+                                            <v-stepper-content step="5">
+                                                <v-layout class="espaciado" xs12 sm12 md6 lg6 wrap justify-space-between>
+                                                    <v-flex class="espaciado" xs12 md5 lg5>
+                                                        <v-text-field 
+                                                            name="Nombre de policia" 
+                                                            label="*Nombre(s):" 
+                                                            v-model="nombrep"   
+                                                            v-validate="'required'"
+                                                            v-if="mediodenuncia == 'Con detenido'"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('Nombre de policia')"
+                                                        />
+                                                        <v-text-field 
+                                                            name="apellido paterno del policia" 
+                                                            label="*Apellido paterno:" 
+                                                            v-model="apaternop" 
+                                                            v-validate="'required'"
+                                                            v-if="mediodenuncia == 'Con detenido'"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('apellido paterno del policia')"
+                                                        />
+                                                    </v-flex>
+                                                    <v-flex class="espaciado" xs12 sm12 md6 lg6  >
+                                                        <v-text-field 
+                                                            name="apellido materno del policia" 
+                                                            label="*Apellido materno:" 
+                                                            v-model="amaternop"
+                                                            v-validate="'required'"
+                                                            v-if="mediodenuncia == 'Con detenido'"
+                                                            maxlength="100"
+                                                            :error-messages="errors.collect('apellido materno del policia')"
+                                                        />
+                                                        <v-autocomplete 
+                                                            name="institucíon"  
+                                                            :items="institucionesp"
+                                                            v-model="institucionp"
+                                                            v-validate="'required'" 
+                                                            label="*Institución:"
+                                                            v-if="mediodenuncia == 'Con detenido'"
+                                                            :error-messages="errors.collect('institucíon')"
+                                                        />
+                                                    </v-flex>
+                                                    <v-flex class="espaciado" xs12 sm12 md12 lg12  >
+                                                        <v-text-field 
+                                                            name="informe policial" 
+                                                            label="*Informe policial:" 
+                                                            v-model="informep"
+                                                            v-validate="'required'"
+                                                            v-if="mediodenuncia == 'Con detenido'"
+                                                            :error-messages="errors.collect('informe policial')"
+                                                        />
+                                                    </v-flex>
+                                                </v-layout>
+                                                <div class="text-xs-right">
+                                                    <v-btn text @click="substep = 3">Regresar</v-btn>
+                                                    <v-btn color="primary" @click="step =5">Continuar</v-btn>
+                                                </div>
+                                            </v-stepper-content>
+                                        </v-stepper-items>
+                                    </v-stepper>
+                                </v-sheet>
+                                <!-- Fin del stepper interno -->
+                            </v-container> 
+                        </v-card>
+                    </v-stepper-content>
+                    <v-stepper-step :editable="step !== 5" :complete="step > 5" step="5" @click="step = 5" :rules="[() => !errors.has('entidad') && !errors.has('localidad o colonia') && !errors.has('Hora de hechos') && !errors.has('municipios') && !errors.has('fecha de los hechos')]">
+                        <div class="d-flex align-center">
+                            Datos de los hechos
+                            <v-btn v-show="step === 5" icon small @click.stop="ayuda = true">
+                                <v-icon color="primary">help_outline</v-icon>
+                            </v-btn>
                         </div>
-                    </v-card>
-                </v-stepper-content>
+                    </v-stepper-step>
+                    <v-stepper-content step="5">
+                        <v-card  color="grey lighten-5" elevation=2>
+                            <v-container grid-list-md>
+                                <v-layout row wrap>
+                                    <v-flex class="espaciado" xs12 sm12 md6 lg6>
+                                        <v-autocomplete 
+                                            name="entidad"
+                                            :items="entidades"
+                                            v-model="entidad" 
+                                            v-validate="'required'"
+                                            label="*Entidad:"
+                                            return-object
+                                            prepend-icon="public"
+                                            @change="listarmunicipios()"
+                                            :error-messages="errors.collect('entidad')" 
+                                            no-data-text="No se encontraron datos"
+                                        />
+                                        <v-autocomplete 
+                                            name="municipios"
+                                            :items="municipios"
+                                            v-model="municipio" 
+                                            v-validate="'required'"
+                                            label="*Municipios:"
+                                            return-object
+                                            prepend-icon="map"
+                                            @change="listarlocalidades()"
+                                            :error-messages="errors.collect('municipios')" 
+                                            no-data-text="No se encontraron datos"
+                                        />
+                                        <v-autocomplete 
+                                            name="localidad o colonia"
+                                            :items="localidades"
+                                            v-model="localidad" 
+                                            v-validate="'required'"
+                                            label="*Localidad o colonia:"
+                                            return-object
+                                            prepend-icon="location_on"
+                                            :error-messages="errors.collect('localidad o colonia')" 
+                                            no-data-text="No se encontraron datos"
+                                        />
+                                        </v-flex>
+                                    <v-flex class="espaciado" xs12 sm12 md6 lg6>
+                                        <v-menu
+                                            ref="menu5"
+                                            v-model="menu5"
+                                            :close-on-content-click="false"
+                                            :nudge-right="40"
+                                            :return-value.sync="horas"
+                                            transition="scale-transition"
+                                            offset-y
+                                            max-width="290px"
+                                            min-width="290px"
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    name= 'Hora de hechos'
+                                                    v-model="horas"
+                                                    label="*Hora  de hechos:"
+                                                    prepend-icon="access_time"
+                                                    readonly
+                                                    v-on="on"
+                                                    v-validate="'required'"                                   
+                                                    :error-messages="errors.collect('Hora de hechos')"
+                                                />
+                                            </template>
+                                            <v-time-picker v-model="horas" full-width />
+                                            <v-card>
+                                                <v-card-actions>
+                                                    <v-spacer />
+                                                    <v-btn text color="primary" @click="$refs.menu5.save(horas)">OK</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-menu>
+                                        <v-menu
+                                            ref="menu4"
+                                            v-model="menu4"
+                                            :close-on-content-click="false"
+                                            :return-value.sync="fechahechos"
+                                            transition="scale-transition"
+                                            offset-y
+                                            min-width="290px"
+                                        >
+                                            <template v-slot:activator="{ on }">
+                                                <v-text-field
+                                                    name='fecha de los hechos'
+                                                    :value="fechah"
+                                                    label="*Fecha de los hechos:"
+                                                    prepend-icon="event"
+                                                    clearable 
+                                                    readonly
+                                                    v-on="on"
+                                                    v-validate="'required'"                                   
+                                                    :error-messages="errors.collect('fecha de los hechos')"
+                                                />
+                                            </template>
+                                            <v-date-picker locale="es" v-model="fechahechos" no-title scrollable>
+                                                <v-spacer />
+                                                <v-btn text color="primary" @click="menu4 = false">Cancel</v-btn>
+                                                <v-btn text color="primary" @click="fechainif('menu4')">OK</v-btn>
+                                            </v-date-picker>
+                                        </v-menu>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container> 
+                            <div class="text-xs-right">
+                                <v-btn @click.native="step = 4">Regresar</v-btn>
+                                <v-btn color="primary" @click.native="guardar()">Guardar</v-btn>
+                            </div>
+                        </v-card>
+                    </v-stepper-content>
             </v-stepper>
         </v-flex>
+
         <!-- Modal de ayuda dinamico  -->
         <v-dialog v-model="ayuda" max-width="500px">
             <v-card>
@@ -1375,6 +1377,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
         <!-- Loader secundario  -->
         <div v-if="cargando" class="fullscreen-loader-secundary">
             <v-card color="primary" dark class="loader-card-secundary">
@@ -1400,7 +1403,7 @@
             {{ snackbarMessage }}
             <v-btn flat @click="snackbarVisible = false">Cerrar</v-btn>
         </v-snackbar>
-    </v-layout> 
+    </v-layout>
 </template>
 
 <script> 
@@ -1416,7 +1419,7 @@
     import n403 from './403.vue'
     import { error } from 'util';
     import Swal from 'sweetalert2'
-import { computed } from 'vue';
+    import { computed } from 'vue';
 
     var assert, curp, persona;
     assert = require('assert');
@@ -1428,7 +1431,11 @@ import { computed } from 'vue';
             n401,
             n403
         },
-        data: () => ({  
+        data: () => ({
+
+            expanded: [],
+            logueado: false,
+
             //-----CLAIM------------------------------------------
             u_iddistrito: '',
             u_distrito: '',
@@ -2923,7 +2930,7 @@ import { computed } from 'vue';
                                                                     'de_tipoAsentamiento': me.de_asentamiento,
                                                                     //******************************************************* */
                                                                 },configuracion).then(function(response){
-                                                                    me.mostrarToast('La información se guardo correctamente !!!','success')
+                                                                    me.mostrarToast('¡La información se guardo correctamente!','success')
         
                                                                     var personaIdGenerado = response.data.personaid;
                                                                     let promesas = [];
@@ -3362,8 +3369,10 @@ import { computed } from 'vue';
     
                     // Buscamos en el distrito origen
                     try {
-                        const respuestaOrigen = await me.$cat.get(`api/RHechoes/ValidarNuc/${this.nuc}/${distritoOrigen}`, configuracion);
-    
+
+                        console.log(distritoOrigen)
+                        const respuestaOrigen = await this.$cat.get(`api/RHechoes/ValidarNuc/${this.nuc}/${distritoOrigen}`, configuracion);
+                        
                         if (respuestaOrigen.data.nucActivo) {
                             this.nucdisponible = false;
                             await this.ubicaNUC(distritoOrigen);
@@ -3371,6 +3380,7 @@ import { computed } from 'vue';
                         }
                     } catch (error) {
                         this.mostrarToast(`No hay conexión en el distrito origen por lo que no puedes generar el NUC \n Intentalo mas tarde.`, 'error');
+                        console.log(error)
                         this.nucdisponible = false;
                         this.cargando = false;
                         return;

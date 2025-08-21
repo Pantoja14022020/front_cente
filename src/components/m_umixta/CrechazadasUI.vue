@@ -2,63 +2,56 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
-      <v-flex v-if="showpage">
+
+    <UmixtaNavDrawer />
+
+    <v-flex v-if="showpage">
         <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Carpetas devueltas UI</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-
-
-
-                    
+            <v-toolbar-title class="font-weight-regular" >Carpetas devueltas UI</v-toolbar-title>
+            
+            <v-divider class="mx-2" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+            <v-spacer></v-spacer>
         </v-toolbar>
+
         <v-data-table
-                :headers="headers"
-                :items="colaboraciones"
-                :search="search" 
-                :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"
-                 >
+            :headers="headers"
+            :items="colaboraciones"
+            :search="search" 
+            :rows-per-page-items="rowsPerPageItems"
+            :pagination.sync="pagination"
+                >
                 
-                <template slot="items" class="white" slot-scope="props">
-                    
-                    
-                    <td>{{ props.item.usuario}}</td>   
-                    <td>{{ props.item.uSubproc}}</td>
-                    <td>{{ props.item.uAgencia}}</td>
-                    <td>{{ props.item.uModulo}}</td>     
-                    <td>{{ props.item.nuc}}</td>             
-                    <td>{{ props.item.fechasys.substring(8,10) +" de "+ obtenermes(props.item.fechasys.substring(5,7)-1)+" del "+props.item.fechasys.substring(0,4)+", "+props.item.fechasys.substring(11,19)}}</td>    
-                    <td>{{ props.item.status }}</td>
-                    <td class="layout" >       
-                        <v-tooltip bottom  >
-                            <template v-slot:activator="{ on }">
-                                <v-icon 
-                                    class="mr-2" v-on="on"  
-                                    @click="verinfo(props.item)"
-                                    >
-                                    question_answer
-                                </v-icon> 
-                            </template>
-                            <span>Ver razón de devolución</span>
-                        </v-tooltip>                                            
-                      
-                    </td>         
- 
-                </template>
-                <template slot="no-data">
+            <template slot="items" class="white" slot-scope="props">
+                <td>{{ props.item.usuario}}</td>   
+                <td>{{ props.item.uSubproc}}</td>
+                <td>{{ props.item.uAgencia}}</td>
+                <td>{{ props.item.uModulo}}</td>     
+                <td>{{ props.item.nuc}}</td>             
+                <td>{{ props.item.fechasys.substring(8,10) +" de "+ obtenermes(props.item.fechasys.substring(5,7)-1)+" del "+props.item.fechasys.substring(0,4)+", "+props.item.fechasys.substring(11,19)}}</td>    
+                <td>{{ props.item.status }}</td>
+                <td class="layout" >       
+                    <v-tooltip bottom  >
+                        <template v-slot:activator="{ on }">
+                            <v-icon 
+                                class="mr-2" v-on="on"  
+                                @click="verinfo(props.item)"
+                                >
+                                question_answer
+                            </v-icon> 
+                        </template>
+                        <span>Ver razón de devolución</span>
+                    </v-tooltip>
+                </td>         
+            </template>
+
+            <template slot="no-data">
                 <v-btn color="primary" @click="listar()"  >Resetear</v-btn>
-                </template>
-                
+            </template>
         </v-data-table>
         
-        
         <v-dialog  v-model="dialogomsjrechazo"  max-width="700px" >
-
             <v-card>
                 <v-toolbar card dark color="grey lighten-4 primary--text">
                     <v-avatar  size="30">
@@ -72,11 +65,8 @@
                     <v-form ref="form" data-vv-scope="Aceptar" >
                         <v-container grid-list-md text-xs-center>
                             <v-layout wrap>
-
                                 <v-flex  class="espaciado" xs12 sm12 md12 lg12>
-                                    
-                                    <v-list two-line   >
-
+                                    <v-list two-line>
                                         <v-list-tile>  
                                             <v-list-tile-action>
                                                 <v-icon color="success">location_city</v-icon>
@@ -93,14 +83,16 @@
                                             </v-list-tile-action> 
                                             <v-list-tile-content   >  
                                                 <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Mensaje de devolución:</a></p> </v-list-tile-title> 
-                                                <v-list-tile-sub-title   > <p v-html="rechazo"   color="accent" class="caption font-weight-regular"><a>{{ rechazo }}</a></p>  </v-list-tile-sub-title>  
-                                            </v-list-tile-content> 
-                                        </v-list-tile> 
-
-                                    </v-list> 
-                                        
-                                </v-flex>    
-
+                                                <v-list-tile-sub-title> 
+                                                    <p color="accent" class="caption font-weight-regular">
+                                                        <span v-html="rechazo"></span>
+                                                        <a>{{ rechazo }}</a>
+                                                    </p>
+                                                </v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </v-list>
+                                </v-flex>
                             </v-layout>
                         </v-container>
 
@@ -109,17 +101,13 @@
                             <v-btn  @click.native="dialogomsjrechazo=false" >Cerrar</v-btn>                                  
                         </v-card-actions> 
                     </v-form>
-                
                 </v-card-text> 
             </v-card>
-
         </v-dialog>
-     
     </v-flex>
 </v-layout> 
 </template>
 
- 
 <script> 
   import axios from 'axios'  
   import VeeValidate from 'vee-validate' 
@@ -130,6 +118,7 @@
   import 'moment/locale/es';
   import n401 from './401.vue'
   import n403 from './403.vue'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   var assert, curp, persona;
   assert = require('assert');
@@ -139,7 +128,8 @@
     components: {
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -280,13 +270,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },    
@@ -315,13 +305,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },

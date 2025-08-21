@@ -1,23 +1,21 @@
  <template>
   <v-layout row wrap  auto-grow v-if="isReady">
+
     <ConfiguracionNavDrawer/>
+
     <v-flex elevation-0>
-        <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
-            
-               
-                    <v-card>
-                        
-                        <v-card-text> 
-                            <v-icon size="400px" color="accent"    >settings</v-icon> 
-                        </v-card-text>
-                    </v-card>
+      <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
+      
+      <v-card>
+        <v-card-text> 
+            <v-icon size="400px" color="accent"    >settings</v-icon> 
+        </v-card-text>
+      </v-card>
               
-                     
-                     <v-card  auto-grow>
-                     
-                        <v-card-title  class="accent" >
-                           <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de configuración</p></div>
-                        </v-card-title>
+      <v-card  auto-grow>
+        <v-card-title  class="accent" >
+            <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de configuración</p></div>
+        </v-card-title>
                         <v-card-text>
                           <v-list   > 
                               <p class="text-md-left">Este modulo permite ....</p> 
@@ -84,7 +82,6 @@
 
 <script>
   import ConfiguracionNavDrawer from '../../components/m_configuracion/ConfiguracionNavDrawer.vue';
-
 
   export default {
     data(){

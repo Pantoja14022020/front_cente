@@ -2,6 +2,9 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <UmixtaNavDrawer />
+
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title>Clonaciones fallidas</v-toolbar-title>
@@ -75,29 +78,36 @@
     import axios from 'axios'
     import VeeValidate from 'vee-validate' 
     import { error } from 'util';
+    import UmixtaNavDrawer from './umixtaNavDrawer.vue'
+
     export default {
-        
+        components: {
+            n401,
+            n403,
+            VeeValidate,
+            'vue2-editor': require('vue2-editor').Vue2Editor,
+            UmixtaNavDrawer
+        },
         data()
         {
             return {   
-                e401:false, 
+                e401:false,
                 e403:false,
-                showpage:true,   
-
+                showpage:true,
                 dialog: false,
                 headers: [
                     { text: 'Usuario', value: 'usuario' },
                     { text: 'Descripcion del movimiento', value: 'descripcionMovimiento' },
-                    { text: 'Distrito donde fallo', value: 'distritoFallo' },    
-                    { text: 'Proceso', value: 'proceso' },  
-                    { text: 'Quien hizo el movimiento', value: 'responsableCuentaHaceMovimiento' }, 
+                    { text: 'Distrito donde fallo', value: 'distritoFallo' },
+                    { text: 'Proceso', value: 'proceso' },
+                    { text: 'Quien hizo el movimiento', value: 'responsableCuentaHaceMovimiento' },
                     { text: 'fecha del movimiento', value: 'fechaRegistro' },
-                    { text: 'Opciones', value: 'opciones', sortable: false },             
+                    { text: 'Opciones', value: 'opciones', sortable: false },
                 ],
                 search: '',
                 rowsPerPageItems: [10, 20, 30, 40, 50],
                 pagination: {
-                rowsPerPage: 50
+                    rowsPerPage: 50
                 },
                 editedIndex: -1,
 
@@ -178,7 +188,7 @@
                         me.showpage= false
                     } 
                     else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } 
@@ -186,7 +196,7 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }
                     else{
-                        me.$notify('Error al intentar listar los registros!!!','error')   
+                        me.$notify('Error al intentar listar los registros','error')   
                     } 
                 });
       
@@ -275,7 +285,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){

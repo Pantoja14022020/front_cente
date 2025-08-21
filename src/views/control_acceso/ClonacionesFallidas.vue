@@ -1,7 +1,129 @@
 <template>
+
     <v-layout align-start v-if="isReady">
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <!-------------------------MENU--------------------------------->
+        <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary">
+            <div class="text-xl-center text-md-center text-xs-center my-4">
+            <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
+            </div>
+
+            <v-list dense dark class="pt-0 primary" >
+            <template v-if="esAdministrador">
+                <v-list-tile  :to="{name:'control-acceso'}">
+                <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">home</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                </v-list-tile>
+            </template>  
+            
+            <template v-if="esAdministrador">
+                <v-list-group>
+                <v-list-tile slot="activator"> 
+                    <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                        Panel de control
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'control-acceso-panel-control'== '#' ? '' :  'control-acceso-panel-control'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">view_module</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                        Configuracion del panel de control
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile> 
+                </v-list-group>
+            </template>
+            
+            <template v-if="esAdministrador">
+                <v-list-group>
+                <v-list-tile slot="activator">   
+                    <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                        Roles
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'control-acceso-rol'== '#' ? '' :  'control-acceso-rol'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">security</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                        Roles
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile> 
+                </v-list-group>
+            </template>
+
+                <template v-if="esAdministrador">
+                <v-list-group>
+                <v-list-tile slot="activator">   
+                    <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                        Usuarios
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'control-acceso-usuario'== '#' ? '' :  'control-acceso-usuario'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">account_circle</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                        Gestión de usuarios
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile> 
+
+                <v-list-tile :to="{ name: 'clonacionesfallidas'== '#' ? '' :  'clonacionesfallidas'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">report</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title class="centenarioMenuModules">
+                        Clonaciones fallidas
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>           
+                </v-list-group>
+            </template> 
+
+            <template v-if="esAdministrador">
+                <v-list-group>
+                <v-list-tile slot="activator"> 
+                    <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                        Almacenamiento
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'control-acceso-almacenamiento'== '#' ? '' :  'control-acceso-almacenamiento'}"  active-class="secondary">  
+                    <v-list-tile-action>
+                        <v-icon class="centenarioMenuIcon">storage</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                        Administración de discos duros
+                    </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile> 
+                </v-list-group>
+            </template>
+            </v-list>
+
+        </v-navigation-drawer>
+
+        <!---------------------------------------------------------->
+
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title>Clonaciones fallidas</v-toolbar-title>
@@ -109,13 +231,18 @@
             }
         },
         computed: {
+            logueado(){
+                return this.$store.state.usuario;
+            },
+            esAdministrador(){ 
+                return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+            },
             formTitle () {
                 return this.editedIndex === -1 ? 'Nuevo modulo' : 'Actualizar modulo'
             },
             formIcon () {
                 return this.editedIndex === -1 ? 'add' : 'edit'
-            },
-            
+            },            
         },
 
 
@@ -184,7 +311,7 @@
                         me.showpage= false
                     } 
                     else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } 
@@ -192,7 +319,7 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }
                     else{
-                        me.$notify('Error al intentar listar los registros!!!','error')   
+                        me.$notify('Error al intentar listar los registros','error')   
                     } 
                 });
       
@@ -282,7 +409,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
@@ -314,9 +441,7 @@
                 if (mes == 9) return "Octubre";
                 if (mes == 10) return "Noviembre";
                 if (mes == 11) return "Diciembre";
-            },
-            
- 
+            }, 
         }        
     }
 </script>

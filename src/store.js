@@ -20,12 +20,12 @@ Vue.use(VueGoogleMaps, {
       libraries: "places"
     }
 });
- 
+
+
 
 export default new Vuex.Store({
     state: 
-    {
-        
+    {        
         loader:false,
         token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
         usuario: null,
@@ -42,13 +42,11 @@ export default new Vuex.Store({
         logged: false
     },
     mutations: 
-    {
-        
+    {        
         LOADER(state,payload)
         {
             state.loader=payload;
         },
-
         setToken(state,token)
         {
             if(token)
@@ -56,12 +54,10 @@ export default new Vuex.Store({
                 state.token=token
             }
         },
-
         setLogged(state, logged)
         {   
             state.logged = logged
         },
-
         setUsuario (state,usuario)
         {
             state.usuario=usuario
@@ -76,8 +72,7 @@ export default new Vuex.Store({
         setDrawer (state, drawer)
         {
             state.drawer = drawer
-        }
-        
+        }        
     },
     actions: 
     {
@@ -132,6 +127,17 @@ export default new Vuex.Store({
             commit("setDrawer", drawer)
         },
 
+        /* Method. Umixta */
+        autoLogin({commit})
+        {
+            let token = localStorage.getItem("token")
+            if (token){
+                commit("setToken", token)
+                commit("setUsuario", decode(token))
+            }
+            router.push({name: 'umixta'})
+        },
+
         /* Method. Control Acceso */
         autoLoginCA({commit})
         {
@@ -158,8 +164,8 @@ export default new Vuex.Store({
         autoLoginJR({commit}){
             let token = localStorage.getItem("token")
             if (token){
-              commit("setToken", token)
-              commit("setUsuario", decode(token))
+                commit("setToken", token)
+                commit("setUsuario", decode(token))
             }
             router.push({name: 'justicia-restaurativa'})
         },
@@ -167,8 +173,8 @@ export default new Vuex.Store({
         autoLoginPI({commit}){
             let token = localStorage.getItem("token")
             if (token){
-              commit("setToken", token)
-              commit("setUsuario", decode(token))
+                commit("setToken", token)
+                commit("setUsuario", decode(token))
             }
             router.push({name: 'policia-investigadora'})
         },
@@ -176,8 +182,8 @@ export default new Vuex.Store({
         autoLoginSP({commit}){
             let token = localStorage.getItem("token")
             if (token){
-              commit("setToken", token)
-              commit("setUsuario", decode(token))
+                commit("setToken", token)
+                commit("setUsuario", decode(token))
             }
             router.push({name: 'servicios-periciales'})
         },
@@ -200,5 +206,5 @@ export default new Vuex.Store({
             localStorage.removeItem("token")
             router.push({ name: 'Panel' })     
         }*/
-  }
+    }
 })

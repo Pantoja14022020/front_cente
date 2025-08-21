@@ -2,7 +2,7 @@
     <v-layout align-start>
 
         <ConfiguracionNavDrawer/>
-      <n401 v-if="e401" />
+        <n401 v-if="e401" />
         <n403 v-if="e403" />
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
@@ -216,13 +216,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             },
@@ -278,7 +278,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
@@ -300,7 +300,7 @@
                                 
                             },configuracion).then(function(response){
                                 me.close();
-                                me.$notify('La información se guardo correctamente !!!','success')  
+                                me.$notify('¡La información se guardo correctamente!','success')  
                                 me.listar();
                                 me.limpiar();                        
                                }).catch(err => { 
@@ -311,7 +311,7 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){

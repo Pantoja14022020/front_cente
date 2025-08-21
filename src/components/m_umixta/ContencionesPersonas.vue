@@ -2,6 +2,9 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
       <v-flex v-if="showpage">
         <v-toolbar flat color="white">
             <v-toolbar-title class="font-weight-regular" >Registro de contenciones.</v-toolbar-title>
@@ -20,7 +23,7 @@
                 min-width="290px"
             >
                 <template v-slot:activator="{ on }">
-                <v-text-field
+                <v-text-field class="mx-3 mt-3"
                     name='fecha de contención'
                     :value="fechab"
                     label="*Fecha de contención:"
@@ -78,14 +81,15 @@
   import { VueEditor } from "vue2-editor"; 
   import n401 from './401.vue'
   import n403 from './403.vue'
-    import { error } from 'util';
-  
+  import { error } from 'util';
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'  
 
   export default {
     components: {
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -138,12 +142,7 @@
         modalAdd:false,
         modaldocumento:false,
         aux: false,
-        
-
-
         //********************************/
-        
-
         rac:'',
         //-----CLAIM------------------------------------------
         u_iddistrito:'',
@@ -160,29 +159,28 @@
         u_puesto:'',
         u_subproc:'',
         //----------------------------------------------------
-        
     }),
        
     created () {
         let me = this 
 
-                me.$notify('Carpeta abierta correctamente !!!','success')         
-                me.u_iddistrito=me.$store.state.usuario.iddistrito;
-                me.u_distrito=me.$store.state.usuario.distrito;
-                me.u_dirSubPro=me.$store.state.usuario.dirSubProc;
-                me.u_idagencia=me.$store.state.usuario.idagencia;
-                me.u_agencia=me.$store.state.usuario.agencia;
-                me.u_idmoduloservicio=me.$store.state.usuario.idmoduloservicio;
-                me.u_modulo=me.$store.state.usuario.modulo;
-                me.u_idusuario=me.$store.state.usuario.idusuario;
-                me.u_nombre=me.$store.state.usuario.usuario;
-                me.u_clave=me.$store.state.usuario.clave;
-                me.u_rol=me.$store.state.usuario.rol;
-                me.u_puesto=me.$store.state.usuario.puesto;
-                me.u_subproc=me.$store.state.usuario.subProc;
+            me.$notify('Carpeta abierta correctamente','success')         
+            me.u_iddistrito=me.$store.state.usuario.iddistrito;
+            me.u_distrito=me.$store.state.usuario.distrito;
+            me.u_dirSubPro=me.$store.state.usuario.dirSubProc;
+            me.u_idagencia=me.$store.state.usuario.idagencia;
+            me.u_agencia=me.$store.state.usuario.agencia;
+            me.u_idmoduloservicio=me.$store.state.usuario.idmoduloservicio;
+            me.u_modulo=me.$store.state.usuario.modulo;
+            me.u_idusuario=me.$store.state.usuario.idusuario;
+            me.u_nombre=me.$store.state.usuario.usuario;
+            me.u_clave=me.$store.state.usuario.clave;
+            me.u_rol=me.$store.state.usuario.rol;
+            me.u_puesto=me.$store.state.usuario.puesto;
+            me.u_subproc=me.$store.state.usuario.subProc;
 
-                //*********************************************** */                
-                me.listar((new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + (new Date().getDate())) + "T00:00:00");               
+            //*********************************************** */                
+            me.listar((new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" + (new Date().getDate())) + "T00:00:00");               
         
        axios.interceptors.request.use( (config)=> {
           // Do something before request is sent 
@@ -253,13 +251,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             }); 
         },

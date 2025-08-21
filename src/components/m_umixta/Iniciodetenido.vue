@@ -2,6 +2,9 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <UmixtaNavDrawer />
+
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title class="font-weight-regular" >Registro con detenido</v-toolbar-title>
@@ -823,18 +826,19 @@
   import pdf from 'vue-pdf'
   import { error } from 'util';
   import { generarTokenCoodenadas } from './crearTokenCoordenadas';
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   var assert, curp, persona;
   assert = require('assert');
   curp = require('curp.js');  
 
-  export default {
-     
+  export default {     
     components: {
         "vue-web-cam": WebCam,
         n401,
         n403,
-        pdf
+        pdf,
+        UmixtaNavDrawer
     },
     data: () => ({  
         clikeado: false,
@@ -1278,13 +1282,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -1307,13 +1311,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1337,13 +1341,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
         },
@@ -1367,13 +1371,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1396,13 +1400,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
         },
@@ -1458,13 +1462,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
        
@@ -1509,13 +1513,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1560,13 +1564,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')    
+                            me.$notify('Error al intentar listar los registros','error')    
                         } 
                  });
                 }
@@ -1580,13 +1584,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1607,13 +1611,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
         },
@@ -1635,13 +1639,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1718,13 +1722,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
         },
@@ -1747,13 +1751,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1776,13 +1780,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1805,13 +1809,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },
@@ -1834,13 +1838,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },  
@@ -1863,13 +1867,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },  
@@ -1892,13 +1896,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },  
@@ -1921,13 +1925,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -1950,13 +1954,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         },  
@@ -1981,13 +1985,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
                 
@@ -2011,13 +2015,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -2054,13 +2058,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
                
@@ -2098,13 +2102,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
       
@@ -2131,13 +2135,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -2159,13 +2163,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
         }, 
@@ -2188,13 +2192,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
         }, 
@@ -2353,13 +2357,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });  
         },
@@ -2549,7 +2553,7 @@
                                             'lat': me.lat,
                                             'lng':me.lng,
                                         },configuracion).then(function(response){
-                                            me.$notify('La información se guardo correctamente !!!','success') 
+                                            me.$notify('¡La información se guardo correctamente!','success') 
                                             //this.ticketModal=1;
                                         
                                             var doc = new jsPDF('p', 'mm', [200,200]);
@@ -2582,7 +2586,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false 
                                             } else if (err.response.status==404){
@@ -2600,7 +2604,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
@@ -2721,7 +2725,7 @@
                                                 
                                             },configuracion).then(function(response){   
                                                 
-                                                me.$notify('La información se guardo correctamente !!!','success') 
+                                                me.$notify('¡La información se guardo correctamente!','success') 
                                                 var personaIdGenerado = response.data.personaid;
                                             
                                                 this.$cat.post('api/DocumentosPesonas/Crear',{
@@ -2738,7 +2742,7 @@
                                                     'Puesto': me.u_puesto,
                                                     
                                                 },configuracion).then(function(response){  
-                                                    me.$notify('La información se guardo correctamente !!!','success')   
+                                                    me.$notify('¡La información se guardo correctamente!','success')   
                                                 }).catch(err => { 
                                                     if (err.response.status==400){
                                                         me.$notify("No es un usuario válido", 'error')
@@ -2747,7 +2751,7 @@
                                                         me.e401 = true,
                                                         me.showpage= false
                                                     } else if (err.response.status==403){ 
-                                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                                         me.e403= true
                                                         me.showpage= false 
                                                     } else if (err.response.status==404){
@@ -2769,7 +2773,7 @@
                                                     me.e401 = true,
                                                     me.showpage= false
                                                 } else if (err.response.status==403){ 
-                                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                                     me.e403= true
                                                     me.showpage= false 
                                                 } else if (err.response.status==404){
@@ -2873,7 +2877,7 @@
                                         
                                     },configuracion).then(function(response){   
                                         
-                                            me.$notify('La información se guardo correctamente !!!','success') 
+                                            me.$notify('¡La información se guardo correctamente!','success') 
                                             var personaIdGenerado = response.data.personaid;
                                             
                                             me.ratencioncontrol = response.data.idatencion
@@ -2889,7 +2893,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
@@ -2914,7 +2918,7 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
@@ -3024,7 +3028,7 @@
                                         
                                     },configuracion).then(function(response){   
                                         
-                                        me.$notify('La información se guardo correctamente !!!','success') 
+                                        me.$notify('¡La información se guardo correctamente!','success') 
 
                                     
                                         this.$cat.post('api/DocumentosPesonas/Crear',{
@@ -3041,7 +3045,7 @@
                                             'Puesto': me.u_puesto,
                                             
                                         },configuracion).then(function(response){  
-                                            me.$notify('La información se guardo correctamente !!!','success')   
+                                            me.$notify('¡La información se guardo correctamente!','success')   
                                         }).catch(err => { 
                                             if (err.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
@@ -3050,7 +3054,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false 
                                             } else if (err.response.status==404){
@@ -3072,7 +3076,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
@@ -3165,7 +3169,7 @@
                                 
                             },configuracion).then(function(response){   
                                 
-                                me.$notify('La información se guardo correctamente !!!','success') 
+                                me.$notify('¡La información se guardo correctamente!','success') 
 
                                     me.limpiar();
                                     
@@ -3178,7 +3182,7 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){
@@ -3226,7 +3230,7 @@
 
                         me.listarrap();
                         me.listarPolicias();
-                        me.$notify('La información se guardo correctamente !!!','success')                 
+                        me.$notify('¡La información se guardo correctamente!','success')                 
 
                     }).catch(err => { 
                         if (err.response.status==400){
@@ -3236,7 +3240,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){

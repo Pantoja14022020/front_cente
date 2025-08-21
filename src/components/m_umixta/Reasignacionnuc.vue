@@ -2,19 +2,19 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
-            <v-flex v-if="showpage">
-            <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Reasignación Nucs.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
 
- 
-                    
-                </v-toolbar>
+        <UmixtaNavDrawer />
+
+        <v-flex v-if="showpage">
+            <v-toolbar flat color="white">
+                <v-toolbar-title class="font-weight-regular" >Reasignación Nucs.</v-toolbar-title>
+                
+                <v-divider class="mx-2" inset vertical></v-divider>
+                
+                <v-spacer></v-spacer>
+                <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+                <v-spacer></v-spacer>
+            </v-toolbar>
             <v-data-table
                 :headers="headers"
                 :items="carpetas"
@@ -41,10 +41,10 @@
                         </v-tooltip>
 
                     </td>
-
                 </template>
+
                 <template slot="no-data">
-                <v-btn color="primary" @click="listar">Resetear</v-btn>
+                    <v-btn color="primary" @click="listar">Resetear</v-btn>
                 </template>
             </v-data-table>
 
@@ -63,9 +63,7 @@
                         <v-form ref="form"  >
                             <v-container grid-list-md text-xs-center>
                                 <v-layout wrap>
-
                                     <v-flex  class="espaciado" xs12 sm12 md12 lg12>
-
                                         <v-autocomplete 
                                             name="modulo"   
                                             :items="modulos"
@@ -75,10 +73,8 @@
                                             data-vv-scope="Aceptar"
                                             label="*Modulo:"
                                             :error-messages="errors.collect('modulo')">
-                                        </v-autocomplete>                                    
-                                            
-                                    </v-flex>    
-
+                                        </v-autocomplete>
+                                    </v-flex>
                                 </v-layout>
                             </v-container>
 
@@ -88,13 +84,10 @@
                                 <v-btn color="success" @click.native="reasignar" >Guardar</v-btn>                              
                             </v-card-actions> 
                         </v-form>
-                    
                     </v-card-text> 
                 </v-card>
-
             </v-dialog>
         </v-flex>
-        
     </v-layout>
 </template>
 <script>
@@ -102,14 +95,17 @@
     import VeeValidate from 'vee-validate' 
     import n401 from './401.vue'
     import n403 from './403.vue'
-      import { error } from 'util';
+    import { error } from 'util';
+    import UmixtaNavDrawer from './umixtaNavDrawer.vue'
+
     export default {
+        components: {  
+            n401,
+            n403,
+            UmixtaNavDrawer
+        }, 
         data(){
-            return {      
-                components: {  
-                    n401,
-                    n403
-                }, 
+            return {
                 showpage:true,
                 e401:false,
                 e403:false,
@@ -192,13 +188,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             },
@@ -225,13 +221,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },
@@ -269,7 +265,7 @@
                             'UModulo': me.u_modulo
                         }, configuracion).then(function(response) 
                         {
-                            me.$notify('La información se guardo correctamente !!!','success');
+                            me.$notify('¡La información se guardo correctamente!','success');
                             me.crearRegistroTableroI(descripcionRegTabI);                          
                             me.dialogoaceptar = false      
                             me.listar();
@@ -284,7 +280,7 @@
                             me.e401 = true,
                             me.showpage = false
                             } else if (err.response.status == 403) {
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403 = true
                             me.showpage = false
                             } else if (err.response.status == 404) {
@@ -304,7 +300,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
@@ -339,7 +335,7 @@
 
             },configuracion).then(function (response) 
             {
-                me.$notify("La información se guardo correctamente !!!", "success");
+                me.$notify("¡La información se guardo correctamente!", "success");
 
             }).catch((err) => 
             {
@@ -352,7 +348,7 @@
                     );
                     (me.e401 = true), (me.showpage = false);
                 } else if (err.response.status == 403) {
-                    me.$notify("No esta autorizado para ver esta pagina", "error");
+                    me.$notify("No esta autorizado para ver esta página", "error");
                     me.e403 = true;
                     me.showpage = false;
                 } else if (err.response.status == 404) {

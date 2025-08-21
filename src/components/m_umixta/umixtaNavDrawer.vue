@@ -1,5 +1,3 @@
-
-
 <template>
   <!--<v-app id="app">-->
     <!--<v-toolbar flat class="grey lighten-4">
@@ -355,17 +353,17 @@
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile
-                v-if="
-                esAdministrador ||
-                esDirector ||
-                esCoordinador ||
-                esAmpoMixto ||esAmpoDetenido ||
-                esRecepcion ||
-                esAmpoIL ||
-                esAMPOAMP
+              v-if="
+              esAdministrador ||
+              esDirector ||
+              esCoordinador ||
+              esAmpoMixto ||esAmpoDetenido ||
+              esRecepcion ||
+              esAmpoIL ||
+              esAMPOAMP
               "
-                :to="{ name: 'umixtacarpetas' == '#' ? '' : 'umixtacarpetas' }"
-                :class="{ 'secondary': isActiveRoute(['umixtacarpetas']) }"
+              :to="{ name: 'umixtacarpetas' == '#' ? '' : 'umixtacarpetas' }"
+              :class="{ 'secondary': isActiveRoute(['umixtacarpetas']) }"
             >
               <v-list-tile-action>
                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
@@ -1985,6 +1983,7 @@
 
       </v-list>
     </v-navigation-drawer>
+    
     <!--<v-content class="grey lighten-4">
       <v-divider />
       <v-container fluid>
@@ -2018,74 +2017,70 @@ export default {
         };
       },
       created: function () {
-        ///////////////////////////////////////////////////////////////
         // Add a request interceptor
         axios.interceptors.request.use(
-            (config) => {
-              // Do something before request is sent
-              console.log(config);
-              this.$store.commit("LOADER", true);
-              return config;
-            },
-            (error) => {
-              // Do something with request error
-              this.$store.commit("LOADER", false);
-              return Promise.reject(error);
-            }
+          (config) => {
+            // Do something before request is sent
+            console.log(config);
+            this.$store.commit("LOADER", true);
+            return config;
+          },
+          (error) => {
+            // Do something with request error
+            this.$store.commit("LOADER", false);
+            return Promise.reject(error);
+          }
         );
         // Add a response interceptor
         axios.interceptors.response.use(
-            (response) => {
-              console.log(response);
-              this.$store.commit("LOADER", false);
-              // Do something with response data
-              return response;
-            },
-            (err) => {
-              // Do something with response error
-              return new Promise((resolve, reject) => {
-                this.$store.dispatch("logout").then(() => {
-                  this.$router.push("/login");
-                });
-                throw err;
+          (response) => {
+            console.log(response);
+            this.$store.commit("LOADER", false);
+            // Do something with response data
+            return response;
+          },
+          (err) => {
+            // Do something with response error
+            return new Promise((resolve, reject) => {
+              this.$store.dispatch("logout").then(() => {
+                this.$router.push("/login");
               });
-            }
-        );
-        ///////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////
+              throw err;
+            });
+          }
+        );        
         // Add a request interceptor
         this.$conf.interceptors.request.use(
-            (config) => {
-              // Do something before request is sent
-              console.log(config);
-              this.$store.commit("LOADER", true);
-              return config;
-            },
-            (error) => {
-              // Do something with request error
-              this.$store.commit("LOADER", false);
-              return Promise.reject(error);
-            }
+          (config) => {
+            // Do something before request is sent
+            console.log(config);
+            this.$store.commit("LOADER", true);
+            return config;
+          },
+          (error) => {
+            // Do something with request error
+            this.$store.commit("LOADER", false);
+            return Promise.reject(error);
+          }
         );
         // Add a response interceptor
         this.$conf.interceptors.response.use(
-            (response) => {
-              console.log(response);
-              this.$store.commit("LOADER", false);
-              // Do something with response data
-              return response;
-            },
-            (error) => {
-              // Do something with response error
-              return new Promise((resolve, reject) => {
-                this.$store.dispatch("logout").then(() => {
-                  this.$router.push("/login");
-                });
-                throw err;
+          (response) => {
+            console.log(response);
+            this.$store.commit("LOADER", false);
+            // Do something with response data
+            return response;
+          },
+          (error) => {
+            // Do something with response error
+            return new Promise((resolve, reject) => {
+              this.$store.dispatch("logout").then(() => {
+                this.$router.push("/login");
               });
-            }
+              throw err;
+            });
+          }
         );
-        ///////////////////////////////////////////////////////////////
       },
     };
   },
@@ -2095,53 +2090,53 @@ export default {
     },
     esAdministrador() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "Administrador"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Administrador"
       );
     },
     esRecepcion() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "Recepción"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Recepción"
       );
     },
     esAMPOAMP() {
       return (
-          this.$store.state.usuario && this.$store.state.usuario.rol == "AMPO-AMP"
+        this.$store.state.usuario && this.$store.state.usuario.rol == "AMPO-AMP"
       );
     },
     esDirector() {
       return (
-          this.$store.state.usuario && this.$store.state.usuario.rol == "Director"
+        this.$store.state.usuario && this.$store.state.usuario.rol == "Director"
       );
     },
     esCoordinador() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "Coordinador"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Coordinador"
       );
     },
     esAmpoMixto() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "AMPO-AMP Mixto"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "AMPO-AMP Mixto"
       );
     },
     esAmpoIL() {
       return (
-          this.$store.state.usuario && this.$store.state.usuario.rol == "AMPO-IL"
+        this.$store.state.usuario && this.$store.state.usuario.rol == "AMPO-IL"
       );
     },
     esProcurador() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "Procurador"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "Procurador"
       );
     },
     esAmpoDetenido() {
       return (
-          this.$store.state.usuario &&
-          this.$store.state.usuario.rol == "AMPO-AMP Detenido"
+        this.$store.state.usuario &&
+        this.$store.state.usuario.rol == "AMPO-AMP Detenido"
       );
     },
     usuario() {
@@ -2150,18 +2145,17 @@ export default {
     email() {
       return this.$store.state.usuario.email;
     },
-  },
+  },  
   created() {
-    this.$store.dispatch("autoLogin");
-    //AXIOS PARA PODER
+    //this.$store.dispatch("autoLogin");
   },
   methods: {
     salir() {
       this.$store.dispatch("salir");
       this.$controlacceso.get('api/Usuarios/DistrictUser')
-          .then(response => {
-            window.location.href = response.data.direccion
-          })
+      .then(response => {
+        window.location.href = response.data.direccion
+      })
     },
     isActiveRoute(routeNames) {
       return Array.isArray(routeNames)

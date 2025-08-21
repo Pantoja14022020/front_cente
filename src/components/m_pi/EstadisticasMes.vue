@@ -1382,13 +1382,13 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar leer la lista roles!!!','error')   
+                        me.$notify('¡Error al intentar leer la lista roles!','error')   
                     } 
                 });
         },  
@@ -2100,13 +2100,13 @@
                                 this.e401 = true,
                                 this.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 this.e403= true
                                 this.showpage= false 
                             } else if (err.response.status==404){
                                 me.$notify("El recuso no ha sido encontrado", 'error')
                             }else{
-                                me.$notify('Error al intentar leer la lista roles!!!','error')   
+                                me.$notify('¡Error al intentar leer la lista roles!','error')   
                             } 
                         });
                 }else{

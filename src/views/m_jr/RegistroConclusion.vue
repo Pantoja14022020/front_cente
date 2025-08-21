@@ -649,11 +649,11 @@
   import moment from 'moment'
   import 'moment/locale/es';
   import alertify from 'alertifyjs';
-    import { VueEditor } from "vue2-editor";
+  import { VueEditor } from "vue2-editor";
   import { NumberAsString } from './NumerosLetras.js'
   import DualListBox from "dual-listbox-vue";
-import "dual-listbox-vue/dist/dual-listbox.css";
-import { generarQRCodeBase64 } from './crearQR';
+  import "dual-listbox-vue/dist/dual-listbox.css";
+  import { generarQRCodeBase64 } from './crearQR';
 
   export default {
     components: {  
@@ -777,7 +777,7 @@ import { generarQRCodeBase64 } from './crearQR';
           if(token)
           { 
             this.$store.dispatch("guardarToken", token)
-            this.$store.dispatch("setLogin", true, token)
+            this.$store.dispatch("setLogin", token)
           }
           else 
           { 

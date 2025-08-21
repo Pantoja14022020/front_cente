@@ -302,8 +302,17 @@
             email(){
                 return this.$store.state.usuario.email;
             },
-            drawer(){
+            /*drawer(){
                 return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
+            }*/
+
+            drawer: {
+                get() {
+                return this.$store.state.drawer;
+                },
+                set(value) {
+                this.$store.commit('setDrawer', value);
+                }
             }
         },
 
@@ -367,13 +376,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                           me.$notify('Error al intentar listar los registros!!!','error')   
+                           me.$notify('Error al intentar listar los registros','error')   
                     } 
                 });
 
@@ -436,7 +445,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
@@ -457,7 +466,7 @@
                             }).then(function(response){
                                 me.$panel.put('api/PanelControls/Activar/'+response.data.id).then(function (response){
                                   me.close();
-                                  me.$notify('La información se guardo correctamente !!!','success')
+                                  me.$notify('¡La información se guardo correctamente!','success')
                                   me.listar();
                                   me.limpiar();
                                 }).catch(err =>{
@@ -472,7 +481,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){

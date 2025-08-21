@@ -139,8 +139,8 @@
             <v-spacer></v-spacer>
             <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
             <v-spacer></v-spacer>
-                <v-btn class="mx-2" @click="agregar" fab dark small color="primary">
-                    <v-icon dark>add</v-icon>
+                <v-btn class="mx-2 pt-2" @click="agregar" fab dark small color="primary">
+                    <v-icon class="mt-1" dark>add</v-icon>
                 </v-btn>
 
         </v-toolbar>
@@ -619,183 +619,181 @@
 </template>
 
 <script>
-    import n401 from '../../components/control_acceso/401.vue'
-    import n403 from '../../components/control_acceso/403.vue'
-    import axios from 'axios'
-    import VeeValidate from 'vee-validate' 
-    import { error } from 'util';
-    import pdfMake from "pdfmake/build/pdfmake";
-    import moment from 'moment';
-    import "moment/locale/es";
-    import { generarQRCodeBase64 } from '../../components/control_acceso/crearQR';
-    import pdfFonts from "pdfmake/build/vfs_fonts";
-    import htmlToPdfmake from "html-to-pdfmake";
+  import n401 from '../../components/control_acceso/401.vue'
+  import n403 from '../../components/control_acceso/403.vue'
+  import axios from 'axios'
+  import VeeValidate from 'vee-validate' 
+  import { error } from 'util';
+  import pdfMake from "pdfmake/build/pdfmake";
+  import moment from 'moment';
+  import "moment/locale/es";
+  import { generarQRCodeBase64 } from '../../components/control_acceso/crearQR';
+  import pdfFonts from "pdfmake/build/vfs_fonts";
+  import htmlToPdfmake from "html-to-pdfmake";
    
-    export default {
-         components:{
-             n401,
-             n403
+  export default {
+    components:{
+      n401,
+      n403
+    },
+    data(){
+      return {
+        keycloakUserToken:'',
+        keycloakPasswordToken:'',
+        createdKeycloakUserId: [],
+        isReady: false,
+        u_iddistrito:'',
+        u_distrito:'',
+        u_dirSubPro:'',
+        u_idagencia:'',
+        u_agencia:'',
+        u_idmoduloservicio:'',
+        u_modulo:'',
+        u_idusuario:'',
+        u_nombre:'',
+        u_responsablecuenta:'',
+        e401:false,
+        e403:false,
+        showpage:true,
+        show: true,
+        dense:true,
+        usuarios:[],
+        dialog: false,
+        headers: [                    
+          { text: 'Nombre', value: 'nombre' },
+          { text: 'Responsable de la cuenta', value: 'responsableCuenta' },
+          { text: 'Rol', value: 'nombrerol' },
+          { text: 'Usuario', value: 'usuario'},
+          { text: 'Distrito', value: 'distrito'},
+          { text: 'Agencia', value: 'agencia'},
+          { text: 'Modulo', value: 'modulonombre'},  
+          { text: 'Estado', value: 'condicion'}, 
+          { text: 'Opciones', value: 'opciones'},                
+        ],
+        headersH: [
+          { text: 'Usuario Centenario', value: 'usuario' },
+          { text: 'Movimientos realizados', value: 'descripcionMovimiento' },
+          { text: 'Proceso', value: 'proceso' },
+          { text: 'Distrito', value: 'distrito'},
+          { text: 'Subdireccion', value: 'dirSubHaceMovimiento'},
+          { text: 'Agencia', value: 'agenciaHaceMovimiento'},
+          { text: 'Modulo', value: 'moduloHaceMovimiento'},  
+          { text: 'Usuario', value: 'responsableCuentaHaceMovimiento'}, 
+          { text: 'fecha del movimiento', value: 'fechaRegistro' },
+          { text: 'Opciones', value: 'opciones'}, 
+        ],
+        search: '',
+        rowsPerPageItems: [15, 30, 40, 50],
+        pagination: {
+            rowsPerPage: 15
         },
-        data(){
-            return {
-                keycloakUserToken:'',
-                keycloakPasswordToken:'',
-                createdKeycloakUserId: [],
-                isReady: false,
-                u_iddistrito:'',
-                u_distrito:'',
-                u_dirSubPro:'',
-                u_idagencia:'',
-                u_agencia:'',
-                u_idmoduloservicio:'',
-                u_modulo:'',
-                u_idusuario:'',
-                u_nombre:'',
-                u_responsablecuenta:'',
-                e401:false, 
-                e403:false,
-                showpage:true,  
-
-                show: true,
-                dense:true,
-                usuarios:[],                
-                dialog: false,
-                headers: [
-                    
-                    { text: 'Nombre', value: 'nombre' },
-                    { text: 'Responsable de la cuenta', value: 'responsableCuenta' },
-                    { text: 'Rol', value: 'nombrerol' },
-                    { text: 'Usuario', value: 'usuario'},
-                    { text: 'Distrito', value: 'distrito'},
-                    { text: 'Agencia', value: 'agencia'},
-                    { text: 'Modulo', value: 'modulonombre'},  
-                    { text: 'Estado', value: 'condicion'}, 
-                    { text: 'Opciones', value: 'opciones'},                
-                ],
-                headersH: [
-                    { text: 'Usuario Centenario', value: 'usuario' },
-                    { text: 'Movimientos realizados', value: 'descripcionMovimiento' },
-                    { text: 'Proceso', value: 'proceso' },
-                    { text: 'Distrito', value: 'distrito'},
-                    { text: 'Subdireccion', value: 'dirSubHaceMovimiento'},
-                    { text: 'Agencia', value: 'agenciaHaceMovimiento'},
-                    { text: 'Modulo', value: 'moduloHaceMovimiento'},  
-                    { text: 'Usuario', value: 'responsableCuentaHaceMovimiento'}, 
-                    { text: 'fecha del movimiento', value: 'fechaRegistro' },
-                    { text: 'Opciones', value: 'opciones'}, 
-                ],
-                search: '',
-                rowsPerPageItems: [15, 30, 40, 50],
-                pagination: {
-                    rowsPerPage: 15
-                },
-            editedIndex: -1, 
+        editedIndex: -1, 
                 
-                nombre:'',
-                idUsuario: '',
-                distritos:[],
-                distrito:'',
-                dsp:[],
-                iddsp:'',
+          nombre:'',
+          idUsuario: '',
+          distritos:[],
+          distrito:'',
+          dsp:[],
+          iddsp:'',
 
-                agencias:[], 
-                idagencia:'',
+          agencias:[], 
+          idagencia:'',
 
-                idrol:'',
-                roles:[], 
+          idrol:'',
+          roles:[], 
 
-                modulos: [],
-                idModuloServicio: '',
+          modulos: [],
+          idModuloServicio: '',
 
-                puesto:'',
-                direccion:'',
-                telefono: '',
-                email: '',
-                condicion: true,
-                contador:0,
-                nombreModulo:'',
-                nombreAgencia:'',
-                nombreSubDir:'',
+          puesto:'',
+          direccion:'',
+          telefono: '',
+          email: '',
+          condicion: true,
+          contador:0,
+          nombreModulo:'',
+          nombreAgencia:'',
+          nombreSubDir:'',
 
-                usuario:'',
-                password:'',
-                actPassword:false,
-                passwordAnt:'',
-                responsableCuenta:'',
-                urlDistrito:'',
+          //usuario:'',
+          password:'',
+          actPassword:false,
+          passwordAnt:'',
+          responsableCuenta:'',
+          urlDistrito:'',
 
-                valida: 0,
-                validaMensaje:[],
-                adModal: 0,
-                adAccion: 0,
-                adNombre: '',
-                adId: '', 
+          valida: 0,
+          validaMensaje:[],
+          adModal: 0,
+          adAccion: 0,
+          adNombre: '',
+          adId: '', 
                 
-                addPanel:false,
-                panel:[],
-                panels:[],
-                panelesAnteriores:[],
-                distritoActual:'',
-                idDistritoPach:'7f662ec1-6705-406e-bcd0-f56ade7bcae2',
-                distritoFallo:[],
+          addPanel:false,
+          panel:[],
+          panels:[],
+          panelesAnteriores:[],
+          distritoActual:'',
+          idDistritoPach:'7f662ec1-6705-406e-bcd0-f56ade7bcae2',
+          distritoFallo:[],
 
-                cargando: false,
-                distritoEnProceso:'',
-                descripcionMovimiento:'',
-                ModuloServicioIdAnterior:'',
-                //Variable para descripcion de cambio
-                nombreAnt:'',
-                responsableAnt:'',
-                puestoAnt:'',
-                direcionAnt:'',
-                distritoAnt:'',
-                distritoIdAnt:'',
-                subdirAnt:'',
-                subdirIdAnt:'',
-                agenciaAnt:'',
-                agenciaIdAnt:'',
-                moduloAnt:'',
-                moduloIdAnt:'',
-                rolAnt:'',
-                rolIdAnt:'',
-                emailAnt:'',
-                telefonoAnt:'',
-                usuarioAnt:'',
-                historialUsuario:[],
-                modalhistorial:false,
-                oficio:'',
-                datosImpresion:[],
-                contrasena:'',
-                indicaPass:false,
-                texto: 'Vista Previa',
-                qrCode: null,
-            }
-        },
+          cargando: false,
+          distritoEnProceso:'',
+          descripcionMovimiento:'',
+          ModuloServicioIdAnterior:'',
+          //Variable para descripcion de cambio
+          nombreAnt:'',
+          responsableAnt:'',
+          puestoAnt:'',
+          direcionAnt:'',
+          distritoAnt:'',
+          distritoIdAnt:'',
+          subdirAnt:'',
+          subdirIdAnt:'',
+          agenciaAnt:'',
+          agenciaIdAnt:'',
+          moduloAnt:'',
+          moduloIdAnt:'',
+          rolAnt:'',
+          rolIdAnt:'',
+          emailAnt:'',
+          telefonoAnt:'',
+          usuarioAnt:'',
+          historialUsuario:[],
+          modalhistorial:false,
+          oficio:'',
+          datosImpresion:[],
+          contrasena:'',
+          indicaPass:false,
+          texto: 'Vista Previa',
+          qrCode: null,
+        }
+      },
       
-       computed: {
-            formTitle () {
-                return this.editedIndex === -1 ? 'Nuevo usuario' : 'Actualizar usuario'
-            },
-              formIcon () {
-                return this.editedIndex === -1 ? 'add' : 'edit'
-            },
-            //ESTO LO COLOCAMOS PORQUE LO REQUIERE EL COMPONENTE DE DRAW MENU
-            logueado(){
-                return this.$store.state.usuario;
-            },
-            esAdministrador(){ 
-                return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
-            },
-            usuario(){
-                return this.$store.state.usuario.usuario;
-            },
-            email(){
-                return this.$store.state.usuario.email;
-            },
-            drawer(){
-                return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
-            }
+      computed: {
+        formTitle () {
+          return this.editedIndex === -1 ? 'Nuevo usuario' : 'Actualizar usuario'
         },
+        formIcon () {
+          return this.editedIndex === -1 ? 'add' : 'edit'
+        },
+        //ESTO LO COLOCAMOS PORQUE LO REQUIERE EL COMPONENTE DE DRAW MENU
+        logueado(){
+          return this.$store.state.usuario;
+        },
+        esAdministrador(){ 
+          return this.$store.state.usuario && this.$store.state.usuario.rol =='Administrador';
+        },
+        usuario(){
+          return this.$store.state.usuario.usuario;
+        },
+        email(){
+          return this.$store.state.usuario.email;
+        },
+        drawer(){
+          return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
+        }
+      },
 
         watch: {
             dialog (val) 
@@ -930,10 +928,6 @@
             };
           },
 
-
-
-
-
           //Generar los tokens para las peticiones de keycloak
           async generateTokenPassword(){
             try {
@@ -943,7 +937,6 @@
               data.append('password', 'admin');
               data.append('username', 'alessandro2204@outlook.com');
               data.append('realm', 'procu');
-
 
               const response = await this.$controlacceso.post('api/Usuarios/GetTokenKeyCloakWithGrantTypePassword', data, {headers: {'Content-Type': 'application/x-www-form-urlencoded',}} );
 
@@ -957,7 +950,6 @@
               throw error;
             }
           },
-
 
           async generateUserToken() {
              try {
@@ -978,9 +970,6 @@
               throw error;
             }
           },
-
-
-
 
           //Metodo para crear al usuario en keycloak
           async createKeycloakUser(configuracion){
@@ -1097,7 +1086,7 @@
                     'password':me.password
                   }, configuracion).then(function(response){
                     me.close();
-                    me.$notify('La información se guardo correctamente !!!','success')
+                    me.$notify('¡La información se guardo correctamente!','success')
                     me.listar();
                     me.limpiar();
                   }).catch(err => {
@@ -1108,7 +1097,7 @@
                       me.e401 = true,
                           me.showpage= false
                     } else if (err.response.status==403){
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false
                     } else if (err.response.status==404){
@@ -1167,10 +1156,8 @@
                 return;
               }
 
-
               //el usuario se actualiza sin contraseña por lo que hay que realizar otra petición para actualizarla
               let passwordToken = await this.generateTokenPassword();
-
 
               //el email en keycloak se considera como el usuario, deben de tener datos todos los campos, de lo contrario existirán errores
 
@@ -1259,7 +1246,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1322,7 +1309,7 @@
                                         me.e401 = true,
                                             me.showpage = false
                                       } else if (error.response.status == 403) {
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403 = true
                                         me.showpage = false
                                       } else if (error.response.status == 404) {
@@ -1340,7 +1327,7 @@
                                       me.e401 = true,
                                           me.showpage = false
                                     } else if (error.response.status == 403) {
-                                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                      me.$notify("No esta autorizado para ver esta página", 'error')
                                       me.e403 = true
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
@@ -1363,7 +1350,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1429,7 +1416,7 @@
                                         me.e401 = true,
                                             me.showpage = false
                                       } else if (error.response.status == 403) {
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403 = true
                                         me.showpage = false
                                       } else if (error.response.status == 404) {
@@ -1447,7 +1434,7 @@
                                       me.e401 = true,
                                           me.showpage = false
                                     } else if (error.response.status == 403) {
-                                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                      me.$notify("No esta autorizado para ver esta página", 'error')
                                       me.e403 = true
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
@@ -1473,7 +1460,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1519,7 +1506,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1587,7 +1574,7 @@
                                         me.e401 = true,
                                             me.showpage = false
                                       } else if (error.response.status == 403) {
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403 = true
                                         me.showpage = false
                                       } else if (error.response.status == 404) {
@@ -1605,7 +1592,7 @@
                                       me.e401 = true,
                                           me.showpage = false
                                     } else if (error.response.status == 403) {
-                                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                      me.$notify("No esta autorizado para ver esta página", 'error')
                                       me.e403 = true
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
@@ -1628,7 +1615,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1694,7 +1681,7 @@
                                         me.e401 = true,
                                             me.showpage = false
                                       } else if (error.response.status == 403) {
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403 = true
                                         me.showpage = false
                                       } else if (error.response.status == 404) {
@@ -1712,7 +1699,7 @@
                                       me.e401 = true,
                                           me.showpage = false
                                     } else if (error.response.status == 403) {
-                                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                      me.$notify("No esta autorizado para ver esta página", 'error')
                                       me.e403 = true
                                       me.showpage = false
                                     } else if (error.response.status == 404) {
@@ -1738,7 +1725,7 @@
                                     me.e401 = true,
                                         me.showpage = false
                                   } else if (error.response.status == 403) {
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403 = true
                                     me.showpage = false
                                   } else if (error.response.status == 404) {
@@ -1789,7 +1776,7 @@
                               me.e401 = true,
                                   me.showpage = false
                             } else if (error.response.status == 403) {
-                              me.$notify("No esta autorizado para ver esta pagina", 'error')
+                              me.$notify("No esta autorizado para ver esta página", 'error')
                               me.e403 = true
                               me.showpage = false
                             } else if (error.response.status == 404) {
@@ -1858,7 +1845,7 @@
                                   me.e401 = true,
                                       me.showpage = false
                                 } else if (error.response.status == 403) {
-                                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                  me.$notify("No esta autorizado para ver esta página", 'error')
                                   me.e403 = true
                                   me.showpage = false
                                 } else if (error.response.status == 404) {
@@ -1876,7 +1863,7 @@
                                 me.e401 = true,
                                     me.showpage = false
                               } else if (error.response.status == 403) {
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403 = true
                                 me.showpage = false
                               } else if (error.response.status == 404) {
@@ -1899,7 +1886,7 @@
                               me.e401 = true,
                                   me.showpage = false
                             } else if (error.response.status == 403) {
-                              me.$notify("No esta autorizado para ver esta pagina", 'error')
+                              me.$notify("No esta autorizado para ver esta página", 'error')
                               me.e403 = true
                               me.showpage = false
                             } else if (error.response.status == 404) {
@@ -1966,7 +1953,7 @@
                                   me.e401 = true,
                                       me.showpage = false
                                 } else if (error.response.status == 403) {
-                                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                  me.$notify("No esta autorizado para ver esta página", 'error')
                                   me.e403 = true
                                   me.showpage = false
                                 } else if (error.response.status == 404) {
@@ -1984,7 +1971,7 @@
                                 me.e401 = true,
                                     me.showpage = false
                               } else if (error.response.status == 403) {
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403 = true
                                 me.showpage = false
                               } else if (error.response.status == 404) {
@@ -2010,7 +1997,7 @@
                               me.e401 = true,
                                   me.showpage = false
                             } else if (error.response.status == 403) {
-                              me.$notify("No esta autorizado para ver esta pagina", 'error')
+                              me.$notify("No esta autorizado para ver esta página", 'error')
                               me.e403 = true
                               me.showpage = false
                             } else if (error.response.status == 404) {
@@ -2092,13 +2079,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
             });
           },
@@ -2171,7 +2158,7 @@
                 } else if (err.response.status == 404) {
                     me.$notify("El recurso no ha sido encontrado", 'error');
                 } else {
-                    me.$notify('Error al intentar listar los registros!!!', 'error');
+                    me.$notify('Error al intentar listar los registros', 'error');
                 }
             }
           },
@@ -2194,7 +2181,7 @@
                       me.e401 = true,
                       me.showpage= false
                   } else if (err.response.status==403){ 
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false 
                   } else if (err.response.status==404){
@@ -2245,7 +2232,7 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
@@ -2289,7 +2276,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
@@ -2331,7 +2318,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
@@ -2364,13 +2351,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')   
+                        me.$notify('Error al intentar listar los registros','error')   
                     } 
                 });
             },
@@ -2460,7 +2447,7 @@
                           me.e401 = true,
                           me.showpage= false
                       } else if (err.response.status==403){ 
-                          me.$notify("No esta autorizado para ver esta pagina", 'error')
+                          me.$notify("No esta autorizado para ver esta página", 'error')
                           me.e403= true
                           me.showpage= false 
                       } else if (err.response.status==404){
@@ -2754,7 +2741,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){ 
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false 
                                         } else if (err.response.status==404){
@@ -2777,7 +2764,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (error.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (error.response.status==404){
@@ -2854,7 +2841,7 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){
@@ -2873,7 +2860,7 @@
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){ 
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false 
                                 } else if (err.response.status==404){
@@ -2948,7 +2935,7 @@
                 me.cargando = false;
                 //proceso a cerrar el modal, limpiar las variables y volver a listar los usuarios
                 me.close();
-                me.$notify('La información se guardo correctamente !!!','success') 
+                me.$notify('¡La información se guardo correctamente!','success') 
                 me.listar();  
             },
 
@@ -2990,7 +2977,7 @@
 
                 }, configuracion).then(function(response)
                 {
-                    me.$notify('La información se guardo correctamente !!!','success');
+                    me.$notify('¡La información se guardo correctamente!','success');
                     
                 }).catch(err => 
                 {  
@@ -3001,7 +2988,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
@@ -3047,7 +3034,7 @@
                       me.showpage= false
                   } 
                   else if (err.response.status==403){ 
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false 
                   } 
@@ -3055,7 +3042,7 @@
                       me.$notify("El recuso no ha sido encontrado", 'error')
                   }
                   else{
-                      me.$notify('Error al intentar listar los registros!!!','error')   
+                      me.$notify('Error al intentar listar los registros','error')   
                   } 
               });
           },
@@ -3131,7 +3118,7 @@
                       me.showpage= false
                   } 
                   else if (err.response.status==403){ 
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false 
                   } 
@@ -3139,7 +3126,7 @@
                       me.$notify("El recuso no ha sido encontrado", 'error')
                   }
                   else{
-                      me.$notify('Error al intentar listar los registros!!!','error')   
+                      me.$notify('Error al intentar listar los registros','error')   
                   } 
               });
           },
@@ -3227,7 +3214,7 @@
                       me.e401 = true,
                       me.showpage= false
                   } else if (err.response.status==403){ 
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false 
                   } else if (err.response.status==404){
@@ -3273,7 +3260,7 @@
                       me.e401 = true,
                       me.showpage= false
                   } else if (err.response.status==403){ 
-                      me.$notify("No esta autorizado para ver esta pagina", 'error')
+                      me.$notify("No esta autorizado para ver esta página", 'error')
                       me.e403= true
                       me.showpage= false 
                   } else if (err.response.status==404){

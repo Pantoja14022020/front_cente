@@ -766,7 +766,7 @@
           if(token)
           { 
             this.$store.dispatch("guardarToken", token)
-            this.$store.dispatch("setLogin", true, token)
+            this.$store.dispatch("setLogin", token)
           }
           else 
           { 
@@ -949,7 +949,7 @@
                             'statusActivo': true,
                         }, configuracion).then(function(response){
                             me.close();
-                            me.$notify('La información se guardo correctamente !!!','success')  
+                            me.$notify('¡La información se guardo correctamente!','success')  
                             me.listar();
                             me.limpiar();                        
                         }).catch(function(error){
@@ -980,7 +980,7 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false
                         //store.dispatch('logout') 
@@ -1013,7 +1013,7 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false
                         //store.dispatch('logout') 

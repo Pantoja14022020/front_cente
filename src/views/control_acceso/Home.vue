@@ -1,93 +1,82 @@
 <template>
-    <v-app id="app" v-if="isReady">
+  <v-app id="app" v-if="isReady">
    
-      <!--<v-toolbar flat app  class="grey lighten-4">
+    <!--<v-toolbar flat app  class="grey lighten-4">
         
-        <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
-        <v-toolbar-title class="text-uppercase grey--text">
-          <span class="font-weight-light btn_sisC" @click="salir">SISTEMA CENTENARIO</span>
-        </v-toolbar-title> 
-        <v-spacer ></v-spacer>  
-        <v-btn flat icon> 
-          <v-icon>notifications</v-icon> 
-        </v-btn>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
+      <v-toolbar-title class="text-uppercase grey--text">
+        <span class="font-weight-light btn_sisC" @click="salir">SISTEMA CENTENARIO</span>
+      </v-toolbar-title> 
+      <v-spacer ></v-spacer>  
+      <v-btn flat icon> 
+        <v-icon>notifications</v-icon> 
+      </v-btn>  
   
-  
-        <v-menu offset-y right  flat transition="scale-transition" >
-          <template   v-slot:activator="{ on }">
-              <v-btn icon v-on="on"   >
-                <v-icon>person</v-icon>
-              </v-btn>
-            </template> 
-            <v-card  min-width="300"   class=" mx-auto">
-                    <v-toolbar prominent card dark color="grey lighten-4 primary--text">
-                      <v-avatar  size="50">
-                          <v-icon size="36" class="grey lighten-2 centenarioToolBarIcon">person</v-icon>
-                      </v-avatar> 
-                      
-                      <v-toolbar-title class="body-1  font-weight-medium">{{ usuario }}
-                            <p class="caption font-weight-light"><a>{{ email }}</a></p> 
-                            
-                      </v-toolbar-title> 
-     
-                      
-                    </v-toolbar>
+      <v-menu offset-y right  flat transition="scale-transition" >
+        <template   v-slot:activator="{ on }">
+          <v-btn icon v-on="on"   >
+            <v-icon>person</v-icon>
+          </v-btn>
+        </template> 
+        <v-card  min-width="300" class=" mx-auto">
+          <v-toolbar prominent card dark color="grey lighten-4 primary--text">
+            <v-avatar  size="50">
+              <v-icon size="36" class="grey lighten-2 centenarioToolBarIcon">person</v-icon>
+            </v-avatar> 
+                
+            <v-toolbar-title class="body-1  font-weight-medium">{{ usuario }}
+              <p class="caption font-weight-light"><a>{{ email }}</a></p>                            
+            </v-toolbar-title>
+          </v-toolbar>
                    
-                    <v-card-text>  
-                           <v-list >
-                              <v-list-tile  >  
-                                <v-list-tile-action>
-                                    <v-icon size="36" class="centenarioToolBarIcon">build</v-icon>
-                                </v-list-tile-action> 
-                                <v-list-tile-content>  
-                                    <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Mi cuenta</a></p> </v-list-tile-title> 
-                                    <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Configuración de tu cuenta.</a></p>  </v-list-tile-sub-title>  
-                                </v-list-tile-content> 
-                              </v-list-tile>
-                              <v-list-tile    >  
-                                <v-list-tile-action>
-                                    <v-icon size="36" class="centenarioToolBarIcon">help</v-icon>
-                                </v-list-tile-action> 
-                                <v-list-tile-content>  
-                                    <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Ayuda</a></p> </v-list-tile-title> 
-                                    <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Manual de usuario</a></p>  </v-list-tile-sub-title>  
-                                </v-list-tile-content> 
-                              </v-list-tile>
-                              <v-list-tile @click="salir"  >  
-                                <v-list-tile-action>
-                                    <v-icon size="36" class="centenarioToolBarIcon">power_settings_new</v-icon>
-                                </v-list-tile-action> 
-                                <v-list-tile-content>  
-                                    <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Cerrar sesión</a></p> </v-list-tile-title>   
-                                </v-list-tile-content> 
-                              </v-list-tile> 
-  
-                          </v-list> 
-                     
-                    </v-card-text>
-               <v-divider  class="mx-0" ></v-divider>
-               <v-card-actions  >
-                  <v-spacer ></v-spacer>
-                  <v-btn class="mx-3"   small outline color="accent">
-                     Cerrar
-                  </v-btn>
-                   
-                 
-                </v-card-actions>
-  
-            </v-card>
-        </v-menu>
-  
-  
-      </v-toolbar>-->
+          <v-card-text>  
+            <v-list>
+              <v-list-tile >  
+                <v-list-tile-action>
+                  <v-icon size="36" class="centenarioToolBarIcon">build</v-icon>
+                </v-list-tile-action> 
+                <v-list-tile-content>  
+                  <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Mi cuenta</a></p> </v-list-tile-title> 
+                  <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Configuración de tu cuenta.</a></p>  </v-list-tile-sub-title>  
+                </v-list-tile-content> 
+              </v-list-tile>
+              <v-list-tile>  
+                <v-list-tile-action>
+                  <v-icon size="36" class="centenarioToolBarIcon">help</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Ayuda</a></p> </v-list-tile-title>
+                  <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Manual de usuario</a></p>  </v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile @click="salir"  >  
+                <v-list-tile-action>
+                    <v-icon size="36" class="centenarioToolBarIcon">power_settings_new</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Cerrar sesión</a></p> </v-list-tile-title>   
+                </v-list-tile-content> 
+              </v-list-tile>
+            </v-list>
+          </v-card-text>
+          <v-divider  class="mx-0" ></v-divider>
+          <v-card-actions  >
+            <v-spacer ></v-spacer>
+            <v-btn class="mx-3"   small outline color="accent">
+              Cerrar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
+    </v-toolbar>-->
 
-      <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary">
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
 
       <v-list dense dark class="pt-0 primary" >
-         <template v-if="esAdministrador">
+        <template v-if="esAdministrador">
           <v-list-tile  :to="{name:'control-acceso'}">
             <v-list-tile-action>
               <v-icon class="centenarioMenuIcon">home</v-icon>
@@ -96,12 +85,12 @@
           </v-list-tile>
         </template>  
        
-          <template v-if="esAdministrador">
+        <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Panel de control
+                  Panel de control
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -117,6 +106,7 @@
             </v-list-tile> 
           </v-list-group>
         </template>
+        
         <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator">   
@@ -138,6 +128,7 @@
             </v-list-tile> 
           </v-list-group>
         </template>
+
          <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator">   
@@ -167,10 +158,10 @@
                     Clonaciones fallidas
                     </v-list-tile-title>
                 </v-list-tile-content>
-            </v-list-tile> 
-           
+            </v-list-tile>           
           </v-list-group>
         </template> 
+
         <template v-if="esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator"> 
@@ -195,9 +186,6 @@
       </v-list>
 
     </v-navigation-drawer>
-
-
-
       
       <v-content class="grey lighten-4" style="padding: 0;">
         <v-container fluid>
@@ -268,7 +256,7 @@
     components:{Loader},
     data () {
       return { 
-        drawer: true,  
+        //drawer: true,  
         right: null, 
         title: 'Vuetify.js',
         isReady: false,
@@ -346,8 +334,16 @@
       email(){
         return this.$store.state.usuario.email;
       },
-      drawer(){
+      /*drawer(){
         return this.$store.state.drawer //es para acceder al valor que esta almacenado en el storage
+      }*/
+      drawer: {
+        get() {
+          return this.$store.state.drawer;
+        },
+        set(value) {
+          this.$store.commit('setDrawer', value);
+        }
       }
     },
     

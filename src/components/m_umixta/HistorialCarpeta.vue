@@ -2,107 +2,95 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
       <v-flex v-if="showpage">
         <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Historial de carpetas</v-toolbar-title>
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-tooltip bottom>
-                            <template v-slot:activator="{ on }"> 
-                                <v-btn class="mx-2" slot="activator" v-on="on" @click="dialogo = true"  color="success">
-                                    Opciones de busqueda
-                                </v-btn>
-                            </template>
-                            <span>Opciones de busqueda</span>
-                    </v-tooltip>
-
-
-
-                    
+            <v-toolbar-title class="font-weight-regular" >Historial de carpetas</v-toolbar-title>
+            <v-divider class="mx-2" inset vertical></v-divider>
+            
+            <v-spacer></v-spacer>
+            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+            <v-spacer></v-spacer>
+            <v-tooltip bottom>
+                    <template v-slot:activator="{ on }"> 
+                        <v-btn class="mx-2" slot="activator" v-on="on" @click="dialogo = true"  color="success">
+                            Opciones de busqueda
+                        </v-btn>
+                    </template>
+                    <span>Opciones de busqueda</span>
+            </v-tooltip>
         </v-toolbar>
         <v-data-table
-                :headers="headers"
-                :items="carpetas"
-                :search="search" 
-                :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"
-                 >
+            :headers="headers"
+            :items="carpetas"
+            :search="search" 
+            :rows-per-page-items="rowsPerPageItems"
+            :pagination.sync="pagination"
+                >
+            
+            <template slot="items" class="white" slot-scope="props">
                 
-                <template slot="items" class="white" slot-scope="props">
-                    
-                    
-                    <td>{{ props.item.nuc }}</td>  
-                    <td>{{ props.item.distritoInicial }}</td> 
-                    <td>{{ props.item.dirSubProcuInicial }}</td>  
-                    <td>{{ props.item.agenciaInicial}}</td>
-                    <td>{{ props.item.u_Nombre }}</td>               
-                    <td>{{ props.item.fechaElevaNuc.substring(8,10) +" de "+ obtenermes(props.item.fechaElevaNuc.substring(5,7)-1)+" del "+props.item.fechaElevaNuc.substring(0,4)+", "+props.item.fechaElevaNuc.substring(11,19)}}</td>    
-                    <td class="layout" >       
-                        <v-tooltip bottom  >
-                            <template v-slot:activator="{ on }">
-                                <v-icon 
-                                    class="mr-2" v-on="on"  
-                                    @click="verhistorial(props.item)"
-                                    >
-                                    folder_open
-                                </v-icon> 
-                            </template>
-                            <span>Ver historial</span>
-                        </v-tooltip>                                            
-                      
-                    </td>         
- 
-                </template>
-                <template slot="no-data">
+                <td>{{ props.item.nuc }}</td>  
+                <td>{{ props.item.distritoInicial }}</td> 
+                <td>{{ props.item.dirSubProcuInicial }}</td>  
+                <td>{{ props.item.agenciaInicial}}</td>
+                <td>{{ props.item.u_Nombre }}</td>               
+                <td>{{ props.item.fechaElevaNuc.substring(8,10) +" de "+ obtenermes(props.item.fechaElevaNuc.substring(5,7)-1)+" del "+props.item.fechaElevaNuc.substring(0,4)+", "+props.item.fechaElevaNuc.substring(11,19)}}</td>    
+                <td class="layout" >       
+                    <v-tooltip bottom  >
+                        <template v-slot:activator="{ on }">
+                            <v-icon 
+                                class="mr-2" v-on="on"  
+                                @click="verhistorial(props.item)"
+                                >
+                                folder_open
+                            </v-icon> 
+                        </template>
+                        <span>Ver historial</span>
+                    </v-tooltip>
+                </td>
+            </template>
+
+            <template slot="no-data">
                 <v-btn color="primary" @click="listar()"  >Resetear</v-btn>
-                </template>
-                
+            </template>
         </v-data-table>
         
-        
         <v-dialog  v-model="dialogohistorial"  max-width="1300px" >
-
             <v-card>
                 <v-toolbar card dark color="grey lighten-4 primary--text">
                     <v-avatar  size="30">
                         <v-icon class="grey lighten-2">info</v-icon>
                     </v-avatar>
-                    
                     <v-toolbar-title class="subheading">Historial</v-toolbar-title>
                     <v-spacer></v-spacer>                  
                 </v-toolbar>
+
                 <v-card-text>
                     <v-form ref="form" data-vv-scope="Aceptar" >
                         <v-container grid-list-md text-xs-center>
                             <v-layout wrap>
-
                                 <v-flex  class="espaciado" xs12 sm12 md12 lg12>
-
-                                        <v-data-table
-                                            :headers="headers2"
-                                            :items="historialc"
-                                            :search="search2" 
-                                            :rows-per-page-items="rowsPerPageItems"
-                                            :pagination.sync="pagination"
-                                            >
-                                            
-                                            <template slot="items" class="white" slot-scope="props">
-                                                
-                                                <td>{{ props.item.uAgencia}}</td>
-                                                <td>{{ props.item.uModulo }}</td>                                               
-                                                <td>{{ props.item.detalle }}</td>                
-                                                <td>{{ props.item.fechasys.substring(8,10) +" de "+ obtenermes(props.item.fechasys.substring(5,7)-1)+" del "+props.item.fechasys.substring(0,4)}}</td>           
-                            
-                                            </template>
-                                            
-                                    </v-data-table>
-
+                                    <v-data-table
+                                        :headers="headers2"
+                                        :items="historialc"
+                                        :search="search2" 
+                                        :rows-per-page-items="rowsPerPageItems"
+                                        :pagination.sync="pagination"
+                                        >
                                         
-                                </v-flex>    
-
+                                        <template slot="items" class="white" slot-scope="props">
+                                            
+                                            <td>{{ props.item.uAgencia}}</td>
+                                            <td>{{ props.item.uModulo }}</td>                                               
+                                            <td>{{ props.item.detalle }}</td>                
+                                            <td>{{ props.item.fechasys.substring(8,10) +" de "+ obtenermes(props.item.fechasys.substring(5,7)-1)+" del "+props.item.fechasys.substring(0,4)}}</td>           
+                        
+                                        </template>
+                                    </v-data-table>
+                                </v-flex>
                             </v-layout>
                         </v-container>
 
@@ -111,57 +99,53 @@
                             <v-btn  @click.native="dialogohistorial=false" >Cerrar</v-btn>                                  
                         </v-card-actions> 
                     </v-form>
-                
                 </v-card-text> 
             </v-card>
-
         </v-dialog>
 
-         <v-dialog  v-model="dialogo"  max-width="500px" >
-
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">search</v-icon>
-                        </v-avatar>
-                        <v-toolbar-title class="subheading">Opciones de busqueda</v-toolbar-title>
-                        <v-spacer></v-spacer>                    
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-form ref="form" >
-                            
-                            <v-container grid-list-md text-xs-center>
-                                <v-layout row wrap>
-                                    <v-flex xs12 sm12 md12 lg12>
-                                        <v-autocomplete 
-                                            name="agencia"
-                                            :items="agencias"
-                                            v-model="agencia"
-                                            label="Agencia:"                             
-                                            v-if="esDirector || esAdministrador"
-                                            @change="listarmodulos"
-                                            clearable
-                                            :error-messages="errors.collect('agencia')" >
-                                        </v-autocomplete>   
-                                        <v-autocomplete 
-                                            name="modulo"
-                                            :items="modulos"
-                                            v-model="modulo"
-                                            label="Modulo:" 
-                                            clearable 
-                                            v-if="esDirector || esAdministrador || esCoordinador"
-                                            :error-messages="errors.collect('modulo')" >
-                                        </v-autocomplete>   
-                                        <v-menu
-                                            ref="menu1"
-                                            v-model="menu1"
-                                            :close-on-content-click="false"
-                                            :return-value.sync="fechadesde"
-                                            transition="scale-transition"
-                                            offset-y
-                                            min-width="290px"
-                                        >
-                                            <template v-slot:activator="{ on }">
+        <v-dialog  v-model="dialogo"  max-width="500px">
+            <v-card>
+                <v-toolbar card dark color="grey lighten-4 primary--text">
+                    <v-avatar  size="30">
+                        <v-icon class="grey lighten-2">search</v-icon>
+                    </v-avatar>
+                    <v-toolbar-title class="subheading">Opciones de busqueda</v-toolbar-title>
+                    <v-spacer></v-spacer>                    
+                </v-toolbar>
+                <v-card-text>
+                    <v-form ref="form" >
+                        <v-container grid-list-md text-xs-center>
+                            <v-layout row wrap>
+                                <v-flex xs12 sm12 md12 lg12>
+                                    <v-autocomplete 
+                                        name="agencia"
+                                        :items="agencias"
+                                        v-model="agencia"
+                                        label="Agencia:"                             
+                                        v-if="esDirector || esAdministrador"
+                                        @change="listarmodulos"
+                                        clearable
+                                        :error-messages="errors.collect('agencia')" >
+                                    </v-autocomplete>   
+                                    <v-autocomplete 
+                                        name="modulo"
+                                        :items="modulos"
+                                        v-model="modulo"
+                                        label="Modulo:" 
+                                        clearable 
+                                        v-if="esDirector || esAdministrador || esCoordinador"
+                                        :error-messages="errors.collect('modulo')" >
+                                    </v-autocomplete>   
+                                    <v-menu
+                                        ref="menu1"
+                                        v-model="menu1"
+                                        :close-on-content-click="false"
+                                        :return-value.sync="fechadesde"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="290px"
+                                    >
+                                        <template v-slot:activator="{ on }">
                                             <v-text-field
                                                 name='desde'
                                                 :value="fechad"
@@ -171,37 +155,38 @@
                                                 v-on="on"                                   
                                                 :error-messages="errors.collect('desde')">
                                             ></v-text-field>
-                                            </template>
-                                                <v-date-picker locale="es" v-model="fechadesde" no-title scrollable>
-                                                <v-spacer></v-spacer>
+                                        </template>
 
-                                                <v-tooltip bottom >
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-icon 
-                                                            class="mr-2" v-on="on" color="primary" 
-                                                            @click="limpiarfechad()"
-                                                            >
-                                                            delete
-                                                        </v-icon> 
-                                                    </template>
-                                                    <span>Limpiar fecha</span>
-                                                </v-tooltip>
+                                        <v-date-picker locale="es" v-model="fechadesde" no-title scrollable>
+                                        <v-spacer></v-spacer>
 
-                                                <v-spacer></v-spacer>
-                                                <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
-                                                <v-btn text color="primary" @click="fechainif()">OK</v-btn>
-                                                </v-date-picker>
-                                        </v-menu>
-                                        <v-menu
-                                            ref="menu2"
-                                            v-model="menu2"
-                                            :close-on-content-click="false"
-                                            :return-value.sync="fechahasta"
-                                            transition="scale-transition"
-                                            offset-y
-                                            min-width="290px"
-                                        >
+                                        <v-tooltip bottom >
                                             <template v-slot:activator="{ on }">
+                                                <v-icon 
+                                                    class="mr-2" v-on="on" color="primary" 
+                                                    @click="limpiarfechad()"
+                                                    >
+                                                    delete
+                                                </v-icon> 
+                                            </template>
+                                            <span>Limpiar fecha</span>
+                                        </v-tooltip>
+
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
+                                        <v-btn text color="primary" @click="fechainif()">OK</v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                    <v-menu
+                                        ref="menu2"
+                                        v-model="menu2"
+                                        :close-on-content-click="false"
+                                        :return-value.sync="fechahasta"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="290px"
+                                    >
+                                        <template v-slot:activator="{ on }">
                                             <v-text-field
                                                 name='hasta'
                                                 :value="fechah"
@@ -211,76 +196,72 @@
                                                 v-on="on"                                   
                                                 :error-messages="errors.collect('hasta')">
                                             ></v-text-field>
-                                            </template>
-                                                <v-date-picker locale="es" v-model="fechahasta" no-title scrollable>
-                                                <v-spacer></v-spacer>
+                                        </template>
+                                        <v-date-picker locale="es" v-model="fechahasta" no-title scrollable>
+                                            <v-spacer></v-spacer>
 
-                                                <v-tooltip bottom >
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-icon 
-                                                            class="mr-2" v-on="on" color="primary" 
-                                                            @click="limpiarfechah()"
-                                                            >
-                                                            delete
-                                                        </v-icon> 
-                                                    </template>
-                                                    <span>Limpiar fecha</span>
-                                                </v-tooltip>
+                                            <v-tooltip bottom >
+                                                <template v-slot:activator="{ on }">
+                                                    <v-icon 
+                                                        class="mr-2" v-on="on" color="primary" 
+                                                        @click="limpiarfechah()"
+                                                        >
+                                                        delete
+                                                    </v-icon> 
+                                                </template>
+                                                <span>Limpiar fecha</span>
+                                            </v-tooltip>
 
-                                                <v-spacer></v-spacer>
-                                                <v-btn text color="primary" @click="menu2=false">Cancel</v-btn>
-                                                <v-btn text color="primary" @click="fechainif()">OK</v-btn>
-                                                </v-date-picker>
-                                        </v-menu>  
+                                            <v-spacer></v-spacer>
+                                            <v-btn text color="primary" @click="menu2=false">Cancel</v-btn>
+                                            <v-btn text color="primary" @click="fechainif()">OK</v-btn>
+                                        </v-date-picker>
+                                    </v-menu>  
 
-                                        <v-text-field 
-                                            name="nuc" 
-                                            label="NUC:" 
-                                            v-model="nuc"
-                                            :error-messages="errors.collect('nuc')">                                          
-                                        </v-text-field>  
+                                    <v-text-field 
+                                        name="nuc" 
+                                        label="NUC:" 
+                                        v-model="nuc"
+                                        :error-messages="errors.collect('nuc')">                                          
+                                    </v-text-field>  
 
-                                        <v-text-field 
-                                            name="nombre" 
-                                            label="Nombre(1ra persona registrada):" 
-                                            v-model="nombre"
-                                            :error-messages="errors.collect('nombre')">                                          
-                                        </v-text-field>       
+                                    <v-text-field 
+                                        name="nombre" 
+                                        label="Nombre(1ra persona registrada):" 
+                                        v-model="nombre"
+                                        :error-messages="errors.collect('nombre')">                                          
+                                    </v-text-field>       
 
-                                        <v-text-field 
-                                            name="apellido paterno" 
-                                            label="Apellido paterno(1ra persona registrada):" 
-                                            v-model="apellidop"
-                                            :error-messages="errors.collect('apellido paterno')">                                          
-                                        </v-text-field>
+                                    <v-text-field 
+                                        name="apellido paterno" 
+                                        label="Apellido paterno(1ra persona registrada):" 
+                                        v-model="apellidop"
+                                        :error-messages="errors.collect('apellido paterno')">                                          
+                                    </v-text-field>
 
-                                        <v-text-field 
-                                            name="apellido materno" 
-                                            label="Apellido materno(1ra persona registrada):" 
-                                            v-model="apellidom"
-                                            :error-messages="errors.collect('apellido materno')">                                          
-                                        </v-text-field>
+                                    <v-text-field 
+                                        name="apellido materno" 
+                                        label="Apellido materno(1ra persona registrada):" 
+                                        v-model="apellidom"
+                                        :error-messages="errors.collect('apellido materno')">                                          
+                                    </v-text-field>
 
-                                    </v-flex>          
-                                </v-layout>
-                            </v-container>
+                                </v-flex>          
+                            </v-layout>
+                        </v-container>
 
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn  @click.native="dialogo = false" >Cerrar</v-btn>
-                                <v-btn   @click.native="listarconfiltro" class="success" >Buscar</v-btn>
-                                
-                            </v-card-actions> 
-                        </v-form>
-                    
-                    </v-card-text> 
-                </v-card>
-            </v-dialog>
-     
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn  @click.native="dialogo = false" >Cerrar</v-btn>
+                            <v-btn   @click.native="listarconfiltro" class="success" >Buscar</v-btn>
+                        </v-card-actions> 
+                    </v-form>
+                </v-card-text> 
+            </v-card>
+        </v-dialog>     
     </v-flex>
 </v-layout> 
 </template>
-
  
 <script> 
   import axios from 'axios'  
@@ -292,6 +273,7 @@
   import 'moment/locale/es';
   import n401 from './401.vue'
   import n403 from './403.vue'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   var assert, curp, persona;
   assert = require('assert');
@@ -301,7 +283,8 @@
     components: {
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -481,13 +464,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
 
@@ -507,13 +490,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },
@@ -577,13 +560,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },   
@@ -619,13 +602,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },
@@ -656,13 +639,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             }
@@ -690,13 +673,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             }

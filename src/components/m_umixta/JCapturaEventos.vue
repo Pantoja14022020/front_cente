@@ -2,195 +2,174 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
-      <v-flex v-if="showpage">
-        <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Captura de eventos</v-toolbar-title>
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                    <v-flex xs12 sm6 md3>
-                      
-                        <v-text-field class="font-weight-regular"
-                            v-model="nuc" disabled  prepend-icon="folder"
-                            filled
-                        ></v-text-field>
 
-                    </v-flex>
-                    <v-btn class="mx-2" @click="cerrarcarpeta" fab dark small color="primary">
-                        <v-icon dark>close</v-icon>
-                    </v-btn>
+    <UmixtaNavDrawer />
+
+    <v-flex v-if="showpage">
+        <v-toolbar flat color="white">
+            <v-toolbar-title class="font-weight-regular" >Captura de eventos</v-toolbar-title>
+            <v-divider class="mx-2" inset vertical></v-divider>
+                    
+            <v-spacer></v-spacer>
+            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+            <v-spacer></v-spacer>
+            <v-flex xs12 sm6 md3>
+                <v-text-field class="font-weight-regular"
+                    v-model="nuc" disabled  prepend-icon="folder"
+                    filled
+                ></v-text-field>
+            </v-flex>
+            <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                <v-icon class="mt-1" dark>close</v-icon>
+            </v-btn>
 
             <v-tooltip bottom>
                 <template v-slot:activator="{ on }"> 
-                    <v-btn class="mx-2" slot="activator" v-on="on" @click="agregar()" fab dark small color="success">
-                        <v-icon dark>add</v-icon>
+                    <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="agregar()" fab dark small color="success">
+                        <v-icon class="mt-2" dark>add</v-icon>
                     </v-btn>
                 </template>
                 <span>Agregar registro</span>
             </v-tooltip>
-            
-                  
-                                          
         </v-toolbar>
         
         <v-data-table
-                :headers="headers"
-                :items="eventosf"
-                :search="search" 
-                :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"
-                 >
-                
-                <template slot="items" class="white" slot-scope="props">
+            :headers="headers"
+            :items="eventosf"
+            :search="search" 
+            :rows-per-page-items="rowsPerPageItems"
+            :pagination.sync="pagination"
+            >
+            
+            <template slot="items" class="white" slot-scope="props">
                     
-                    <td>{{ props.item.usuario}}</td>   
-                    <td>{{ props.item.uModulo}}</td> 
-                    <td>{{ props.item.tipo2}}</td> 
-                    <td>{{ props.item.dirigidoNombre }}</td>
-                    <td>{{ props.item.fechaCitacion.substring(8,10) +" de "+ obtenermes(props.item.fechaCitacion.substring(5,7)-1)+" del "+props.item.fechaCitacion.substring(0,4)+", "+props.item.fechaCitacion.substring(11,19) }}</td> 
-                    <td>{{ props.item.lugarCitacion }}</td>                     
+                <td>{{ props.item.usuario}}</td>   
+                <td>{{ props.item.uModulo}}</td> 
+                <td>{{ props.item.tipo2}}</td> 
+                <td>{{ props.item.dirigidoNombre }}</td>
+                <td>{{ props.item.fechaCitacion.substring(8,10) +" de "+ obtenermes(props.item.fechaCitacion.substring(5,7)-1)+" del "+props.item.fechaCitacion.substring(0,4)+", "+props.item.fechaCitacion.substring(11,19) }}</td> 
+                <td>{{ props.item.lugarCitacion }}</td>                     
            
-                </template>
-                <template slot="no-data">
+            </template>
+            <template slot="no-data">
                 <v-btn color="primary"  @click="listar()" >Resetear</v-btn>
-                </template>
-                
+            </template> 
         </v-data-table> 
 
         <v-dialog v-model="dialogo" fullscreen hide-overlay transition="dialog-bottom-transition">
-        
             <v-card>
-            <v-toolbar dark color="primary">
-                
-                <v-toolbar-title>Registrar evento</v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-toolbar-items>
-                <v-btn  color=success text @click="guardar()">Guardar evento</v-btn>
-                <v-btn icon   @click="dialogo = false">
-                <v-icon>close</v-icon>
-                </v-btn>
-                </v-toolbar-items>
-            </v-toolbar>
+                <v-toolbar dark color="primary">
+                    <v-toolbar-title>Registrar evento</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-btn  color=success text @click="guardar()">Guardar evento</v-btn>
+                        <v-btn icon   @click="dialogo = false">
+                            <v-icon>close</v-icon>
+                        </v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
 
-            <v-container grid-list-md text-xs-center>
-                <v-layout row wrap>
-                    <v-flex class="espaciado" xs12 sm12 md6 lg6 >
+                <v-container grid-list-md text-xs-center>
+                    <v-layout row wrap>
+                        <v-flex class="espaciado" xs12 sm12 md6 lg6 >
+                            <v-autocomplete name="evento"   
+                                :items="eventos"
+                                v-model="evento" 
+                                v-validate="'required'" 
+                                label="*Evento:"
+                                return-object
+                                :error-messages="errors.collect('evento')">
+                            </v-autocomplete>
 
+                            <v-text-field 
+                                v-if="evento.value == 20"
+                                name="Evento" 
+                                label="Evento:" 
+                                v-model="eventosec"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('Evento')">                                          
+                            </v-text-field> 
 
-                                    <v-autocomplete name="evento"   
-                                        :items="eventos"
-                                        v-model="evento" 
-                                        v-validate="'required'" 
-                                        label="*Evento:"
-                                        return-object
-                                        :error-messages="errors.collect('evento')">
-                                    </v-autocomplete>
+                            <v-text-field 
+                                name="lugar a presensentarse" 
+                                label="*Lugar a presensentarse:" 
+                                v-model="lugarp"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('lugar a presensentarse')">                                          
+                            </v-text-field>   
 
-                                    <v-text-field 
-                                        v-if="evento.value == 20"
-                                        name="Evento" 
-                                        label="Evento:" 
-                                        v-model="eventosec"
-                                        v-validate="'required'"
-                                        :error-messages="errors.collect('Evento')">                                          
-                                    </v-text-field> 
+                            <v-text-field 
+                                name="observaciones" 
+                                label="*Observaciones:" 
+                                v-model="persona"
+                                v-validate="'required'"
+                                :error-messages="errors.collect('observaciones')">                                          
+                            </v-text-field>
+                        </v-flex>
 
-                                    <v-text-field 
-                                        name="lugar a presensentarse" 
-                                        label="*Lugar a presensentarse:" 
-                                        v-model="lugarp"
-                                        v-validate="'required'"
-                                        :error-messages="errors.collect('lugar a presensentarse')">                                          
-                                    </v-text-field>   
-
-                                    <v-text-field 
-                                        name="observaciones" 
-                                        label="*Observaciones:" 
-                                        v-model="persona"
-                                        v-validate="'required'"
-                                        :error-messages="errors.collect('observaciones')">                                          
-                                    </v-text-field>  
-
-                        
-                    </v-flex>
-
-                    <v-flex class="espaciado" xs12 sm12 md6 lg6 >
-
-                        <v-menu
-                            ref="menu1"
-                            v-model="menu1"
-                            :close-on-content-click="false"
-                            :return-value.sync="fechacita"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="290px"
-                        >
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                            :value="fechac"
-                                            label="Fecha de cita:"
-                                            prepend-icon="event"
-                                            clearable 
-                                            readonly
-                                            v-on="on"
-                                ></v-text-field>
-                            </template>
-                                <v-date-picker v-model="fechacita" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="fechainif()">OK</v-btn>
-                                </v-date-picker>
-                        </v-menu>
-                        
-                        <v-menu
-                            ref="menu2"
-                            v-model="menu2"
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            :return-value.sync="horac"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="290px"
+                        <v-flex class="espaciado" xs12 sm12 md6 lg6 >
+                            <v-menu
+                                ref="menu1"
+                                v-model="menu1"
+                                :close-on-content-click="false"
+                                :return-value.sync="fechacita"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="290px"
                             >
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        :value="fechac"
+                                        label="Fecha de cita:"
+                                        prepend-icon="event"
+                                        clearable 
+                                        readonly
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="fechacita" no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
+                                    <v-btn text color="primary" @click="fechainif()">OK</v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        
+                            <v-menu
+                                ref="menu2"
+                                v-model="menu2"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="horac"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px"
+                                >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="horac"
+                                        label="Hora de cita:"
+                                        prepend-icon="access_time"
+                                        readonly
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-time-picker
+                                    v-if="menu2"
                                     v-model="horac"
-                                    label="Hora de cita:"
-                                    prepend-icon="access_time"
-                                    readonly
-                                    v-on="on"
-                                ></v-text-field>
-                            </template>
-                            <v-time-picker
-                            v-if="menu2"
-                            v-model="horac"
-                            full-width
-                            @click:minute="$refs.menu2.save(horac)"
-                            ></v-time-picker>
-                        </v-menu>
-
-                    </v-flex>
-
-                </v-layout>
-            
-
-            </v-container>
-
-            
-         
-        
+                                    full-width
+                                    @click:minute="$refs.menu2.save(horac)"
+                                ></v-time-picker>
+                            </v-menu>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
             </v-card>
         </v-dialog>
-
-
     </v-flex>
 </v-layout> 
 </template>
 
- 
 <script> 
   import axios from 'axios'  
   import VeeValidate from 'vee-validate' 
@@ -201,12 +180,14 @@
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { error } from 'util';
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   export default {
     components: {      
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -318,7 +299,7 @@
                 })
         }
         else{
-                me.$notify('Carpeta abierta correctamente !!!','success')
+                me.$notify('Carpeta abierta correctamente','success')
                 
 
                 me.u_iddistrito=me.$store.state.usuario.iddistrito;
@@ -394,13 +375,13 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         }, 
@@ -456,13 +437,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -482,13 +463,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
                 
@@ -507,13 +488,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
         },  
@@ -552,7 +533,7 @@
                                     'uPuesto' : me.u_puesto,
                                     'uModulo' : me.u_modulo,
                                 },configuracion).then(function(response){
-                                    me.$notify('La información se guardo correctamente !!!','success')  
+                                    me.$notify('¡La información se guardo correctamente!','success')  
                                     me.dialogo = false;
                                     me.listar();
                                     me.limpiar();                        
@@ -564,7 +545,7 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){ 
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false 
                                     } else if (err.response.status==404){
@@ -607,13 +588,13 @@
                         this.e401 = true,
                         this.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         this.e403= true
                         this.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar leer la lista roles!!!','error')   
+                        me.$notify('¡Error al intentar leer la lista roles!','error')   
                     } 
                 });
                 

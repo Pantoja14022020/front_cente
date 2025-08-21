@@ -68,7 +68,7 @@
       if(token)
       { 
         this.$store.dispatch("guardarToken", token)
-        this.$store.dispatch("setLogin", true, token)
+        this.$store.dispatch("setLogin", token)
       }
       else 
       { 

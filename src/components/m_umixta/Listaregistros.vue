@@ -2,6 +2,9 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <UmixtaNavDrawer />
+
             <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title class="font-weight-regular" >Lista de registros de atención ciudadana (RACs).</v-toolbar-title>
@@ -229,9 +232,9 @@
                                         <v-card elevation="0"   >
                                             <v-card-title class="accent"><h3>Reseña breve de hechos (Modo, Tiempo, Lugar y circunstancia) Excesivamente breves</h3></v-card-title>
                                             <v-card-text>
-                                                <p v-html="rBreve">
-                                                {{ rBreve}}
-
+                                                <p>
+                                                    <span v-html="rBreve"></span>
+                                                    {{ rBreve }}
                                                 </p>
                                             </v-card-text> 
                                         </v-card> 
@@ -308,35 +311,20 @@
                                                 <v-btn color="primary" @click="listarDDerivacion()"  >Resetear</v-btn>
                                                 </template>
                                                 </v-data-table>
-                                                    
-                                                
                                             </v-card-text>
                                         </v-card>
-                                    
-                                        
-                                    
-                                        
                                     </v-layout>
-                                    
-                                </v-card> 
-                            </v-flex>     
+                                </v-card>
+                            </v-flex>
                         </v-layout>
-                        
                     </v-container>
                 </v-card>
-            
-    
             </v-card>
         </v-dialog>
 
-      
-
-
-
         <v-dialog v-model="modal_CaratulaRAC" fullscreen hide-overlay transition="dialog-bottom-transition">
             <v-card>
-                <v-toolbar dark color="primary">
-               
+                <v-toolbar dark color="primary">               
                 <v-toolbar-title>Documento.</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -372,28 +360,29 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-
-
-
     </v-layout>
 </template>
+
 <script>
-    import axios from 'axios'  
-    import jsPDF from 'jspdf'
-    import html2canvas from 'html2canvas'
-    import VeeValidate from 'vee-validate'
-    import n401 from './401.vue'
-    import n403 from './403.vue'
-    import moment from 'moment'
+    import axios from 'axios';
+    import jsPDF from 'jspdf';
+    import html2canvas from 'html2canvas';
+    import VeeValidate from 'vee-validate';
+    import n401 from './401.vue';
+    import n403 from './403.vue';
+    import moment from 'moment';
     import { error } from 'util';
-    import 'moment/locale/es'; 
+    import 'moment/locale/es';
+    import UmixtaNavDrawer from './umixtaNavDrawer.vue'
+
     export default {
-        data(){
-            return { 
-                components: {  
-                    n401,
-                    n403
-                },     
+        components: {
+            n401,
+            n403,
+            UmixtaNavDrawer
+        },
+        data(){            
+            return {                    
                 editedIndex: -1, 
                 modalDetalleInformacion:false,
                 showpage:true,
@@ -408,29 +397,22 @@
                     { text: 'Atendido por', value: 'u_Nombre'}, 
                     { text: 'Status atención', value: 'statusatencion'}, 
                     { text: 'Status NUC', value: 'statusregistro'},  
-                    { text: 'Contención', value: 'contencionvictima'}, 
-                    
-                                                 
+                    { text: 'Contención', value: 'contencionvictima'},                          
                 ],
-                  /****************************************************************************** */
-               
-                 
-              
-                
+                /************************************** */
+                //VARIABLES PARA LA TABLA
                 search: '',
                 searchp:'',
                 rowsPerPageItems: [10, 20, 30, 40, 50],
                 pagination: {
                     rowsPerPage: 20
                 },
-                /**************** */ 
-              
+                /************************************** */              
                 rAtencionId:'',
                 rHechoId:'',
                 registros:[],
                 rac:'',
-                //*************** */
-                     //*************** */
+                /************************************** */
                 // INFOMACION DE LA PERSONA
                 personaId: 0, 
                 curp:'',
@@ -458,7 +440,7 @@
                 parentesco:'',
                 direccion:'',
                 numerooficio:'',
-                //*************** */
+                /************************************** */
                 // DIRECCION PERSONAL
                 calle:'',
                 noExt:'',
@@ -482,7 +464,7 @@
                 localidades:[],
 
                 cp:'', 
-                //*************** */
+                /************************************** */
                 // CARATULA RAC
                 modal_CaratulaRAC:false, 
                 registradopor:'',
@@ -491,7 +473,7 @@
                 dirsubprocuinicial:'',
                 agenciainicial:'',
                 rBreve:'',
-                //*************** */
+                /************************************** */
                 // FORMATO DE DILIGENCIAS SERVICIOS PERICIALES
                 diligencias:[],
                 origenDirSub:'',
@@ -513,7 +495,7 @@
                     { text: 'Status', value: 'fechaAD', sortable: false }, 
                     { text: 'Opciones', value: 'opciones', sortable: false },                                  
                 ],
-                //*************** */ 
+                /************************************** */
                 // FORMATO DEPENDECIA DERIVACION
                 modal_DependeciaDerivacion:false,
                 dderivaciones:[], 
@@ -529,7 +511,7 @@
                 dd_unombre:'', 
                 dd_upuesto:'', 
                 u_subproc:'',
-                /****************************************************************************** */
+                /************************************** */
                 headersDDerivacion: [ 
                     { text: 'Fecha', value: 'fechaDerivacion' },  
                     { text: 'Dirigido a', value: 'nombreDDerivacion' }, 
@@ -537,10 +519,7 @@
                     { text: 'Contacto', value: 'contacto', },  
                     { text: 'Opciones', value: 'opciones', sortable: false },                                  
                 ],
-                 
-                /****************************************************************************** */
-           
-                //******************************** */
+                /************************************** */
                 // IFORMACION PARA LOS REPORTES
                 logo1:'',
                 logo2:'',
@@ -550,24 +529,19 @@
                 telefonosAgencia:'',
                 subproc:'',
                 agenciai:'',
-                //************************* */ 
-             
-           
+                /************************************** */
             }
-        },
-        
+        },        
         watch: {
              
         },
-
         created () {
             this.listar(); 
             this.listarLogo();
             this.u_subproc=this.$store.state.usuario.subProc;          
         },
         methods:{
-            listarLogo(){
-        
+            listarLogo(){        
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
@@ -584,13 +558,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             }, 
@@ -609,13 +583,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             },
@@ -633,13 +607,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 }); 
             },
@@ -650,23 +624,18 @@
                 this.rac = item.rac;
                 this.numerooficio = item.numerooficio;
                 this.listarrHecho();
-
                 this.editedIndex=1;
                 this.modalDetalleInformacion = true
             },
- 
-
             close () { 
                 this.modal_CaratulaRAC=false;
                 this.modal_DependeciaDerivacion=false;
                 this.limpiar();
             },
-             
             limpiar(){            
                 this.editedIndex=-1;
             },
             listarrHecho(){
-                 
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};   
@@ -684,6 +653,7 @@
                     me.rBreve = response.data.rBreve, 
                     me.listarrap();
                     me.informacionagencia();
+
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -692,13 +662,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             },          
@@ -707,8 +677,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};    
-                this.$cat.get('api/RAPs/Listar/' +me.rAtencionId,configuracion).then(function(response){
-                   
+                this.$cat.get('api/RAPs/Listar/' +me.rAtencionId,configuracion).then(function(response){                   
                      
                     me.personaId = response.data.personaId;
                     me.curp = response.data.curp;
@@ -735,7 +704,6 @@
                     me.parentesco=response.data.parentesco;
                     me.nivelEstudio= response.data.nivelEstudio;
                     me.edad = response.data.edad;
-
                     me.listardireccionpersona();
                   
                     }).catch(err => { 
@@ -746,16 +714,15 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
-                });
-                
+                });                
             },
             listardireccionpersona(){ 
                 let me=this; 
@@ -773,13 +740,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 }); 
             },  
@@ -797,13 +764,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
             },
@@ -848,13 +815,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 }); 
             },

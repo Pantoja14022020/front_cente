@@ -5,6 +5,7 @@
         <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
         <n401 v-if = "e401" />
         <n403 v-if = "e403" />
+        <UmixtaNavDrawer />
         <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
         <!-- Fragmento principal para la visualización de los acuerdos reparatorios de la carpeta -->
         <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
@@ -295,11 +296,13 @@
     import n403 from './403'
     import moment from 'moment'
     import { NumberAsString } from  './NumerosLetras.js'
+    import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
     export default {
         components: {
             n401,
-            n403,            
+            n403,
+            UmixtaNavDrawer      
         },
         data: function () {
             return {
@@ -628,7 +631,7 @@
                 me.$justiciarestaurativa.put('api/AcuerdoReparatorios/ActualizarRespuestaMP',payload,configuracion)
                     .then((response) => {
                         me.close();
-                        me.$notify('La información se guardo correctamente !!!','success')  
+                        me.$notify('¡La información se guardo correctamente!','success')  
                         me.buscarexpedientesXDistrito();                        
                     })
                     .catch((error) => {
@@ -639,7 +642,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){

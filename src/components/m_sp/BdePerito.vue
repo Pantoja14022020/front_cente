@@ -779,7 +779,12 @@
                                                 <table>
                                                     <tr>
                                                         <td>Conclusión:</td>
-                                                        <td><b v-html="conclusionitem"> {{conclusionitem}}</b></td>
+                                                        <td>
+                                                            <b>
+                                                                <span v-html="conclusionitem"></span>
+                                                                {{conclusionitem}}
+                                                            </b>
+                                                        </td>
                                                     </tr>
                                                     <br>
                                                 </table>
@@ -1376,13 +1381,13 @@ import pdf from 'vue-pdf'
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recurso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
         },
@@ -1407,13 +1412,13 @@ import pdf from 'vue-pdf'
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
         },
@@ -1443,13 +1448,13 @@ import pdf from 'vue-pdf'
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recurso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
 
@@ -1472,13 +1477,13 @@ import pdf from 'vue-pdf'
                     me.e401 = true,
                     me.showpage = false
                 } else if (err.response.status == 403) {
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false
                 } else if (err.response.status==404){
                     me.$notify("El recurso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')
+                    me.$notify('Error al intentar listar los registros','error')
                 }
             });
         },
@@ -1544,7 +1549,7 @@ import pdf from 'vue-pdf'
                                 me.e401 = true,
                                 me.showpage = false
                             } else if (err.response.status == 403) {
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403 = true
                                 me.showpage = false
                             } else if (err.response.status == 404) {
@@ -1564,7 +1569,7 @@ import pdf from 'vue-pdf'
                             me.e401 = true,
                             me.showpage = false
                         } else if (err.response.status == 403) {
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403 = true
                             me.showpage = false
                         } else if (err.response.status == 404) {
@@ -1597,7 +1602,7 @@ import pdf from 'vue-pdf'
                                     me.e401 = true,
                                     me.showpage= false
                                 } else if (err.response.status==403){
-                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                     me.e403= true
                                     me.showpage= false
                                 } else if (err.response.status==404){
@@ -1619,7 +1624,7 @@ import pdf from 'vue-pdf'
                             me.e401 = true,
                             me.showpage = false
                         } else if (err.response.status == 403) {
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
@@ -1640,7 +1645,7 @@ import pdf from 'vue-pdf'
                         me.e401 = true,
                         me.showpage = false
                     } else if (err.response.status == 403) {
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403 = true
                         me.showpage = false
                     } else if (err.response.status == 404) {
@@ -1678,13 +1683,13 @@ import pdf from 'vue-pdf'
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recurso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
         },
@@ -1754,7 +1759,7 @@ import pdf from 'vue-pdf'
 
 
                         },configuracion).then(function(response){
-                            me.$notify('La información se guardo correctamente !!!','success')
+                            me.$notify('¡La información se guardo correctamente!','success')
                             me.dialogarchivo = false;
                             me.listar();
                             me.limpiar();
@@ -1766,7 +1771,7 @@ import pdf from 'vue-pdf'
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false
                             } else if (err.response.status==404){

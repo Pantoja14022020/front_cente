@@ -2,30 +2,31 @@
 <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
-      <v-flex v-if="showpage">
+
+    <UmixtaNavDrawer />
+
+    <v-flex v-if="showpage">
         <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Reasignación de dirección de escucha</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                     <v-flex xs12 sm6 md3 lg3>
-                      
-                        <v-text-field class="font-weight-regular"
-                            v-model="nuc" disabled  prepend-icon="folder"
-                            filled
-                        ></v-text-field>
-                       </v-flex>
-                        <v-tooltip bottom>
-                                <template v-slot:activator="{ on }"> 
-                                    <v-btn class="mx-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
-                                        <v-icon dark>close</v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>Cerrar carpeta</span>
-                        </v-tooltip>
-                    
+            <v-toolbar-title class="font-weight-regular" >Reasignación de dirección de escucha</v-toolbar-title>
+            
+            <v-divider class="mx-2" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+            <v-spacer></v-spacer>
+            <v-flex xs12 sm6 md3 lg3>
+                <v-text-field class="font-weight-regular"
+                    v-model="nuc" disabled  prepend-icon="folder"
+                    filled
+                ></v-text-field>
+            </v-flex>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on }"> 
+                    <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
+                        <v-icon class="mt-1" dark>close</v-icon>
+                    </v-btn>
+                </template>
+                <span>Cerrar carpeta</span>
+            </v-tooltip>    
         </v-toolbar>
         <v-data-table
             :headers="headers"
@@ -33,38 +34,34 @@
             :search="search" 
             :rows-per-page-items="rowsPerPageItems"
             :pagination.sync="pagination"
-                >
-            
-            <template slot="items" class="white" slot-scope="props">
-                
-                
+            >
+
+            <template slot="items" class="white" slot-scope="props">                
                 <td>{{ props.item.nombreCompleto}}</td>   
                 <td>{{ props.item.clasificacionPersona}}</td>   
                 <td>{{ props.item.curp}}</td>   
                 <td class=" layout "> 
-                        <v-tooltip bottom   >
-                            <template v-slot:activator="{ on }">
-                                <v-icon 
-                                    class="mr-2" v-on="on" 
-                                    @click="representantesver(props.item)"
-                                    >
-                                    people_alt
-                                </v-icon> 
-                            </template>
-                            <span>Ver representantes</span>
-                        </v-tooltip>    
-                </td>       
-
+                    <v-tooltip bottom   >
+                        <template v-slot:activator="{ on }">
+                            <v-icon 
+                                class="mr-2" v-on="on" 
+                                @click="representantesver(props.item)"
+                                >
+                                people_alt
+                            </v-icon> 
+                        </template>
+                        <span>Ver representantes</span>
+                    </v-tooltip>    
+                </td>
             </template>
+
             <template slot="no-data">
                 <v-btn color="primary" @click="listar()"  >Resetear</v-btn>
             </template>
                 
         </v-data-table>    
 
-
         <v-dialog  v-model="dialogorepresentantes"  max-width="1000px" >
-
             <v-card>
                 <v-toolbar card dark color="grey lighten-4 primary--text">
                     <v-avatar  size="30">
@@ -79,7 +76,6 @@
                         <v-container >
                             <v-layout wrap>
                                 <v-flex  xs12 sm12 md12 lg12 >
-
                                     <v-data-table
                                         :headers="headers2"
                                         :items="representantes"
@@ -89,8 +85,6 @@
                                             >
                                         
                                         <template slot="items" class="white" slot-scope="props">
-                                            
-                                            
                                             <td>{{ props.item.nombres + " "+ props.item.apellidoPa + " " + props.item.apellidoMa}}</td>   
                                             <td>
                                                 <div v-if="props.item.tipo1 >0">
@@ -109,21 +103,19 @@
                                                 </div>
                                             </td>     
                                             <td class=" layout "> 
-                                                    <v-tooltip bottom   >
-                                                        <template v-slot:activator="{ on }">
-                                                            <v-icon 
-                                                                class="mr-2" v-on="on" 
-                                                                @click="actualizardireccion(props.item)"
-                                                                >
-                                                                update
-                                                            </v-icon> 
-                                                        </template>
-                                                        <span>Actualizar dirección de escucha a la de este representante</span>
-                                                    </v-tooltip>    
-                                            </td>       
-
+                                                <v-tooltip bottom>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-icon
+                                                            class="mr-2" v-on="on"
+                                                            @click="actualizardireccion(props.item)"
+                                                            >
+                                                            update
+                                                        </v-icon> 
+                                                    </template>
+                                                    <span>Actualizar dirección de escucha a la de este representante</span>
+                                                </v-tooltip>
+                                            </td>
                                         </template>
-                                            
                                     </v-data-table>
                                 </v-flex>                               
                             </v-layout>
@@ -134,17 +126,13 @@
                             <v-btn  @click.native="dialogorepresentantes=false" >Cerrar</v-btn>                                   
                         </v-card-actions> 
                     </v-form>
-                
                 </v-card-text> 
             </v-card>
-
         </v-dialog>
-     
     </v-flex>
 </v-layout> 
 </template>
 
- 
 <script> 
   import axios from 'axios'  
   import VeeValidate from 'vee-validate' 
@@ -154,12 +142,14 @@
   import 'moment/locale/es';
   import n401 from './401.vue'
   import n403 from './403.vue'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   export default {
     components: {
         "vue2-editor": VueEditor,
         n401,
-        n403
+        n403,
+        UmixtaNavDrawer
     },
     data: () => ({
         alert:false,
@@ -246,7 +236,7 @@
                 })
         }
         else{
-                me.$notify('Carpeta abierta correctamente !!!','success')
+                me.$notify('Carpeta abierta correctamente','success')
                 
 
                 me.u_iddistrito=me.$store.state.usuario.iddistrito;
@@ -350,13 +340,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
             });
         }, 
@@ -376,13 +366,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error') 
+                            me.$notify('Error al intentar listar los registros','error') 
                         } 
                     });
         },
@@ -400,13 +390,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error') 
+                        me.$notify('Error al intentar listar los registros','error') 
                     } 
                 });
         },
@@ -446,7 +436,7 @@
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){

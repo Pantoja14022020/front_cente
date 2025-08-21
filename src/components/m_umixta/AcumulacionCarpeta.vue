@@ -2,6 +2,9 @@
   <v-layout align-start>
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer /> 
+
     <v-flex v-if="showpage">
       <v-toolbar flat color="white">
         <v-toolbar-title class="font-weight-regular">Acumulación de carpeta</v-toolbar-title>
@@ -26,16 +29,16 @@
         </v-flex>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn class="mx-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
-              <v-icon dark>close</v-icon>
+            <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
+              <v-icon class="mt-1" dark>close</v-icon>
             </v-btn>
           </template>
           <span>Cerrar carpeta</span>
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <v-btn class="mx-2" slot="activator" v-on="on" @click="agregar" fab dark small color="success">
-              <v-icon dark>add</v-icon>
+            <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="agregar" fab dark small color="success">
+              <v-icon class="mt-1" dark>add</v-icon>
             </v-btn>
           </template>
           <span>Agregar registro</span>
@@ -111,12 +114,14 @@
   import n401 from './401.vue'
   import n403 from './403.vue'
   import { error } from 'util'
+  import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
   export default {
     components: {
       "vue2-editor": VueEditor,
       n401,
-      n403
+      n403,
+      UmixtaNavDrawer
     },
     data: () => ({
       alert: false,
@@ -189,12 +194,12 @@
       me.rAtencionId = me.$store.state.ratencionid
       me.nuc = me.$store.state.nuc
       if (me.rHechoId == null) {
-        me.$alert('Notificación', 'Aun no ha abierto ninguna carpeta por favor ingrese al menu Carpeta y luego en Listar carpeta y ahi abra la carpeta que usted elija!. En este momento sera redireccionado al menu correspondiente.',
+        me.$alert('Notificación', 'Aun no ha abierto ninguna carpeta, por favor ingrese al menu Carpeta -> Listar carpeta y elija la carpeta. En este momento sera redireccionado al menu correspondiente.',
         function () {
           me.$router.push('./umixta-carpetas')
         })
       } else {
-        me.$notify('Carpeta abierta correctamente !!!', 'success')
+        me.$notify('Carpeta abierta correctamente', 'success')
         me.u_iddistrito = me.$store.state.usuario.iddistrito
         me.u_distrito = me.$store.state.usuario.distrito
         me.u_dirSubPro = me.$store.state.usuario.dirSubProc
@@ -250,17 +255,17 @@
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", 'error')
           } else if (err.response.status == 401) {
-            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+            me.$notify("Por favor inicie sesión para poder navegar en la aplicación", 'error')
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recurso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -280,17 +285,17 @@
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", 'error')
           } else if (err.response.status == 401) {
-            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+            me.$notify("Por favor inicie sesión para poder navegar en la aplicación", 'error')
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recurso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -325,13 +330,13 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
               me.$notify("El NUC no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -357,13 +362,13 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403= true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recurso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!','error')
+            me.$notify('Error al intentar listar los registros','error')
           }
         })
       },
@@ -395,13 +400,13 @@
             me.e401 = true,
             me.showpage = false
           } else if (err.response.status == 403) {
-            me.$notify("No esta autorizado para ver esta pagina", 'error')
+            me.$notify("No esta autorizado para ver esta página", 'error')
             me.e403 = true
             me.showpage = false
           } else if (err.response.status == 404) {
             me.$notify("El recurso no ha sido encontrado", 'error')
           } else {
-            me.$notify('Error al intentar listar los registros!!!', 'error')
+            me.$notify('Error al intentar listar los registros', 'error')
           }
         })
       },
@@ -436,7 +441,7 @@
                 me.e401 = true,
                 me.showpage = false
               } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
               } else if (err.response.status == 404) {
@@ -472,7 +477,7 @@
                   me.e401 = true,
                   me.showpage = false
                 } else if (err.response.status == 403) {
-                  me.$notify("No esta autorizado para ver esta pagina", 'error')
+                  me.$notify("No esta autorizado para ver esta página", 'error')
                   me.e403 = true
                   me.showpage = false
                 } else if (err.response.status == 404) {
@@ -489,7 +494,7 @@
                 me.e401 = true,
                 me.showpage = false
               } else if (err.response.status == 403) {
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403 = true
                 me.showpage = false
               } else if (err.response.status == 404) {
@@ -513,7 +518,7 @@
               me.e401 = true,
               me.showpage = false
             } else if (err.response.status == 403) {
-              me.$notify("No esta autorizado para ver esta pagina", 'error')
+              me.$notify("No esta autorizado para ver esta página", 'error')
               me.e403 = true
               me.showpage = false
             } else if (err.response.status == 404) {

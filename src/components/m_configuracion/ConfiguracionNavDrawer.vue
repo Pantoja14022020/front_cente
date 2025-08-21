@@ -3,7 +3,6 @@
 </script>
 
 <template>
-
     <v-navigation-drawer v-model="drawer" class="primary" app v-if="logueado" >
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/Panel"><img  src="@/assets/Logo.png" height="110px" alt=""></a>

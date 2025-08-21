@@ -1,8 +1,12 @@
 <script src="./Registro.js"></script>
+
 <template>  
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <UmixtaNavDrawer />
+
         <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                 <v-toolbar-title class="font-weight-regular">Registro del denunciante.</v-toolbar-title>    
@@ -161,7 +165,7 @@
                                     />                                
                                     <br/>
                                     <v-toolbar color="primary" v-if="!switch2" dark> 
-                                        <v-toolbar-title>Documento escaneado</v-toolbar-title>
+                                        <v-toolbar-title class="modal">Documento escaneado</v-toolbar-title>
                                         <v-spacer />
                                         <v-dialog v-model="dialog" max-width="500px"> 
                                             <v-btn slot="activator" icon>
@@ -270,7 +274,7 @@
                                         v-if="switch2==false" 
                                         label="CURP:"  
                                     />
-                                    <span v-if="!switch2">Valida que no exista la duplicidad de la denuncia en otros distritos.</span>
+                                    <span class="avisos" v-if="!switch2">Valida que no exista la duplicidad de la denuncia en otros distritos.</span>
                                     <br/> 
                                     <br/>  
                                     <v-btn block="" outline color="primary" @click.native="validadduplicidad" v-if="switch2==false">

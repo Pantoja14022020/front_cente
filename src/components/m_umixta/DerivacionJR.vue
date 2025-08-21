@@ -2,6 +2,9 @@
   <v-layout align-start>
    <n401 v-if="e401" />
    <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
       <v-flex v-if="showpage">
            <v-toolbar flat color="white">
                <v-toolbar-title class="font-weight-regular" >Información de derivaciónes.</v-toolbar-title>
@@ -500,38 +503,35 @@
 
 
 <script>
- import axios from 'axios'
- import jsPDF from 'jspdf'
- import html2canvas from 'html2canvas'
- import VeeValidate from 'vee-validate'
-
- import moment from 'moment'
- import 'moment/locale/es';
- import alertify from 'alertifyjs';
- import { VueEditor } from "vue2-editor";
-
- import DualListBox from "dual-listbox-vue";
- import "dual-listbox-vue/dist/dual-listbox.css";
- import n401 from './401.vue'
- import n403 from './403.vue'
-   import { error } from 'util';
+import axios from 'axios'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import VeeValidate from 'vee-validate'
+import moment from 'moment'
+import 'moment/locale/es'
+import alertify from 'alertifyjs'
+import { VueEditor } from "vue2-editor"
+import DualListBox from "dual-listbox-vue"
+import "dual-listbox-vue/dist/dual-listbox.css"
+import n401 from './401.vue'
+import n403 from './403.vue'
+import { error } from 'util'
 import { METHODS } from 'http'
 import {copiarDerivacion} from './copiarDerivacion' 
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import htmlToPdfmake from 'html-to-pdfmake';
-import QRCode from "qrcode";
-import { generarQRCodeBase64 } from './crearQR';
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+import htmlToPdfmake from 'html-to-pdfmake'
+import QRCode from "qrcode"
+import { generarQRCodeBase64 } from './crearQR'
+import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
-
-
- export default {
-   components: {
-           DualListBox,
-       "vue2-editor": VueEditor,
-       n401,
-       n403
-
+export default {
+    components: {
+        DualListBox,
+        "vue2-editor": VueEditor,
+        n401,
+        n403,
+        UmixtaNavDrawer
    },
        props: {
        item: Object, // Propiedad item pasada al componente
@@ -764,7 +764,7 @@ import { generarQRCodeBase64 } from './crearQR';
                })
        }
        else{
-               me.$notify('Carpeta abierta correctamente !!!','success')
+               me.$notify('Carpeta abierta correctamente','success')
 
 
                me.u_iddistrito=me.$store.state.usuario.iddistrito;
@@ -907,13 +907,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{solicitante
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
 
@@ -935,13 +935,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{solicitante
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
         },
@@ -979,13 +979,13 @@ import { generarQRCodeBase64 } from './crearQR';
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{solicitante
-                    me.$notify('Error al intentar listar los registros!!!','error')
+                    me.$notify('Error al intentar listar los registros','error')
                 }
             });
 
@@ -1028,13 +1028,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{solicitante
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
 
@@ -1046,13 +1046,13 @@ import { generarQRCodeBase64 } from './crearQR';
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{solicitante
-                    me.$notify('Error al intentar listar los registros!!!','error')
+                    me.$notify('Error al intentar listar los registros','error')
                 }
             });
 
@@ -1177,13 +1177,13 @@ import { generarQRCodeBase64 } from './crearQR';
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){ 
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false 
                 } else if (err.response.status==404){
                     me.$notify("El recuso no ha sido encontrado", 'error')
                 }else{
-                    me.$notify('Error al intentar listar los registros!!!','error')    
+                    me.$notify('Error al intentar listar los registros','error')    
                 } 
             });
         },
@@ -1421,13 +1421,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
        },
@@ -1456,13 +1456,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
        },
@@ -1485,13 +1485,13 @@ import { generarQRCodeBase64 } from './crearQR';
                    me.e401 = true,
                    me.showpage= false
                } else if (err.response.status==403){ 
-                   me.$notify("No esta autorizado para ver esta pagina", 'error')
+                   me.$notify("No esta autorizado para ver esta página", 'error')
                    me.e403= true
                    me.showpage= false 
                } else if (err.response.status==404){
                    me.$notify("El recuso no ha sido encontrado", 'error')
                }else{
-                   me.$notify('Error al intentar listar los registros!!!','error')    
+                   me.$notify('Error al intentar listar los registros','error')    
                } 
            });
        },
@@ -1965,13 +1965,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
                //************************************************ */
@@ -1993,13 +1993,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
        },
@@ -2024,13 +2024,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
 
@@ -3276,7 +3276,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     },configuracion).then(function(response)
                     {
 
-                        me.$notify('La información se guardo correctamente !!!','success')
+                        me.$notify('¡La información se guardo correctamente!','success')
                         //SE GUARDA EL VALOR DEL ID DE EXPEDIENTE O DEL ENVIO PARA LAS SIGUIENTES APIS
                         idEnvioNew = response.data.idenvio;
                         me.idExpedienteNew = response.data.idexpediente;
@@ -3330,7 +3330,7 @@ import { generarQRCodeBase64 } from './crearQR';
 
                         },configuracion).then((response)=>
                         {
-                            me.$notify('La información se guardo correctamente !!!','success')
+                            me.$notify('¡La información se guardo correctamente!','success')
                             
 
                             
@@ -3342,7 +3342,7 @@ import { generarQRCodeBase64 } from './crearQR';
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false
                             } else if (err.response.status==404){
@@ -3360,7 +3360,7 @@ import { generarQRCodeBase64 } from './crearQR';
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
@@ -3448,7 +3448,7 @@ import { generarQRCodeBase64 } from './crearQR';
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
@@ -3485,7 +3485,7 @@ import { generarQRCodeBase64 } from './crearQR';
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
@@ -3580,7 +3580,7 @@ import { generarQRCodeBase64 } from './crearQR';
                     me.e401 = true,
                     me.showpage= false
                 } else if (err.response.status==403){
-                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                    me.$notify("No esta autorizado para ver esta página", 'error')
                     me.e403= true
                     me.showpage= false
                 } else if (err.response.status==404){
@@ -3607,7 +3607,7 @@ import { generarQRCodeBase64 } from './crearQR';
                    'UsuarioId':me.u_idusuario,
                    'NombreUsuario': me.u_nombre,
                    },configuracion).then(function(response){
-                   me.$notify('La información se guardo correctamente !!!','success')
+                   me.$notify('¡La información se guardo correctamente!','success')
                }).catch(err => {
                    if (err.response.status==400){
                        me.$notify("No es un usuario válido", 'error')
@@ -3616,7 +3616,7 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
@@ -3645,7 +3645,7 @@ import { generarQRCodeBase64 } from './crearQR';
                 'UModulo': u_modulo,
            
                },configuracion).then(function(response){
-                   me.$notify('La información se guardo correctamente !!!','success')
+                   me.$notify('¡La información se guardo correctamente!','success')
                }).catch(err => {
                    if (err.response.status==400){
                        me.$notify("No es un usuario válido", 'error')
@@ -3654,7 +3654,7 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
@@ -3733,13 +3733,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
 
@@ -3765,13 +3765,13 @@ import { generarQRCodeBase64 } from './crearQR';
                        me.e401 = true,
                        me.showpage= false
                    } else if (err.response.status==403){
-                       me.$notify("No esta autorizado para ver esta pagina", 'error')
+                       me.$notify("No esta autorizado para ver esta página", 'error')
                        me.e403= true
                        me.showpage= false
                    } else if (err.response.status==404){
                        me.$notify("El recuso no ha sido encontrado", 'error')
                    }else{
-                       me.$notify('Error al intentar listar los registros!!!','error')
+                       me.$notify('Error al intentar listar los registros','error')
                    }
                });
 
@@ -3890,13 +3890,13 @@ import { generarQRCodeBase64 } from './crearQR';
                 me.e401 = true,
                 me.showpage= false
             } else if (err.response.status==403){
-                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                me.$notify("No esta autorizado para ver esta página", 'error')
                 me.e403= true
                 me.showpage= false
             } else if (err.response.status==404){
                 me.$notify("El recuso no ha sido encontrado", 'error')
             }else{solicitante
-                me.$notify('Error al intentar listar los registros!!!','error')
+                me.$notify('Error al intentar listar los registros','error')
             }
             });
         },

@@ -2,6 +2,9 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
+        <UmixtaNavDrawer />
+
           <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                         <v-toolbar-title class="font-weight-regular" >Datos Relacionados</v-toolbar-title>
@@ -20,16 +23,16 @@
                            </v-flex>
                             <v-tooltip bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn class="mx-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
-                                            <v-icon dark>close</v-icon>
+                                        <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="cerrarcarpeta" fab dark small color="primary">
+                                            <v-icon class="mt-1" dark>close</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Cerrar carpeta</span>
                             </v-tooltip>
                             <v-tooltip bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn class="mx-2" slot="activator" v-on="on" @click="agregar" fab dark small color="success">
-                                            <v-icon dark>add</v-icon>
+                                        <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="agregar" fab dark small color="success">
+                                            <v-icon class="mt-1" dark>add</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Agregar registro</span>
@@ -50,7 +53,12 @@
                         <td>{{ props.item.usuario}}</td>   
                         <td>{{ props.item.uModulo}}</td>   
                         <td>{{ props.item.tipo}}</td>   
-                        <td><p v-html="props.item.descripcion">{{ props.item.descripcion }}</p></td>   
+                        <td>
+                            <p>
+                                <span v-html="props.item.descripcion"></span>
+                                {{ props.item.descripcion }}
+                            </p>
+                        </td>   
                         <td>{{ props.item.fechasys.substring(8,10) +" de "+ obtenermes(props.item.fechasys.substring(5,7)-1)+" del "+ props.item.fechasys.substring(0,4)+", "+props.item.fechasys.substring(11,19)}}</td> 
                         <td class="justify-center layout px-0"> 
                                 <v-tooltip bottom   >
@@ -153,12 +161,14 @@
       import 'moment/locale/es';
       import n401 from './401.vue'
       import n403 from './403.vue'
+      import UmixtaNavDrawer from './umixtaNavDrawer.vue'
     
       export default {
         components: {
             "vue2-editor": VueEditor,
             n401,
-            n403
+            n403,
+            UmixtaNavDrawer
         },
         data: () => ({
             alert:false,
@@ -245,7 +255,7 @@
                     })
             }
             else{
-                    me.$notify('Carpeta abierta correctamente !!!','success')
+                    me.$notify('Carpeta abierta correctamente','success')
                     
     
                     me.u_iddistrito=me.$store.state.usuario.iddistrito;
@@ -366,13 +376,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error') 
+                            me.$notify('Error al intentar listar los registros','error') 
                         } 
                     });
             },
@@ -397,7 +407,7 @@
                         'upuesto': me.u_puesto,
                         'umodulo': me.u_modulo
                     },configuracion).then(function(response){  
-                        me.$notify('La información se guardo correctamente !!!','success')   
+                        me.$notify('¡La información se guardo correctamente!','success')   
                         me.dialogo=false;  
                         me.crearRegistroTableroI(descripcionRegTabI);    
                         me.listar();
@@ -410,7 +420,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
@@ -440,7 +450,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
@@ -476,7 +486,7 @@
                         'NombreUsuario': me.u_nombre,
                 
                     },configuracion).then(function(response){
-                        me.$notify('La información se guardo correctamente !!!','success')
+                        me.$notify('¡La información se guardo correctamente!','success')
                     }).catch(err => {
                         if (err.response.status==400){
                             me.$notify("No es un usuario válido", 'error')
@@ -485,7 +495,7 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){

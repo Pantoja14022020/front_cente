@@ -2,141 +2,134 @@
     <v-layout align-start>
         <n401 v-if="e401" />
         <n403 v-if="e403" />
-            <v-flex v-if="showpage">
+
+        <UmixtaNavDrawer />
+
+        <v-flex v-if="showpage">
             <v-toolbar flat color="white">
-                        <v-toolbar-title class="font-weight-regular" >Víctima(s) directa, indirecta, testigo y/o imputado.</v-toolbar-title>
-                        <v-divider class="mx-2" inset vertical></v-divider>
-                        <v-spacer></v-spacer>
-                        <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                        <v-spacer></v-spacer>
-                         <v-flex xs12 sm6 md3>
-    
-                            <v-text-field class="font-weight-regular"
-                                v-model="nuc" disabled  prepend-icon="folder"
-                                filled
-                            ></v-text-field>
-                           </v-flex>
-                           <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
-                                <v-icon class="mt-1" dark>close</v-icon>
-                            </v-btn>
-                            <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
-                                <v-icon class="mt-1" dark>add</v-icon>
-                            </v-btn>
-    
-    
-             </v-toolbar>
+                <v-toolbar-title class="font-weight-regular">Víctima(s) directa, indirecta, testigo y/o imputado.</v-toolbar-title>
+
+                <v-divider class="mx-2" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+                <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+                <v-spacer></v-spacer>
+
+                <v-flex xs12 sm6 md3>
+                    <v-text-field class="font-weight-regular"
+                        v-model="nuc" disabled  prepend-icon="folder"
+                        filled
+                    ></v-text-field>
+                </v-flex>
+                <v-btn class="mx-2 pt-2" @click="cerrarcarpeta" fab dark small color="primary">
+                    <v-icon class="mt-1" dark>close</v-icon>
+                </v-btn>
+                <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                    <v-icon class="mt-1" dark>add</v-icon>
+                </v-btn>
+            </v-toolbar>
             <v-data-table
-                    :headers="headers"
-                    :items="raps"
-                    :search="search"
-                    :rows-per-page-items="rowsPerPageItems"
-                    :pagination.sync="pagination"  >
-                    <template slot="items" class="white" slot-scope="props">
-    
-                        <td class="justify-center layout px-0">
-                            <div v-if="props.item.inicioDetenido">
-                                <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                        <v-icon
-                                            class="mr-2" v-on="on"
-                                            >
-                                            recent_actors
-                                        </v-icon>
-                                    </template>
-                                    <span>Esta persona fue detenida.</span>
-                                </v-tooltip>
-                            </div>
-                        </td>
-                        <td>{{ props.item.clasificacionPersona }}</td>
-                        <td>{{ props.item.tipoPersona }}</td>
-                        <td>{{ props.item.curp }}</td>
-                        <td>{{ props.item.nombre + ' ' + props.item.apellidoPaterno + ' ' + props.item.apellidoMaterno}}</td>
-                        <td>{{ props.item.medionotificacion }}</td>
-                        <td>{{ props.item.correo}}</td>
-                        <td>{{ props.item.telefono1 + ' , ' +  props.item.telefono2}}</td>
-    
-                        <td class="justify-center layout">
-    
-                            <div  class="justify-center layout" v-if="props.item.inicioDetenido">
-                                <v-tooltip bottom   >
-                                    <template v-slot:activator="{ on }">
-                                        <v-icon
-                                            class="mr-2" v-on="on"
-                                            @click="infoadicionalpdetenida(props.item)"
-                                            >
-                                            queue
-                                        </v-icon>
-                                    </template>
-                                    <span>Agregar información adicional de persona detenida.</span>
-                                </v-tooltip>
-                            </div>
-    
-                            <v-tooltip bottom v-if="props.item.clasificacionPersona !=='Anonimo'" >
+                :headers="headers"
+                :items="raps"
+                :search="search"
+                :rows-per-page-items="rowsPerPageItems"
+                :pagination.sync="pagination"  >
+                <template slot="items" class="white" slot-scope="props">
+                    <td class="justify-center layout px-0">
+                        <div v-if="props.item.inicioDetenido">
+                            <v-tooltip bottom>
                                 <template v-slot:activator="{ on }">
                                     <v-icon
                                         class="mr-2" v-on="on"
-                                        @click="actualizarclasi(props.item)"
                                         >
-                                        update
+                                        recent_actors
                                     </v-icon>
                                 </template>
-                                <span>Actualizar clasificación de persona</span>
+                                <span>Esta persona fue detenida.</span>
                             </v-tooltip>
+                        </div>
+                    </td>
+                    <td>{{ props.item.clasificacionPersona }}</td>
+                    <td>{{ props.item.tipoPersona }}</td>
+                    <td>{{ props.item.curp }}</td>
+                    <td>{{ props.item.nombre + ' ' + props.item.apellidoPaterno + ' ' + props.item.apellidoMaterno}}</td>
+                    <td>{{ props.item.medionotificacion }}</td>
+                    <td>{{ props.item.correo}}</td>
+                    <td>{{ props.item.telefono1 + ' , ' +  props.item.telefono2}}</td>
     
-                            <v-tooltip bottom   >
-                                <template v-slot:activator="{ on }">
-                                    <v-icon
-                                        class="mr-2" v-on="on" color="warning"
-                                        @click="infoItem(props.item)"
-                                        >
-                                        info
-                                    </v-icon>
-    
-    
-                                </template>
-                                <span>Información detallada de la persona</span>
-                            </v-tooltip>
-    
-    
-                            <v-tooltip bottom   >
-                                <template v-slot:activator="{ on }">
-    
-                                    <v-icon
-                                        class="mr-2" v-on="on"
-                                        @click="editItem(props.item)"
-                                        >
-                                        edit
-                                    </v-icon>
-                                </template>
-                                <span>Actualizar información</span>
-                            </v-tooltip>
-    
-    
-    
+                    <td class="justify-center layout">
+                        <div class="justify-center layout" v-if="props.item.inicioDetenido">
                             <v-tooltip bottom   >
                                 <template v-slot:activator="{ on }">
                                     <v-icon
                                         class="mr-2" v-on="on"
-                                        @click="mostrarmapa(props.item)"
-                                        >
-                                    location_on
+                                        @click="infoadicionalpdetenida(props.item)"
+                                    >
+                                        queue
                                     </v-icon>
                                 </template>
-                                <span>Ver dirección</span>
+                                <span>Agregar información adicional de persona detenida.</span>
                             </v-tooltip>
+                        </div>
     
-                        </td>
-                    </template>
-                    <template slot="no-data">
+                        <v-tooltip bottom v-if="props.item.clasificacionPersona !=='Anonimo'" >
+                            <template v-slot:activator="{ on }">
+                                <v-icon
+                                    class="mr-2" v-on="on"
+                                    @click="actualizarclasi(props.item)"
+                                    >
+                                    update
+                                </v-icon>
+                            </template>
+                            <span>Actualizar clasificación de persona</span>
+                        </v-tooltip>
+    
+                        <v-tooltip bottom   >
+                            <template v-slot:activator="{ on }">
+                                <v-icon
+                                    class="mr-2" v-on="on" color="warning"
+                                    @click="infoItem(props.item)"
+                                    >
+                                    info
+                                </v-icon>
+                            </template>
+                            <span>Información detallada de la persona</span>
+                        </v-tooltip>
+    
+                        <v-tooltip bottom   >
+                            <template v-slot:activator="{ on }">
+                                <v-icon
+                                    class="mr-2" v-on="on"
+                                    @click="editItem(props.item)"
+                                    >
+                                    edit
+                                </v-icon>
+                            </template>
+                            <span>Actualizar información</span>
+                        </v-tooltip>
+
+                        <v-tooltip bottom   >
+                            <template v-slot:activator="{ on }">
+                                <v-icon
+                                    class="mr-2" v-on="on"
+                                    @click="mostrarmapa(props.item)"
+                                    >
+                                location_on
+                                </v-icon>
+                            </template>
+                            <span>Ver dirección</span>
+                        </v-tooltip>
+    
+                    </td>
+                </template>
+
+                <template slot="no-data">
                     <v-btn color="primary" @click="listarrap">Resetear</v-btn>
-                    </template>
+                </template>
             </v-data-table>
-    
-    
-            <v-dialog   v-model="modalAdd"  fullscreen hide-overlay transition="dialog-bottom-transition">
+
+            <v-dialog v-model="modalAdd" fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card>
                     <v-toolbar dark color="primary">
-    
                         <v-avatar  size="30">
                             <v-icon >{{ formIcon }}</v-icon>
                         </v-avatar>
@@ -151,229 +144,226 @@
                       </v-toolbar-items>
                     </v-toolbar>
     
-                                <v-stepper v-model="step" non-linear vertical>
-                                <v-stepper-step :complete="step > 1" step="1" editable :rules="[() => !errors.has('tipo de persona') && !errors.has('nombre') 
-                                                                                                       && !errors.has('apellido paterno') && !errors.has('fecha de nacimiento') 
-                                                                                                       && !errors.has('Persona Desaparecida') && !errors.has('clasificacion de persona')]">
-                                    Captura de datos
-                                    <small>Datos generales de la vícima u ofendido.</small>
-                                </v-stepper-step>
-                                <v-stepper-content step="1" lazy>
-                                    <v-card flat class="mb-5" style="height: 890px; overflow-y: auto; background-color: #FAFAFA;">
-                                        <v-container grid-list-lg>
-                                            <v-layout wrap justify-space-between>
-                                                <v-flex  xs12 md5 lg5>
-                                                    <v-switch v-model="switch2"  label="¿Registro anónimo?:" color="success" hide-details v-if="clasificacionpersona != 'Imputado'"></v-switch>
-                                                    <v-switch v-model="datosprotegidos"  v-if="!switch2 && radios !== 'Moral'" label="¿Datos protegidos?:" color="success"  hide-details></v-switch>
-                                                    <v-radio-group v-model="radios" v-on:change="limpiar()" v-if="switch2==false" row :mandatory="false">
-                                                        <v-radio label="Fisica" @change="ocultarTP" color="success" value="Fisica"></v-radio>
-                                                        <v-radio label="Moral" @change="mostrarTP" color="success" value="Moral"></v-radio>
-                                                    </v-radio-group>
-    
-    
-                                                    <v-text-field
-                                                      name="rfc"
-                                                      label="*RFC:"
-                                                      v-model="rfc"
-                                                      v-validate="requiredRFC"
-                                                        v-show="verTP==1 && !switch2"
-                                                      :error-messages="errors.collect('rfc')">
-    
-                                                    </v-text-field>
-                                                    <v-text-field name="razón social"
-                                                                    label="*Razón social (máximo 200 caracteres):"
-                                                                    v-model="razonsocial"
-                                                                    v-validate="requiredRZ"
-                                                                    v-show="verTP==1 && !switch2"
-                                                                    :error-messages="errors.collect('razón social')"
-                                                                    :counter="200"
-                                                                    :maxlength="200">
-                                                                    >
-    
-                                                    </v-text-field>
-                                                    <v-autocomplete name="clasificacion de persona"
-                                                                :items="clasificacionpersonas"
-                                                                v-model="clasificacionpersona"
-                                                                v-validate="'required'"
-                                                                v-if="switch2==false"
-                                                                label="*Clasificación de persona:"
-                                                                :error-messages="errors.collect('clasificacion de persona')">
-                                                    </v-autocomplete>
+                    <v-stepper v-model="step" non-linear vertical>
+                    <v-stepper-step :complete="step > 1" step="1" editable :rules="[() => !errors.has('tipo de persona') 
+                                    && !errors.has('nombre') 
+                                    && !errors.has('apellido paterno') && !errors.has('fecha de nacimiento') 
+                                    && !errors.has('Persona Desaparecida') && !errors.has('clasificacion de persona')]">
+                                        Captura de datos
+                                        <small>Datos generales de la vícima u ofendido.</small>
+                    </v-stepper-step>
+                    <v-stepper-content step="1" lazy>
+                        <v-card flat class="mb-5" style="height: 890px; overflow-y: auto; background-color: #FAFAFA;">
+                            <v-container grid-list-lg>
+                                <v-layout wrap justify-space-between>
+                                    <v-flex  xs12 md5 lg5>
+                                        <v-switch v-model="switch2"  label="¿Registro anónimo?:" color="success" hide-details v-if="clasificacionpersona != 'Imputado'"></v-switch>
+                                        <v-switch v-model="datosprotegidos"  v-if="!switch2 && radios !== 'Moral'" label="¿Datos protegidos?:" color="success"  hide-details></v-switch>
+                                        <v-radio-group v-model="radios" v-on:change="limpiar()" v-if="switch2==false" row :mandatory="false">
+                                            <v-radio label="Fisica" @change="ocultarTP" color="success" value="Fisica"></v-radio>
+                                            <v-radio label="Moral" @change="mostrarTP" color="success" value="Moral"></v-radio>
+                                        </v-radio-group>    
 
-                                                    <v-autocomplete name="Persona Desaparecida"
-                                                                :items="tDesaparecidos"
-                                                                v-model="registro"
-                                                                v-validate="requeridoPD"
-                                                                chips
-                                                                v-if="clasificacionpersona == 'Victima directa' && !switch2 && radios == 'Fisica'"
-                                                                label="*¿Es un tema de personas desaparecidas?:"
-                                                                :error-messages="errors.collect('Persona Desaparecida')">
-                                                    </v-autocomplete>
+                                        <v-text-field
+                                            name="rfc"
+                                            label="*RFC:"
+                                            v-model="rfc"
+                                            v-validate="requiredRFC"
+                                            v-show="verTP==1 && !switch2"
+                                            :error-messages="errors.collect('rfc')">
+                                        </v-text-field>
+
+                                        <v-text-field name="razón social"
+                                            label="*Razón social (máximo 200 caracteres):"
+                                            v-model="razonsocial"
+                                            v-validate="requiredRZ"
+                                            v-show="verTP==1 && !switch2"
+                                            :error-messages="errors.collect('razón social')"
+                                            :counter="200"
+                                            :maxlength="200">
+                                        </v-text-field>
+
+                                        <v-autocomplete name="clasificacion de persona"
+                                            :items="clasificacionpersonas"
+                                            v-model="clasificacionpersona"
+                                            v-validate="'required'"
+                                            v-if="switch2==false"
+                                            label="*Clasificación de persona:"
+                                            :error-messages="errors.collect('clasificacion de persona')">
+                                        </v-autocomplete>
+
+                                        <v-autocomplete name="Persona Desaparecida"
+                                            :items="tDesaparecidos"
+                                            v-model="registro"
+                                            v-validate="requeridoPD"
+                                            chips
+                                            v-if="clasificacionpersona == 'Victima directa' && !switch2 && radios == 'Fisica'"
+                                            label="*¿Es un tema de personas desaparecidas?:"
+                                            :error-messages="errors.collect('Persona Desaparecida')">
+                                        </v-autocomplete>
     
-                                                    <v-text-field
-                                                        name="nombre"
-                                                        label="*Nombre(s):"
-                                                        v-model="nombres"
-                                                        v-validate="'required'"
-                                                        v-if="switch2==false && radios == 'Fisica'"
-                                                        :error-messages="errors.collect('nombre')">
-                                                    </v-text-field>
+                                        <v-text-field
+                                            name="nombre"
+                                            label="*Nombre(s):"
+                                            v-model="nombres"
+                                            v-validate="'required'"
+                                            v-if="switch2==false && radios == 'Fisica'"
+                                            :error-messages="errors.collect('nombre')">
+                                        </v-text-field>
     
-                                                    <v-text-field
-                                                        name="nombre del apoderado o representante"
-                                                        label="*Nombre del apoderado o representante"
-                                                        v-model="nombres"
-                                                        v-validate="'required'"
-                                                        v-if="switch2==false && radios == 'Moral'"
-                                                        :error-messages="errors.collect('nombre del apoderado o representante')">
-                                                    </v-text-field>
+                                        <v-text-field
+                                            name="nombre del apoderado o representante"
+                                            label="*Nombre del apoderado o representante"
+                                            v-model="nombres"
+                                            v-validate="'required'"
+                                            v-if="switch2==false && radios == 'Moral'"
+                                            :error-messages="errors.collect('nombre del apoderado o representante')">
+                                        </v-text-field>
     
-                                                    <v-text-field name="apellido paterno"
-                                                                label="*Apellido paterno:"
-                                                                v-model="apaterno"
-                                                                v-validate="{required:this.isInput3Required}"
-                                                                v-if="switch2==false"
-                                                                :error-messages="errors.collect('apellido paterno')">
-    
-                                                    </v-text-field>
-                                                    <v-text-field name="apellido materno"
-                                                                    label="Apellido materno:"
-                                                                    v-model="amaterno"
-                                                                    v-validate="{required:this.isInput3RequiredD}"
-                                                                    v-if="switch2==false" 
-                                                                    :error-messages="errors.collect('apellido materno')">
-    
-                                                    </v-text-field>
-                                                    <v-text-field name="alias"
-                                                      label="Alias:"
-                                                      v-model="alias"
-                                                      v-if="switch2==false">
-                                                    </v-text-field>
+                                        <v-text-field name="apellido paterno"
+                                            label="*Apellido paterno:"
+                                            v-model="apaterno"
+                                            v-validate="{required:this.isInput3Required}"
+                                            v-if="switch2==false"
+                                            :error-messages="errors.collect('apellido paterno')">
+                                        </v-text-field>
+
+                                        <v-text-field name="apellido materno"
+                                            label="Apellido materno:"
+                                            v-model="amaterno"
+                                            v-validate="{required:this.isInput3RequiredD}"
+                                            v-if="switch2==false" 
+                                            :error-messages="errors.collect('apellido materno')">
+                                        </v-text-field>
+
+                                        <v-text-field name="alias"
+                                            label="Alias:"
+                                            v-model="alias"
+                                            v-if="switch2==false">
+                                        </v-text-field>
                                                     
-                                                    <v-text-field name="fecha de nacimiento"
-                                                                    label="*Fecha de nacimiento:"
-                                                                    v-model="fnacimiento"
-                                                                    type="date"
-                                                                    v-validate="fechanacimientoRequerido"
-                                                                    v-if="switch2==false && RangoEdadTF == false"
-                                                                    :error-messages="errors.collect('fecha de nacimiento')">
-    
-                                                    </v-text-field>
+                                        <v-text-field name="fecha de nacimiento"
+                                            label="*Fecha de nacimiento:"
+                                            v-model="fnacimiento"
+                                            type="date"
+                                            v-validate="fechanacimientoRequerido"
+                                            v-if="switch2==false && RangoEdadTF == false"
+                                            :error-messages="errors.collect('fecha de nacimiento')">
+                                        </v-text-field>
                                                     
-    
-                                                    <v-switch v-model="RangoEdadTF" v-if="!switch2" :label="'¿Desconoce la fecha de nacimiento? Agregar un rango de edad'"  color="success"  hide-details></v-switch>
+                                        <v-switch v-model="RangoEdadTF" v-if="!switch2" :label="'¿Desconoce la fecha de nacimiento? Agregar un rango de edad'"  color="success"  hide-details></v-switch>
                                                     
-                                                    <v-autocomplete
-                                                name="rangos"
-                                                :items="rangosedad"
-                                                v-model="rangoedad"
-                                                v-validate="rangoEdadRequerido"
-                                                label="*Rango de edad:"
-                                                v-if="switch2==false && RangoEdadTF == true"
-                                                :error-messages="errors.collect('rangos')">
-                                            </v-autocomplete>
+                                        <v-autocomplete
+                                            name="rangos"
+                                            :items="rangosedad"
+                                            v-model="rangoedad"
+                                            v-validate="rangoEdadRequerido"
+                                            label="*Rango de edad:"
+                                            v-if="switch2==false && RangoEdadTF == true"
+                                            :error-messages="errors.collect('rangos')">
+                                        </v-autocomplete>
     
-                                                    <v-autocomplete
-                                                       name="relacion victima"
-                                                        :items="relacionados"
-                                                        v-model="relacionado"
-                                                        label="*Relación de la víctima con el imputado:" 
-                                                v-validate="relacionadoRequerido"
-                                                v-show="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
-                                                :error-messages="errors.collect('relacion victima')" 
-                                            />
+                                        <v-autocomplete
+                                            name="relacion victima"
+                                            :items="relacionados"
+                                            v-model="relacionado"
+                                            label="*Relación de la víctima con el imputado:" 
+                                            v-validate="relacionadoRequerido"
+                                            v-show="(clasificacionpersona == 'Victima directa' || clasificacionpersona == 'Victima indirecta') && !switch2" 
+                                            :error-messages="errors.collect('relacion victima')" 
+                                        />
 
-
-
+                                        <v-switch
+                                            v-show="clasificacionpersona == 'Imputado' && !switch2"
+                                            v-model="impuDetenido"  
+                                            :label="'El imputado fue detenido?'"  
+                                            color="success"  
+                                            hide-details>
+                                        </v-switch>
     
-                                                    <v-switch
-                                                        v-show="clasificacionpersona == 'Imputado' && !switch2"
-                                                        v-model="impuDetenido"  
-                                                        :label="'El imputado fue detenido?'"  
-                                                        color="success"  
-                                                        hide-details>
-                                                    </v-switch>
-    
-                                                    <v-autocomplete
-                                                        name="policia que lo detuvo"
-                                                        :items="policias"
-                                                        v-model="policiaDetuvo"
-                                                        attach
-                                                        chips
-                                                        deletable-chips
-                                                        multiple
-                                                        return-object   
-                                                        label="Policia que lo detuvo:"                                                   
-                                                        v-show="impuDetenido && agregarPoli == false"
-                                                        v-validate="policiaRequerido"
-                                                        :error-messages="errors.collect('policia que lo detuvo')">
-                                                    </v-autocomplete>
+                                        <v-autocomplete
+                                            name="policia que lo detuvo"
+                                            :items="policias"
+                                            v-model="policiaDetuvo"
+                                            attach
+                                            chips
+                                            deletable-chips
+                                            multiple
+                                            return-object   
+                                            label="Policia que lo detuvo:"                                                   
+                                            v-show="impuDetenido && agregarPoli == false"
+                                            v-validate="policiaRequerido"
+                                            :error-messages="errors.collect('policia que lo detuvo')">
+                                        </v-autocomplete>
                                                     
-                                                    <v-switch
-                                                        v-if="impuDetenido && (!policiaDetuvo || Object.keys(policiaDetuvo).length === 0)" 
-                                                        v-model="agregarPoli"  
-                                                        :label="'Deseas agregar un policia'"  
-                                                        color="success"  
-                                                        hide-details>
-                                                    </v-switch>
-    
-                                                </v-flex>
-                                                <v-divider class="mx-2" inset vertical></v-divider>
-                                            <v-flex  xs12 md6 lg6>
-    
-                                                    <v-autocomplete
-                                                        name="entidad federativa"
-                                                        :items="estados"
-                                                        v-model="abreviacion"
-                                                        label="Entidad federativa de nacimiento:"
-                                                        return-object
-                                                        v-if="switch2==false"  >
-                                                    </v-autocomplete>
+                                        <v-switch
+                                            v-if="impuDetenido && (!policiaDetuvo || Object.keys(policiaDetuvo).length === 0)" 
+                                            v-model="agregarPoli"  
+                                            :label="'Deseas agregar un policia'"  
+                                            color="success"  
+                                            hide-details>
+                                        </v-switch>    
+                                    </v-flex>
 
-                                                    <v-autocomplete
-                                                        name="sexo"
-                                                        :items="sexos"
-                                                        v-model="sexo"
-                                                        label="Sexo:"
-                                                        v-if="switch2==false">
-                                                    </v-autocomplete>
+                                    <v-divider class="mx-2" inset vertical></v-divider>
+
+                                    <v-flex  xs12 md6 lg6>
     
-                                                    <v-autocomplete name="documento de identificación"
-                                                            :items="docsidentificaciones"
-                                                            v-model="docidentificacion"
-                                                            label="Documento de identificación:"
-                                                            v-if="switch2==false"
-                                                    ></v-autocomplete>
+                                        <v-autocomplete
+                                            name="entidad federativa"
+                                            :items="estados"
+                                            v-model="abreviacion"
+                                            label="Entidad federativa de nacimiento:"
+                                            return-object
+                                            v-if="switch2==false"  >
+                                        </v-autocomplete>
+
+                                        <v-autocomplete
+                                            name="sexo"
+                                            :items="sexos"
+                                            v-model="sexo"
+                                            label="Sexo:"
+                                            v-if="switch2==false">
+                                        </v-autocomplete>
+
+                                        <v-autocomplete name="documento de identificación"
+                                                :items="docsidentificaciones"
+                                                v-model="docidentificacion"
+                                                label="Documento de identificación:"
+                                                v-if="switch2==false"
+                                        ></v-autocomplete>
     
-                                                <br/>
-                                                    <v-toolbar color="primary" v-if="!switch2" dark>
-                                                        <v-toolbar-title>Documento escaneado</v-toolbar-title>
+                                        <br/>
+
+                                        <v-toolbar color="primary" v-if="!switch2" dark>
+                                            <v-toolbar-title>Documento escaneado</v-toolbar-title>
+
+                                            <v-spacer></v-spacer>
+
+                                            <v-dialog  v-model="dialog"  max-width="500px">
+                                                <v-btn slot="activator" icon>
+                                                    <v-icon>camera</v-icon>
+                                                </v-btn>
+    
+                                                <v-card>
+                                                    <v-toolbar card dark color="grey lighten-4 primary--text">
+                                                        <v-avatar  size="30">
+                                                            <v-icon class="grey lighten-2">camera</v-icon>
+                                                        </v-avatar>
+                                                        <v-toolbar-title class="subheading">Escanear documento</v-toolbar-title>
                                                         <v-spacer></v-spacer>
-    
-                                                        <v-dialog  v-model="dialog"  max-width="500px">
-                                                            <v-btn slot="activator" icon>
-                                                            <v-icon>camera</v-icon>
-                                                            </v-btn>
-    
-                                                            <v-card>
-                                                                <v-toolbar card dark color="grey lighten-4 primary--text">
-                                                                    <v-avatar  size="30">
-                                                                        <v-icon class="grey lighten-2">camera</v-icon>
-                                                                    </v-avatar>
-                                                                <v-toolbar-title class="subheading">Escanear documento</v-toolbar-title>
-                                                                <v-spacer></v-spacer>
-                                                                </v-toolbar>
-                                                            <v-card-text>
-                                                                <v-form ref="form">
-                                                                    <v-card-actions>
-                                                                        <v-layout row wrap>
-                                                                            <vue-web-cam ref="webcam"
-                                                                                            :device-id="deviceId"   height="400px"
-                                                                                            @started="onStarted"
-                                                                                            @stopped="onStopped"
-                                                                                            @error="onError"
-                                                                                            @cameras="onCameras"
-                                                                                            @camera-change="onCameraChange" />
+                                                    </v-toolbar>
+                                                    <v-card-text>
+                                                        <v-form ref="form">
+                                                            <v-card-actions>
+                                                                <v-layout row wrap>
+                                                                    <vue-web-cam ref="webcam"
+                                                                        :device-id="deviceId"   height="400px"
+                                                                        @started="onStarted"
+                                                                        @stopped="onStopped"
+                                                                        @error="onError"
+                                                                        @cameras="onCameras"
+                                                                        @camera-change="onCameraChange" />
                                                                             <v-flex xs12 sm6 md3 order-md4 order-sm2 >
                                                                                 <v-card  tile flat  >
                                                                                 <v-card-text class="text-md-center">
@@ -1934,10 +1924,9 @@
       import moment from 'moment'
       import 'moment/locale/es';
       import alertify from 'alertifyjs';
-        import { generarTokenCoodenadas } from './crearTokenCoordenadas';
-
-    import { METHODS } from 'http';
-
+      import { generarTokenCoodenadas } from './crearTokenCoordenadas';
+      import { METHODS } from 'http';
+      import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
       var assert, curp, persona;
       assert = require('assert');
@@ -1945,13 +1934,12 @@
     
       export default {
         components: {
-          "vue-web-cam": WebCam
+            n401,
+            n403,
+            "vue-web-cam": WebCam,
+            UmixtaNavDrawer
         },
         data: () => ({
-            components: {
-                n401,
-                n403
-            },
             showpage:true,
             e401:false,
             e403:false,
@@ -2328,7 +2316,7 @@
                         })
                 }
                 else{
-                        me.$notify('Carpeta abierta correctamente !!!','success')
+                        me.$notify('Carpeta abierta correctamente','success')
                         me.listarrap();
     
                         me.u_iddistrito=me.$store.state.usuario.iddistrito;
@@ -2707,13 +2695,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')    
+                        me.$notify('Error al intentar listar los registros','error')    
                     } 
                 }),
                 this.$cat.get('api/DocumentosPesonas/Listar/'+ item.personaId,configuracion).then(function(response){
@@ -2734,13 +2722,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (error.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (error.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
     
@@ -2785,13 +2773,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -2836,13 +2824,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -2896,13 +2884,13 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false
                             } else if (err.response.status==404){
                                 me.$notify("El recuso no ha sido encontrado", 'error')
                             }else{
-                                me.$notify('Error al intentar listar los registros!!!','error')
+                                me.$notify('Error al intentar listar los registros','error')
                             }
                         });
                     }).catch(err => {
@@ -2914,13 +2902,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
                 }).catch(err => {
@@ -2932,13 +2920,13 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
-                        me.$notify('Error al intentar listar los registros!!!','error')
+                        me.$notify('Error al intentar listar los registros','error')
                     }
                 });
     
@@ -3087,13 +3075,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3117,13 +3105,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3145,13 +3133,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3173,13 +3161,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3202,13 +3190,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3231,13 +3219,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3260,13 +3248,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3324,13 +3312,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
     
@@ -3408,7 +3396,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
@@ -3445,7 +3433,7 @@
                         me.e401 = true,
                         me.showpage= false
                     } else if (err.response.status==403){
-                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                        me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
                         me.showpage= false
                     } else if (err.response.status==404){
@@ -3497,13 +3485,13 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false
                             } else if (err.response.status==404){
                                 me.$notify("El recuso no ha sido encontrado", 'error')
                             }else{
-                                me.$notify('Error al intentar listar los registros!!!','error')
+                                me.$notify('Error al intentar listar los registros','error')
                             }
                         });
     
@@ -3517,13 +3505,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3594,13 +3582,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3622,13 +3610,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3650,13 +3638,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3678,13 +3666,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3706,13 +3694,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3734,13 +3722,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3762,13 +3750,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -3790,13 +3778,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3818,13 +3806,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3848,13 +3836,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -3896,13 +3884,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
     
@@ -3945,13 +3933,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
     
@@ -3978,13 +3966,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -4081,13 +4069,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });    
             },
@@ -4109,13 +4097,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -4137,13 +4125,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -4199,13 +4187,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -4250,13 +4238,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
     
@@ -4301,13 +4289,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
     
@@ -4335,13 +4323,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -4362,13 +4350,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                 });
             },
@@ -4391,13 +4379,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
             },
@@ -4624,13 +4612,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false 
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')    
+                            me.$notify('Error al intentar listar los registros','error')    
                         } 
                 });  
             },
@@ -5033,7 +5021,7 @@
                                                         'Usuario': me.u_nombre,
                                                         'Puesto': me.u_puesto,
                                                     },configuracion).then(function(response){
-                                                        me.$notify('La información se guardo correctamente !!!','success')
+                                                        me.$notify('¡La información se guardo correctamente!','success')
                                                     }).catch(err => {
                                                         if (err.response.status==400){
                                                             me.$notify("No es un usuario válido", 'error')
@@ -5042,7 +5030,7 @@
                                                             me.e401 = true,
                                                             me.showpage= false
                                                         } else if (err.response.status==403){
-                                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                                             me.e403= true
                                                             me.showpage= false
                                                         } else if (err.response.status==404){
@@ -5067,7 +5055,7 @@
                                                             'Usuario': me.u_nombre,
                                                             'Puesto': me.u_puesto,
                                                         },configuracion).then(function(response){
-                                                            me.$notify('La información se guardo correctamente !!!','success')
+                                                            me.$notify('¡La información se guardo correctamente!','success')
                                                         }).catch(err => {
                                                             if (err.response.status==400){
                                                                 me.$notify("No es un usuario válido", 'error')
@@ -5076,7 +5064,7 @@
                                                                 me.e401 = true,
                                                                 me.showpage= false
                                                             } else if (err.response.status==403){
-                                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                                 me.e403= true
                                                                 me.showpage= false
                                                             } else if (err.response.status==404){
@@ -5229,7 +5217,7 @@
     
                                         }
                                         ,configuracion).then(function(response){
-                                            me.$notify('La información se guardo correctamente !!!','success')
+                                            me.$notify('¡La información se guardo correctamente!','success')
                                         }).catch(err => {
                                             if (err.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
@@ -5238,7 +5226,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false
                                             } else if (err.response.status==404){
@@ -5267,7 +5255,7 @@
     
                                         }
                                         ,configuracion).then(function(response){
-                                            me.$notify('La información se guardo correctamente !!!','success')
+                                            me.$notify('¡La información se guardo correctamente!','success')
                                         }).catch(err => {
                                             if (err.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
@@ -5276,7 +5264,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false
                                             } else if (err.response.status==404){
@@ -5292,7 +5280,7 @@
                                     //CUANDO SE DESEA AGREGAR UN POLICIA LLAMA A LA FUNCION PARA QUE LO CREE
                                     if(me.agregarPoli == true){me.crearegistrarpolicias(personaPoli);}
                                       
-                                    me.$notify('La información se guardo correctamente !!!','success')
+                                    me.$notify('¡La información se guardo correctamente!','success')
                                     me.listarrap();
                                     
                                     me.close();
@@ -5304,7 +5292,7 @@
                                         me.e401 = true,
                                         me.showpage= false
                                     } else if (err.response.status==403){
-                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
                                         me.showpage= false
                                     } else if (err.response.status==404){
@@ -5407,7 +5395,7 @@
     
                                             //************************************ */
                                         },configuracion).then(function(response){
-                                            me.$notify('La información se guardo correctamente !!!','success')
+                                            me.$notify('¡La información se guardo correctamente!','success')
                                             me.listarrap();
                                             me.close();
                                         }).catch(err => {
@@ -5418,7 +5406,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false
                                             } else if (err.response.status==404){
@@ -5437,7 +5425,7 @@
                                             me.e401 = true,
                                             me.showpage= false
                                         } else if (err.response.status==403){
-                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                             me.e403= true
                                             me.showpage= false
                                         } else if (err.response.status==404){
@@ -5577,7 +5565,7 @@
     
                                             },configuracion).then(function(response){
     
-                                                me.$notify('La información se guardo correctamente !!!','success')
+                                                me.$notify('¡La información se guardo correctamente!','success')
     
                                                 //GUARDA ID DE PERSONA QUE SE ACABA DE GENERAR
                                                 var personaIdGenerado = response.data.personaid;
@@ -5595,7 +5583,7 @@
                                                     'Usuario': me.u_nombre,
                                                     'Puesto': me.u_puesto,
                                                 },configuracion).then(function(response){
-                                                    me.$notify('La información se guardo correctamente !!!','success')
+                                                    me.$notify('¡La información se guardo correctamente!','success')
                                                 }).catch(err => {
                                                     if (err.response.status==400){
                                                         me.$notify("No es un usuario válido", 'error')
@@ -5604,7 +5592,7 @@
                                                         me.e401 = true,
                                                         me.showpage= false
                                                     } else if (err.response.status==403){
-                                                        me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                        me.$notify("No esta autorizado para ver esta página", 'error')
                                                         me.e403= true
                                                         me.showpage= false
                                                     } else if (err.response.status==404){
@@ -5633,7 +5621,7 @@
                                                         'UModulo': me.u_modulo,
     
                                                     },configuracion).then(function(response){
-                                                        me.$notify('La información se guardo correctamente !!!','success')
+                                                        me.$notify('¡La información se guardo correctamente!','success')
                                                     }).catch(err => {
                                                         if (err.response.status==400){
                                                             me.$notify("No es un usuario válido", 'error')
@@ -5642,7 +5630,7 @@
                                                             me.e401 = true,
                                                             me.showpage= false
                                                         } else if (err.response.status==403){
-                                                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                            me.$notify("No esta autorizado para ver esta página", 'error')
                                                             me.e403= true
                                                             me.showpage= false
                                                         } else if (err.response.status==404){
@@ -5665,7 +5653,7 @@
                                                     me.e401 = true,
                                                     me.showpage= false
                                                 } else if (err.response.status==403){
-                                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                                     me.e403= true
                                                     me.showpage= false
                                                 } else if (err.response.status==404){
@@ -5796,7 +5784,7 @@
     
                                     },configuracion).then(function(response){
     
-                                        me.$notify('La información se guardo correctamente !!!','success')
+                                        me.$notify('¡La información se guardo correctamente!','success')
     
                                         //GUARDA EL VALOR DE LA PERSONA QUE SE ACABA DE CREAR
                                         var personaIdGenerado = response.data.personaid;
@@ -5820,7 +5808,7 @@
                                                 'UModulo': me.u_modulo,
     
                                             },configuracion).then(function(response){
-                                                me.$notify('La información se guardo correctamente !!!','success')
+                                                me.$notify('¡La información se guardo correctamente!','success')
                                             }).catch(err => {
                                                 if (err.response.status==400){
                                                     me.$notify("No es un usuario válido", 'error')
@@ -5829,7 +5817,7 @@
                                                     me.e401 = true,
                                                     me.showpage= false
                                                 } else if (err.response.status==403){
-                                                    me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                    me.$notify("No esta autorizado para ver esta página", 'error')
                                                     me.e403= true
                                                     me.showpage= false
                                                 } else if (err.response.status==404){
@@ -5853,7 +5841,7 @@
                                                 me.e401 = true,
                                                 me.showpage= false
                                             } else if (err.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
                                                 me.e403= true
                                                 me.showpage= false
                                             } else if (err.response.status==404){
@@ -5892,7 +5880,7 @@
     
                             me.listarrap();
                             me.listarPolicias();
-                            me.$notify('La información se guardo correctamente !!!','success')                 
+                            me.$notify('¡La información se guardo correctamente!','success')                 
     
                         }).catch(err => { 
                             if (err.response.status==400){
@@ -5902,7 +5890,7 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
@@ -5939,7 +5927,7 @@
     
                             me.listarrap();
                             me.listarPolicias();
-                            me.$notify('La información se guardo correctamente !!!','success')                 
+                            me.$notify('¡La información se guardo correctamente!','success')                 
     
                         }).catch(err => { 
                             if (err.response.status==400){
@@ -5949,7 +5937,7 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){ 
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false 
                             } else if (err.response.status==404){
@@ -5980,7 +5968,7 @@
                             'NombreUsuario': me.u_nombre,
     
                         },configuracion).then(function(response){
-                            me.$notify('La información se guardo correctamente !!!','success')
+                            me.$notify('¡La información se guardo correctamente!','success')
                         }).catch(err => {
                             if (err.response.status==400){
                                 me.$notify("No es un usuario válido", 'error')
@@ -5989,7 +5977,7 @@
                                 me.e401 = true,
                                 me.showpage= false
                             } else if (err.response.status==403){
-                                me.$notify("No esta autorizado para ver esta pagina", 'error')
+                                me.$notify("No esta autorizado para ver esta página", 'error')
                                 me.e403= true
                                 me.showpage= false
                             } else if (err.response.status==404){
@@ -6080,13 +6068,13 @@
                             me.e401 = true,
                             me.showpage= false
                         } else if (err.response.status==403){
-                            me.$notify("No esta autorizado para ver esta pagina", 'error')
+                            me.$notify("No esta autorizado para ver esta página", 'error')
                             me.e403= true
                             me.showpage= false
                         } else if (err.response.status==404){
                             me.$notify("El recuso no ha sido encontrado", 'error')
                         }else{
-                            me.$notify('Error al intentar listar los registros!!!','error')
+                            me.$notify('Error al intentar listar los registros','error')
                         }
                     });
     
