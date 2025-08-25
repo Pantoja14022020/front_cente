@@ -187,64 +187,77 @@
 
     </v-navigation-drawer>
       
-      <v-content class="grey lighten-4" style="padding: 0;">
-        <v-container fluid>
-          <v-slide-y-transition mode="out-in">
-            <v-layout>
-                <v-flex>
-                    <v-card color="white" grow  class="d-flex align-content-start">
-                      <v-card style="width: 40%;">
-                        <v-card-text class="primary" style="box-shadow: none;"> 
-                            <v-icon size="400px" color="accent">lock_open</v-icon> 
-                        </v-card-text>
-                      </v-card>
+    <v-content class="grey lighten-4" style="padding: 0;">
+      <v-container fluid>
+        <v-slide-y-transition mode="out-in">
+          <v-layout>
+            <v-flex>
+              <v-card color="white" grow  class="d-flex align-content-start">
+                <v-card class="primary" style="width: 30%;">
+                  <v-card-text class="primary" style="box-shadow: none;"> 
+                    <v-icon size="330px" color="accent">lock_open</v-icon> 
+                  </v-card-text>
+                </v-card>
 
-                      <v-card style="width: 60%; box-shadow: none;" class="primary">
-                        <v-card-title  class="primary" >
-                            <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de Control de Acceso</p></div>
-                        </v-card-title>
-                        <v-card-text class="primary">
-                        <v-list class="primary"> 
-                            <p class="text-md-left">Este modulo permite controlar el acceso a los diferentes modulos  por medio de autentificacions basada en token  asi  como tambien permite controlar el acceso  general por medio de un panel.</p> 
-                            <v-list-tile class="primary">  
-                            <v-list-tile-action class="primary">
-                                <v-icon color="white">view_module</v-icon>
-                            </v-list-tile-action> 
-                            <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold">Panel de control</p> </v-list-tile-title> 
-                                <v-list-tile-sub-title > <p color="accent" class="font-weight-regular">Acceso a los recursos de este ámbito, active o desactive un modulo o entidad de servicio.</p>  </v-list-tile-sub-title>  
-                            </v-list-tile-content> 
-                            </v-list-tile>
-                            <v-list-tile>  
-                            <v-list-tile-action>
-                                <v-icon    color="white">security</v-icon>
-                            </v-list-tile-action> 
-                            <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold">Roles</p> </v-list-tile-title> 
-                                <v-list-tile-sub-title > <p class="font-weight-regular">Consulte los roles, de las entidades de servicio   administradas que tienen asignaciones de roles que les conceden acceso en este ámbito.</p>  </v-list-tile-sub-title>  
-                            </v-list-tile-content> 
-                            </v-list-tile>
-                            <v-list-tile>  
-                            <v-list-tile-action>
-                                <v-icon   color="white">people_alt</v-icon>
-                            </v-list-tile-action> 
-                            <v-list-tile-content>  
-                                <v-list-tile-title> <p class="body-2 font-weight-bold">Usuarios</p> </v-list-tile-title>   
-                                <v-list-tile-sub-title > <p class="font-weight-regular">Consulte los usuarios, los grupos, las entidades de servicio y las identidades administradas a los que se les ha denegado el acceso a acciones específicas en este ámbito.</p>  </v-list-tile-sub-title> 
-                            </v-list-tile-content> 
-                            </v-list-tile> 
-                        </v-list> 
-                        </v-card-text>
-                      </v-card>
-                    </v-card>
-                  </v-flex>
-                </v-layout>
-            <router-view/>
-          </v-slide-y-transition>
-          <loader></loader>
-        </v-container> 
-      </v-content>
-   
+                <v-card style="width: 70%; box-shadow: none;" class="primary">
+                  <v-card-title class="primary">
+                    <div class="display-2 font-weight-thin" color="blue">
+                      <p color="blue"><b>Modulo de Control de Acceso</b></p>
+                    </div>
+                  </v-card-title>
+                  <v-card-text class="primary">
+                    <v-list class="primary"> 
+                      <p class="text-md-left">Este modulo permite controlar el acceso a los diferentes modulos por medio de autentificacions basada en token asi como tambien permite controlar el acceso  general por medio de un panel.</p> 
+                      <v-list-tile class="primary">  
+                        <v-list-tile-action class="primary">
+                          <v-icon color="white">view_module</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold">Panel de control</p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p color="accent" class="font-weight-regular">Acceso a los recursos de este ámbito, active o desactive un modulo o entidad de servicio.</p>
+                          </v-list-tile-sub-title>  
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <v-list-tile>  
+                        <v-list-tile-action>
+                          <v-icon color="white">security</v-icon>
+                        </v-list-tile-action> 
+                        <v-list-tile-content>  
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold">Roles</p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p class="font-weight-regular">Consulte los roles, de las entidades de servicio administradas que tienen asignaciones de roles que les conceden acceso en este ámbito.</p>
+                          </v-list-tile-sub-title>  
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <v-list-tile>  
+                        <v-list-tile-action>
+                          <v-icon color="white">people_alt</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold">Usuarios</p>
+                          </v-list-tile-title>
+                          <v-list-tile-sub-title>
+                            <p class="font-weight-regular">Consulte los usuarios, los grupos, las entidades de servicio y las identidades administradas a los que se les ha denegado el acceso a acciones específicas en este ámbito.</p>
+                          </v-list-tile-sub-title> 
+                        </v-list-tile-content>
+                      </v-list-tile>
+                    </v-list> 
+                  </v-card-text>
+                </v-card>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <router-view/>
+        </v-slide-y-transition>
+        <loader></loader>
+      </v-container> 
+    </v-content>   
     </v-app>
   </template>
   

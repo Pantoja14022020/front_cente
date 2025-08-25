@@ -590,22 +590,20 @@
     <n403 v-if="e403" />
         <v-flex v-if="showpage">
         <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Registro de Persona que visita</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
-                     <v-flex xs12 sm6 md3>
-                      
-                       </v-flex>                      
-                        <v-btn class="mx-2" @click="agregar()" fab dark small color="success">
-                            <v-icon dark>add</v-icon>
-                        </v-btn> 
+            <v-toolbar-title class="font-weight-regular" >Registro de Persona que visita</v-toolbar-title>
             
-                    
-         </v-toolbar>
+            <v-divider class="mx-2" inset vertical></v-divider>
+            
+            <v-spacer></v-spacer>
+            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+            <v-spacer></v-spacer>
+              <v-flex xs12 sm6 md3>
+              
+              </v-flex>                      
+              <v-btn class="mx-2 pt-2" @click="agregar()" fab dark small color="success">
+                  <v-icon class="mt-1" dark>add</v-icon>
+              </v-btn> 
+        </v-toolbar>
         <v-data-table
                 :headers="headers"
                 :items="visitas"

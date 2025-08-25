@@ -600,8 +600,8 @@
 
             <v-tooltip bottom>
                 <template v-slot:activator="{ on }"> 
-                    <v-btn class="mx-2" slot="activator" v-on="on" @click="agregar()" fab dark small color="success">
-                        <v-icon dark>add</v-icon>
+                    <v-btn class="mx-2 pt-2" slot="activator" v-on="on" @click="agregar()" fab dark small color="success">
+                        <v-icon class="mt-1" dark>add</v-icon>
                     </v-btn>
                 </template>
                 <span>Agregar registro</span>

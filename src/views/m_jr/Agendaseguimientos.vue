@@ -522,7 +522,7 @@
                   <v-tooltip bottom> 
                       <template v-slot:activator="{ on }"> 
                         <v-btn fab v-on="on"   small  color="success"  @click="$refs.calendar.prev()" >
-                            <v-icon dark>
+                            <v-icon class="mt-4" dark>
                               keyboard_arrow_left
                             </v-icon>
                         </v-btn>
@@ -532,7 +532,7 @@
                   <v-tooltip bottom> 
                       <template v-slot:activator="{ on }"> 
                           <v-btn fab v-on="on"   small   color="success" @click="$refs.calendar.next()"  >
-                            <v-icon >
+                            <v-icon class="mt-4">
                               keyboard_arrow_right
                             </v-icon>
                           </v-btn>
@@ -551,7 +551,7 @@
 
                   <v-menu bottom offset-y>
                     <template v-slot:activator="{ on }">
-                      <v-btn  v-on="on"  fab small  class="primary"><v-icon>filter_list</v-icon></v-btn>
+                      <v-btn  v-on="on" fab small class="pt-2 primary"><v-icon class="mt-2">filter_list</v-icon></v-btn>
           
                     </template>
                     <v-list>

@@ -668,70 +668,61 @@
 
     </v-navigation-drawer>
     
-   <v-content class="grey lighten-4"  style="padding: 0;" >
-      <v-container fluid   >
+    <v-content class="grey lighten-4" style="padding: 0;">
+      <v-container fluid>
         <v-slide-y-transition mode="out-in">
           <v-layout>
-      <v-flex>
-          <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
-              
-                 
-                      <v-card>
-                          
-                          <v-card-text> 
-                              <v-icon size="400px" color="accent"    >lock_open</v-icon> 
-                          </v-card-text>
-                      </v-card>
-                
-                       
-                       <v-card  auto-grow>
-                       
-                          <v-card-title  class="accent" >
-                             <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de Policía Investigadora</p></div>
-                          </v-card-title>
-                          <v-card-text>
-                           <v-list   > 
-                                <p class="text-md-left">Este modulo permite.........</p> 
-                                <v-list-tile>  
-                                  <v-list-tile-action>
-                                      <v-icon color="success">how_to_reg</v-icon>
-                                  </v-list-tile-action> 
-                                  <v-list-tile-content>  
-                                      <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Registro</a></p> </v-list-tile-title> 
-                                      <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
-                                  </v-list-tile-content> 
-                                </v-list-tile>
-                                <v-list-tile>  
-                                  <v-list-tile-action>
-                                      <v-icon    color="success">group</v-icon>
-                                  </v-list-tile-action> 
-                                  <v-list-tile-content>  
-                                      <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Orientacion</a></p> </v-list-tile-title> 
-                                      <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
-                                  </v-list-tile-content> 
-                                </v-list-tile>
-                               
-                                <br>
-                                 
-                            </v-list> 
-                            <div>
-                           
-                              
-                            </div>
-                            
-                          </v-card-text>
-                      </v-card>
-            
-          </v-card>
-      </v-flex>
-    </v-layout>
+            <v-flex>
+              <v-card color="white" grow  class="d-flex align-content-start">
+                <v-card class="primary" style="width: 30%;">
+                  <v-card-text class="primary" style="box-shadow: none;"> 
+                    <v-icon size="330px" color="accent">lock_open</v-icon> 
+                  </v-card-text>
+                </v-card>
+
+                <v-card style="width: 70%; box-shadow: none;" class="primary">
+                  <v-card-title class="primary">
+                    <div class="display-2 font-weight-thin" color="blue">
+                      <p color="blue"><b>Modulo de Policía Investigadora</b></p>
+                    </div>
+                  </v-card-title>
+                  <v-card-text class="primary">
+                    <v-list class="primary">
+                      <p class="text-md-left">Este modulo permite.........</p>
+                      <v-list-tile>
+                        <v-list-tile-action>
+                            <v-icon color="success">how_to_reg</v-icon>
+                        </v-list-tile-action> 
+                        <v-list-tile-content>  
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Registro</a></p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>
+                          </v-list-tile-sub-title>  
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <v-list-tile>  
+                        <v-list-tile-action>
+                          <v-icon    color="success">group</v-icon>
+                        </v-list-tile-action> 
+                        <v-list-tile-content>  
+                          <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Orientacion</a></p> </v-list-tile-title> 
+                          <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <br>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-card>
+            </v-flex>
+          </v-layout>
           <router-view/>
-         
         </v-slide-y-transition>
-         <loader></loader>
+        <loader></loader>
       </v-container> 
     </v-content>
- 
   </v-app>
 </template>
 

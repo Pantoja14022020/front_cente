@@ -84,9 +84,8 @@ export default {
             error: null
         }
     },
-     created: function() {  
-
-      
+     created: function() {
+            
       const token = this.$store.state.token || localStorage.getItem("token");
       
       if(token)

@@ -13,7 +13,7 @@
                     <v-spacer />
 |                   <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
-                            <v-btn @click="dialog=true" class="mx-2" v-on="on" fab dark small color="primary" ><v-icon>add</v-icon></v-btn>
+                            <v-btn @click="dialog=true" class="mx-2 pt-2" v-on="on" fab dark small color="primary" ><v-icon class="mt-1">add</v-icon></v-btn>
                         </template>
                         <span>Agregar Registro </span>    
                     </v-tooltip>

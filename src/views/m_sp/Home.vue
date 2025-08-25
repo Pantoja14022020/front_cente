@@ -1,5 +1,5 @@
 <template>
-    <v-app id="app">
+  <v-app id="app">
    
       <!--<v-toolbar flat app  class="grey lighten-4">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" class="grey--text"></v-toolbar-side-icon>
@@ -79,439 +79,439 @@
             </v-card>
         </v-menu>
       </v-toolbar>-->
-        
-        
-      <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+    
+      <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary">
         <div class="text-xl-center text-md-center text-xs-center my-4">
           <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
         </div>
-  
-        <v-list dense dark class="pt-0 primary" >
-          <template>
-            <v-list-tile  :to="{name:'servicios-periciales'}">
-              <v-list-tile-action>
-                <v-icon class="centenarioMenuIcon">home</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
-            </v-list-tile>
-          </template>          
-  
-        <template v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Asignacion de perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
+    
+          <v-list dense dark class="pt-0 primary" >
+            <template>
+              <v-list-tile  :to="{name:'servicios-periciales'}">
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">home</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
               </v-list-tile>
-              <v-list-tile  v-if="esAdministrador || esDirector || esOficialiapartes" :to="{ name: 'sp-bandejaentrada'== '#' ? '' :  'sp-bandejaentrada'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada oficialia
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-bandejaentradaarea'== '#' ? '' :  'sp-bandejaentradaarea'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada area
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-radioarea'== '#' ? '' :  'sp-radioarea'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de Radio
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile  v-if="esAdministrador || esCordinador || esDirector" :to="{ name: 'sp-reasignar'== '#' ? '' :  'sp-reasignar'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">cached</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                   Reasignar Perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>     
-            </v-list-group>
-      </template>
-  
-  
-  
-       <template v-if="esAdministrador || esPerito || esOficialiapartes || esCordinador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bdeperito'== '#' ? '' :  'sp-bdeperito'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">how_to_reg</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile  v-if="esAdministrador || esPerito || esCordinador" :to="{ name: 'sp-recepcionindicio'== '#' ? '' :  'sp-recepcionindicio'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">transit_enterexit</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Recepcíon de Indicio
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile  :to="{ name: 'sp-entregainforme'== '#' ? '' :  'sp-entregainforme'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">toc</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Entrega de Informe
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>   
+            </template>          
+    
+          <template v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes">
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Asignacion de perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile  v-if="esAdministrador || esDirector || esOficialiapartes" :to="{ name: 'sp-bandejaentrada'== '#' ? '' :  'sp-bandejaentrada'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada oficialia
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-bandejaentradaarea'== '#' ? '' :  'sp-bandejaentradaarea'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada area
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-radioarea'== '#' ? '' :  'sp-radioarea'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de Radio
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile  v-if="esAdministrador || esCordinador || esDirector" :to="{ name: 'sp-reasignar'== '#' ? '' :  'sp-reasignar'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">cached</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                    Reasignar Perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>     
+              </v-list-group>
+        </template>
+    
+    
+    
+        <template v-if="esAdministrador || esPerito || esOficialiapartes || esCordinador">
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bdeperito'== '#' ? '' :  'sp-bdeperito'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">how_to_reg</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile  v-if="esAdministrador || esPerito || esCordinador" :to="{ name: 'sp-recepcionindicio'== '#' ? '' :  'sp-recepcionindicio'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">transit_enterexit</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Recepcíon de Indicio
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile  :to="{ name: 'sp-entregainforme'== '#' ? '' :  'sp-entregainforme'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">toc</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Entrega de Informe
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>   
+            
+              </v-list-group>
+          </template>
+    
+          <template v-if="esAdministrador || esCordinador || esDirector" >
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Estadísticas
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'sp-estadisticasmes'== '#' ? '' :  'sp-estadisticasmes'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content  >
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por mes
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>    
+                <v-list-tile :to="{ name: 'sp-estadisticas'== '#' ? '' :  'sp-estadisticas'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por año
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'sp-estadisticasan'== '#' ? '' :  'sp-estadisticasan'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por años
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>                
+              </v-list-group>
+          </template>
+    
+    
+          <template v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" >
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Asignacion de perito foraneas
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile  v-if="esAdministrador || esDirector || esOficialiapartes" :to="{ name: 'sp-bandejaentradaf'== '#' ? '' :  'sp-bandejaentradaf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada oficialia
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-bandejaentradaareaf'== '#' ? '' :  'sp-bandejaentradaareaf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada area
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-radioareaf'== '#' ? '' :  'sp-radioareaf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de Radio
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile  v-if="esAdministrador || esCordinador || esDirector" :to="{ name: 'sp-reasignarf'== '#' ? '' :  'sp-reasignarf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">cached</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                    Reasignar Perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>     
+              </v-list-group>
+        </template>
+    
+    
+    
+        <template v-if="esAdministrador || esPerito || esOficialiapartes || esCordinador">
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Perito foraneas
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bdeperitof'== '#' ? '' :  'sp-bdeperitof'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">how_to_reg</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Bandeja de entrada perito
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile  :to="{ name: 'sp-entregainformef'== '#' ? '' :  'sp-entregainformef'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">toc</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Entrega de Informe
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>   
+            
+              </v-list-group>
+          </template>
+    
+          <template v-if="esAdministrador || esCordinador || esDirector" >
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Estadísticas foraneas
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'sp-estadisticasmesf'== '#' ? '' :  'sp-estadisticasmesf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content  >
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por mes
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>    
+                <v-list-tile :to="{ name: 'sp-estadisticasf'== '#' ? '' :  'sp-estadisticasf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por año
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile :to="{ name: 'sp-estadisticasanf'== '#' ? '' :  'sp-estadisticasanf'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">equalizer</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Estadísticas por años
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>                
+              </v-list-group>
+          </template>
           
-            </v-list-group>
-        </template>
-  
-        <template v-if="esAdministrador || esCordinador || esDirector" >
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Estadísticas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'sp-estadisticasmes'== '#' ? '' :  'sp-estadisticasmes'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content  >
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por mes
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>    
-              <v-list-tile :to="{ name: 'sp-estadisticas'== '#' ? '' :  'sp-estadisticas'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por año
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'sp-estadisticasan'== '#' ? '' :  'sp-estadisticasan'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por años
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>                
-            </v-list-group>
-        </template>
-  
-  
+    
         <template v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" >
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Asignacion de perito foraneas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile  v-if="esAdministrador || esDirector || esOficialiapartes" :to="{ name: 'sp-bandejaentradaf'== '#' ? '' :  'sp-bandejaentradaf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada oficialia
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-bandejaentradaareaf'== '#' ? '' :  'sp-bandejaentradaareaf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada area
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esCordinador" :to="{ name: 'sp-radioareaf'== '#' ? '' :  'sp-radioareaf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de Radio
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile  v-if="esAdministrador || esCordinador || esDirector" :to="{ name: 'sp-reasignarf'== '#' ? '' :  'sp-reasignarf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">cached</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                   Reasignar Perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>     
-            </v-list-group>
-      </template>
-  
-  
-  
-       <template v-if="esAdministrador || esPerito || esOficialiapartes || esCordinador">
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Perito foraneas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bdeperitof'== '#' ? '' :  'sp-bdeperitof'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">how_to_reg</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Bandeja de entrada perito
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile  :to="{ name: 'sp-entregainformef'== '#' ? '' :  'sp-entregainformef'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">toc</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Entrega de Informe
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>   
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Asignación de Servicio Médico
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile  v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" :to="{ name: 'sp-assolconregistro'== '#' ? '' :  'sp-assolconregistro'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">input</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Solicitudes con registro 
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" :to="{ name: 'sp-assolsinRegistro'== '#' ? '' :  'sp-assolsinRegistro'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">input</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Solicitudes sin registro
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>   
+              </v-list-group>
+        </template>
+    
+        <template v-if="(esAdministrador || esPerito)&& modulointernof" >
+              <v-list-group>
+                <v-list-tile slot="activator">   
+                  <v-list-tile-content >
+                    <v-list-tile-title class="centenarioMenuAreas">
+                    Bandeja de Entrada Servicios Médicos
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile  v-if="esAdministrador || esPerito" :to="{ name: 'sp-bansolconregistro'== '#' ? '' :  'sp-bansolconregistro'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Solicitudes con registro 
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile> 
+                <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bansolsinregistro'== '#' ? '' :  'sp-bansolsinregistro'}"  active-class="secondary">  
+                  <v-list-tile-action>
+                    <v-icon class="centenarioMenuIcon">drafts</v-icon>
+                  </v-list-tile-action>
+                  <v-list-tile-content>
+                    <v-list-tile-title class="centenarioMenuModules">
+                      Solicitudes sin registro
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>   
+              </v-list-group>
+        </template>
+    
+        <v-list-tile
+              v-if="
+                esDirector
+              "
+              :to="{ name: 'sp-rotacionpersonal' == '#' ? '' : 'sp-rotacionpersonal' }"
+              active-class="secondary"
+            >
+              <v-list-tile-action>
+                <v-icon class="centenarioMenuIcon">groups</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title class="centenarioMenuModules">
+                  Rotación de Personal
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>   
+    
+        </v-list>
+    
           
-            </v-list-group>
-        </template>
-  
-        <template v-if="esAdministrador || esCordinador || esDirector" >
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Estadísticas foraneas
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'sp-estadisticasmesf'== '#' ? '' :  'sp-estadisticasmesf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content  >
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por mes
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>    
-              <v-list-tile :to="{ name: 'sp-estadisticasf'== '#' ? '' :  'sp-estadisticasf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por año
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile :to="{ name: 'sp-estadisticasanf'== '#' ? '' :  'sp-estadisticasanf'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">equalizer</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Estadísticas por años
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>                
-            </v-list-group>
-        </template>
-        
-  
-      <template v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" >
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Asignación de Servicio Médico
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile  v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" :to="{ name: 'sp-assolconregistro'== '#' ? '' :  'sp-assolconregistro'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">input</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Solicitudes con registro 
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esCordinador || esDirector || esOficialiapartes" :to="{ name: 'sp-assolsinRegistro'== '#' ? '' :  'sp-assolsinRegistro'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">input</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Solicitudes sin registro
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>   
-            </v-list-group>
-      </template>
-  
-      <template v-if="(esAdministrador || esPerito)&& modulointernof" >
-            <v-list-group>
-              <v-list-tile slot="activator">   
-                <v-list-tile-content >
-                  <v-list-tile-title class="centenarioMenuAreas">
-                   Bandeja de Entrada Servicios Médicos
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile  v-if="esAdministrador || esPerito" :to="{ name: 'sp-bansolconregistro'== '#' ? '' :  'sp-bansolconregistro'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Solicitudes con registro 
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esPerito" :to="{ name: 'sp-bansolsinregistro'== '#' ? '' :  'sp-bansolsinregistro'}"  active-class="secondary">  
-                <v-list-tile-action>
-                   <v-icon class="centenarioMenuIcon">drafts</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title class="centenarioMenuModules">
-                    Solicitudes sin registro
-                  </v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>   
-            </v-list-group>
-      </template>
-  
-      <v-list-tile
-            v-if="
-              esDirector
-            "
-            :to="{ name: 'sp-rotacionpersonal' == '#' ? '' : 'sp-rotacionpersonal' }"
-            active-class="secondary"
-          >
-            <v-list-tile-action>
-              <v-icon class="centenarioMenuIcon">groups</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title class="centenarioMenuModules">
-                Rotación de Personal
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>   
-  
-      </v-list>
-  
-        
-  
-  
+    
+    
       </v-navigation-drawer>
-      
-     <v-content class="grey lighten-4" style="padding: 0;"  >
+
+      <v-content class="grey lighten-4" style="padding: 0;">
         <v-container fluid>
           <v-slide-y-transition mode="out-in">
             <v-layout>
-      <v-flex>
-          <v-card flat color="white" grow  class="d-flex align-content-start flex-wrap" > 
-            <v-card>
-                <v-card-text> 
-                    <v-icon size="400px" color="accent">lock_open</v-icon> 
-                </v-card-text>
-            </v-card>  
-                       <v-card  auto-grow>
-                       
-                          <v-card-title  class="accent" >
-                             <div class="display-2 font-weight-thin" color="blue"><p color="blue">Modulo de Servicios Periciales</p></div>
-                          </v-card-title>
-                          <v-card-text>
-                           <v-list   > 
-                                <p class="text-md-left">Este modulo permite.........</p> 
-                                <v-list-tile>  
-                                  <v-list-tile-action>
-                                      <v-icon color="success">how_to_reg</v-icon>
-                                  </v-list-tile-action> 
-                                  <v-list-tile-content>  
-                                      <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Registro</a></p> </v-list-tile-title> 
-                                      <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
-                                  </v-list-tile-content> 
-                                </v-list-tile>
-                                <v-list-tile>  
-                                  <v-list-tile-action>
-                                      <v-icon    color="success">group</v-icon>
-                                  </v-list-tile-action> 
-                                  <v-list-tile-content>  
-                                      <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Orientacion</a></p> </v-list-tile-title> 
-                                      <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
-                                  </v-list-tile-content> 
-                                </v-list-tile>
-                               
-                                <br>
-                                 
-                            </v-list> 
-                            <div>
-                           
-                              
-                            </div>
-                            
-                          </v-card-text>
-                      </v-card>
-            
-          </v-card>
-      </v-flex>
-    </v-layout>
+              <v-flex>
+                <v-card color="white" grow  class="d-flex align-content-start">
+                  <v-card class="primary" style="width: 30%;">
+                    <v-card-text class="primary" style="box-shadow: none;"> 
+                      <v-icon size="330px" color="accent">lock_open</v-icon> 
+                    </v-card-text>
+                  </v-card>
+
+                  <v-card style="width: 70%; box-shadow: none;" class="primary">
+                    <v-card-title class="primary">
+                      <div class="display-2 font-weight-thin" color="blue">
+                        <p color="blue"><b>Modulo de Servicios Periciales</b></p>
+                      </div>
+                    </v-card-title>
+                    <v-card-text class="primary">
+                      <v-list class="primary">
+                        <p class="text-md-left">Este modulo permite.........</p>
+                        <v-list-tile>  
+                          <v-list-tile-action>
+                            <v-icon color="success">how_to_reg</v-icon>
+                          </v-list-tile-action> 
+                          <v-list-tile-content>  
+                            <v-list-tile-title>
+                              <p class="body-2 font-weight-bold"><a>Registro</a></p>
+                            </v-list-tile-title> 
+                            <v-list-tile-sub-title>
+                              <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>
+                            </v-list-tile-sub-title>  
+                          </v-list-tile-content> 
+                        </v-list-tile>
+                        <v-list-tile>  
+                          <v-list-tile-action>
+                            <v-icon color="success">group</v-icon>
+                          </v-list-tile-action> 
+                          <v-list-tile-content>  
+                            <v-list-tile-title>
+                              <p class="body-2 font-weight-bold"><a>Orientacion</a></p>
+                            </v-list-tile-title>
+                            <v-list-tile-sub-title>
+                              <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>
+                            </v-list-tile-sub-title>
+                          </v-list-tile-content> 
+                        </v-list-tile>
+                        <br>
+                      </v-list>
+                    </v-card-text>
+                  </v-card>
+                </v-card>
+              </v-flex>
+            </v-layout>
             <router-view/>
           </v-slide-y-transition>
-           <loader></loader>
+          <loader></loader>
         </v-container> 
       </v-content>
-   
     </v-app>
   </template>
   

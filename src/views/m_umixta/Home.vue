@@ -1,5 +1,6 @@
 <template>
-  <v-layout row wrap  auto-grow dark v-if="isReady">
+  <v-app id="app" v-if="isReady">
+
     <n401 v-if="e401" />
     <n403 v-if="e403" />
 
@@ -11,37 +12,45 @@
           <v-layout>
             <v-flex>
               <v-card color="white" grow  class="d-flex align-content-start">
-                <v-card style="width: 40%;">                                    
-                  <v-card-text> 
-                    <v-icon size="350px" color="accent">account_balance</v-icon> 
+                <v-card class="primary" style="width: 30%;">                                    
+                  <v-card-text class="primary" style="box-shadow: none;"> 
+                    <v-icon size="330px" color="accent">account_balance</v-icon> 
                   </v-card-text>
                 </v-card>
 
-                <v-card style="width: 60%;">
-                  <v-card-title>
+                <v-card style="width: 70%; box-shadow: none;" class="primary">
+                  <v-card-title class="primary">
                     <div class="display-2 font-weight-thin" color="blue">
-                      <p color="blue">{{ this.titulo }}</p>
+                      <p color="blue"><b>{{ this.titulo }}</b></p>
                     </div>
                   </v-card-title>
-                  <v-card-text >
-                    <v-list >
+                  <v-card-text class="primary">
+                    <v-list class="primary">
                       <p class="text-md-left">Este modulo permite.........</p>
                       <v-list-tile>
                         <v-list-tile-action>
                           <v-icon color="success">how_to_reg</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>  
-                          <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Registro</a></p> </v-list-tile-title> 
-                          <v-list-tile-sub-title > <p class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Registro</a></p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p class="caption font-weight-regular"><a>Texto.....</a></p>
+                          </v-list-tile-sub-title>  
                         </v-list-tile-content> 
                       </v-list-tile>
                       <v-list-tile>  
                         <v-list-tile-action>
-                            <v-icon color="success">group</v-icon>
+                          <v-icon color="success">group</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Orientación</a></p> </v-list-tile-title>
-                            <v-list-tile-sub-title > <p class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Orientación</a></p>
+                          </v-list-tile-title>
+                          <v-list-tile-sub-title>
+                            <p class="caption font-weight-regular"><a>Texto.....</a></p>
+                          </v-list-tile-sub-title>
                         </v-list-tile-content>
                       </v-list-tile>
                       <br />
@@ -143,7 +152,7 @@
         </v-slide-y-transition>
       </v-container>
     </v-content>
-  </v-layout>
+  </v-app>
 </template>
 
 <script>

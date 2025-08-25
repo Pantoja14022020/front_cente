@@ -511,209 +511,193 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-        
       </v-list>
-
     </v-navigation-drawer>
-        <n401 v-if="e401" />
-        <n403 v-if="e403" />
-        <v-flex>
-            <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Informe por facilitador.</v-toolbar-title>
-                    
-                    <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                
-                    <v-spacer></v-spacer>
-                     <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>        
-            </v-toolbar>
-            <v-card >
-                <v-container grid-list-md text-xs-center>
-                    <v-layout row wrap>  
-                        <v-flex   xl12 lg12 md12 sm12  xs12> 
+
+    <n401 v-if="e401" />
+    <n403 v-if="e403" />
+
+    <v-flex>
+      <v-toolbar flat color="white">
+        <v-toolbar-title class="font-weight-regular" >Informe por facilitador.</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-spacer></v-spacer> 
+        <v-btn  @click="filtrar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>        
+      </v-toolbar>
+      <v-card>
+        <v-container grid-list-md text-xs-center>
+          <v-layout row wrap>  
+            <v-flex   xl12 lg12 md12 sm12  xs12> 
+            
+              <v-card outline elevation="0" > 
+                  <v-card-text  >
+                    <v-data-table
+                        :headers="headers"
+                        :items="registros"
+                        :search="search" 
+                        :rows-per-page-items="rowsPerPageItems"
+                        :pagination.sync="pagination"  >
+                        <template slot="items" class="white" slot-scope="props">
+                            
+                            <td>{{ props.item.etiqueta }}</td>
+                            <td>{{ props.item.tramite }}</td> 
+                            <td>{{ props.item.inmediato }}</td> 
+                            <td>{{ props.item.diferido }}</td>
+                            <td>{{ props.item.cumplido}}</td>   
+                            <td>{{ props.item.incumplido}}</td>
+                            <td>{{ props.item.encumplimiento }}</td>    
+                            <td>{{ props.item.baja }}</td>    
+                            <td>{{ props.item.total }}</td>    
+                            <td>{{ props.item.acuerdos }}</td>    
+                        </template>
+                        <template slot="no-data">
+                          <v-alert
+                            value="true"
+                            type="success"
+                            icon="check_circle"
+                            outline
+                            >
+                            Has click en el boton de filtros para buscar la información.
+                            </v-alert>
+                        </template>
                         
-                            <v-card outline elevation="0" > 
-                                <v-card-text  >
-                                      
+                    </v-data-table>
+                  </v-card-text>
+                  <v-card-text  class="px-0">
+                        <canvas height="100" id="mychart"> </canvas>   
+                  </v-card-text>
+              </v-card>
+                  
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
+    </v-flex>
 
-                                    <v-data-table
-                                        :headers="headers"
-                                        :items="registros"
-                                        :search="search" 
-                                        :rows-per-page-items="rowsPerPageItems"
-                                        :pagination.sync="pagination"  >
-                                        <template slot="items" class="white" slot-scope="props">
-                                            
-                                            <td>{{ props.item.etiqueta }}</td>
-                                            <td>{{ props.item.tramite }}</td> 
-                                            <td>{{ props.item.inmediato }}</td> 
-                                            <td>{{ props.item.diferido }}</td>
-                                            <td>{{ props.item.cumplido}}</td>   
-                                            <td>{{ props.item.incumplido}}</td>
-                                            <td>{{ props.item.encumplimiento }}</td>    
-                                            <td>{{ props.item.baja }}</td>    
-                                            <td>{{ props.item.total }}</td>    
-                                            <td>{{ props.item.acuerdos }}</td>    
-                                        </template>
-                                        <template slot="no-data">
-                                          <v-alert
-                                            value="true"
-                                            type="success"
-                                            icon="check_circle"
-                                            outline
-                                            >
-                                            Has click en el boton de filtros para buscar la información.
-                                            </v-alert>
-                                        </template>
-                                        
-                                    </v-data-table>  
-                                   
-                                      
-                                </v-card-text>
-                                <v-card-text  class="px-0">
-                                      <canvas height="100" id="mychart"> </canvas>   
-                                </v-card-text>
-                             
-                                
-                            </v-card>
-                             
-                        </v-flex>
-                 
-                    </v-layout>
-                </v-container>
-
-            </v-card> 
-          
-        </v-flex>
-        <v-dialog v-model="modelfiltros" fullscreen hide-overlay transition="dialog-bottom-transition"> 
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar> 
-                        <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
-                        <v-spacer></v-spacer> 
-                    </v-toolbar>
-                               
-                    <v-card-text  class="px-4">
-                            <v-autocomplete name="filtro:"
-                                            prepend-icon="filter_list"
-                                            :items="filtros"
-                                            v-model="filtro" 
-                                            v-validate="'required'"
-                                                return-object  
-                                            label="Filtrar por:" 
-                                            :error-messages="errors.collect('filtro')">
-                            </v-autocomplete>
-                                <v-autocomplete 
-                                            prepend-icon="event"  
-                                            :items="años"  
+    <v-dialog v-model="modelfiltros" fullscreen hide-overlay transition="dialog-bottom-transition"> 
+            <v-card>
+                <v-toolbar card dark color="grey lighten-4 primary--text">
+                    <v-avatar  size="30">
+                        <v-icon class="grey lighten-2">filter_list</v-icon>
+                    </v-avatar> 
+                    <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+                    <v-spacer></v-spacer> 
+                </v-toolbar>
+                            
+                <v-card-text  class="px-4">
+                        <v-autocomplete name="filtro:"
+                                        prepend-icon="filter_list"
+                                        :items="filtros"
+                                        v-model="filtro" 
+                                        v-validate="'required'"
+                                            return-object  
+                                        label="Filtrar por:" 
+                                        :error-messages="errors.collect('filtro')">
+                        </v-autocomplete>
+                            <v-autocomplete 
+                                        prepend-icon="event"  
+                                        :items="años"  
+                                        attach
+                                        chips
+                                        return-object 
+                                        v-model="año"  
+                                        label="Año:"
+                                        v-if="filtro.value==1" >
+                        </v-autocomplete>
+                            <v-autocomplete 
+                                        prepend-icon="event"  
+                                        :items="años"   
+                                        v-model="año"   
+                                        v-on:change="limpiarMes()"
+                                        label="Año:" 
+                                        v-if="filtro.value==2" >
+                        </v-autocomplete>
+                            <v-autocomplete name="mes"
+                                            prepend-icon="event"
+                                            :items="meses" 
+                                            return-object 
                                             attach
                                             chips
-                                            return-object 
-                                            v-model="año"  
-                                            label="Año:"
-                                            v-if="filtro.value==1" >
-                            </v-autocomplete>
-                                <v-autocomplete 
-                                            prepend-icon="event"  
-                                            :items="años"   
-                                            v-model="año"   
-                                            v-on:change="limpiarMes()"
-                                            label="Año:" 
+                                            v-model="mes"  
+                                            label="Mes:" 
                                             v-if="filtro.value==2" >
-                            </v-autocomplete>
-                                <v-autocomplete name="mes"
-                                                prepend-icon="event"
-                                                :items="meses" 
-                                                return-object 
-                                                attach
-                                                chips
-                                                v-model="mes"  
-                                                label="Mes:" 
-                                                v-if="filtro.value==2" >
-                            </v-autocomplete>
-                            <v-menu
-                                ref="v_menu1"
-                                v-model="v_menu1"
-                                :close-on-content-click="false"
-                                :return-value.sync="v_fechaInicial"
-                                transition="scale-transition" 
-                                offset-y v-if="filtro.value==3" 
-                                min-width="290px"
-                            >
-                                <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    :value="v_fechaInicial"
-                                    label="Fecha inicial:"
-                                    prepend-icon="event" 
-                                    clearable  
-                                    readonly
-                                    v-on="on"
-                                ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="v_fechaI" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                            <v-menu
-                                ref="v_menu2"
-                                v-model="v_menu2"
-                                :close-on-content-click="false"
-                                :return-value.sync="v_fechaFinal"
-                                transition="scale-transition" 
-                                offset-y
-                                v-if="filtro.value==3" 
-                                min-width="290px"
-                            >
-                                <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    :value="v_fechaFinal"
-                                    label="Fecha final:"
-                                    prepend-icon="event" 
-                                    clearable 
-                                    readonly
-                                    v-on="on"
-                                ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="v_fechaF" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
-                                </v-date-picker>
-                            </v-menu>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn  @click.native="modelfiltros=false" >Cancelar</v-btn>
-                        <v-btn id="consultar" type="submit" @click.native="consultar()" class="success" >Consultar</v-btn>
-                    
-                    </v-card-actions> 
-                </v-card> 
-        </v-dialog> 
-        
-      
-      </v-layout> 
+                        </v-autocomplete>
+                        <v-menu
+                            ref="v_menu1"
+                            v-model="v_menu1"
+                            :close-on-content-click="false"
+                            :return-value.sync="v_fechaInicial"
+                            transition="scale-transition" 
+                            offset-y v-if="filtro.value==3" 
+                            min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                            <v-text-field
+                                :value="v_fechaInicial"
+                                label="Fecha inicial:"
+                                prepend-icon="event" 
+                                clearable  
+                                readonly
+                                v-on="on"
+                            ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="v_fechaI" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                        <v-menu
+                            ref="v_menu2"
+                            v-model="v_menu2"
+                            :close-on-content-click="false"
+                            :return-value.sync="v_fechaFinal"
+                            transition="scale-transition" 
+                            offset-y
+                            v-if="filtro.value==3" 
+                            min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                            <v-text-field
+                                :value="v_fechaFinal"
+                                label="Fecha final:"
+                                prepend-icon="event" 
+                                clearable 
+                                readonly
+                                v-on="on"
+                            ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="v_fechaF" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn  @click.native="modelfiltros=false" >Cancelar</v-btn>
+                    <v-btn id="consultar" type="submit" @click.native="consultar()" class="success" >Consultar</v-btn>
+                
+                </v-card-actions> 
+            </v-card> 
+    </v-dialog> 
+  </v-layout> 
 </template>
-<script>
 
+<script>
 import axios from 'axios'  
 import moment from 'moment'
 import 'moment/locale/es'; 
 import { error } from 'util';
-
 import Chart from 'chart.js'
 //** COMPONENTES */
 import n401 from '../../components/m_jr/401'
 import n403 from '../../components/m_jr/403' 
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-import { computed } from 'vue';
- 
+import { computed } from 'vue'; 
 
 var pdfMake = require('pdfmake/build/pdfmake.js');
 var pdfFonts = require('pdfmake/build/vfs_fonts.js');
@@ -721,9 +705,9 @@ pdfMake.vfs = pdfFonts.vfs;
 
 export default {
     components: {  
-                    n401,
-                    n403
-                },
+        n401,
+        n403
+    },
     data(){
         return{
             e401:false, 

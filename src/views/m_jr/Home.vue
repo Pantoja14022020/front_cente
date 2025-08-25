@@ -8,85 +8,83 @@
       </v-toolbar-title> 
       <v-spacer ></v-spacer>  
       
-       <v-btn  v-if="logueado" flat icon> 
+      <v-btn  v-if="logueado" flat icon> 
         <v-icon>notifications</v-icon> 
       </v-btn>
       <v-btn :to="{name: 'login'}" v-else flat  icon >
         <v-icon> vpn_key</v-icon>  
       </v-btn> 
       <v-menu offset-y right  v-if="logueado" flat transition="scale-transition" >
-        <template   v-slot:activator="{ on }">
-            <v-btn icon v-on="on"   >
-              <v-icon>person</v-icon>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on"   >
+            <v-icon>person</v-icon>
+          </v-btn>
+        </template> 
+        <v-card min-width="300" class=" mx-auto">
+          <v-toolbar prominent card dark color="grey lighten-4 primary--text">
+            <v-avatar  size="50">
+              <v-icon size="36" class="grey lighten-2 centenarioToolBarIcon">person</v-icon>
+            </v-avatar>
+            <v-toolbar-title class="body-1 font-weight-medium"> {{ usuario }} </v-toolbar-title>
+          </v-toolbar>
+                 
+          <v-card-text>
+            <v-list>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-icon size="36" class="centenarioToolBarIcon">build</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuAreas">
+                    <p class="body-2 font-weight-bold"><a>Mi cuenta</a></p>
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title>
+                    <p color="accent" class="caption font-weight-regular"><a>Configuración de tu cuenta.</a></p>
+                  </v-list-tile-sub-title>
+                </v-list-tile-content> 
+              </v-list-tile>
+              <v-list-tile>  
+                <v-list-tile-action>
+                  <v-icon size="36" class="centenarioToolBarIcon">help</v-icon>
+                </v-list-tile-action> 
+                <v-list-tile-content>  
+                  <v-list-tile-title class="centenarioMenuAreas">
+                    <p class="body-2 font-weight-bold"><a>Ayuda</a></p>
+                </v-list-tile-title> 
+                <v-list-tile-sub-title>
+                  <p color="accent" class="caption font-weight-regular"><a>Manual de usuario</a></p>
+                </v-list-tile-sub-title>
+                </v-list-tile-content> 
+              </v-list-tile>
+              <v-list-tile @click="salir">
+                <v-list-tile-action>
+                  <v-icon size="36" class="centenarioToolBarIcon">power_settings_new</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuAreas">
+                    <p class="body-2 font-weight-bold"><a>Cerrar sesión</a></p>
+                  </v-list-tile-title>
+                </v-list-tile-content> 
+              </v-list-tile>
+            </v-list> 
+          </v-card-text>
+          <v-divider class="mx-0"></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn class="mx-3" small outline color="accent">
+              Cerrar
             </v-btn>
-          </template> 
-          <v-card  min-width="300"   class=" mx-auto">
-                  <v-toolbar prominent card dark color="grey lighten-4 primary--text">
-                    <v-avatar  size="50">
-                        <v-icon size="36" class="grey lighten-2 centenarioToolBarIcon">person</v-icon>
-                    </v-avatar> 
-                    
-                    <v-toolbar-title class="body-1  font-weight-medium">{{ usuario }}
-                           
-                          
-                    </v-toolbar-title> 
-   
-                    
-                  </v-toolbar>
-                 
-                  <v-card-text>  
-                         <v-list >
-                            <v-list-tile  >  
-                              <v-list-tile-action>
-                                  <v-icon size="36" class="centenarioToolBarIcon">build</v-icon>
-                              </v-list-tile-action> 
-                              <v-list-tile-content>  
-                                  <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Mi cuenta</a></p> </v-list-tile-title> 
-                                  <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Configuración de tu cuenta.</a></p>  </v-list-tile-sub-title>  
-                              </v-list-tile-content> 
-                            </v-list-tile>
-                            <v-list-tile    >  
-                              <v-list-tile-action>
-                                  <v-icon size="36" class="centenarioToolBarIcon">help</v-icon>
-                              </v-list-tile-action> 
-                              <v-list-tile-content>  
-                                  <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Ayuda</a></p> </v-list-tile-title> 
-                                  <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Manual de usuario</a></p>  </v-list-tile-sub-title>  
-                              </v-list-tile-content> 
-                            </v-list-tile>
-                            <v-list-tile @click="salir"  >  
-                              <v-list-tile-action>
-                                  <v-icon size="36" class="centenarioToolBarIcon">power_settings_new</v-icon>
-                              </v-list-tile-action> 
-                              <v-list-tile-content>  
-                                  <v-list-tile-title class="centenarioMenuAreas"> <p class="body-2 font-weight-bold"><a>Cerrar sesión</a></p> </v-list-tile-title>   
-                              </v-list-tile-content> 
-                            </v-list-tile> 
-
-                        </v-list> 
-                   
-                  </v-card-text>
-             <v-divider  class="mx-0" ></v-divider>
-             <v-card-actions  >
-                <v-spacer ></v-spacer>
-                <v-btn class="mx-3" small outline color="accent">
-                   Cerrar
-                </v-btn>
-                 
-               
-              </v-card-actions>
-
-          </v-card>
+          </v-card-actions>
+        </v-card>
       </v-menu>
     </v-toolbar>-->
-      
-      
-    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+    
+    <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary">
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/Panel"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
 
-      <v-list dense dark class="pt-0 primary" >
+      <v-list dense dark class="pt-0 primary">
          <template>
           <v-list-tile  :to="{name:'justicia-restaurativa'}">
             <v-list-tile-action>
@@ -94,8 +92,9 @@
             </v-list-tile-action>
             <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
           </v-list-tile>
-        </template>   
-         <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esRecepcion || esFacilitador || esFacilitadorMixto">
+        </template>
+
+        <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esRecepcion || esFacilitador || esFacilitadorMixto">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
@@ -137,9 +136,7 @@
           </v-list-group>
         </template>
 
-
-
-         <template  v-if="esAdministrador || esDirector || esJuridico|| esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR">
+        <template  v-if="esAdministrador || esDirector || esJuridico|| esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -157,9 +154,7 @@
                   Derivaciones
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector  || esJuridico || esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR|| esRecepcion" :to="{ name: 'jr-consultarExpediente'== '#' ? '' :  'jr-consultarExpediente'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">search</v-icon>
@@ -169,8 +164,7 @@
                   Consultar expedientes
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esJuridico ||  esCoordinador" :to="{ name: 'jr-rezago'== '#' ? '' :  'jr-rezago'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">timelapse</v-icon>
@@ -181,22 +175,9 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
-
-
-
-      
-
-            
-        
-              
-
-
-          
-
-             
-     
-           </v-list-group>
+          </v-list-group>
         </template>
+
         <template  v-if="esAdministrador || esNotificador || esFacilitador || esFacilitadorMixto ">
           <v-list-group>
             <v-list-tile slot="activator">   
@@ -248,10 +229,10 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-
           </v-list-group>
         </template>
-         <template v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR">
+
+        <template v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
@@ -272,6 +253,7 @@
             </v-list-tile>  
           </v-list-group>
         </template>
+
         <template v-if="esFacilitador || esNotificador || esFacilitadorMixto || esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator"> 
@@ -293,6 +275,7 @@
             </v-list-tile>  
           </v-list-group>
         </template>
+
         <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esFacilitador|| esFacilitadorMixto || esNotificador || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator">   
@@ -311,8 +294,7 @@
                   Información del expediente
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-sesiones'== '#' ? '' :  'jr-sesiones'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
@@ -322,8 +304,7 @@
                  Sesión
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador|| esFacilitadorMixto  || esUSAR" :to="{ name: 'jr-citatoriosrecordatorios'== '#' ? '' :  'jr-citatoriosrecordatorios'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
@@ -333,18 +314,7 @@
                 Citatorios, Recordatorios y Hoja de Registro
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-            
-
-
-           
-          
-
-        
-              
-
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-acuerdoreparatorio'== '#' ? '' :  'jr-acuerdoreparatorio'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">description</v-icon>
@@ -354,10 +324,7 @@
                  Acuerdo reparatorio
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-
-             
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-seguimientocumplimiento'== '#' ? '' :  'jr-seguimientocumplimiento'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">post_add</v-icon>
@@ -397,10 +364,10 @@
                  Registros
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
-        </template> 
+        </template>
+
         <template v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador || esFacilitadorMixto">
           <v-list-group>
             <v-list-tile slot="activator">   
@@ -429,11 +396,11 @@
                  Agenda global
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
         </template>
-         <template v-if="esAdministrador || esDirector  || esUSAR ">
+
+        <template v-if="esAdministrador || esDirector  || esUSAR ">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -451,9 +418,8 @@
                  Agenda de seguimiento
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-           <v-list-tile :to="{ name: 'jr-gestionseguimiento'== '#' ? '' :  'jr-gestionseguimiento'}"  active-class="secondary">  
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'jr-gestionseguimiento'== '#' ? '' :  'jr-gestionseguimiento'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">post_add</v-icon>
               </v-list-tile-action>
@@ -462,12 +428,11 @@
                 Gestión de seguimiento
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
         </template>
      
-         <template v-if="esAdministrador || esDirector || esUSAR ">
+        <template v-if="esAdministrador || esDirector || esUSAR ">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -495,8 +460,7 @@
                    Entrega de citatorios.
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esUSAR  " :to="{ name: 'jr-einforme'== '#' ? '' :  'jr-einforme'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">bar_chart</v-icon>
@@ -517,10 +481,6 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-
-            
-          
-
           </v-list-group>
         </template>
 
@@ -542,8 +502,7 @@
                   Monitoreo por distrito
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
           </v-list-group>
         </template>
 
@@ -565,8 +524,7 @@
                   Facilitadores y notificadores
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
           </v-list-group>
         </template>
 
@@ -590,81 +548,82 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-        
       </v-list>
-
     </v-navigation-drawer>
     
-   <v-content class="grey lighten-4" style="padding: 0;">
-      <v-container  fluid  >
+    <v-content class="grey lighten-4" style="padding: 0;">
+      <v-container fluid>
         <v-slide-y-transition mode="out-in">
           <v-layout>
-            <v-flex elevation-0>
-                <v-card flat color="white" grow class="d-flex align-content-start" > 
-                            <v-card>
-                              <v-card-text> 
-                                <v-icon size="400px" color="accent" >record_voice_over</v-icon>
-                              </v-card-text>
-                            </v-card>
-                      
-                            
-                            <v-card  auto-grow>
-                            
-                                <v-card-title  class="accent" >
-                                  <div class="display-2 font-weight-thin" color="blue"><p color="blue">Centro de Justicia Restaurativa Penal.</p></div>
-                                </v-card-title>
-                                <v-card-text>
-                                <v-list   > 
-                                      <p class="text-md-left">Este modulo permite.........</p> 
-                                      <v-list-tile>  
-                                        <v-list-tile-action>
-                                            <v-icon color="success">how_to_reg</v-icon>
-                                        </v-list-tile-action> 
-                                        <v-list-tile-content>  
-                                            <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Recepción de expedientes.</a></p> </v-list-tile-title> 
-                                            <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Muestra todas las solicitudes suceptibles a Mecanismos Alternativos de Solución de Controversias en Materia Penal.</a></p>  </v-list-tile-sub-title>  
-                                        </v-list-tile-content> 
-                                      </v-list-tile>
-                                      <v-list-tile>  
-                                        <v-list-tile-action>
-                                            <v-icon    color="success">group</v-icon>
-                                        </v-list-tile-action> 
-                                        <v-list-tile-content>  
-                                            <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Mis expedientes.</a></p> </v-list-tile-title> 
-                                            <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Lista los expedientes asignados a al facilitador y notificador</a></p>  </v-list-tile-sub-title>  
-                                        </v-list-tile-content> 
-                                      </v-list-tile>
-                                      <v-list-tile>  
-                                        <v-list-tile-action>
-                                            <v-icon    color="success">group</v-icon>
-                                        </v-list-tile-action> 
-                                        <v-list-tile-content>  
-                                            <v-list-tile-title> <p class="body-2 font-weight-bold"><a>Seguimiento a expediente..</a></p> </v-list-tile-title> 
-                                            <v-list-tile-sub-title > <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>  </v-list-tile-sub-title>  
-                                        </v-list-tile-content> 
-                                      </v-list-tile>
-                                    
-                                      <br>
-                                      
-                                  </v-list> 
-                                  <div>
-                                
-                                    
-                                  </div>
-                                  
-                                </v-card-text>
-                            </v-card>
-                  
+            <v-flex>
+              <v-card color="white" grow  class="d-flex align-content-start">
+                <v-card class="primary" style="width: 30%;">
+                  <v-card-text class="primary" style="box-shadow: none;"> 
+                    <v-icon size="330px" color="accent">record_voice_over</v-icon> 
+                  </v-card-text>
                 </v-card>
+
+                <v-card style="width: 70%; box-shadow: none;" class="primary">
+                  <v-card-title class="primary">
+                    <div class="display-2 font-weight-thin" color="blue">
+                      <p color="blue"><b>Centro de Justicia Restaurativa Penal</b></p>
+                    </div>
+                  </v-card-title>
+                  <v-card-text class="primary">
+                    <v-list class="primary">
+                      <p class="text-md-left">Este modulo permite.........</p>
+                      <v-list-tile>
+                        <v-list-tile-action>
+                          <v-icon color="success">how_to_reg</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Recepción de expedientes.</a></p>
+                          </v-list-tile-title>
+                          <v-list-tile-sub-title>
+                            <p color="accent" class="caption font-weight-regular"><a>Muestra todas las solicitudes suceptibles a Mecanismos Alternativos de Solución de Controversias en Materia Penal.</a></p>
+                          </v-list-tile-sub-title>  
+                        </v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>  
+                        <v-list-tile-action>
+                          <v-icon color="success">group</v-icon>
+                        </v-list-tile-action> 
+                        <v-list-tile-content>  
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Mis expedientes.</a></p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p color="accent" class="caption font-weight-regular"><a>Lista los expedientes asignados a al facilitador y notificador</a></p>
+                          </v-list-tile-sub-title>
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <v-list-tile>  
+                        <v-list-tile-action>
+                          <v-icon color="success">group</v-icon>
+                        </v-list-tile-action> 
+                        <v-list-tile-content>  
+                          <v-list-tile-title>
+                            <p class="body-2 font-weight-bold"><a>Seguimiento a expediente..</a></p>
+                          </v-list-tile-title> 
+                          <v-list-tile-sub-title>
+                            <p color="accent" class="caption font-weight-regular"><a>Texto.....</a></p>
+                          </v-list-tile-sub-title>  
+                        </v-list-tile-content> 
+                      </v-list-tile>
+                      <br>
+                    </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-card>
             </v-flex>
           </v-layout>
           <router-view/>
         </v-slide-y-transition>
-         <loader></loader>
+        <loader></loader>
       </v-container> 
     </v-content>
- 
+
   </v-app>
 </template>
 

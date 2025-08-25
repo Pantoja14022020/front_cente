@@ -527,7 +527,7 @@
                 
                     <v-spacer></v-spacer>
                      <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>        
+                    <v-btn  @click="filtrar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>        
             </v-toolbar>
             <v-card >
                 <v-container grid-list-md text-xs-center>

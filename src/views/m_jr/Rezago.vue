@@ -537,8 +537,8 @@
                     <v-spacer></v-spacer>
                     <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer> 
-                    <v-btn  @click="listar()" fab small  class="mb-2 primary"><v-icon>refresh</v-icon></v-btn>
-                    <v-btn  @click="download()" fab small  class="mb-2 primary"><v-icon>cloud_download</v-icon></v-btn>
+                    <v-btn  @click="listar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">refresh</v-icon></v-btn>
+                    <v-btn  @click="download()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">cloud_download</v-icon></v-btn>
                 </v-toolbar>
 
                 <v-data-table

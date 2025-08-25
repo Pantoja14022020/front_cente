@@ -551,7 +551,7 @@
                         </v-card>
             </v-dialog>
             <v-dialog   v-model="dialog"  max-width="600px">                        
-                        <v-btn slot="activator" fab small  class="mb-2 primary"><v-icon>add</v-icon></v-btn>
+                        <v-btn slot="activator" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">add</v-icon></v-btn>
                         <v-card>
                             <v-toolbar card dark color="grey lighten-4 primary--text">
                                 <v-avatar  size="30">

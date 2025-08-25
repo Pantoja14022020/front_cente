@@ -3379,7 +3379,7 @@
                             return;
                         }
                     } catch (error) {
-                        this.mostrarToast(`No hay conexión en el distrito origen por lo que no puedes generar el NUC \n Intentalo mas tarde.`, 'error');
+                        this.mostrarToast(`No hay conexión en el distrito origen por lo que no puedes generar el NUC. \n Intentalo mas tarde.`, 'error');
                         console.log(error)
                         this.nucdisponible = false;
                         this.cargando = false;

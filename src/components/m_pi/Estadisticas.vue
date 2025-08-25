@@ -1,11 +1,11 @@
 <template>  
-<v-layout align-start>
+  <v-layout align-start>
     <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
       <div class="text-xl-center text-md-center text-xs-center my-4">
-          <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""> </a>
+        <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""> </a>
       </div>
 
-      <v-list dense dark class="pt-0 primary" >
+      <v-list dense dark class="pt-0 primary">
         <template>
           <v-list-tile  :to="{name:'policia-investigadora'}">
             <v-list-tile-action>
@@ -15,7 +15,7 @@
           </v-list-tile>
         </template>          
 
-      <template v-if="esAdministrador || esComUnidad || esOficialiapartes || esComGeneral " >
+        <template v-if="esAdministrador || esComUnidad || esOficialiapartes || esComGeneral " >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -55,11 +55,9 @@
               </v-list-tile-content>
             </v-list-tile>       
           </v-list-group>
-    </template>
+        </template>
 
-
-
-     <template v-if="esAdministrador || esAgentePolicía || esComUnidad">
+        <template v-if="esAdministrador || esAgentePolicía || esComUnidad">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -99,9 +97,9 @@
               </v-list-tile-content>
             </v-list-tile>          
           </v-list-group>
-      </template>
+        </template>
 
-      <template v-if="esAdministrador || esComGeneral ||  esComUnidad || esJuridico || esAdministrativo || esDirector " >
+        <template v-if="esAdministrador || esComGeneral ||  esComUnidad || esJuridico || esAdministrativo || esDirector " >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -141,9 +139,9 @@
               </v-list-tile-content>
             </v-list-tile>         
           </v-list-group>
-      </template>
+        </template>
 
-      <template v-if="esAdministrador || esOficialiapartes || esComGeneral || esAgentePolicía ||  esComUnidad || esJuridico  || esDirector ||  esDetenciones " >
+        <template v-if="esAdministrador || esOficialiapartes || esComGeneral || esAgentePolicía ||  esComUnidad || esJuridico  || esDirector ||  esDetenciones " >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -163,9 +161,9 @@
               </v-list-tile-content>
             </v-list-tile>      
           </v-list-group>
-      </template>
+        </template>
 
-       <template v-if="esAdministrador || esDirector || esDetenciones  " >
+        <template v-if="esAdministrador || esDirector || esDetenciones  " >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -195,10 +193,9 @@
               </v-list-tile-content>
             </v-list-tile>      
           </v-list-group>
-      </template>
+        </template>
 
-
-       <template v-if="esAdministrador || esDirector || esDetenciones  " >
+        <template v-if="esAdministrador || esDirector || esDetenciones  " >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -248,10 +245,9 @@
               </v-list-tile-content>
             </v-list-tile>      
           </v-list-group>
-          
-      </template>
+        </template>
 
-       <template v-if="esAdministrador || esJuridico" >
+        <template v-if="esAdministrador || esJuridico" >
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
@@ -341,216 +337,206 @@
               </v-list-tile-content>
             </v-list-tile>      
           </v-list-group>
-      </template>
+        </template>
 
-      
+        <template v-if="esAdministrador || esJuridico" >
+            <v-list-group>
+              <v-list-tile slot="activator">   
+                <v-list-tile-content >
+                  <v-list-tile-title class="centenarioMenuAreas">
+                    Asignación de Colaboraciones
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-acomparecencias'== '#' ? '' :  'pi-acomparecencias'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">local_library</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Comparecencias Elementos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-aarrestos'== '#' ? '' :  'pi-aarrestos'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">no_meeting_room</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Arrestos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-aexhortos'== '#' ? '' :  'pi-aexhortos'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">camera_front</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Exhortos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-apresentacionescomparecencias'== '#' ? '' :  'pi-apresentacionescomparecencias'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">streetview</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Presentaciones y Comparecencias
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-arequerimientosvarios'== '#' ? '' :  'pi-arequerimientosvarios'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Requerimientos Varios
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-abusquedadomicilio'== '#' ? '' :  'pi-abusquedadomicilio'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">pageview</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Busqueda de Domicilio
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-atrasladocustodia'== '#' ? '' :  'pi-atrasladocustodia'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">transfer_within_a_station</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Traslados y Custodias
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-aordenesaprehension'== '#' ? '' :  'pi-aordenesaprehension'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">description</v-icon>
+                </v-list-tile-action> 
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Ordenes de Aprehensión
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>      
+            </v-list-group>
+        </template>
 
-      <template v-if="esAdministrador || esJuridico" >
-          <v-list-group>
-            <v-list-tile slot="activator">   
-              <v-list-tile-content >
-                <v-list-tile-title class="centenarioMenuAreas">
-                  Asignación de Colaboraciones
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-acomparecencias'== '#' ? '' :  'pi-acomparecencias'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">local_library</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Comparecencias Elementos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-aarrestos'== '#' ? '' :  'pi-aarrestos'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">no_meeting_room</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Arrestos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-aexhortos'== '#' ? '' :  'pi-aexhortos'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">camera_front</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Exhortos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-apresentacionescomparecencias'== '#' ? '' :  'pi-apresentacionescomparecencias'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">streetview</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Presentaciones y Comparecencias
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-arequerimientosvarios'== '#' ? '' :  'pi-arequerimientosvarios'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">assignment</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Requerimientos Varios
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-abusquedadomicilio'== '#' ? '' :  'pi-abusquedadomicilio'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">pageview</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Busqueda de Domicilio
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-atrasladocustodia'== '#' ? '' :  'pi-atrasladocustodia'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">transfer_within_a_station</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Traslados y Custodias
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-aordenesaprehension'== '#' ? '' :  'pi-aordenesaprehension'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">description</v-icon>
-              </v-list-tile-action> 
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Ordenes de Aprehensión
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>      
-          </v-list-group>
-      </template>
+        <template v-if="esAdministrador || esAgentePolicía" >
+            <v-list-group>
+              <v-list-tile slot="activator">   
+                <v-list-tile-content >
+                  <v-list-tile-title class="centenarioMenuAreas">
+                    Bandeja de entrada Colaboraciones
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-bcomparecencias'== '#' ? '' :  'pi-bcomparecencias'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">local_library</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Comparecencias Elementos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-barrestos'== '#' ? '' :  'pi-barrestos'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">no_meeting_room</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Arrestos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-bexhortos'== '#' ? '' :  'pi-bexhortos'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">camera_front</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Exhortos
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-bpresentacionescomparecencias'== '#' ? '' :  'pi-bpresentacionescomparecencias'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">streetview</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Presentaciones y Comparecencias
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-brequerimientosvarios'== '#' ? '' :  'pi-brequerimientosvarios'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">assignment</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Requerimientos Varios
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-bbusquedadomicilio'== '#' ? '' :  'pi-bbusquedadomicilio'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">pageview</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Busqueda de Domicilio
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-btrasladocustodia'== '#' ? '' :  'pi-btrasladocustodia'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">transfer_within_a_station</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Traslados y Custodias
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+              <v-list-tile :to="{ name: 'pi-bordenesaprehension'== '#' ? '' :  'pi-bordenesaprehension'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">description</v-icon>
+                </v-list-tile-action> 
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Ordenes de Aprehensión
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list-group>
+        </template>
 
+        <template v-if="false" >
+              <v-list-tile :to="{ name: 'pi-gmap'== '#' ? '' :  'pi-gmap'}"  active-class="secondary">  
+                <v-list-tile-action>
+                  <v-icon class="centenarioMenuIcon">local_library</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title class="centenarioMenuModules">
+                    Gmap
+                  </v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>              
+        </template>
 
-      <template v-if="esAdministrador || esAgentePolicía" >
-          <v-list-group>
-            <v-list-tile slot="activator">   
-              <v-list-tile-content >
-                <v-list-tile-title class="centenarioMenuAreas">
-                  Bandeja de entrada Colaboraciones
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-bcomparecencias'== '#' ? '' :  'pi-bcomparecencias'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">local_library</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Comparecencias Elementos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-barrestos'== '#' ? '' :  'pi-barrestos'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">no_meeting_room</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Arrestos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-bexhortos'== '#' ? '' :  'pi-bexhortos'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">camera_front</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Exhortos
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-bpresentacionescomparecencias'== '#' ? '' :  'pi-bpresentacionescomparecencias'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">streetview</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Presentaciones y Comparecencias
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-brequerimientosvarios'== '#' ? '' :  'pi-brequerimientosvarios'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">assignment</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Requerimientos Varios
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-bbusquedadomicilio'== '#' ? '' :  'pi-bbusquedadomicilio'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">pageview</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Busqueda de Domicilio
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-btrasladocustodia'== '#' ? '' :  'pi-btrasladocustodia'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">transfer_within_a_station</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Traslados y Custodias
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: 'pi-bordenesaprehension'== '#' ? '' :  'pi-bordenesaprehension'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">description</v-icon>
-              </v-list-tile-action> 
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Ordenes de Aprehensión
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>   
-            
-          </v-list-group>
-      </template>
-
-      <template v-if="false" >
-            <v-list-tile :to="{ name: 'pi-gmap'== '#' ? '' :  'pi-gmap'}"  active-class="secondary">  
-              <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">local_library</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title class="centenarioMenuModules">
-                  Gmap
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>              
-      </template>
-
-      
-
-
-      
-      
-
-      <v-list-tile
+        <v-list-tile
           v-if="
             esDirector
           "
@@ -582,388 +568,371 @@
           </v-list-tile-content>
         </v-list-tile> -->
 
-      
-
-
     </v-navigation-drawer>
+
     <n401 v-if="e401" />
     <n403 v-if="e403" />
-      <v-flex v-if="showpage">
-        <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Estadísticas por año</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider>
 
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer>
+    <v-flex v-if="showpage">
+      <v-toolbar flat color="white">
+                  <v-toolbar-title class="font-weight-regular" >Estadísticas por año</v-toolbar-title>
+                  
+                  <v-divider class="mx-2" inset vertical></v-divider>
 
-                    <v-menu
-                        ref="menu1"
-                        v-model="menu1"
-                        :close-on-content-click="false"
-                        :return-value.sync="fechaInicio"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                    name ="desde"
-                                    :value="fechai"
-                                    label="*Desde:"
-                                    prepend-icon="event"
-                                    clearable 
-                                    readonly
-                                    v-on="on"
-                                    v-validate="'required'"                                            
-                                    :error-messages="errors.collect('desde')">
-                                ></v-text-field>
-                            </template>
-                        <v-date-picker locale="es"  v-model="fechaInicio" no-title scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
-                        <v-btn text color="primary" @click="fechainif()">OK</v-btn>
-                        </v-date-picker>
-                    </v-menu>
+                  <v-spacer></v-spacer>
+                  <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+                  <v-spacer></v-spacer>
 
-                    <v-menu
-                        ref="menu2"
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :return-value.sync="fechaFin"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="290px">
-                            <template v-slot:activator="{ on }">
-                                <v-text-field
-                                name ="hasta"
-                                    :value="fechaf"
-                                    label="*Hasta:"
-                                    prepend-icon="event"
-                                    clearable 
-                                    readonly
-                                    v-on="on"
-                                    v-validate="'required'"                                            
-                                    :error-messages="errors.collect('desde')">
-                                ></v-text-field>
-                            </template>
-                        <v-date-picker  locale="es" v-model="fechaFin" no-title scrollable>
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
-                        <v-btn text color="primary" @click="fechainif()">OK</v-btn>
-                        </v-date-picker>
-                    </v-menu>
+                  <v-menu
+                      ref="menu1"
+                      v-model="menu1"
+                      :close-on-content-click="false"
+                      :return-value.sync="fechaInicio"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px">
+                          <template v-slot:activator="{ on }">
+                              <v-text-field
+                                  name ="desde"
+                                  :value="fechai"
+                                  label="*Desde:"
+                                  prepend-icon="event"
+                                  clearable 
+                                  readonly
+                                  v-on="on"
+                                  v-validate="'required'"                                            
+                                  :error-messages="errors.collect('desde')">
+                              ></v-text-field>
+                          </template>
+                      <v-date-picker locale="es"  v-model="fechaInicio" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu1 = false">Cancel</v-btn>
+                      <v-btn text color="primary" @click="fechainif()">OK</v-btn>
+                      </v-date-picker>
+                  </v-menu>
 
-                    <v-btn @click="listarporfecha()"  color="primary" dark class="mb-2">Buscar</v-btn>
+                  <v-menu
+                      ref="menu2"
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :return-value.sync="fechaFin"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px">
+                          <template v-slot:activator="{ on }">
+                              <v-text-field
+                              name ="hasta"
+                                  :value="fechaf"
+                                  label="*Hasta:"
+                                  prepend-icon="event"
+                                  clearable 
+                                  readonly
+                                  v-on="on"
+                                  v-validate="'required'"                                            
+                                  :error-messages="errors.collect('desde')">
+                              ></v-text-field>
+                          </template>
+                      <v-date-picker  locale="es" v-model="fechaFin" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu2 = false">Cancel</v-btn>
+                      <v-btn text color="primary" @click="fechainif()">OK</v-btn>
+                      </v-date-picker>
+                  </v-menu>
 
-                    
-                      
-        </v-toolbar>
+                  <v-btn @click="listarporfecha()"  color="primary" dark class="mb-2">Buscar</v-btn>
+      </v-toolbar>
         
+      <v-data-table
+              :headers="headers"
+              :items="bdoperito"
+              :search="search" 
+              :rows-per-page-items="rowsPerPageItems"
+              :pagination.sync="pagination"
+                >
+              
+              <template slot="items" class="white" slot-scope="props">
+                  
+                  <td>{{ props.item.uUsuario}}</td>   
+                  <td>{{ props.item.uModulo}}</td> 
+                  <td>{{ props.item.fechaRecibido }}</td> 
+                  <td>{{ props.item.fechaAceptado }}</td> 
+                  <td>{{ props.item.fechaFinalizado }}</td> 
+                  <td>{{ props.item.fechaEntregado}}</td>   
+                  <td>{{ props.item.numeroInterno }}</td> 
+                  <td>{{ props.item.statusAC }}</td>
+                  <td>{{ props.item.modulo }}</td>
 
-        <v-data-table
-                :headers="headers"
-                :items="bdoperito"
-                :search="search" 
-                :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"
-                 >
-                
-                <template slot="items" class="white" slot-scope="props">
-                    
-
-                    <td>{{ props.item.uUsuario}}</td>   
-                    <td>{{ props.item.uModulo}}</td> 
-                    <td>{{ props.item.fechaRecibido }}</td> 
-                    <td>{{ props.item.fechaAceptado }}</td> 
-                    <td>{{ props.item.fechaFinalizado }}</td> 
-                    <td>{{ props.item.fechaEntregado}}</td>   
-                    <td>{{ props.item.numeroInterno }}</td> 
-                    <td>{{ props.item.statusAC }}</td>
-                    <td>{{ props.item.modulo }}</td>
-
-                </template>
-                <template slot="no-data">
-                <v-btn color="primary"  @click="listar()" >Resetear</v-btn>
-                </template>
-                
-        </v-data-table>
+              </template>
+              <template slot="no-data">
+              <v-btn color="primary"  @click="listar()" >Resetear</v-btn>
+              </template>
+              
+      </v-data-table>
         
-        
-        <v-layout wrap justify-space-between>
-            <v-flex xs12 sm12 md12  >
+      <v-layout wrap justify-space-between>
+          <v-flex xs12 sm12 md12  >
 
-                    <v-toolbar dense  color="success " >
-                        <v-toolbar-title   > <h5>{{textotitulo1}}</h5></v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-tooltip  bottom>
-                                    <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra1=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Gráfica de barras</span>
-                        </v-tooltip> 
-
-                        <v-tooltip  bottom>
-                                    <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Gráfica de línea</span>
-                        </v-tooltip>      
-
-                    </v-toolbar>  
-
-                    <v-data-table
-                            :headers="headersr"
-                            :items="registros"      
-                            hide-actions        
-                            :rows-per-page-items="rowsPerPageItemsr"
-                            :pagination.sync="paginationr"
-                            >
-                            
-                            <template  slot="items" class="white" slot-scope="props"  >
-                                
-                                <td class="caption1">{{ props.item.mes}}</td>   
-                                <td class="caption1">{{ props.item.asignado}}</td> 
-                                <td class="caption1">{{ props.item.enproceso }}</td> 
-                                <td class="caption1">{{ props.item.finalizado }}</td> 
-                                <td class="caption1">{{ props.item.suspendido }}</td> 
-                                <td class="caption1">{{ props.item.pospuesto}}</td>   
-                                <td class="caption1">{{ props.item.entregado }}</td> 
-                                <td class="caption1">{{ props.item.total }}</td>
-                                
-                            </template>
-                            <template slot="no-data">
-                         
-                            </template>
-                            
-                    </v-data-table> 
- 
-                                
-            </v-flex>
-
-       
-        </v-layout>
-
-    
-        <v-layout wrap justify-space-between>
-            <v-flex xs12 sm12 md12  >
-
-                    <v-toolbar class="mx-0" dense  color="white " > 
-                    </v-toolbar>
-
-                    <v-toolbar dense  color="success " v-if="true" >
-                        <v-toolbar-title   > <h5>{{textotitulo2}}</h5></v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-tooltip  bottom>
-                                    <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra2=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Grafica de barras</span>
-                        </v-tooltip> 
-
-                        <v-tooltip  bottom>
-                                    <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea2=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Grafica de línea</span>
-                        </v-tooltip>      
-
-                    </v-toolbar>
-
-                <v-data-table
-                        :headers="headersrp"
-                        :items="registrosperitos"  
-                        hide-actions                 
-                        :rows-per-page-items="rowsPerPageItemsr"
-                        :pagination.sync="paginationr"
-                        >
-                        
-                        <template slot="items" class="white" slot-scope="props">
-                            
-                            <td class="caption1">{{ props.item.nombre}}</td>   
-                            <td class="caption1">{{ props.item.asignado}}</td> 
-                            <td class="caption1">{{ props.item.enproceso }}</td> 
-                            <td class="caption1">{{ props.item.finalizado }}</td> 
-                            <td class="caption1">{{ props.item.suspendido }}</td> 
-                            <td class="caption1">{{ props.item.pospuesto}}</td>   
-                            <td class="caption1">{{ props.item.entregado }}</td> 
-                            <td class="caption1">{{ props.item.total }}</td>
-                        </template>
-                        <template slot="no-data">
-                        </template>
-                        
-                </v-data-table>  
-            </v-flex>
-        </v-layout>   
-
-            <div >
-                <v-layout id =grafficas wrap justify-space-between>
-                                               
-                </v-layout> 
-            </div>
-
-            <v-dialog v-model="modaldocumento" fullscreen hide-overlay transition="dialog-bottom-transition">
-                <v-card>
-                    <v-toolbar dark color="primary">
-                
-                        <v-toolbar-title>Documento.</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>          
-                            <v-btn icon   @click="modaldocumento = false">
-                                <v-icon>close</v-icon>
+                  <v-toolbar dense  color="success " >
+                      <v-toolbar-title   > <h5>{{textotitulo1}}</h5></v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }"> 
+                            <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra1=true" right fab color="primary">
+                                <v-icon class="mt-1" dark>assessment</v-icon>
                             </v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-                    <v-card-text>
-                        <iframe id="iframepdf" type="application/pdf" width="100%" height="835" frameborder="0" scrolling="no"  ></iframe>
-                    </v-card-text>
-                </v-card>
-            </v-dialog>
+                        </template>
+                        <span>Gráfica de barras</span>
+                      </v-tooltip> 
 
-            <v-dialog  v-model="barra1"  max-width="1000px" >                  
-                        <v-card>
-                            <v-toolbar card dark color="grey lighten-4 primary--text">
-                                <v-avatar  size="30">
-                                    <v-icon class="grey lighten-2">assessment</v-icon>
-                                </v-avatar>
-                    
-                                <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form ref="form" data-vv-scope="dialogodetalle">
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12 sm12 md12>
-                                                <div max >
-                                                    <canvas  id="myChart" >
-                                                    </canvas>
-                                                </div>                                                                                
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }"> 
+                            <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
+                                <v-icon class="mt-1" dark>timeline</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Gráfica de línea</span>
+                      </v-tooltip>
+                  </v-toolbar>  
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn  @click.native="barra1=false" >Cerrar</v-btn>
-                                        <v-btn  @click="downloadPdf('myChart',textotitulo1)" class="success" >Imprimir</v-btn>
-                                    </v-card-actions> 
-                                </v-form>
-                            </v-card-text> 
-                        </v-card>
-            </v-dialog>
-            <v-dialog  v-model="linea1"  max-width="1000px" >                  
-                        <v-card>
-                            <v-toolbar card dark color="grey lighten-4 primary--text">
-                                <v-avatar  size="30">
-                                    <v-icon class="grey lighten-2">assessment</v-icon>
-                                </v-avatar>
-                    
-                                <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form ref="form" data-vv-scope="dialogodetalle">
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12 sm12 md12>
-                                                <div max >
-                                                    <canvas  id="myChartlinea" >
-                                                    </canvas>
-                                                </div>                                                                               
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
+                  <v-data-table
+                      :headers="headersr"
+                      :items="registros"      
+                      hide-actions        
+                      :rows-per-page-items="rowsPerPageItemsr"
+                      :pagination.sync="paginationr"
+                      >
+                      
+                      <template  slot="items" class="white" slot-scope="props"  >
+                          
+                          <td class="caption1">{{ props.item.mes}}</td>   
+                          <td class="caption1">{{ props.item.asignado}}</td> 
+                          <td class="caption1">{{ props.item.enproceso }}</td> 
+                          <td class="caption1">{{ props.item.finalizado }}</td> 
+                          <td class="caption1">{{ props.item.suspendido }}</td> 
+                          <td class="caption1">{{ props.item.pospuesto}}</td>   
+                          <td class="caption1">{{ props.item.entregado }}</td> 
+                          <td class="caption1">{{ props.item.total }}</td>
+                          
+                      </template>
+                      <template slot="no-data">
+                      </template>
+                  </v-data-table>
+          </v-flex>
+      </v-layout>
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn  @click.native="linea1=false" >Cerrar</v-btn>
-                                        <v-btn  @click="downloadPdf('myChartlinea',textotitulo2)"  class="success" >Imprimir</v-btn>
-                                    </v-card-actions> 
-                                </v-form>
-                            </v-card-text> 
-                        </v-card>
-            </v-dialog>
-            <v-dialog  v-model="barra2"  max-width="1000px" >                  
-                        <v-card>
-                            <v-toolbar card dark color="grey lighten-4 primary--text">
-                                <v-avatar  size="30">
-                                    <v-icon class="grey lighten-2">assessment</v-icon>
-                                </v-avatar>
-                    
-                                <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form ref="form" data-vv-scope="dialogodetalle">
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12 sm12 md12>
-                                                <div max >
-                                                    <canvas  id="myChart2" >
-                                                    </canvas>
-                                                </div>                                                                                
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
+      <v-layout wrap justify-space-between>
+          <v-flex xs12 sm12 md12  >
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn  @click.native="barra2=false" >Cerrar</v-btn>
-                                        <v-btn  @click.native="downloadPdf('myChart2',textotitulo1)" class="success" >Imprimir</v-btn>
-                                    </v-card-actions> 
-                                </v-form>
-                            </v-card-text> 
-                        </v-card>
-            </v-dialog>
-            <v-dialog  v-model="linea2"  max-width="1000px" >                  
-                        <v-card>
-                            
-                            <v-toolbar card dark color="grey lighten-4 primary--text">
-                                <v-avatar  size="30">
-                                    <v-icon class="grey lighten-2">assessment</v-icon>
-                                </v-avatar>
-                    
-                                <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
-                                <v-spacer></v-spacer>
-                            
-                            </v-toolbar>
-                            <v-card-text>
-                                <v-form ref="form" data-vv-scope="dialogodetalle">
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12 sm12 md12>
-                                                <div max >
-                                                    <canvas  id="myChartlinea2" >
-                                                    </canvas>
-                                                </div>                                                                               
-                                            </v-flex>
-                                        </v-layout>
-                                    </v-container>
+                  <v-toolbar class="mx-0" dense  color="white " > 
+                  </v-toolbar>
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn  @click.native="linea2=false" >Cerrar</v-btn>
-                                        <v-btn  @click.native="downloadPdf('myChartlinea2',textotitulo2)" class="success" >Imprimir</v-btn>
-                                    </v-card-actions> 
-                                </v-form>
-                            </v-card-text> 
-                        </v-card>
-            </v-dialog>
+                  <v-toolbar dense  color="success " v-if="true" >
+                      <v-toolbar-title   > <h5>{{textotitulo2}}</h5></v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <v-tooltip  bottom>
+                        <template v-slot:activator="{ on }"> 
+                            <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra2=true" right fab color="primary">
+                                <v-icon class="mt-1" dark>assessment</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Gráfica de barras</span>
+                      </v-tooltip> 
 
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }"> 
+                            <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea2=true" right fab color="primary">
+                                <v-icon class="mt-1" dark>timeline</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Gráfica de línea</span>
+                      </v-tooltip>
+                  </v-toolbar>
 
-            
+              <v-data-table
+                      :headers="headersrp"
+                      :items="registrosperitos"  
+                      hide-actions                 
+                      :rows-per-page-items="rowsPerPageItemsr"
+                      :pagination.sync="paginationr"
+                      >
+                      
+                      <template slot="items" class="white" slot-scope="props">
+                          
+                          <td class="caption1">{{ props.item.nombre}}</td>   
+                          <td class="caption1">{{ props.item.asignado}}</td> 
+                          <td class="caption1">{{ props.item.enproceso }}</td> 
+                          <td class="caption1">{{ props.item.finalizado }}</td> 
+                          <td class="caption1">{{ props.item.suspendido }}</td> 
+                          <td class="caption1">{{ props.item.pospuesto}}</td>   
+                          <td class="caption1">{{ props.item.entregado }}</td> 
+                          <td class="caption1">{{ props.item.total }}</td>
+                      </template>
+                      <template slot="no-data">
+                      </template>
+              </v-data-table>  
+          </v-flex>
+      </v-layout>   
+
+      <div >
+          <v-layout id =grafficas wrap justify-space-between>
+                                          
+          </v-layout> 
+      </div>
+
+      <v-dialog v-model="modaldocumento" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <v-card>
+              <v-toolbar dark color="primary">
+          
+                  <v-toolbar-title>Documento.</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-toolbar-items>          
+                      <v-btn icon   @click="modaldocumento = false">
+                          <v-icon>close</v-icon>
+                      </v-btn>
+                  </v-toolbar-items>
+              </v-toolbar>
+              <v-card-text>
+                  <iframe id="iframepdf" type="application/pdf" width="100%" height="835" frameborder="0" scrolling="no"  ></iframe>
+              </v-card-text>
+          </v-card>
+      </v-dialog>
+
+      <v-dialog  v-model="barra1"  max-width="1000px" >                  
+                  <v-card>
+                      <v-toolbar card dark color="grey lighten-4 primary--text">
+                          <v-avatar  size="30">
+                              <v-icon class="grey lighten-2">assessment</v-icon>
+                          </v-avatar>
+              
+                          <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                      
+                      </v-toolbar>
+                      <v-card-text>
+                          <v-form ref="form" data-vv-scope="dialogodetalle">
+                              <v-container grid-list-md>
+                                  <v-layout wrap>
+                                      <v-flex xs12 sm12 md12>
+                                          <div max >
+                                              <canvas  id="myChart" >
+                                              </canvas>
+                                          </div>                                                                                
+                                      </v-flex>
+                                  </v-layout>
+                              </v-container>
+
+                              <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn  @click.native="barra1=false" >Cerrar</v-btn>
+                                  <v-btn  @click="downloadPdf('myChart',textotitulo1)" class="success" >Imprimir</v-btn>
+                              </v-card-actions> 
+                          </v-form>
+                      </v-card-text> 
+                  </v-card>
+      </v-dialog>
+
+      <v-dialog  v-model="linea1"  max-width="1000px" >                  
+                  <v-card>
+                      <v-toolbar card dark color="grey lighten-4 primary--text">
+                          <v-avatar  size="30">
+                              <v-icon class="grey lighten-2">assessment</v-icon>
+                          </v-avatar>
+              
+                          <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                      
+                      </v-toolbar>
+                      <v-card-text>
+                          <v-form ref="form" data-vv-scope="dialogodetalle">
+                              <v-container grid-list-md>
+                                  <v-layout wrap>
+                                      <v-flex xs12 sm12 md12>
+                                          <div max >
+                                              <canvas  id="myChartlinea" >
+                                              </canvas>
+                                          </div>                                                                               
+                                      </v-flex>
+                                  </v-layout>
+                              </v-container>
+
+                              <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn  @click.native="linea1=false" >Cerrar</v-btn>
+                                  <v-btn  @click="downloadPdf('myChartlinea',textotitulo2)"  class="success" >Imprimir</v-btn>
+                              </v-card-actions> 
+                          </v-form>
+                      </v-card-text> 
+                  </v-card>
+      </v-dialog>
+
+      <v-dialog  v-model="barra2"  max-width="1000px" >                  
+                  <v-card>
+                      <v-toolbar card dark color="grey lighten-4 primary--text">
+                          <v-avatar  size="30">
+                              <v-icon class="grey lighten-2">assessment</v-icon>
+                          </v-avatar>
+              
+                          <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                      
+                      </v-toolbar>
+                      <v-card-text>
+                          <v-form ref="form" data-vv-scope="dialogodetalle">
+                              <v-container grid-list-md>
+                                  <v-layout wrap>
+                                      <v-flex xs12 sm12 md12>
+                                          <div max >
+                                              <canvas  id="myChart2" >
+                                              </canvas>
+                                          </div>                                                                                
+                                      </v-flex>
+                                  </v-layout>
+                              </v-container>
+
+                              <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn  @click.native="barra2=false" >Cerrar</v-btn>
+                                  <v-btn  @click.native="downloadPdf('myChart2',textotitulo1)" class="success" >Imprimir</v-btn>
+                              </v-card-actions> 
+                          </v-form>
+                      </v-card-text> 
+                  </v-card>
+      </v-dialog>
+
+      <v-dialog  v-model="linea2"  max-width="1000px" >                  
+                  <v-card>
+                      
+                      <v-toolbar card dark color="grey lighten-4 primary--text">
+                          <v-avatar  size="30">
+                              <v-icon class="grey lighten-2">assessment</v-icon>
+                          </v-avatar>
+              
+                          <v-toolbar-title class="subheading">Grafica de barra</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                      
+                      </v-toolbar>
+                      <v-card-text>
+                          <v-form ref="form" data-vv-scope="dialogodetalle">
+                              <v-container grid-list-md>
+                                  <v-layout wrap>
+                                      <v-flex xs12 sm12 md12>
+                                          <div max >
+                                              <canvas  id="myChartlinea2" >
+                                              </canvas>
+                                          </div>                                                                               
+                                      </v-flex>
+                                  </v-layout>
+                              </v-container>
+
+                              <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn  @click.native="linea2=false" >Cerrar</v-btn>
+                                  <v-btn  @click.native="downloadPdf('myChartlinea2',textotitulo2)" class="success" >Imprimir</v-btn>
+                              </v-card-actions> 
+                          </v-form>
+                      </v-card-text> 
+                  </v-card>
+      </v-dialog>            
     </v-flex>
 </v-layout> 
 </template>
@@ -976,7 +945,6 @@
   import VeeValidate from 'vee-validate' 
   import * as d3 from 'd3';
   import Chart from 'chart.js'
-
   import moment from 'moment'
   import 'moment/locale/es';
   import alertify from 'alertifyjs';

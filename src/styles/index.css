@@ -125,18 +125,6 @@ label.v-label.theme--dark
     color: #000000; /*Color del texto al expandir contenido de una tabla*/
 }
 
-.v-content.grey.lighten-4 >.v-content__wrap{
-    background-color: #ffffff !important; /*Color del fondo en las páginas de Inicio*/
-}
-
-/*.v-content > .v-content__wrap {
-    background-color: #691c32 !important;
-}
-
-.layout.row.wrap{
-    background-color: #691c32 !important;
-}*/
-
-.background-panel{
-    background-color: #691c32 !important;
+#filtros{
+    background-color: #ffffff !important; /*Color de fondo en el apartado de filtrado*/
 }

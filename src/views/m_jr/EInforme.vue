@@ -533,7 +533,7 @@
                         return-object 
                         v-model="año" >
                     </v-autocomplete>
-                    <v-btn  @click="listarRegistros()" fab small  class="mb-2 primary"><v-icon>search</v-icon></v-btn>
+                    <v-btn  @click="listarRegistros()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">search</v-icon></v-btn>
                     
                 </v-toolbar>
 

@@ -11,114 +11,113 @@
                     <v-divider class="mx-2" inset vertical></v-divider>
                      <span>Por favor seleccione los filtro para poder ver las localidades por municipio.</span>
                     <v-spacer></v-spacer>
-                   
-                    
-            </v-toolbar>
-             <v-spacer></v-spacer>
-            <v-layout >
                 
-                    <v-layout wrap  my-3 color="grey lighten-4 primary--text"> 
-                        <v-flex xs12 sm12 md1 mx-3>
-                        <v-avatar size="50">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar>  
-                        </v-flex>
-                        <v-flex xs12 sm12 md3 mx-2>
-                            <v-select  v-model="estadoId" :items="estados" label="Estado" v-on:change="listarPorEstado" ></v-select> 
-                        </v-flex>
-                        <v-flex xs12 sm12 md3 mx-2>
-                            <v-select v-model="municipioId" :items="municipios" label="Municipio" v-on:change="listarPorMunicipio"></v-select> 
-                        </v-flex>
-                        <v-flex xs12 sm12 md3 mx-2>
-                            <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda"></v-text-field> 
-                        </v-flex>  
-                        <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-spacer></v-spacer>
 
-                        <v-tooltip bottom>
-                        <template v-slot:activator="{ on }">
-                            <v-btn @click="dialog=true" class="mx-2" v-on="on" fab dark small color="primary" ><v-icon>add</v-icon></v-btn>
-                        </template>
-                        <span>Agregar Registro </span>    
-                        </v-tooltip>
+            <v-layout>                
+                <v-layout id="filtros" wrap  my-3 color="grey lighten-4 primary--text"> 
+                    <v-flex xs12 sm12 md1 mx-3>
+                    <v-avatar size="50">
+                        <v-icon class="grey lighten-2">filter_list</v-icon>
+                    </v-avatar>  
+                    </v-flex>
+                    <v-flex id="text-estado" xs12 sm12 md3 mx-2>
+                        <v-select v-model="estadoId" :items="estados" label="Estado" v-on:change="listarPorEstado" ></v-select> 
+                    </v-flex>
+                    <v-flex id="text-municipio" xs12 sm12 md3 mx-2>
+                        <v-select v-model="municipioId" :items="municipios" label="Municipio" v-on:change="listarPorMunicipio"></v-select> 
+                    </v-flex>
+                    <v-flex id="text-buscar" xs12 sm12 md3 mx-2>
+                        <v-text-field class="text-xs-center text-search" v-model="search" append-icon="search" label="Búsqueda"></v-text-field> 
+                    </v-flex>  
+                    <v-spacer></v-spacer>
 
-                        <v-dialog   v-model="dialog"  max-width="600px"> 
-                            <v-card>
-                                <v-toolbar card dark color="grey lighten-4 primary--text">
-                                    <v-avatar  size="30">
-                                        <v-icon class="grey lighten-2">{{ formIcon }}</v-icon>
-                                    </v-avatar> 
-                                <v-toolbar-title class="subheading">{{formTitle}}</v-toolbar-title>
-                            <v-spacer></v-spacer> 
-                            </v-toolbar>
-                            <v-card-text>
-                            <v-form ref="form">
-                                    <v-container grid-list-md>
-                                        <v-layout wrap>
-                                            <v-flex xs12 sm12 md12>
-                                                 <v-select name="estado"
-                                                      label="Estado:" 
-                                                      v-model="estadoId"
-                                                      :items="estados"  
-                                                      @change="listarPorEstado"
-                                                      v-validate="'required'"
-                                                      :error-messages="errors.collect('estado')" >
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn @click="dialog=true" class="mx-2 pt-2" v-on="on" fab dark small color="primary" ><v-icon class="mt-1">add</v-icon></v-btn>
+                    </template>
+                    <span>Agregar Registro </span>    
+                    </v-tooltip>
+
+                    <v-dialog   v-model="dialog"  max-width="600px"> 
+                        <v-card>
+                            <v-toolbar card dark color="grey lighten-4 primary--text">
+                                <v-avatar  size="30">
+                                    <v-icon class="grey lighten-2">{{ formIcon }}</v-icon>
+                                </v-avatar> 
+                            <v-toolbar-title class="subheading">{{formTitle}}</v-toolbar-title>
+                        <v-spacer></v-spacer> 
+                        </v-toolbar>
+                        <v-card-text>
+                        <v-form ref="form">
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                        <v-flex xs12 sm12 md12>
+                                                <v-select name="estado"
+                                                    label="Estado:" 
+                                                    v-model="estadoId"
+                                                    :items="estados"  
+                                                    @change="listarPorEstado"
+                                                    v-validate="'required'"
+                                                    :error-messages="errors.collect('estado')" >
+                                        </v-select> 
+
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-select name="municipio"
+                                                    label="Municipio:" 
+                                                    v-model="municipioId"
+                                                    :items="municipios"  
+                                                    v-validate="'required'" v-on:change="listarPorMunicipio" 
+                                                    :error-messages="errors.collect('municipio')" >
                                             </v-select> 
 
-                                            </v-flex>
-                                            <v-flex xs12 sm12 md12>
-                                                <v-select name="municipio"
-                                                      label="Municipio:" 
-                                                      v-model="municipioId"
-                                                      :items="municipios"  
-                                                      v-validate="'required'" v-on:change="listarPorMunicipio" 
-                                                      :error-messages="errors.collect('municipio')" >
-                                                </v-select> 
+                                            
 
+                                        </v-flex>
+                                        <v-flex xs12 sm12 md12>
+                                                <v-text-field name="nombre" 
+                                                        label="Nombre"
+                                                        v-model="nombre" 
+                                                        v-validate="'required'"
+                                                        :error-messages="errors.collect('nombre')">
+                                        </v-text-field>
+                                        </v-flex> 
+                                            <v-flex xs12 sm12 md12>
+                                                <v-text-field name="cp" 
+                                                        label="CP:"
+                                                        v-model="cp" 
+                                                        v-validate="'required'"
+                                                        :error-messages="errors.collect('cp')">
+                                        </v-text-field>
                                                 
-
-                                            </v-flex>
+                                        </v-flex>
                                             <v-flex xs12 sm12 md12>
-                                                  <v-text-field name="nombre" 
-                                                          label="Nombre"
-                                                          v-model="nombre" 
-                                                          v-validate="'required'"
-                                                          :error-messages="errors.collect('nombre')">
-                                            </v-text-field>
-                                            </v-flex> 
-                                             <v-flex xs12 sm12 md12>
-                                                    <v-text-field name="cp" 
-                                                          label="CP:"
-                                                          v-model="cp" 
-                                                          v-validate="'required'"
-                                                          :error-messages="errors.collect('cp')">
-                                            </v-text-field>
-                                                 
-                                            </v-flex>
-                                              <v-flex xs12 sm12 md12>
-                                                     <v-text-field name="zona" 
-                                                          label="Zona:"
-                                                          v-model="zona" 
-                                                          v-validate="'required'"
-                                                          :error-messages="errors.collect('zona')">
-                                            </v-text-field>
-                                             
-                                            </v-flex> 
-                                        </v-layout>
-                                    </v-container>
+                                                    <v-text-field name="zona" 
+                                                        label="Zona:"
+                                                        v-model="zona" 
+                                                        v-validate="'required'"
+                                                        :error-messages="errors.collect('zona')">
+                                        </v-text-field>
+                                            
+                                        </v-flex> 
+                                    </v-layout>
+                                </v-container>
 
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn  @click.native="close" >Cancelar</v-btn>
-                                        <v-btn @click.native="guardar" class="success" >Guardar</v-btn>
-                                    </v-card-actions>
-                                </v-form> 
-                            </v-card-text> 
-                            </v-card> 
-                        </v-dialog> 
-                    </v-layout>
-               
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn  @click.native="close" >Cancelar</v-btn>
+                                    <v-btn @click.native="guardar" class="success" >Guardar</v-btn>
+                                </v-card-actions>
+                            </v-form> 
+                        </v-card-text> 
+                        </v-card> 
+                    </v-dialog> 
+                </v-layout>               
             </v-layout>
-               <v-data-table
+
+            <v-data-table
                 :headers="headers"
                 :items="localidades"
                 :search="search" 

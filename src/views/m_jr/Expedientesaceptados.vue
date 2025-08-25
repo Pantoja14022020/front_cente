@@ -509,13 +509,13 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-        
       </v-list>
 
     </v-navigation-drawer>
+
         <n401 v-if="e401" />
         <n403 v-if="e403" />
+
             <v-flex v-if="showpage">
             <v-toolbar flat color="white">
                     <v-toolbar-title class="font-weight-regular" >Expedientes aceptados.</v-toolbar-title>
@@ -537,12 +537,8 @@
                     <v-spacer></v-spacer>
                     <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>
-                    <v-btn  @click="download()" fab small  class="mb-2 primary"><v-icon>cloud_download</v-icon></v-btn>
-                  
-
-            
-                    
+                    <v-btn  @click="filtrar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>
+                    <v-btn  @click="download()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">cloud_download</v-icon></v-btn>
                 </v-toolbar>
              <v-data-table
                     :headers="headers"
@@ -579,89 +575,85 @@
         </v-flex> 
 
         <v-dialog v-model="filtros"  max-width="600px"> 
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar>
-            
-                    
-                <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
-                <v-spacer></v-spacer>
-            
-                
-                </v-toolbar>
-                <v-card-text>
-  <a>Selecciona el rango de fechas en que se acepto la derivación</a>
-                        <v-menu
-                                    ref="v_menu1"
-                                    v-model="v_menu1"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaInicial"
-                                    transition="scale-transition" 
-                                    offset-y  
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaInicial"
-                                        label="Fecha inicial:"
-                                        prepend-icon="event" 
-                                        clearable  
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaI" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                <v-menu
-                                    ref="v_menu2"
-                                    v-model="v_menu2"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaFinal"
-                                    transition="scale-transition" 
-                                    offset-y 
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaFinal"
-                                        label="Fecha final:"
-                                        prepend-icon="event" 
-                                        clearable 
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaF" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                     
-                                  <v-autocomplete name="Status"
-                                                    :items="statusSelected"
-                                                    v-model="status" 
-                                                    label="Status:"   
-                                    ></v-autocomplete>
-                </v-card-text> 
-                    <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
-                            <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
-                        </v-card-actions>
-            </v-card>
+          <v-card>
+            <v-toolbar card dark color="grey lighten-4 primary--text">
+              <v-avatar  size="30">
+                  <v-icon class="grey lighten-2">filter_list</v-icon>
+              </v-avatar>
 
-        </v-dialog>   
-   
+              <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+              <v-spacer></v-spacer>
+            </v-toolbar>
+            <v-card-text>
+              <a>Selecciona el rango de fechas en que se acepto la derivación</a>
+              <v-menu
+                          ref="v_menu1"
+                          v-model="v_menu1"
+                          :close-on-content-click="false"
+                          :return-value.sync="v_fechaInicial"
+                          transition="scale-transition" 
+                          offset-y  
+                          min-width="290px"
+                      >
+                          <template v-slot:activator="{ on }">
+                          <v-text-field
+                              :value="v_fechaInicial"
+                              label="Fecha inicial:"
+                              prepend-icon="event" 
+                              clearable  
+                              readonly
+                              v-on="on"
+                          ></v-text-field>
+                          </template>
+                          <v-date-picker v-model="v_fechaI" no-title scrollable>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
+                          <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
+                          </v-date-picker>
+              </v-menu>
 
+              <v-menu
+                ref="v_menu2"
+                v-model="v_menu2"
+                :close-on-content-click="false"
+                :return-value.sync="v_fechaFinal"
+                transition="scale-transition" 
+                offset-y 
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                      :value="v_fechaFinal"
+                      label="Fecha final:"
+                      prepend-icon="event" 
+                      clearable 
+                      readonly
+                      v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="v_fechaF" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
+            
+              <v-autocomplete name="Status"
+                :items="statusSelected"
+                v-model="status" 
+                label="Status:"   
+              ></v-autocomplete>
+            </v-card-text> 
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
+              <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-layout>
 </template>
+
 <script>
     import axios from 'axios'  
     import jsPDF from 'jspdf'
@@ -671,9 +663,9 @@
     import n401 from '../../components/m_jr/401.vue'
     import n403 from '../../components/m_jr/403.vue' 
     import { error } from 'util';
-    
     import moment from 'moment'
     import 'moment/locale/es';
+    
     export default {
          components: {  
                     n401,

@@ -698,8 +698,8 @@
                         <v-spacer></v-spacer>
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra1=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra1=true"    right  fab color="primary">
+                                            <v-icon class="mt-1" dark>assessment</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Gráfica de barras</span>
@@ -707,8 +707,8 @@
 
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea1=true"  right  fab  color="primary">
+                                            <v-icon class="mt-1" dark>timeline</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Gráfica de línea</span>
@@ -764,20 +764,20 @@
                         <v-spacer></v-spacer>
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="barra2=true"    right  fab color="primary">
-                                            <v-icon dark>assessment</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="barra2=true"    right  fab color="primary">
+                                            <v-icon class="mt-1" dark>assessment</v-icon>
                                         </v-btn>
                                     </template>
-                                    <span>Grafica de barras</span>
+                                    <span>Gráfica de barras</span>
                         </v-tooltip> 
 
                         <v-tooltip  bottom>
                                     <template v-slot:activator="{ on }"> 
-                                        <v-btn small class="mx-2" slot="activator" v-on="on" @click="linea2=true"  right  fab  color="primary">
-                                            <v-icon dark>timeline</v-icon>
+                                        <v-btn small class="mx-2 pt-2" slot="activator" v-on="on" @click="linea2=true"  right  fab  color="primary">
+                                            <v-icon class="mt-1" dark>timeline</v-icon>
                                         </v-btn>
                                     </template>
-                                    <span>Grafica de línea</span>
+                                    <span>Gráfica de línea</span>
                         </v-tooltip>      
 
                     </v-toolbar>

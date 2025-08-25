@@ -1,12 +1,13 @@
 <template>
-    <v-layout align-start>
-        <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+  <v-layout align-start>
+
+    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary" >
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
 
       <v-list dense dark class="pt-0 primary" >
-         <template>
+        <template>
           <v-list-tile  :to="{name:'justicia-restaurativa'}">
             <v-list-tile-action>
               <v-icon class="centenarioMenuIcon">home</v-icon>
@@ -14,18 +15,18 @@
             <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
           </v-list-tile>
         </template>   
-         <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esRecepcion || esFacilitador || esFacilitadorMixto">
+        <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esRecepcion || esFacilitador || esFacilitadorMixto">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Recepción de expedientes
+                  Recepción de expedientes
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esJuridico ||  esCoordinador || esRecepcion || esFacilitador  || esFacilitadorMixto" :to="{ name: 'jr-expedientessolicitados'== '#' ? '' :  'jr-expedientessolicitados'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">format_list_numbered</v-icon>
+                <v-icon class="centenarioMenuIcon">format_list_numbered</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
@@ -33,37 +34,35 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
-              <v-list-tile v-if="esAdministrador || esDirector || esJuridico || esCoordinador || esRecepcion|| esFacilitador  || esFacilitadorMixto" :to="{ name: 'jr-asignacionexpediente'== '#' ? '' :  'jr-asignacionexpediente'}"  active-class="secondary">  
+            <v-list-tile v-if="esAdministrador || esDirector || esJuridico || esCoordinador || esRecepcion|| esFacilitador  || esFacilitadorMixto" :to="{ name: 'jr-asignacionexpediente'== '#' ? '' :  'jr-asignacionexpediente'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">format_list_numbered</v-icon>
+                <v-icon class="centenarioMenuIcon">format_list_numbered</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                Asignación de expediente
+                  Asignación de expediente
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
-           <!--  <v-list-tile v-if="esAdministrador || esDirector || esJuridico || esCoordinador" :to="{ name: 'reasignacionexpediente'== '#' ? '' :  'reasignacionexpediente'}"  active-class="secondary">  
+            <!--<v-list-tile v-if="esAdministrador || esDirector || esJuridico || esCoordinador" :to="{ name: 'reasignacionexpediente'== '#' ? '' :  'reasignacionexpediente'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">format_list_numbered</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Re-Asignación de expediente
+                  Re-Asignación de expediente
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>   -->
           </v-list-group>
         </template>
 
-
-
-         <template  v-if="esAdministrador || esDirector || esJuridico|| esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR">
+        <template v-if="esAdministrador || esDirector || esJuridico|| esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Gestión de expedientes y derivaciones
+                  Gestión de expedientes y derivaciones
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -76,9 +75,7 @@
                   Derivaciones
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector  || esJuridico || esCoordinador|| esRecepcion || esFacilitador|| esFacilitadorMixto || esUSAR|| esRecepcion" :to="{ name: 'jr-consultarExpediente'== '#' ? '' :  'jr-consultarExpediente'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">search</v-icon>
@@ -88,8 +85,7 @@
                   Consultar expedientes
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esJuridico ||  esCoordinador" :to="{ name: 'jr-rezago'== '#' ? '' :  'jr-rezago'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">timelapse</v-icon>
@@ -100,34 +96,21 @@
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
-
-
-
-      
-
-            
-        
-              
-
-
-          
-
-             
-     
-           </v-list-group>
+          </v-list-group>
         </template>
-        <template  v-if="esAdministrador || esNotificador || esFacilitador || esFacilitadorMixto ">
+
+        <template v-if="esAdministrador || esNotificador || esFacilitador || esFacilitadorMixto ">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Citatorios
+                  Citatorios
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-if="esAdministrador ||  esNotificador|| esFacilitador || esFacilitadorMixto" :to="{ name: 'jr-listacitatorios'== '#' ? '' :  'jr-listacitatorios'}"  active-class="secondary">  
+            <v-list-tile v-if="esAdministrador || esNotificador|| esFacilitador || esFacilitadorMixto" :to="{ name: 'jr-listacitatorios'== '#' ? '' :  'jr-listacitatorios'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">vertical_split</v-icon>
+                <v-icon class="centenarioMenuIcon">vertical_split</v-icon>
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
@@ -143,81 +126,83 @@
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Coordinador y/o Juridico
+                  Coordinador y/o Juridico
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile  v-if="esAdministrador || esDirector || esCoordinador || esJuridico " :to="{ name: 'jr-coordinadorJuridico'== '#' ? '' :  'jr-coordinadorJuridico'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">group</v-icon>
+                <v-icon class="centenarioMenuIcon">group</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Validación  de acuerdos reparatorios
+                  Validación  de acuerdos reparatorios
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
             <v-list-tile v-if="esAdministrador || esDirector || esFacilitador || esCoordinador" :to="{ name: 'jr-acuerdosporCoordinacion'== '#' ? '' :  'jr-acuerdosporCoordinacion'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">description</v-icon>
+                <v-icon class="centenarioMenuIcon">description</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Acuerdos por coordinación
+                  Acuerdos por coordinación
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-
           </v-list-group>
         </template>
-         <template v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR">
+
+        <template v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Expedientes aceptados
+                  Expedientes aceptados
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: 'jr-expedientesaceptados'== '#' ? '' :  'jr-expedientesaceptados'}"  active-class="secondary">  
+            <v-list-tile :to="{ name: 'jr-expedientesaceptados'== '#' ? '' : 'jr-expedientesaceptados'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">folder_open</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Expedientes para contestar 
+                  Expedientes para contestar 
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
           </v-list-group>
         </template>
+
         <template v-if="esFacilitador || esNotificador || esFacilitadorMixto || esAdministrador">
           <v-list-group>
             <v-list-tile slot="activator"> 
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Mis expedientes
+                  Mis expedientes
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile :to="{ name: 'jr-misexpedientes'== '#' ? '' :  'jr-misexpedientes'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">folder_open</v-icon>
+                <v-icon class="centenarioMenuIcon">folder_open</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Mi lista de expedientes asignados
+                  Mi lista de expedientes asignados
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
           </v-list-group>
         </template>
-        <template  v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esFacilitador|| esFacilitadorMixto || esNotificador || esUSAR">
+
+        <template v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esFacilitador|| esFacilitadorMixto || esNotificador || esUSAR">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Seguimiento a expedientes
+                  Seguimiento a expedientes
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -230,102 +215,87 @@
                   Información del expediente
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-sesiones'== '#' ? '' :  'jr-sesiones'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
+                  <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Sesión
+                  Sesión
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador|| esFacilitadorMixto  || esUSAR" :to="{ name: 'jr-citatoriosrecordatorios'== '#' ? '' :  'jr-citatoriosrecordatorios'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
+                  <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                Citatorios, Recordatorios y Hoja de Registro
+                  Citatorios, Recordatorios y Hoja de Registro
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-            
-
-
-           
-          
-
-        
-              
-
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-acuerdoreparatorio'== '#' ? '' :  'jr-acuerdoreparatorio'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">description</v-icon>
+                <v-icon class="centenarioMenuIcon">description</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Acuerdo reparatorio
+                  Acuerdo reparatorio
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-
-             
+            </v-list-tile>
+            
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-seguimientocumplimiento'== '#' ? '' :  'jr-seguimientocumplimiento'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">post_add</v-icon>
+                <v-icon class="centenarioMenuIcon">post_add</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                Seguimiento a cumplimiento
+                  Seguimiento a cumplimiento
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>   
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esFacilitador || esFacilitadorMixto || esUSAR" :to="{ name: 'jr-registroconclusion'== '#' ? '' :  'jr-registroconclusion'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
+                <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Registro de conclusión
+                  Registro de conclusión
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
-             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR" :to="{ name: 'jr-informarAMPO'== '#' ? '' :  'jr-informarAMPO'}"  active-class="secondary">  
+            <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR" :to="{ name: 'jr-informarAMPO'== '#' ? '' :  'jr-informarAMPO'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
+                <v-icon class="centenarioMenuIcon">speaker_notes</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Respuesta para AMPO
+                  Respuesta para AMPO
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esJuridico || esUSAR || esFacilitador || esFacilitadorMixto" :to="{ name: 'jr-registros'== '#' ? '' :  'jr-registros'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">description</v-icon>
+                <v-icon class="centenarioMenuIcon">description</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Registros
+                  Registros
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
-        </template> 
+        </template>
+
         <template v-if="esAdministrador || esDirector || esCoordinador  || esFacilitador || esFacilitadorMixto">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Agenda
+                  Agenda
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -335,44 +305,43 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Mi agenda
+                  Mi agenda
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile> 
-               <v-list-tile  v-if="esAdministrador || esDirector || esCoordinador" :to="{ name: 'jr-agendaglobal'== '#' ? '' :  'jr-agendaglobal'}"  active-class="secondary">  
+            <v-list-tile  v-if="esAdministrador || esDirector || esCoordinador" :to="{ name: 'jr-agendaglobal'== '#' ? '' :  'jr-agendaglobal'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">event</v-icon>
+                <v-icon class="centenarioMenuIcon">event</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Agenda global
+                  Agenda global
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
         </template>
-         <template v-if="esAdministrador || esDirector  || esUSAR ">
+
+        <template v-if="esAdministrador || esDirector  || esUSAR ">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 USAR
+                  USAR
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-             <v-list-tile :to="{ name: 'jr-agendaseguimientos'== '#' ? '' :  'jr-agendaseguimientos'}"  active-class="secondary">  
+            <v-list-tile :to="{ name: 'jr-agendaseguimientos'== '#' ? '' :  'jr-agendaseguimientos'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">event</v-icon>
+                <v-icon class="centenarioMenuIcon">event</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title class="centenarioMenuModules">
-                 Agenda de seguimiento
+                  Agenda de seguimiento
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
-           <v-list-tile :to="{ name: 'jr-gestionseguimiento'== '#' ? '' :  'jr-gestionseguimiento'}"  active-class="secondary">  
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'jr-gestionseguimiento'== '#' ? '' :  'jr-gestionseguimiento'}"  active-class="secondary">  
               <v-list-tile-action>
                  <v-icon class="centenarioMenuIcon">post_add</v-icon>
               </v-list-tile-action>
@@ -381,27 +350,26 @@
                 Gestión de seguimiento
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile> 
-
+            </v-list-tile>
           </v-list-group>
         </template>
      
-         <template v-if="esAdministrador || esDirector || esUSAR ">
+        <template v-if="esAdministrador || esDirector || esUSAR ">
           <v-list-group>
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Estadísticas
+                  Estadísticas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esUSAR " :to="{ name: 'jr-asistencia'== '#' ? '' :  'jr-asistencia'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">bar_chart</v-icon>
+                <v-icon class="centenarioMenuIcon">bar_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
-                   Asistencia de citatorios
+                  Asistencia de citatorios
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
@@ -411,35 +379,30 @@
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
-                   Entrega de citatorios.
+                  Entrega de citatorios.
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esUSAR  " :to="{ name: 'jr-einforme'== '#' ? '' :  'jr-einforme'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">bar_chart</v-icon>
+                <v-icon class="centenarioMenuIcon">bar_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
-                   Informe
+                  Informe
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>  
             <v-list-tile v-if="esAdministrador || esDirector || esUSAR " :to="{ name: 'jr-informefacilitador'== '#' ? '' :  'jr-informefacilitador'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">timeline</v-icon>
+                <v-icon class="centenarioMenuIcon">timeline</v-icon>
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
-                   Informe por facilitador
+                  Informe por facilitador
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-
-            
-          
-
           </v-list-group>
         </template>
 
@@ -448,21 +411,20 @@
             <v-list-tile slot="activator">   
               <v-list-tile-content >
                 <v-list-tile-title class="centenarioMenuAreas">
-                 Monitoreo de AR a nivel estado
+                Monitoreo de AR a nivel estado
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
             <v-list-tile v-if="esAdministrador || esDirector || esCoordinador || esUSAR" :to="{ name: 'jr-monitoreoxdistrito'== '#' ? '' :  'jr-monitoreoxdistrito'}"  active-class="secondary">  
               <v-list-tile-action>
-                 <v-icon class="centenarioMenuIcon">group</v-icon>
+                <v-icon class="centenarioMenuIcon">group</v-icon>
               </v-list-tile-action>
               <v-list-tile-content   >
                 <v-list-tile-title class="centenarioMenuModules">
                   Monitoreo por distrito
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
           </v-list-group>
         </template>
 
@@ -484,8 +446,7 @@
                   Facilitadores y notificadores
                 </v-list-tile-title>
               </v-list-tile-content>
-            </v-list-tile>  
-
+            </v-list-tile>
           </v-list-group>
         </template>
 
@@ -509,241 +470,217 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-        
       </v-list>
-
     </v-navigation-drawer>
-        <n401 v-if="e401" />
-        <n403 v-if="e403" />
-            <v-flex v-if="showpage">
-            <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Derivaciones.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider> 
-                    <v-badge
-                        v-model="show"
-                        color="cyan"
-                        right
-                        >
-                        <template v-slot:badge>
-                            <span>   {{  contador  }}</span>
-                        </template>
-                        <v-icon
-                            large
-                            color="grey lighten-1"
-                        >folder</v-icon>
-                    </v-badge>
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>
-                    <v-btn  @click="download()" fab small  class="mb-2 primary"><v-icon>cloud_download</v-icon></v-btn>
-                  
 
-            
-                    
-                </v-toolbar>
-             <v-data-table
-                    :headers="headers"
-                    :items="derivaciones"
-                    :search="search" 
-                    :rows-per-page-items="rowsPerPageItems"
-                    :pagination.sync="pagination"  >
-                    <template slot="items" class="white" slot-scope="props">
-                        
-                        <td>{{ props.item.autoridadqueDeriva }}</td>
-                        <td>{{ props.item.uqe_Agencia }}</td> 
-                        <td>{{ props.item.uqe_Nombre }}</td> 
-                        <td>{{ props.item.espontaneoNoEspontaneo }}</td>
-                        <td>{{ props.item.contadorNODerivacion}}</td>  
-                        <td>{{ formatearfechahora(props.item.fechaRegistroExpediente)}}</td>   
-                        <td>{{ props.item.nuc}}</td>
-                        <td>{{ props.item.statusGeneralEnvio }}</td> 
-                       
-                          <td class="justify-center layout px-0"> 
-                                <v-tooltip bottom   >
-                                    <template v-slot:activator="{ on }">
-                                        <v-icon 
-                                            class="mr-2" v-on="on" color="primary" 
-                                            @click="historial(props.item)"
-                                            >
-                                        restore
-                                        </v-icon> 
-                                    </template>
-                                    <span>Historial del expediente</span>
-                                </v-tooltip>    
+    <n401 v-if="e401" />
+    <n403 v-if="e403" />
 
-                                <v-tooltip bottom   >
-                                    <template v-slot:activator="{ on }" v-if="props.item.statusGeneralEnvio=='No procedente'">
-                                        <v-icon 
-                                            class="mr-2" v-on="on" color="primary" 
-                                            @click="reimprimirRegistro(props.item)"
-                                            >
-                                        print
-                                        </v-icon> 
-                                    </template>
-                                    <span>Imprimir registro</span>
-                                </v-tooltip>    
-                        </td>  
-                         
-                    </template>
-                    <template slot="no-data">
-                    <v-btn color="primary"  @click="listarDerivaciones()" >Cargar</v-btn>
-                    </template>
-            </v-data-table>  
-        </v-flex> 
+    <v-flex v-if="showpage">
+      <v-toolbar flat color="white">
+        <v-toolbar-title class="font-weight-regular" >Derivaciones.</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider> 
+        <v-badge
+            v-model="show"
+            color="cyan"
+            right
+            >
+            <template v-slot:badge>
+                <span>   {{  contador  }}</span>
+            </template>
+            <v-icon
+                large
+                color="grey lighten-1"
+            >folder</v-icon>
+        </v-badge>
+        <v-spacer></v-spacer>
+        <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+        <v-spacer></v-spacer> 
+        <v-btn @click="filtrar()" fab small class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>
+        <v-btn @click="download()" fab small class="mb-2 pt-2 primary"><v-icon class="mt-1">cloud_download</v-icon></v-btn>
+      </v-toolbar>
+      <v-data-table
+        :headers="headers"
+        :items="derivaciones"
+        :search="search" 
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"  >
+        <template slot="items" class="white" slot-scope="props">
+                
+          <td>{{ props.item.autoridadqueDeriva }}</td>
+          <td>{{ props.item.uqe_Agencia }}</td> 
+          <td>{{ props.item.uqe_Nombre }}</td> 
+          <td>{{ props.item.espontaneoNoEspontaneo }}</td>
+          <td>{{ props.item.contadorNODerivacion}}</td>  
+          <td>{{ formatearfechahora(props.item.fechaRegistroExpediente)}}</td>   
+          <td>{{ props.item.nuc}}</td>
+          <td>{{ props.item.statusGeneralEnvio }}</td> 
+                
+          <td class="justify-center layout px-0"> 
+            <v-tooltip bottom   >
+              <template v-slot:activator="{ on }">
+                <v-icon 
+                  class="mr-2" v-on="on" color="primary" 
+                  @click="historial(props.item)"
+                  >
+                  restore
+                </v-icon> 
+              </template>
+              <span>Historial del expediente</span>
+            </v-tooltip>
 
-        <v-dialog v-model="filtros"  max-width="600px"> 
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar>
-            
-                    
-                <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }" v-if="props.item.statusGeneralEnvio=='No procedente'">
+                <v-icon 
+                  class="mr-2" v-on="on" color="primary" 
+                  @click="reimprimirRegistro(props.item)"
+                  >
+                  print
+                </v-icon> 
+              </template>
+              <span>Imprimir registro</span>
+            </v-tooltip>
+          </td>  
+        </template>
+        <template slot="no-data">
+          <v-btn color="primary"  @click="listarDerivaciones()" >Cargar</v-btn>
+        </template>
+      </v-data-table>  
+    </v-flex> 
+
+    <v-dialog v-model="filtros"  max-width="600px"> 
+      <v-card>
+        <v-toolbar card dark color="grey lighten-4 primary--text">
+          <v-avatar  size="30">
+            <v-icon class="grey lighten-2">filter_list</v-icon>
+          </v-avatar>
+          <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <a>Selecciona el rango de fechas en que se realizo la derivación</a>
+            <v-menu
+              ref="v_menu1"
+              v-model="v_menu1"
+              :close-on-content-click="false"
+              :return-value.sync="v_fechaInicial"
+              transition="scale-transition" 
+              offset-y  
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  :value="v_fechaInicial"
+                  label="Fecha inicial:"
+                  prepend-icon="event" 
+                  clearable  
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="v_fechaI" no-title scrollable>
                 <v-spacer></v-spacer>
-            
-                
-                </v-toolbar>
-                <v-card-text>
-                      <a>Selecciona el rango de fechas en que se realizo la derivación</a>
-                      
-                        <v-menu
-                                    ref="v_menu1"
-                                    v-model="v_menu1"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaInicial"
-                                    transition="scale-transition" 
-                                    offset-y  
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaInicial"
-                                        label="Fecha inicial:"
-                                        prepend-icon="event" 
-                                        clearable  
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaI" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                <v-menu
-                                    ref="v_menu2"
-                                    v-model="v_menu2"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaFinal"
-                                    transition="scale-transition" 
-                                    offset-y 
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaFinal"
-                                        label="Fecha final:"
-                                        prepend-icon="event" 
-                                        clearable 
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaF" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                  <v-select
-                                  
-                                        :items="status"
-                                        v-model="statusSelected" 
-                                        label="Status:" 
-                                        chips  
-                                    ></v-select>
-                    
-                
-                </v-card-text> 
-                    <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
-                            <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
-                        </v-card-actions>
-            </v-card>
-
-        </v-dialog>   
+                <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
+                <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
+              </v-date-picker>
+          </v-menu>
+          <v-menu
+            ref="v_menu2"
+            v-model="v_menu2"
+            :close-on-content-click="false"
+            :return-value.sync="v_fechaFinal"
+            transition="scale-transition" 
+            offset-y 
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                :value="v_fechaFinal"
+                label="Fecha final:"
+                prepend-icon="event" 
+                clearable 
+                readonly
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="v_fechaF" no-title scrollable>
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
+              <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
+            </v-date-picker>
+          </v-menu>
+          <v-select
+            :items="status"
+            v-model="statusSelected" 
+            label="Status:" 
+            chips  
+          ></v-select>
+        </v-card-text> 
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
+          <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>   
 
     <v-dialog v-model="modalInfo"  max-width="1000px"> 
-        <v-card>
-            <v-toolbar card dark color="grey lighten-4 primary--text">
-                <v-avatar  size="30">
-                    <v-icon class="grey lighten-2">info</v-icon>
-                </v-avatar> 
-                <v-toolbar-title class="subheading">Historial del expediente</v-toolbar-title>
-                <v-spacer></v-spacer>     
-           </v-toolbar>
-                <v-card-text> 
-                    <v-flex px-5 xs12 sm12 md12>
-                         
-                        <p px-5 class="subheading">Número Único de Caso:<b> {{ nuc }}</b></p>
-                      
-                        <div v-if="noExpediente==null">
-                            <p px-5 class="subheading">N° Expediente:<b> Sin Número de Expediente</b></p>
-                        </div>
-                         <div v-else>
-                            <p px-5 class="subheading">N° Expediente:<b>{{ noExpediente }}</b></p>
-                        </div>
-                        
-                        
-                    </v-flex>
-                    <v-layout row>
-                         
-                    <v-flex px-5  xs12 sm12 m12>
-                        <v-card-text>  
-                               <v-timeline>
-                                    <v-timeline-item
-                                        v-for="h in historialExpediente"
-                                        :key="h"
-                                        color="cyan"
-                                        large
-                                    >
-                                        <template v-slot:opposite>
-                                         <span> Información</span>
-                                        </template>
-                                        <v-card class="elevation-2">
-                                        <v-card-title class="headline"> </v-card-title>
-                                        <div v-if="h!=''">
-                                            <v-card-text v-html="h.text">
-                                            
-                                            </v-card-text>
-                                        </div>
-                                       
-                                        </v-card>
-                                    </v-timeline-item>
-                                    </v-timeline>
-                        </v-card-text>
-                    </v-flex>
-                
-                    </v-layout>
-                   
-                </v-card-text>  
-            <v-divider  class="mx-0" ></v-divider>
-            <v-card-actions  >
-                <v-spacer ></v-spacer>
-                
-            </v-card-actions>
-        </v-card>
-    </v-dialog>   
-   
+      <v-card>
+        <v-toolbar card dark color="grey lighten-4 primary--text">
+          <v-avatar size="30">
+            <v-icon class="grey lighten-2">info</v-icon>
+          </v-avatar>
+          <v-toolbar-title class="subheading">Historial del expediente</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
 
-    </v-layout>
+        <v-card-text> 
+          <v-flex px-5 xs12 sm12 md12>
+            <p px-5 class="subheading">Número Único de Caso:<b> {{ nuc }}</b></p>
+            <div v-if="noExpediente==null">
+                <p px-5 class="subheading">N° Expediente:<b> Sin Número de Expediente</b></p>
+            </div>
+              <div v-else>
+                <p px-5 class="subheading">N° Expediente:<b>{{ noExpediente }}</b></p>
+            </div>               
+          </v-flex>
+          <v-layout row>
+            <v-flex px-5  xs12 sm12 m12>
+              <v-card-text>  
+                <v-timeline>
+                  <v-timeline-item
+                    v-for="h in historialExpediente"
+                    :key="h"
+                    color="cyan"
+                    large
+                  >
+                    <template v-slot:opposite>
+                      <span> Información</span>
+                    </template>
+                    <v-card class="elevation-2">
+                      <v-card-title class="headline"> </v-card-title>
+                      <div v-if="h!=''">
+                        <v-card-text v-html="h.text">
+                        </v-card-text>
+                      </div>
+                    </v-card>
+                  </v-timeline-item>
+                </v-timeline>
+              </v-card-text>
+            </v-flex>
+          </v-layout>
+            
+        </v-card-text>  
+
+        <v-divider  class="mx-0"></v-divider>
+        <v-card-actions >
+          <v-spacer ></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
+
 <script>
     import axios from 'axios'  
     import jsPDF from 'jspdf'
@@ -753,8 +690,7 @@
     import n401 from '../../components/m_jr/401.vue'
     import n403 from '../../components/m_jr/403.vue' 
     import { error } from 'util';
-    import { generarQRCodeBase64 } from './crearQR'; 
-    
+    import { generarQRCodeBase64 } from './crearQR';
     import moment from 'moment'
     import 'moment/locale/es';
     export default {

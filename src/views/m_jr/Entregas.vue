@@ -521,22 +521,10 @@
                     <v-toolbar-title class="font-weight-regular" >Entrega de citatorios por notificador.</v-toolbar-title>
                     
                     <v-divider class="mx-2" inset vertical></v-divider>
-                    
-                 
-
-      
-          
+                              
                     <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>   
+                    <v-btn  @click="filtrar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>   
             </v-toolbar>
-
-
-
-
-
-            
-
-
 
             <v-card >
                 <v-container grid-list-md text-xs-center>

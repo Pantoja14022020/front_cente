@@ -1,6 +1,7 @@
 <template>
-    <v-layout align-start>
-        <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
+  <v-layout align-start>
+
+    <v-navigation-drawer v-model="drawer" app   v-if="logueado" class="primary"  >
       <div class="text-xl-center text-md-center text-xs-center my-4">
         <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a> 
       </div>
@@ -514,228 +515,203 @@
       </v-list>
 
     </v-navigation-drawer>
-        <n401 v-if="e401" />
-        <n403 v-if="e403" />
-            <v-flex v-if="showpage">
-            <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Busqueda general.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider> 
-                    <v-badge
-                        v-model="show"
-                        color="cyan"
-                        right
-                        >
-                        <template v-slot:badge>
-                            <span>   {{  contador  }}</span>
-                        </template>
-                        <v-icon
-                            large
-                            color="grey lighten-1"
-                        >folder</v-icon>
-                    </v-badge>
-                    <v-spacer></v-spacer>
-                    <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                    <v-spacer></v-spacer> 
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>
-                    <v-btn  @click="download()" fab small  class="mb-2 primary"><v-icon>cloud_download</v-icon></v-btn>
-                  
 
-            
-                    
-                </v-toolbar>
-             <v-data-table
-                    :headers="headers"
-                    :items="derivaciones"
-                    :search="search" 
-                    :rows-per-page-items="rowsPerPageItems"
-                    :pagination.sync="pagination"  >
-                    <template slot="items" class="white" slot-scope="props">
-                         
-                        <td>{{ props.item.distrito }}</td>
-                        <td>{{ props.item.uqe_Agencia }}</td> 
-                        <td>{{ props.item.uqe_Nombre }}</td>  
-                        <td>{{ props.item.noExpediente }}</td>  
-                        <td>{{ formatearfechahora(props.item.fechaRegistroExpediente)}}</td>   
-                        <td>{{ props.item.nuc}}</td>
-                        <td>{{ props.item.statusAcepRech }}</td>    
-                        <td>{{ props.item.statusGeneral }}</td>
-                        <td>{{ props.item.nombre + ' ' + props.item.apellidoPaterno + ' ' + props.item.apellidoMaterno + ' / ' + props.item.clasificacion }}</td>
-                          <td>{{ props.item.infoConclusion }}</td>
-                        <td class="justify-center layout px-0"> 
-                            <v-tooltip bottom   >
-                                    <template v-slot:activator="{ on }">
-                                        <v-icon  class="mr-2" color="info"  v-on="on" @click="abrirExpediente(props.item)">
-                                        remove_red_eye
-                                        </v-icon>
-                                    </template>
-                                    <span>Ver detalles</span>
-                            </v-tooltip>  
-                        </td>
-                    </template>
-                    <template slot="no-data">
-                    <v-btn color="primary"  @click="listarDerivaciones" >Cargar</v-btn>
-                    </template>
-            </v-data-table>  
-        </v-flex> 
+    <n401 v-if="e401" />
+    <n403 v-if="e403" />
 
-        <v-dialog v-model="filtros"  max-width="600px"> 
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar>
-            
-                    
-                <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
-                <v-spacer></v-spacer>
-            
+    <v-flex v-if="showpage">
+      <v-toolbar flat color="white">
+        <v-toolbar-title class="font-weight-regular" >Busqueda general.</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider> 
+          <v-badge
+              v-model="show"
+              color="cyan"
+              right
+              >
+              <template v-slot:badge>
+                  <span>   {{  contador  }}</span>
+              </template>
+              <v-icon
+                  large
+                  color="grey lighten-1"
+              >folder</v-icon>
+          </v-badge>
+          <v-spacer></v-spacer>
+          <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+          <v-spacer></v-spacer> 
+          <v-btn  @click="filtrar()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>
+          <v-btn  @click="download()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">cloud_download</v-icon></v-btn>
+      </v-toolbar>
+
+      <v-data-table
+        :headers="headers"
+        :items="derivaciones"
+        :search="search" 
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"  >
+          <template slot="items" class="white" slot-scope="props">
                 
-                </v-toolbar>
-                <v-card-text>
-                                    <v-text-field  
-                                                    label="Nuc:" 
-                                                    hint="DISTRTO / AÑO / CONSECUTIVO" 
-                                                    v-model="nuc"     >
-                                        
-                                    </v-text-field>
-                                     <v-text-field  
-                                                    label="Expediente:" 
-                                                    hint="PREFIJO / #### - AÑO / DISTRITO" 
-                                                    v-model="noExpediente"     >
-                                        
-                                    </v-text-field>
-                                    <v-text-field  
-                                                    label="Nombre(s):" 
-                                                    v-model="nombres"     >
-                                        
-                                    </v-text-field>
-                                    <v-text-field  
-                                                label="Apellido paterno:" 
-                                                v-model="apaterno" 
-                                                >
-                    
-                                    </v-text-field>
-                                    <v-text-field  
-                                                    label="Apellido materno:" 
-                                                    v-model="amaterno"  
-                                                    >
-                    
-                                    </v-text-field>
+            <td>{{ props.item.distrito }}</td>
+            <td>{{ props.item.uqe_Agencia }}</td> 
+            <td>{{ props.item.uqe_Nombre }}</td>  
+            <td>{{ props.item.noExpediente }}</td>  
+            <td>{{ formatearfechahora(props.item.fechaRegistroExpediente)}}</td>   
+            <td>{{ props.item.nuc}}</td>
+            <td>{{ props.item.statusAcepRech }}</td>    
+            <td>{{ props.item.statusGeneral }}</td>
+            <td>{{ props.item.nombre + ' ' + props.item.apellidoPaterno + ' ' + props.item.apellidoMaterno + ' / ' + props.item.clasificacion }}</td>
+              <td>{{ props.item.infoConclusion }}</td>
+            <td class="justify-center layout px-0"> 
+              <v-tooltip bottom   >
+                <template v-slot:activator="{ on }">
+                  <v-icon  class="mr-2" color="info"  v-on="on" @click="abrirExpediente(props.item)">
+                    remove_red_eye
+                  </v-icon>
+                </template>
+                <span>Ver detalles</span>
+              </v-tooltip>  
+            </td>
+          </template>
+          <template slot="no-data">
+            <v-btn color="primary"  @click="listarDerivaciones" >Cargar</v-btn>
+          </template>
+      </v-data-table>  
+    </v-flex> 
 
-                        
+    <v-dialog v-model="filtros"  max-width="600px"> 
+      <v-card>
+        <v-toolbar card dark color="grey lighten-4 primary--text">
+          <v-avatar  size="30">
+            <v-icon class="grey lighten-2">filter_list</v-icon>
+          </v-avatar>
+
+          <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <v-text-field  
+                                label="Nuc:" 
+                                hint="DISTRTO / AÑO / CONSECUTIVO" 
+                                v-model="nuc">
+          </v-text-field>
+          <v-text-field  
+            label="Expediente:" 
+            hint="PREFIJO / #### - AÑO / DISTRITO" 
+            v-model="noExpediente">
+          </v-text-field>
+          <v-text-field  
+            label="Nombre(s):" 
+            v-model="nombres">
+          </v-text-field>
+          <v-text-field  
+            label="Apellido paterno:" 
+            v-model="apaterno">
+          </v-text-field>
+          <v-text-field  
+            label="Apellido materno:" 
+            v-model="amaterno">
+          </v-text-field>
+        </v-card-text> 
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
+          <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>   
+
+    <v-dialog v-model="modalInfo"  max-width="800px"> 
+      <v-card>
+        <v-toolbar card dark color="grey lighten-4 primary--text">
+          <v-avatar  size="30">
+            <v-icon class="grey lighten-2">info</v-icon>
+          </v-avatar> 
+          <v-toolbar-title class="subheading">Aquien se le asigno el expediente</v-toolbar-title>
+          <v-spacer></v-spacer>     
+        </v-toolbar>
+        <v-card-text> 
+            <v-flex px-5 xs12 sm12 md12>
+              <p px-5 class="subheading">N° Expediente:<b> {{ noExpediente }}</b></p> 
+            </v-flex>
+            <v-layout row>
                 
-                </v-card-text> 
-                    <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
-                            <v-btn @click.native="listarDerivaciones()" class="success" >Consultar</v-btn>
-                        </v-card-actions>
-            </v-card>
-
-        </v-dialog>   
-
-        <v-dialog v-model="modalInfo"  max-width="800px"> 
-            <v-card>
-                <v-toolbar card dark color="grey lighten-4 primary--text">
-                    <v-avatar  size="30">
-                        <v-icon class="grey lighten-2">info</v-icon>
-                    </v-avatar> 
-                    <v-toolbar-title class="subheading">Aquien se le asigno el expediente</v-toolbar-title>
-                    <v-spacer></v-spacer>     
-            </v-toolbar>
-                    <v-card-text> 
-                        <v-flex px-5 xs12 sm12 md12>
-                            <p px-5 class="subheading">N° Expediente:<b> {{ noExpediente }}</b></p> 
-                        </v-flex>
-                        <v-layout row>
-                            
-                        <v-flex px-5  xs6>
-                            <v-card-text>  
-                            <table>
-                                <tr>
-                                    <td  > Nombre: </td>
-                                    <td><b> {{ nombre1}}</b></td> 
-                                </tr>
-                                <tr>
-                                    <td>Puesto</td>
-                                    <td><b> {{ puesto1 }}</b></td>
-                                </tr>
-                                <tr>
-                                    <td>Telefono:</td>
-                                    <td><b>{{ telefono1}} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td><b>{{ email1 }} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>direccion:</td>
-                                    <td><b>{{ direccion1 }} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>Status:</td>
-                                    <td><b>{{ condicion1 }} </b></td>
-                                </tr>
-                                
-                            
-                                <br>
-                            </table> 
-                            </v-card-text>
-                        </v-flex>
-                        <v-flex px-5  xs6>  
-                            <v-card-text> 
-                            <table>
-                                <tr>
-                                    <td  > Nombre: </td>
-                                    <td><b> {{ nombre2}}</b></td> 
-                                </tr>
-                                <tr>
-                                    <td>Puesto</td>
-                                    <td><b> {{ puesto2 }}</b></td>
-                                </tr>
-                                <tr>
-                                    <td>Telefono:</td>
-                                    <td><b>{{ telefono2}} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td><b>{{ email2 }} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>direccion:</td>
-                                    <td><b>{{ direccion2}} </b></td>
-                                </tr>
-                                <tr>
-                                    <td>Status:</td>
-                                    <td><b>{{ condicion2 }} </b></td>
-                                </tr>
-                                
-                            
-                                <br>
-                            </table> 
-                            </v-card-text>
-                        </v-flex>
-                        </v-layout>
-                        
-                        
-                    </v-card-text>  
-                <v-divider  class="mx-0" ></v-divider>
-                <v-card-actions  >
-                    <v-spacer ></v-spacer>
-                    <v-btn class="mx-5" @click="modalInfo=false"   small outline color="success">
-                    CERRAR
-                    </v-btn> 
-                </v-card-actions>
-            </v-card>
-        </v-dialog>   
-   
-
-    </v-layout>
-
-
-    
+            <v-flex px-5  xs6>
+                <v-card-text>  
+                <table>
+                    <tr>
+                        <td  > Nombre: </td>
+                        <td><b> {{ nombre1}}</b></td> 
+                    </tr>
+                    <tr>
+                        <td>Puesto</td>
+                        <td><b> {{ puesto1 }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Telefono:</td>
+                        <td><b>{{ telefono1}} </b></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><b>{{ email1 }} </b></td>
+                    </tr>
+                    <tr>
+                        <td>direccion:</td>
+                        <td><b>{{ direccion1 }} </b></td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td><b>{{ condicion1 }} </b></td>
+                    </tr>
+                    
+                    <br>
+                </table> 
+                </v-card-text>
+            </v-flex>
+            <v-flex px-5  xs6>  
+                <v-card-text> 
+                <table>
+                    <tr>
+                        <td  > Nombre: </td>
+                        <td><b> {{ nombre2}}</b></td> 
+                    </tr>
+                    <tr>
+                        <td>Puesto</td>
+                        <td><b> {{ puesto2 }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Telefono:</td>
+                        <td><b>{{ telefono2}} </b></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><b>{{ email2 }} </b></td>
+                    </tr>
+                    <tr>
+                        <td>direccion:</td>
+                        <td><b>{{ direccion2}} </b></td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td><b>{{ condicion2 }} </b></td>
+                    </tr>
+                    <br>
+                </table> 
+                </v-card-text>
+            </v-flex>
+            </v-layout>
+        </v-card-text>  
+        <v-divider  class="mx-0" ></v-divider>
+        <v-card-actions  >
+          <v-spacer ></v-spacer>
+          <v-btn class="mx-5" @click="modalInfo=false"   small outline color="success">
+            CERRAR
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
+
 <script>
     import axios from 'axios'  
     import jsPDF from 'jspdf'
@@ -744,11 +720,10 @@
     import VeeValidate from 'vee-validate'
     import n401 from '../../components/m_jr/401.vue'
     import n403 from '../../components/m_jr/403.vue'
- 
-    
     import moment from 'moment'
     import 'moment/locale/es';
-import { computed } from 'vue';
+    import { computed } from 'vue';
+
     export default {
          components: {  
                     n401,

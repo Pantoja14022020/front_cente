@@ -509,283 +509,251 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
-        
       </v-list>
-
     </v-navigation-drawer>
-        <n401 v-if="e401" />
-        <n403 v-if="e403" />
-            <v-flex v-if="showpage">
-            <v-toolbar flat color="white">
-                    <v-toolbar-title class="font-weight-regular" >Gestión de seguimientos.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider> 
-                    
-                    <v-spacer></v-spacer>
-                    
-                    <v-btn  @click="filtrar()" fab small  class="mb-2 primary"><v-icon>filter_list</v-icon></v-btn>
-                   
 
-            
-                    
-                </v-toolbar>
-                
+    <n401 v-if="e401" />
+    <n403 v-if="e403" />
 
-                               <v-card>
+    <v-flex v-if="showpage">
+      <v-toolbar flat color="white">
+        <v-toolbar-title class="font-weight-regular" >Gestión de seguimientos.</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-btn  @click="filtrar()" fab small class="mb-2 pt-2 primary"><v-icon class="mt-2">filter_list</v-icon></v-btn>
+      </v-toolbar>
+      <v-card>
         <v-container
           fluid
           grid-list-lg
         >
           <v-layout elevation="0" row wrap>
-           
-
-             <v-flex xs4>
+            <v-flex xs4>
               <v-card elevation="0" >
-                 <v-card-title >
-                    <v-icon  class="mx-3 ">format_list_numbered</v-icon>
-                    <div class="subheading">Resumen</div>
-                  </v-card-title >
-                   <v-divider  color="cyan"  light></v-divider>
-                    <v-data-table
-                        :headers="headers2"
-                        hide-actions
-                        :items="gruposeguimientos" >
-                
-                        <template slot="items" class="white" slot-scope="props">
-                            
-                            <td>{{ props.item.statusPago }}</td> 
-                            <td>{{ props.item.sumaTotal }}</td>  
-                            
-                        
-                        </template>
-                        
-                    </v-data-table> 
+                <v-card-title >
+                  <v-icon  class="mx-3 ">format_list_numbered</v-icon>
+                  <div class="subheading">Resumen</div>
+                </v-card-title >
+                <v-divider  color="cyan"  light></v-divider>
+                <v-data-table
+                  :headers="headers2"
+                  hide-actions
+                  :items="gruposeguimientos" >
+              
+                  <template slot="items" class="white" slot-scope="props">
+                    <td>{{ props.item.statusPago }}</td> 
+                    <td>{{ props.item.sumaTotal }}</td>  
+                  </template>
+                </v-data-table> 
               </v-card>
             </v-flex>
-
-             <v-flex xs4>
-              <v-card elevation="0">
-                  <v-card-title >
-                      <v-icon  class="mx-3 ">attach_money</v-icon>
-                      <div class="subheading">Totales</div>
-                  </v-card-title >
-                   <v-divider color="cyan" light></v-divider> 
-                      <div>
-                        <div color="grey" class="headline">$ {{ totaltotal=(calcularTotal).toFixed(2)}}</div>
-                         <span color="grey">Total del periodo</span>
-                        <div color="grey" class="headline">$ {{ totalfaltante=(calcularFaltante).toFixed(2)}} </div>
-                         <span color="grey">Total faltante</span>
-                        <div color="grey" class="headline">{{  (( (totaltotal-  totalfaltante)/ totaltotal)*100).toFixed(2) }} %</div>
-                         <span color="grey">Porcentaje pagado</span>
-                           <v-divider light></v-divider>
-                        <div color="grey" class="display-2">$ {{ (totaltotal-  totalfaltante).toFixed(2)}}</div>
-                        <span color="grey">Total pagado en el periodo</span>
-                         <v-divider light></v-divider>
-                        
-                        
-                      </div> 
-               
-              </v-card>
-            </v-flex>
-
 
             <v-flex xs4>
-              <v-card  elevation="0"  >
-                  <v-card-title >
-                      <v-icon  class="mx-3 ">bar_chart</v-icon>
-                      <div class="subheading">Gráfica</div>
-                  </v-card-title >
-                   <v-divider color="cyan" light></v-divider> 
-               
-                 
-                         <canvas  id="chart" height="200px"> </canvas>  
-                  
+              <v-card elevation="0">
+                <v-card-title >
+                    <v-icon  class="mx-3 ">attach_money</v-icon>
+                    <div class="subheading">Totales</div>
+                </v-card-title >
+                <v-divider color="cyan" light></v-divider> 
+                <div>
+                  <div color="grey" class="headline">$ {{ totaltotal=(calcularTotal).toFixed(2)}}</div>
+                    <span color="grey">Total del periodo</span>
+                  <div color="grey" class="headline">$ {{ totalfaltante=(calcularFaltante).toFixed(2)}} </div>
+                    <span color="grey">Total faltante</span>
+                  <div color="grey" class="headline">{{  (( (totaltotal-  totalfaltante)/ totaltotal)*100).toFixed(2) }} %</div>
+                    <span color="grey">Porcentaje pagado</span>
+                      <v-divider light></v-divider>
+                  <div color="grey" class="display-2">$ {{ (totaltotal-  totalfaltante).toFixed(2)}}</div>
+                  <span color="grey">Total pagado en el periodo</span>
+                    <v-divider light></v-divider>
+                </div> 
+              </v-card>
+            </v-flex>
+
+            <v-flex xs4>
+              <v-card  elevation="0">
+                <v-card-title>
+                  <v-icon  class="mx-3 ">bar_chart</v-icon>
+                  <div class="subheading">Gráfica</div>
+                </v-card-title>
+                <v-divider color="cyan" light></v-divider>
+                <canvas  id="chart" height="200px"> </canvas>
               </v-card>
             </v-flex>
           </v-layout>
         </v-container>
       </v-card>
       <v-card>
-            <v-toolbar flat color="white"> 
-                <v-toolbar-title class="font-weight-regular" >Total de registros del periodo.</v-toolbar-title>
-                   
-                    <v-divider class="mx-2" inset vertical></v-divider> 
-                    <v-badge
-                        v-model="show"
-                        color="cyan"
-                        right
-                        >
-                        <template v-slot:badge>
-                            <span>   {{  contador  }}</span>
-                        </template>
-                        <v-icon
-                            large
-                            color="grey lighten-1"
-                        >folder</v-icon>
-                    </v-badge>
-                <v-spacer></v-spacer>
-                <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
-                <v-spacer></v-spacer>
-                 <v-btn  @click="download()" fab small  class="mb-2 primary"><v-icon>cloud_download</v-icon></v-btn>
-                  
-            </v-toolbar>
-                 
-            <v-data-table
-                :headers="headers"
-                :items="seguimientos"
-                :search="search" 
-                :rows-per-page-items="rowsPerPageItems"
-                :pagination.sync="pagination"
-                return-object  >
-                
-                <template slot="items" class="white" slot-scope="props">
-                    
-                    <td>{{ props.item.noExpediente }}</td> 
-                    <td>{{ props.item.noParcialidad }}</td>  
-                    <td>{{ formatearfechahora(props.item.fecha) }}</td>
-                    <td>
-                            <div  v-if="props.item.fechaProrroga!== null">
-                                <a class="font-weight-black">{{ formatearfecha(props.item.fechaProrroga)}}</a>
-                            </div>
-                    </td>  
-                    <td>{{ props.item.cantidadAPagar}}</td>   
-                    <td>{{ props.item.tipoPago }}</td>  
-                    <td>{{ props.item.objectoEspecie }}</td>   
-                    <td>
-                                            <template v-if="props.item.statusPago=='Pendiente'">
-                                                <v-icon
-                                                color="default" 
-                                                >
-                                                remove
-                                                </v-icon>
-                                            </template>
-                                            <template v-if="props.item.statusPago=='Pagado'">
-                                                <v-icon
-                                                color="success"
-                                                @click="activarDesactivarMostrar(2,props.item)"
-                                                >
-                                                check_circle
-                                                </v-icon>
-                                            </template> 
-                                            <template v-if="props.item.statusPago=='Anticipado'">
-                                                <v-icon
-                                                color="success"
-                                                @click="activarDesactivarMostrar(2,props.item)"
-                                                >
-                                                check_circle
-                                                </v-icon>
-                                            </template> 
-                                            <template v-if="props.item.statusPago=='No pagado'">
-                                                <v-icon
-                                                color="error"
-                                                @click="activarDesactivarMostrar(2,props.item)"
-                                                >
-                                                cancel
-                                                </v-icon>
-                                            </template>
-                                                <template v-if="props.item.statusPago=='Prorroga'">
-                                                <v-icon
-                                                color="warning"
-                                                @click="activarDesactivarMostrar(2,props.item)"
-                                                >
-                                                timelapse
-                                                </v-icon>
-                                            </template> 
-                    </td>
-                  
+        <v-toolbar flat color="white"> 
+          <v-toolbar-title class="font-weight-regular" >Total de registros del periodo.</v-toolbar-title>
+            
+            <v-divider class="mx-2" inset vertical></v-divider> 
+            <v-badge
+                v-model="show"
+                color="cyan"
+                right
+                >
+                <template v-slot:badge>
+                    <span>   {{  contador  }}</span>
                 </template>
-                 
-            </v-data-table> 
-            </v-card>
-        </v-flex> 
-
-        <v-dialog v-model="filtros"  max-width="600px"> 
-                <v-card>
-                    <v-toolbar card dark color="grey lighten-4 primary--text">
-                        <v-avatar  size="30">
-                            <v-icon class="grey lighten-2">filter_list</v-icon>
-                        </v-avatar>
+                <v-icon
+                    large
+                    color="grey lighten-1"
+                >folder</v-icon>
+            </v-badge>
+        <v-spacer></v-spacer>
+        <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+        <v-spacer></v-spacer>
+          <v-btn  @click="download()" fab small  class="mb-2 pt-2 primary"><v-icon class="mt-1">cloud_download</v-icon></v-btn>
+          
+    </v-toolbar>
+          
+    <v-data-table
+      :headers="headers"
+      :items="seguimientos"
+      :search="search" 
+      :rows-per-page-items="rowsPerPageItems"
+      :pagination.sync="pagination"
+      return-object  >
+        
+      <template slot="items" class="white" slot-scope="props">
             
-                    
-                <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
-                <v-spacer></v-spacer>
-            
-                
-                </v-toolbar>
-                <v-card-text>
+        <td>{{ props.item.noExpediente }}</td> 
+        <td>{{ props.item.noParcialidad }}</td>  
+        <td>{{ formatearfechahora(props.item.fecha) }}</td>
+        <td>
+                <div  v-if="props.item.fechaProrroga!== null">
+                    <a class="font-weight-black">{{ formatearfecha(props.item.fechaProrroga)}}</a>
+                </div>
+        </td>  
+        <td>{{ props.item.cantidadAPagar}}</td>   
+        <td>{{ props.item.tipoPago }}</td>  
+        <td>{{ props.item.objectoEspecie }}</td>   
+        <td>
+          <template v-if="props.item.statusPago=='Pendiente'">
+            <v-icon
+              color="default" 
+              >
+              remove
+            </v-icon>
+          </template>
+          <template v-if="props.item.statusPago=='Pagado'">
+              <v-icon
+              color="success"
+              @click="activarDesactivarMostrar(2,props.item)"
+              >
+              check_circle
+              </v-icon>
+          </template> 
+          <template v-if="props.item.statusPago=='Anticipado'">
+              <v-icon
+              color="success"
+              @click="activarDesactivarMostrar(2,props.item)"
+              >
+              check_circle
+              </v-icon>
+          </template> 
+          <template v-if="props.item.statusPago=='No pagado'">
+              <v-icon
+              color="error"
+              @click="activarDesactivarMostrar(2,props.item)"
+              >
+              cancel
+              </v-icon>
+          </template>
+          <template v-if="props.item.statusPago=='Prorroga'">
+              <v-icon
+              color="warning"
+              @click="activarDesactivarMostrar(2,props.item)"
+              >
+              timelapse
+              </v-icon>
+          </template> 
+        </td>
+      </template>
+    </v-data-table> 
+  </v-card>
+</v-flex> 
 
-                        <v-menu
-                                    ref="v_menu1"
-                                    v-model="v_menu1"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaInicial"
-                                    transition="scale-transition" 
-                                    offset-y  
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaInicial"
-                                        label="Fecha inicial:"
-                                        prepend-icon="event" 
-                                        clearable  
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaI" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                <v-menu
-                                    ref="v_menu2"
-                                    v-model="v_menu2"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="v_fechaFinal"
-                                    transition="scale-transition" 
-                                    offset-y 
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                    <v-text-field
-                                        :value="v_fechaFinal"
-                                        label="Fecha final:"
-                                        prepend-icon="event" 
-                                        clearable 
-                                        readonly
-                                        v-on="on"
-                                    ></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="v_fechaF" no-title scrollable>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
-                                    <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
-                                    </v-date-picker>
-                                </v-menu>
+<v-dialog v-model="filtros"  max-width="600px"> 
+  <v-card>
+    <v-toolbar card dark color="grey lighten-4 primary--text">
+      <v-avatar  size="30">
+        <v-icon class="grey lighten-2">filter_list</v-icon>
+      </v-avatar>
+        
+      <v-toolbar-title class="subheading">Filtrar información</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-toolbar>
+    <v-card-text>
 
-                                  <v-autocomplete name="Status de conclusión"
-                                                    :items="statusConclusiones"
-                                                    v-model="statusConclusion" 
-                                                    label="Status de conclusión:"   
-                                    ></v-autocomplete>
-                                
-                
-                </v-card-text> 
-                    <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
-                            <v-btn @click.native="listarSeguimientos()" class="success" >Consultar</v-btn>
-                        </v-card-actions>
-            </v-card>
+      <v-menu
+          ref="v_menu1"
+          v-model="v_menu1"
+          :close-on-content-click="false"
+          :return-value.sync="v_fechaInicial"
+          transition="scale-transition" 
+          offset-y  
+          min-width="290px"
+      >
+            <template v-slot:activator="{ on }">
+            <v-text-field
+                :value="v_fechaInicial"
+                label="Fecha inicial:"
+                prepend-icon="event" 
+                clearable  
+                readonly
+                v-on="on"
+            ></v-text-field>
+            </template>
+            <v-date-picker v-model="v_fechaI" no-title scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="v_menu1 = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.v_menu1.save(formatearfecha(v_fechaI))">OK</v-btn>
+            </v-date-picker>
+      </v-menu>
+      <v-menu
+          ref="v_menu2"
+          v-model="v_menu2"
+          :close-on-content-click="false"
+          :return-value.sync="v_fechaFinal"
+          transition="scale-transition" 
+          offset-y 
+          min-width="290px"
+      >
+          <template v-slot:activator="{ on }">
+          <v-text-field
+              :value="v_fechaFinal"
+              label="Fecha final:"
+              prepend-icon="event" 
+              clearable 
+              readonly
+              v-on="on"
+          ></v-text-field>
+          </template>
+          <v-date-picker v-model="v_fechaF" no-title scrollable>
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="v_menu2 = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.v_menu2.save(formatearfecha(v_fechaF))">OK</v-btn>
+          </v-date-picker>
+      </v-menu>
 
-        </v-dialog>   
-   
-
-    </v-layout>
+      <v-autocomplete name="Status de conclusión"
+        :items="statusConclusiones"
+        v-model="statusConclusion" 
+        label="Status de conclusión:"   
+      ></v-autocomplete>
+    </v-card-text> 
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn  @click.native="filtros=false" >Cancelar</v-btn>
+      <v-btn @click.native="listarSeguimientos()" class="success" >Consultar</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>   
+</v-layout>
 </template>
+
 <script>
     import axios from 'axios'  
     import jsPDF from 'jspdf'

@@ -8,7 +8,7 @@
         <span>Distrito {{ distritoC }}</span>
       </v-toolbar-title>
 
-      <v-layout row wrap class="background-panel">
+      <v-layout row wrap class="primary">
         <v-flex xs12 md4 xl2 class="pa-4" v-for="panel of panels" :key="panel.clave2">
           
           <div v-if="panel.status">

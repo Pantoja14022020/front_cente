@@ -219,20 +219,20 @@
           <v-layout>
             <v-flex>
               <v-card color="white" grow  class="d-flex align-content-start">
-                <v-card style="width: 40%;">                                    
-                  <v-card-text> 
-                    <v-icon size="350px" color="accent">account_balance</v-icon> 
+                <v-card class="primary" style="width: 30%;">                                    
+                  <v-card-text class="primary" style="box-shadow: none;"> 
+                    <v-icon size="330px" color="accent">account_balance</v-icon> 
                   </v-card-text>
                 </v-card>
 
-                <v-card style="width: 60%;">
-                  <v-card-title>
+                <v-card style="width: 70%; box-shadow: none;" class="primary">
+                  <v-card-title class="primary">
                     <div class="display-2 font-weight-thin" color="blue">
-                      <p color="blue">Modulo de Captura</p>
+                      <p color="blue"><b>Modulo de Captura</b></p>
                     </div>
                   </v-card-title>
-                  <v-card-text>
-                    <v-list> 
+                  <v-card-text class="primary">
+                    <v-list class="primary"> 
                       <p class="text-md-left">Este modulo permite.........</p> 
                       <v-list-tile>  
                         <v-list-tile-action>
@@ -267,6 +267,7 @@
         <loader></loader>
       </v-container>
     </v-content>
+    
   </v-app>
 </template>
   

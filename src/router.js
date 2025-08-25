@@ -210,6 +210,7 @@ import ReasignacionExpediente from '@/views/m_jr/ReasignacionExpediente.vue'
 import Derivaciones from '@/views/m_jr/Derivaciones.vue'
 import ConsultarExpediente from '@/views/m_jr/ConsultarExpediente.vue' 
 import Rezago from '@/views/m_jr/Rezago.vue'
+import AcuerdosPorCoordinacion from '@/views/m_jr/AcuerdosporCoordinacion.vue'
 import CoordinadorJuridico from '@/views/m_jr/CoordinadorJuridico.vue'
 import Expedientesaceptados from '@/views/m_jr/Expedientesaceptados.vue'
 import MisExpedientes from '@/views/m_jr/MisExpedientes.vue'
@@ -830,6 +831,11 @@ export default new Router({
       path: '/jr-rezago',
       name: 'jr-rezago',
       component: Rezago
+    },
+    {
+      path: '/jr-acuerdosporCoordinacion',
+      name: 'jr-acuerdosporCoordinacion',
+      component: AcuerdosPorCoordinacion
     },
     {
       path: '/jr-expedientesaceptados',

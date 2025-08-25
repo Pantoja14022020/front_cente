@@ -518,11 +518,11 @@
         <v-toolbar flat color="white" class="pa-2">
             <v-toolbar-title class="font-weight-regular" >Agenda general.</v-toolbar-title>
             
-            <v-divider class="mx-2" inset vertical></v-divider>
+            <v-divider class="mx-2 pt-2" inset vertical></v-divider>
                 <v-tooltip bottom> 
                     <template v-slot:activator="{ on }"> 
-                      <v-btn fab v-on="on"   small  color="success"  @click="$refs.calendar.prev()" >
-                          <v-icon dark>
+                      <v-btn fab v-on="on" small color="success"  @click="$refs.calendar.prev()" >
+                          <v-icon class="mt-4" dark>
                             keyboard_arrow_left
                           </v-icon>
                       </v-btn>
@@ -531,15 +531,15 @@
                 </v-tooltip>
                 <v-tooltip bottom> 
                     <template v-slot:activator="{ on }"> 
-                        <v-btn fab v-on="on"   small   color="success" @click="$refs.calendar.next()"  >
-                          <v-icon >
+                        <v-btn fab v-on="on" small color="success" @click="$refs.calendar.next()"  >
+                          <v-icon class="mt-4">
                             keyboard_arrow_right
                           </v-icon>
                         </v-btn>
                     </template>
                     <span>Siguiente</span>
                 </v-tooltip> 
-                 <v-divider class="mx-2" inset vertical></v-divider>
+                 <v-divider class="mx-2 pt-2" inset vertical></v-divider>
                 <v-tooltip bottom> 
                     <template v-slot:activator="{ on }"> 
                         <v-btn outline v-on="on"   small  color="primary"  @click="today()" > 
@@ -561,7 +561,7 @@
                  
          
          <v-toolbar-items>
-                <v-btn @click="dialogfilter=true" fab small  class="mx-5 primary"><v-icon>filter_list</v-icon></v-btn>
+                <v-btn @click="dialogfilter=true" fab small class="mx-5 pt-2 primary"><v-icon class="mt-1">filter_list</v-icon></v-btn>
             <v-select
               :items="typeOptions"
               v-model="type"  small height="30" 
