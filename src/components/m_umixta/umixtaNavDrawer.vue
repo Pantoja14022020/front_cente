@@ -742,8 +742,8 @@
                   esAmpoIL
                 "
                   :to="{
-                  name: 'umixtadiligenciaforanea' == '#' ? '' : 'umixtadiligenciaforanea',
-                }"
+                    name: 'umixtadiligenciaforanea' == '#' ? '' : 'umixtadiligenciaforanea',
+                  }"
                   :class="{ 'secondary': isActiveRoute(['umixtadiligenciaforanea']) }"
               >
                 <v-list-tile-action>

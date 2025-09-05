@@ -1,12 +1,14 @@
 <template>
   <v-layout row wrap>
+
     <n401 v-if="e401" />
     <n403 v-if="e403" />
+
+    <UmixtaNavDrawer />
+
     <v-flex v-if="showpage" elevation-2>
       <v-toolbar flat color="white">
-        <v-toolbar-title class="font-weight-regular"
-          >Entrevista.</v-toolbar-title
-        >
+        <v-toolbar-title class="font-weight-regular">Entrevista.</v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
 
         <v-spacer></v-spacer>
@@ -27,7 +29,7 @@
         <v-tooltip v-if="rAtencionId != ''" bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              class="mx-2"
+              class="mx-2 pt-2"
               slot="activator"
               v-on="on"
               @click="dialog1 = true"
@@ -55,12 +57,10 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <v-flex xs12 sm12 md12 class="text-md-center">
-                      <p class="headline" v-if="!sirequirio">
+                      <p style="color: black !important;" class="headline" v-if="!sirequirio">
                         ¿Requiere medidas de contención para apoyo a la victima?
                       </p>
-                      <v-icon v-if="!sirequirio" style="font-size: 80px"
-                        >pan_tool</v-icon
-                      >
+                      <v-icon v-if="!sirequirio" style="font-size: 80px; color: black !important;">pan_tool</v-icon>
 
                       <v-select
                         name="servicio requerido"
@@ -606,7 +606,7 @@
                   <b class="titulo">BREVE NARRACION DE LOS HECHOS.</b>
                   <br />
                   <br />
-                  <p class="texto" v-html="reseña">{{ reseña }}</p>
+                  <p class="texto"><span v-html="reseña"></span>{{ reseña }}</p>
                   <br />
                   <br />
                   <br />
@@ -846,7 +846,7 @@
                   <b class="titulo">BREVE NARRACION DE LOS HECHOS.</b>
                   <br />
                   <br />
-                  <p class="texto" v-html="reseña">{{ reseña }}</p>
+                  <p class="texto"><span v-html="reseña"></span>{{ reseña }}</p>
                   <br />
                   <a class="texto"
                     ><strong>SE SUGIERE ACUDIR A: </strong
@@ -952,12 +952,14 @@ import n403 from './403.vue';
 import { error } from "util";
 import QRCode from "qrcode";
 import { generarQRCodeBase64 } from './crearQRRac';
+import UmixtaNavDrawer from './umixtaNavDrawer.vue'
 
 export default {
   components: {
     "vue2-editor": VueEditor,
     n401,
     n403,
+    UmixtaNavDrawer
   },
   data() {
     return {
@@ -1318,6 +1320,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var sparrays = "";
+      console.log("key modulo", me.$store.state)
       me.$conf
         .get(
           "api/SpPiLigaciones/ListarPertenecienteyGeneralSP/" +

@@ -98,7 +98,7 @@
             amaterno:'',
             alias:'',
             fnacimiento:'', 
-            edad:'',
+            edad:0,
             curp:'',
             //INFORMACION COMPLEMENTARIA
             medionotificacion:'',
@@ -151,7 +151,7 @@
             relacionado:'',
             relacion:false,
             poblacionafro:false,
-            edadf:'',
+            edadf: 0,
             presexuales:false,
             // DIRECCION PERSONAL
             noExt:'',
@@ -160,7 +160,7 @@
             entreCalle2:'',
             referencia:'',
             pais:'Mexico',
-            cp:'', 
+            cp:0, 
             message: 'no message',
             first_request: 'no request',
             second_request: 'no request',
@@ -221,331 +221,317 @@
         mounted() {
             this.geolocate();
         },
-    created () {
-        this.u_iddistrito=this.$store.state.usuario.iddistrito;
-        this.u_distrito=this.$store.state.usuario.distrito;
-        this.u_dirSubPro=this.$store.state.usuario.dirSubProc;
-        this.u_idagencia=this.$store.state.usuario.idagencia;
-        this.u_agencia=this.$store.state.usuario.agencia;
-        this.u_idmoduloservicio=this.$store.state.usuario.idmoduloservicio;
-        this.u_modulo=this.$store.state.usuario.modulo;
-        this.u_idusuario=this.$store.state.usuario.idusuario;
-        this.u_nombre=this.$store.state.usuario.usuario;
-        this.u_clave=this.$store.state.usuario.clave;
-        this.u_rol=this.$store.state.usuario.rol;
-        this.u_puesto=this.$store.state.usuario.puesto;
-        this.u_email=this.$store.state.usuario.email;
-        // DATOS GENERALES
-        this.listarTipoPersona();
-        this.listarSexo();
-        this.listarIdentificacion();
-        this.listarEstados();
-        this.listarRangoEdad();
-        // INFORMACION COMPLEMENTARIA
-        this.listarMedionotificacion();
-        this.listarNacionalidad();
-        this.listarEstadoCivil();
-        this.listarGenero();
-        this.listarOcupacion();
-        this.listarNivelEstudio();
-        this.listarLengua();
-        this.listarReligion();
-        this.listarDiscapacidad();
-        this.listarVialidad();
-        this.listarAsentamiento();
-        // DIRECCION PERSONAL
-         
-        this.listarCiudades();
-       
-         // Add a request interceptor
-        axios.interceptors.request.use( (config)=> {
-          // Do something before request is sent
-          this.$store.commit('LOADER',true);
-          return config;
-        }, (error)=> {
-          // Do something with request error
-          this.$store.commit('LOADER',false);
-          return Promise.reject(error);
-        });
+        created () {
+            this.u_iddistrito=this.$store.state.usuario.iddistrito;
+            this.u_distrito=this.$store.state.usuario.distrito;
+            this.u_dirSubPro=this.$store.state.usuario.dirSubProc;
+            this.u_idagencia=this.$store.state.usuario.idagencia;
+            this.u_agencia=this.$store.state.usuario.agencia;
+            this.u_idmoduloservicio=this.$store.state.usuario.idmoduloservicio;
+            this.u_modulo=this.$store.state.usuario.modulo;
+            this.u_idusuario=this.$store.state.usuario.idusuario;
+            this.u_nombre=this.$store.state.usuario.usuario;
+            this.u_clave=this.$store.state.usuario.clave;
+            this.u_rol=this.$store.state.usuario.rol;
+            this.u_puesto=this.$store.state.usuario.puesto;
+            this.u_email=this.$store.state.usuario.email;
+            // DATOS GENERALES
+            this.listarTipoPersona();
+            this.listarSexo();
+            this.listarIdentificacion();
+            this.listarEstados();
+            this.listarRangoEdad();
+            // INFORMACION COMPLEMENTARIA
+            this.listarMedionotificacion();
+            this.listarNacionalidad();
+            this.listarEstadoCivil();
+            this.listarGenero();
+            this.listarOcupacion();
+            this.listarNivelEstudio();
+            this.listarLengua();
+            this.listarReligion();
+            this.listarDiscapacidad();
+            this.listarVialidad();
+            this.listarAsentamiento();
+            // DIRECCION PERSONAL            
+            this.listarCiudades();     
 
-          // Add a response interceptor
-          axios.interceptors.response.use((response)=>{
-          this.$store.commit('LOADER',false);
-          // Do something with response data
-          return response;
-        },  (err)=> {
-        
-     // Do something with request error
-          this.$store.commit('LOADER',false);
-          return Promise.reject(error);
-        });
+            // Add a request interceptor
+            axios.interceptors.request.use( (config)=> {
+                // Do something before request is sent
+                this.$store.commit('LOADER',true);
+                return config;
+            }, (error)=> {
+                // Do something with request error
+                this.$store.commit('LOADER',false);
+                return Promise.reject(error);
+            });
 
-    },
+            // Add a response interceptor
+            axios.interceptors.response.use((response)=>{
+                this.$store.commit('LOADER',false);
+                // Do something with response data
+                return response;
+            },  (err)=> {
+                // Do something with request error
+                this.$store.commit('LOADER',false);
+                return Promise.reject(error);
+            });
+        },
 
-    computed: {
-        device: function() {
-            return this.devices.find(n => n.deviceId === this.deviceId);
+        computed: {
+            device: function() {
+                return this.devices.find(n => n.deviceId === this.deviceId);
             },
-        isInput3RequiredD() {
+            isInput3RequiredD() {
                 return ((this.nombres !== this.alias && this.datosprotegidos !== false) || (this.datosprotegidos !== false && this.apaterno !== '' ) ||
                     (this.rangoedad === 'INFANCIA (0 A 5 AÑOS)' && this.datosprotegidos === false) || (this.rangoedad === 'NIÑEZ (6 A 12 AÑOS)' && this.datosprotegidos === false) ||
                     (this.rangoedad === 'ADOLECENCIA (13 A 17 AÑOS)' && this.datosprotegidos === false))
-        }
-
+            }
         },
          
-    watch: {
-        camera: function(id) {
-            this.deviceId = id;
-        },
-        nombres: function(val) {
-            this.obtenerIniciales();
+        watch: {
+            camera: function(id) {
+                this.deviceId = id;
             },
-        apaterno: function(val) {
-            this.obtenerIniciales();
-            },
-        amaterno: function(val) {
-            this.obtenerIniciales();
-            },
-        datosprotegidos:  function(val) {
-            if(val && this.alias === ''){
+            nombres: function(val) {
                 this.obtenerIniciales();
-            }
             },
-        devices: function() {
-        // Once we have a list select the first one
-            const [first, ...tail] = this.devices;
-            if (first) {
-                this.camera = first.deviceId;
-                this.deviceId = first.deviceId;
+            apaterno: function(val) {
+                this.obtenerIniciales();
+            },
+            amaterno: function(val) {
+                this.obtenerIniciales();
+            },
+            datosprotegidos:  function(val) {
+                if(val && this.alias === ''){
+                    this.obtenerIniciales();
+                }
+            },
+            devices: function() {
+                // Once we have a list select the first one
+                const [first, ...tail] = this.devices;
+                if (first) {
+                    this.camera = first.deviceId;
+                    this.deviceId = first.deviceId;
+                }
+            },
+            clasificacionpersona(val){
+                if(val === 'Victima directa' && this.radios === 'Fisica'){
+                    this.requeridoPD = 'required';
+                }else if(val !== 'Victima directa'){
+                    this.requeridoPD = '';
+                    this.registro = false;
+                    this.verI = false;
+                    this.verR = false;
+                }
+            },
+            registro(valor){
+                if(valor === true){
+                    this.verI = true;
+                    this.verR = true;
+                } 
+                else if(valor ===  false){
+                    this.verI = false;
+                    this.verR = false;
+                }
+            },
+            RangoEdadTF(val){
+                if(!val){
+                    this.fnacimiento = '';
+                    this.$nextTick(() => {
+                        this.rangoedad = ''; // Se limpia después de que Vue actualice la interfaz
+                    });
+                }
+            },
+            relacion(val){
+                if(!val){
+                    this.relacionado = '';
+                }
+            },
+            switch1(val){
+                if(val){
+                    this.discapacidad = '';
+                }
+            },
+            switch2(val){
+                if(!val){
+                    this.radios = 'Fisica'
+                    this.limpiar();
+                }
+            },
+            presexuales(val){
+                if(!val){
+                    this.genero = '';
+                }
             }
         },
-        clasificacionpersona(val){
-            if(val === 'Victima directa' && this.radios === 'Fisica'){
-                this.requeridoPD = 'required';
-                
-            }else if(val !== 'Victima directa'){
-                this.requeridoPD = '';
-                this.registro = false;
-                this.verI = false;
-                this.verR = false;
-
-            }
-        },
-        registro(valor){
-            if(valor === true){
-                this.verI = true;
-                this.verR = true;
-            } 
-            else if(valor ===  false){
-                this.verI = false;
-                this.verR = false;
-            }
-        },
-        RangoEdadTF(val){
-            if(!val){
-                this.fnacimiento = '';
+        methods:{
+            doSomething: function() {
+                if(this.clikeado) {
+                    return;
+                }
+                this.clikeado = true;
+            },
+            obtenerIniciales() {
+                const inicialesNombre = this.nombres.charAt(0).toUpperCase();
+                const inicialesApellidop = this.apaterno.charAt(0).toUpperCase();
+                const inicialesApellidom = this.amaterno.charAt(0).toUpperCase();
+                if(this.datosprotegidos){
+                    this.alias = inicialesNombre +"."+ inicialesApellidop+"."+inicialesApellidom;
+                }
+            },
+            setPlace(place) {
+                this.markers= [],
+                this.places= [],
+                this.currentPlace = place;
+            },
+            addMarker() {
+                if (this.currentPlace) {
+                    const marker = {
+                        lat: this.currentPlace.geometry.location.lat(),
+                        lng: this.currentPlace.geometry.location.lng(),
+                    };
+                    this.markers.push({ position: marker });
+                    this.places.push(this.currentPlace);
+                    this.center = marker;
+                    this.currentPlace = null;
+                }
+            },
+            geolocate: function() {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.center = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                });
+            },
+            guardarGeolocalizacion(){
+                this.lat = this.center.lat;
+                this.lng = this.center.lng;
+                this.modalGeolocalizacion=0;
+            },
+            mostrarTP(){
+                this.verTP = 1;
+            },
+            ocultarTP (){
+                this.verTP = 0;
+            },
+            limpiar(){    
+                //-----------------------------------
+                this.statusActualizar=false;
+                this.lngaux = '';
+                this.lataux = '';
+                //---------------------------------
+                this.statusActualiza=false;
+                this.idPersona=0;
+                //************************************************************* */
+                //step no 1
+                this.radios= this.radios;
+                this.verTP=0;
+                this.rfc="";
+                this.razonsocial="";
+                this.clasificacionpersona="";
+                this.nombres="";
+                this.apaterno="";
+                this.amaterno="";
+                this.alias="";
+                this.fnacimiento="";
+                this.registro = [];
+                //---------------------------
                 this.$nextTick(() => {
-                    this.rangoedad = ''; // Se limpia después de que Vue actualice la interfaz
-                  });
-            }
-        },
-        relacion(val){
-            if(!val){
-                this.relacionado = '';
-            }
-        },
-        switch1(val){
-            if(val){
+                    this.rangoedad = '';
+                });
+                this.RangoEdadTF = false;
+                //------------------------
+                this.sexo="";
+                this.abreviacion="";
+                this.docidentificacion="";
+                this.curp="";
+                this.imageName="";
+                this.imageFile ="";
+                this.imageUrl ="";
+                this.relacion = false
+                this.poblacionafro = false;
+                this.relacionado = ""
+                this.edadf = 0
+                this.documentoacredita = ""
+                //************************************************************* */
+                //step no2
+                this.medionotificacion="";
+                this.telefono1="";
+                this.telefono2="";
+                this.correo="";
+                this.nacionalidad="Mexicana";
+                this.estadocivil="";
+                this.genero="";
+                this.verR=false;
+                this.verI=false;
+                this.nivelestudio="";
+                this.ocupacion="";
+                this.ocupacion2='';
+                this.lengua="";
+                this.religion="";
+                this.switch1= false,
+                this.tipoDiscapacidad="";
+                this.ruta='';
+                this.presexuales = false;
                 this.discapacidad = '';
-            }
-        },
-        switch2(val){
-            if(!val){
-                this.radios = 'Fisica'
-                this.limpiar();
-            }
-        },
-        presexuales(val){
-            if(!val){
-                this.genero = '';
-            }
-        }
-        
-    },
-    methods:{
-        doSomething: function() {
-            if(this.clikeado) {
-                return;
-            }
-            this.clikeado = true;
-        },
-        obtenerIniciales() {
-            const inicialesNombre = this.nombres.charAt(0).toUpperCase();
-            const inicialesApellidop = this.apaterno.charAt(0).toUpperCase();
-            const inicialesApellidom = this.amaterno.charAt(0).toUpperCase();
-            if(this.datosprotegidos){
-                this.alias = inicialesNombre +"."+ inicialesApellidop+"."+inicialesApellidom;
-            }
-            
-          },
-        setPlace(place) {
-            this.markers= [],
-            this.places= [],
-            this.currentPlace = place;
-        },
-        addMarker() {
-            if (this.currentPlace) {
-                const marker = {
-                    lat: this.currentPlace.geometry.location.lat(),
-                    lng: this.currentPlace.geometry.location.lng(), 
+                //************************************************************* */
+                //step no3
+                this.vialidad="";
+                this.calle="";
+                this.noInt="";
+                this.noExt="";
+                this.entreCalle1="";
+                this.entreCalle2="";
+                this.referencia="";
+                this.pais="Mexico";
+                this.estadoid="";
+                this.municipioid="";
+                this.localidadid=""; 
+                this.asentamiento="";
+                this.cp=""; 
+                this.$validator.reset();
+                this.step=1;
+                this.datosprotegidos = false;
+                this.markers= [];
+                this.places= [];
+                this.lat = '';
+                this.lng = '';
+                //------------------------------------------------------------------
+            },
+            // STEP 1 CAPTURA DE DATOS
+            validarEdad(){
+                let me = this;
+                var date = moment(me.fnacimiento, 'DD/MM/YYYY');
+                me.edad = moment().diff(date, 'years', false);
 
-                };
-                this.markers.push({ position: marker });
-                this.places.push(this.currentPlace);
-                this.center = marker;
-                this.currentPlace = null;
-            }
-        },
-        geolocate: function() {
-            navigator.geolocation.getCurrentPosition(position => {
-                this.center = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude, 
-            
-                };
-            });
-        },
-        guardarGeolocalizacion(){
-            this.lat = this.center.lat;
-            this.lng = this.center.lng;
-            this.modalGeolocalizacion=0;
-      
-        },
-        mostrarTP(){
-            this.verTP = 1;
-        },
-        ocultarTP (){
-            this.verTP = 0;
-        },
-        limpiar(){    
-            //-----------------------------------
-            this.statusActualizar=false;
-            this.lngaux = '';
-            this.lataux = '';
-            //---------------------------------
-            this.statusActualiza=false;
-            this.idPersona=0;
-            //************************************************************* */
-            //step no 1
-            this.radios= this.radios;
-            this.verTP=0;
-            this.rfc="";
-            this.razonsocial="";
-            this.clasificacionpersona="";
-            this.nombres="";
-            this.apaterno="";
-            this.amaterno="";
-            this.alias="";
-            this.fnacimiento="";
-            this.registro = [];
-            //---------------------------
-            this.$nextTick(() => {
-                this.rangoedad = '';
-              });
-            this.RangoEdadTF = false;
-            //------------------------
-            this.sexo="";
-            this.abreviacion="";
-            this.docidentificacion="";
-            this.curp="";
-            this.imageName="";
-            this.imageFile ="";
-            this.imageUrl ="";
-            this.relacion = false
-            this.poblacionafro = false;
-            this.relacionado = ""
-            this.edadf = ""
-            this.documentoacredita = ""
-            //************************************************************* */
-            //step no2
-            this.medionotificacion="";
-            this.telefono1="";
-            this.telefono2="";
-            this.correo="";
-            this.nacionalidad="Mexicana";
-            this.estadocivil="";
-            this.genero="";
-            this.verR=false;
-            this.verI=false;
-            this.nivelestudio="";
-            this.ocupacion="";
-            this.ocupacion2='';
-            this.lengua="";
-            this.religion="";
-            this.switch1= false,
-            this.tipoDiscapacidad="";
-            this.ruta='';
-            this.presexuales = false;
-            this.discapacidad = '';
-            //************************************************************* */
-            //step no3
-            this.vialidad="";
-            this.calle="";
-            this.noInt="";
-            this.noExt="";
-            this.entreCalle1="";
-            this.entreCalle2="";
-            this.referencia="";
-            this.pais="Mexico";
-            this.estadoid="";
-            this.municipioid="";
-            this.localidadid=""; 
-            this.asentamiento="";
-            this.cp=""; 
-            this.$validator.reset();
-            this.step=1;
-            this.datosprotegidos = false;
-            this.markers= [];
-            this.places= [];
-            this.lat = '';
-            this.lng = '';
-            //------------------------------------------------------------------
-            
-        },
-        // STEP 1 CAPTURA DE DATOS
-        validarEdad(){
-           
-            let me = this;
-            var date = moment(me.fnacimiento, 'DD/MM/YYYY');
-            me.edad = moment().diff(date, 'years',false);
-
-            if (me.edad < 18){
-              if (me.clasificacionpersona==='Victima directa'){
-                     me.dialog1 = true;
-              }
-            }
-        },
-        generaredad(){
-            var date = moment(this.fnacimiento, 'DD/MM/YYYY');
-            return moment().diff(date, 'years',false);
-        },
-        enviarAEPA(){
-            let me = this;
-            me.dialog1 = false; 
-
-        },
-        listarTipoPersona(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var clasificacionpersonaArray=[];
-            this.$conf.get('api/ClasificacionPersonas/Listar',configuracion).then(function(response){
-                clasificacionpersonaArray=response.data;
-                clasificacionpersonaArray.map(function(x){
-                    me.clasificacionpersonas.push({text: x.nombre,value: x.nombre});
-                });
-             }).catch(err => { 
+                if (me.edad < 18){
+                    if (me.clasificacionpersona==='Victima directa'){
+                        me.dialog1 = true;
+                    }
+                }
+            },
+            generaredad(){
+                var date = moment(this.fnacimiento, 'DD/MM/YYYY');
+                return moment().diff(date, 'years', false);
+            },
+            enviarAEPA(){
+                let me = this;
+                me.dialog1 = false;
+            },
+            listarTipoPersona(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var clasificacionpersonaArray=[];
+                this.$conf.get('api/ClasificacionPersonas/Listar',configuracion).then(function(response){
+                    clasificacionpersonaArray=response.data;
+                    clasificacionpersonaArray.map(function(x){
+                        me.clasificacionpersonas.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -561,19 +547,19 @@
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
-            });
-        }, 
-        listarSexo(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var sexoArray=[];
-            this.$conf.get('api/Sexoes/Listar',configuracion).then(function(response){
-                sexoArray=response.data;
-                sexoArray.map(function(x){
-                    me.sexos.push({text: x.nombre,value: x.clave});
                 });
-             }).catch(err => { 
+            }, 
+            listarSexo(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var sexoArray=[];
+                this.$conf.get('api/Sexoes/Listar',configuracion).then(function(response){
+                    sexoArray=response.data;
+                    sexoArray.map(function(x){
+                        me.sexos.push({text: x.nombre,value: x.clave});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -588,20 +574,20 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        listarRangoEdad(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var edadesArray=[];
-            this.$conf.get('api/Rangoedad/Listar',configuracion).then(function(response){
-                edadesArray=response.data;
-                edadesArray.map(function(x){
-                    me.rangosedad.push({text: x.rango,value: x.rango,value2: x.ordenEdad});
+                    }
                 });
-            }).catch(err => {
+            },
+            listarRangoEdad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var edadesArray=[];
+                this.$conf.get('api/Rangoedad/Listar',configuracion).then(function(response){
+                    edadesArray=response.data;
+                    edadesArray.map(function(x){
+                        me.rangosedad.push({text: x.rango,value: x.rango,value2: x.ordenEdad});
+                    });
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -618,20 +604,19 @@
                         me.$notify('Error al intentar listar los registros','error')
                     }
                 });
-        },
-
-        listarEstados(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var estadosArray=[]; 
-            this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
-                estadosArray=response.data;
-                estadosArray.map(function(x){
-                    me.estados.push({text: x.nombre, value: x.abreviacion});
-                    
-                });
-            }).catch(err => { 
+            },
+            listarEstados(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var estadosArray=[]; 
+                this.$conf.get('api/Estadoes/Listar',configuracion).then(function(response){
+                    estadosArray=response.data;
+                    estadosArray.map(function(x){
+                        me.estados.push({text: x.nombre, value: x.abreviacion});
+                        
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -646,19 +631,19 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        listarIdentificacion(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var docIdentificaionArray=[];
-            this.$conf.get('api/DocIdentificacions/Listar',configuracion).then(function(response){
-                docIdentificaionArray=response.data;
-                docIdentificaionArray.map(function(x){
-                    me.docsidentificaciones.push({text: x.nombre,value: x.nombre});
+                    }
                 });
+            },
+            listarIdentificacion(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var docIdentificaionArray=[];
+                this.$conf.get('api/DocIdentificacions/Listar',configuracion).then(function(response){
+                    docIdentificaionArray=response.data;
+                    docIdentificaionArray.map(function(x){
+                        me.docsidentificaciones.push({text: x.nombre,value: x.nombre});
+                    });
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -676,45 +661,37 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-        },
-        generarcurp(){
-            let me=this;
-            var str = me.fnacimiento;
-            var res = str.split("/"); 
-            var curpstr = curp({
-                nombre: me.nombres,
-                apellido_paterno: me.apaterno,
-                apellido_materno: me.amaterno,
-                sexo: me.sexo,
-                estado: me.abreviacion.value, 
-                fecha_nacimiento: res
-            }); 
-            
-            this.curp = curpstr; 
-            
-            
-            
-
-        },  
-        validadduplicidad(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            this.$cat.post('api/Personas/BuscarPersonaNombreApellidoPa/',
-            {
-                materno:me.amaterno,
-                nombre:me.nombres,
-                alias:me.alias,
-                paterno:me.apaterno,
-                curp:me.curp
-                
-            }
-            
-            ,configuracion).then(function(response){ 
-                me.hechos=response.data;
-                me.modalduplicidad=true;
-
-            }).catch(err => { 
+            },
+            generarcurp(){
+                let me=this;
+                var str = me.fnacimiento;
+                var res = str.split("/"); 
+                var curpstr = curp({
+                    nombre: me.nombres,
+                    apellido_paterno: me.apaterno,
+                    apellido_materno: me.amaterno,
+                    sexo: me.sexo,
+                    estado: me.abreviacion.value,
+                    fecha_nacimiento: res
+                });
+                this.curp = curpstr;
+            },  
+            validadduplicidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$cat.post('api/Personas/BuscarPersonaNombreApellidoPa/',
+                {
+                    materno:me.amaterno,
+                    nombre:me.nombres,
+                    alias:me.alias,
+                    paterno:me.apaterno,
+                    curp:me.curp
+                }
+                ,configuracion).then(function(response){ 
+                    me.hechos=response.data;
+                    me.modalduplicidad=true;
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -729,72 +706,71 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        cerrarModalDuplicidad(){
-            
-            this.hechos=[];
-            this.modalduplicidad= false;
-        },
-        onCapture() {
-        this.imageUrl = this.$refs.webcam.capture();  
-        var blob =  this.dataURItoBlob(this.imageUrl, 'image/jpg'); 
-        var file = new File([blob], 'Documento.jpg', {type: 'image/jpg', lastModified: Date.now()});
-        this.imageFile = file
-        this.imageName = this.imageFile.name; 
-        },
-        dataURItoBlob(dataURI, type) {
-            // convertir base64 to raw binary data held in a string
-            var byteString = atob(dataURI.split(',')[1]);
-
-            // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-            // write the bytes of the string to an ArrayBuffer
-            var ab = new ArrayBuffer(byteString.length);
-            var ia = new Uint8Array(ab);
-            for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-
-            // write the ArrayBuffer to a blob, and you're done
-            var bb = new Blob([ab], { type: type });
-            return bb;
-        },
-        onStarted(stream) {
-        },
-        onStopped(stream) {
-        },
-        onStop() {
-            this.$refs.webcam.stop();
-        },
-        onStart() {
-            this.$refs.webcam.start();
-        },
-        onError(error) {
-        },
-        onCameras(cameras) {
-            this.devices = cameras;
-        },
-        onClose () {
-            this.dialog = false; 
-        },    
-        onCameraChange(deviceId) {
-            this.deviceId = deviceId;
-            this.camera = deviceId;
-        }, 
-        // STEP 2 INFORMACION COMPLEMENTARIA
-        listarMedionotificacion(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var medionotificacionArray=[]; 
-            this.$conf.get('api/MedioNotificacions/Listar',configuracion).then(function(response){
-                medionotificacionArray=response.data;
-                medionotificacionArray.map(function(x){
-                    me.medionotificaciones.push({text: x.nombre,value: x.nombre});
+                    }
                 });
+            },
+            cerrarModalDuplicidad(){
+                this.hechos=[];
+                this.modalduplicidad= false;
+            },
+            onCapture() {
+                this.imageUrl = this.$refs.webcam.capture();  
+                var blob =  this.dataURItoBlob(this.imageUrl, 'image/jpg'); 
+                var file = new File([blob], 'Documento.jpg', {type: 'image/jpg', lastModified: Date.now()});
+                this.imageFile = file
+                this.imageName = this.imageFile.name; 
+            },
+            dataURItoBlob(dataURI, type) {
+                // convertir base64 to raw binary data held in a string
+                var byteString = atob(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+                // write the bytes of the string to an ArrayBuffer
+                var ab = new ArrayBuffer(byteString.length);
+                var ia = new Uint8Array(ab);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                // write the ArrayBuffer to a blob, and you're done
+                var bb = new Blob([ab], { type: type });
+                return bb;
+            },
+            onStarted(stream) {
+            },
+            onStopped(stream) {
+            },
+            onStop() {
+                this.$refs.webcam.stop();
+            },
+            onStart() {
+                this.$refs.webcam.start();
+            },
+            onError(error) {
+            },
+            onCameras(cameras) {
+                this.devices = cameras;
+            },
+            onClose () {
+                this.dialog = false; 
+            },    
+            onCameraChange(deviceId) {
+                this.deviceId = deviceId;
+                this.camera = deviceId;
+            }, 
+            // STEP 2 INFORMACION COMPLEMENTARIA
+            listarMedionotificacion(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var medionotificacionArray=[]; 
+                this.$conf.get('api/MedioNotificacions/Listar',configuracion).then(function(response){
+                    medionotificacionArray=response.data;
+                    medionotificacionArray.map(function(x){
+                        me.medionotificaciones.push({text: x.nombre,value: x.nombre});
+                    });
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -812,18 +788,46 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-        },
-        listarNacionalidad(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var nacionalidadArray=[]; 
-            this.$conf.get('api/Nacionalidads/Listar',configuracion).then(function(response){
-                nacionalidadArray=response.data;
-                nacionalidadArray.map(function(x){
-                    me.nacionalidades.push({text: x.nombre,value: x.nombre});
+            },
+            listarNacionalidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var nacionalidadArray=[]; 
+                this.$conf.get('api/Nacionalidads/Listar',configuracion).then(function(response){
+                    nacionalidadArray=response.data;
+                    nacionalidadArray.map(function(x){
+                        me.nacionalidades.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){ 
+                        me.$notify("No esta autorizado para ver esta página", 'error')
+                        me.e403= true
+                        me.showpage= false 
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros','error')    
+                    }
                 });
-            }).catch(err => { 
+            },
+            listarEstadoCivil(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var estadocivilArray=[]; 
+                this.$conf.get('api/EstadoCivils/Listar',configuracion).then(function(response){
+                    estadocivilArray=response.data;
+                    estadocivilArray.map(function(x){
+                        me.estadosciviles.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -838,20 +842,20 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        listarEstadoCivil(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var estadocivilArray=[]; 
-            this.$conf.get('api/EstadoCivils/Listar',configuracion).then(function(response){
-                estadocivilArray=response.data;
-                estadocivilArray.map(function(x){
-                    me.estadosciviles.push({text: x.nombre,value: x.nombre});
+                    }
                 });
-            }).catch(err => { 
+            },
+            listarGenero(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var generoArray=[]; 
+                this.$conf.get('api/Generoes/Listar',configuracion).then(function(response){
+                    generoArray=response.data;
+                    generoArray.map(function(x){
+                        me.generos.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -866,20 +870,20 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        listarGenero(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var generoArray=[]; 
-            this.$conf.get('api/Generoes/Listar',configuracion).then(function(response){
-                generoArray=response.data;
-                generoArray.map(function(x){
-                    me.generos.push({text: x.nombre,value: x.nombre});
+                    }
                 });
-            }).catch(err => { 
+            },
+            listarOcupacion(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var ocupacionArray=[]; 
+                this.$conf.get('api/Ocupacions/Listar',configuracion).then(function(response){
+                    ocupacionArray=response.data;
+                    ocupacionArray.map(function(x){
+                        me.ocupaciones.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -894,76 +898,48 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },
-        listarOcupacion(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var ocupacionArray=[]; 
-            this.$conf.get('api/Ocupacions/Listar',configuracion).then(function(response){
-                ocupacionArray=response.data;
-                ocupacionArray.map(function(x){
-                    me.ocupaciones.push({text: x.nombre,value: x.nombre});
+                    }
                 });
-            }).catch(err => { 
+            },  
+            listarNivelEstudio(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var nivelestudioArray=[]; 
+                this.$conf.get('api/NivelEstudios/Listar',configuracion).then(function(response){
+                    nivelestudioArray=response.data;
+                    nivelestudioArray.map(function(x){
+                        me.nivelestudios.push({text: x.nombre,value: x.nombre});
+                    });     
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
                         me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
                         me.e401 = true,
                         me.showpage= false
-                    } else if (err.response.status==403){ 
+                    } else if (err.response.status==403){
                         me.$notify("No esta autorizado para ver esta página", 'error')
                         me.e403= true
-                        me.showpage= false 
-                    } else if (err.response.status==404){
-                        me.$notify("El recuso no ha sido encontrado", 'error')
-                    }else{
-                        me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },  
-        listarNivelEstudio(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var nivelestudioArray=[]; 
-            this.$conf.get('api/NivelEstudios/Listar',configuracion).then(function(response){
-                nivelestudioArray=response.data;
-                nivelestudioArray.map(function(x){
-                    me.nivelestudios.push({text: x.nombre,value: x.nombre});
-                });     
-            }).catch(err => { 
-                    if (err.response.status==400){
-                        me.$notify("No es un usuario válido", 'error')
-                    } else if (err.response.status==401){
-                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                        me.e401 = true,
                         me.showpage= false
-                    } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta página", 'error')
-                        me.e403= true
-                        me.showpage= false 
                     } else if (err.response.status==404){
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },  
-        listarLengua(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var lenguaArray=[]; 
-            this.$conf.get('api/Lenguas/Listar',configuracion).then(function(response){
-                lenguaArray=response.data;
-                lenguaArray.map(function(x){
-                    me.lenguas.push({text: x.nombre,value: x.nombre});
+                    }
                 });
-            }).catch(err => { 
+            },  
+            listarLengua(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var lenguaArray=[]; 
+                this.$conf.get('api/Lenguas/Listar',configuracion).then(function(response){
+                    lenguaArray=response.data;
+                    lenguaArray.map(function(x){
+                        me.lenguas.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -978,20 +954,20 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        },  
-        listarReligion(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var religionArray=[]; 
-            this.$conf.get('api/Religions/Listar',configuracion).then(function(response){
-                religionArray=response.data;
-                religionArray.map(function(x){
-                    me.religiones.push({text: x.nombre,value: x.nombre});
+                    }
                 });
-            }).catch(err => { 
+            },  
+            listarReligion(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var religionArray=[]; 
+                this.$conf.get('api/Religions/Listar',configuracion).then(function(response){
+                    religionArray=response.data;
+                    religionArray.map(function(x){
+                        me.religiones.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1007,19 +983,19 @@
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
-            });
-        }, 
-        listarDiscapacidad(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var discapacidadArray=[]; 
-            this.$conf.get('api/Discapacidads/Listar',configuracion).then(function(response){
-                discapacidadArray=response.data;
-                discapacidadArray.map(function(x){
-                    me.discapaciodades.push({text: x.nombre,value: x.nombre});
                 });
-            }).catch(err => { 
+            }, 
+            listarDiscapacidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var discapacidadArray=[]; 
+                this.$conf.get('api/Discapacidads/Listar',configuracion).then(function(response){
+                    discapacidadArray=response.data;
+                    discapacidadArray.map(function(x){
+                        me.discapaciodades.push({text: x.nombre,value: x.nombre});
+                    });
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1035,11 +1011,10 @@
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
-            });
-        },  
-        // STEP 3 DIRECCION PERSONAL
-        
-        listarCiudades(){
+                });
+            },  
+            // STEP 3 DIRECCION PERSONAL        
+            listarCiudades(){
                 let me=this; 
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header}; 
@@ -1047,10 +1022,37 @@
                 this.$conf.get('api/Estadoes/Mostrar',configuracion).then(function(response){ 
                     ciudadesArray=response.data; 
                     ciudadesArray.map(function(x){
-                        me.ciudades.push({text: x.nombre, value:x.idEstado}); 
-                        
+                        me.ciudades.push({text: x.nombre, value:x.idEstado});
                     });   
-               }).catch(err => { 
+                }).catch(err => { 
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){ 
+                        me.$notify("No esta autorizado para ver esta página", 'error')
+                        me.e403= true
+                        me.showpage= false 
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros','error')    
+                    } 
+                });  
+            },            
+            listarCiudades(){
+                let me=this;  
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var ciudadesArray=[];
+                this.$conf.get('api/Estadoes/Mostrar',configuracion).then(function(response){ 
+                    ciudadesArray=response.data; 
+                    ciudadesArray.map(function(x){
+                        me.ciudades.push({text: x.nombre, value:x.idEstado});  
+                    });   
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1067,50 +1069,20 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-                
-        },
-        
-        listarCiudades(){
-            let me=this;  
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var ciudadesArray=[];
-            this.$conf.get('api/Estadoes/Mostrar',configuracion).then(function(response){ 
-                ciudadesArray=response.data; 
-                ciudadesArray.map(function(x){
-                    me.ciudades.push({text: x.nombre, value:x.idEstado});  
-                });   
-            }).catch(err => { 
-                    if (err.response.status==400){
-                        me.$notify("No es un usuario válido", 'error')
-                    } else if (err.response.status==401){
-                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                        me.e401 = true,
-                        me.showpage= false
-                    } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta página", 'error')
-                        me.e403= true
-                        me.showpage= false 
-                    } else if (err.response.status==404){
-                        me.$notify("El recuso no ha sido encontrado", 'error')
-                    }else{
-                        me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        }, 
-        listarPorEstado() {
-            let me=this;  
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            if (!me.estadoid.value== 0){
-                me.estado = me.estadoid.text;
-                me.estadoid = me.estadoid.value;
-                  me.municipio = '';
-                me.municipioid = '';
-                me.localidad = '';
-                me.localidadid = '';
-                me.cp = '';
-            }
+            }, 
+            listarPorEstado() {
+                let me=this;  
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                if (!me.estadoid.value== 0){
+                    me.estado = me.estadoid.text;
+                    me.estadoid = me.estadoid.value;
+                    me.municipio = '';
+                    me.municipioid = '';
+                    me.localidad = '';
+                    me.localidadid = '';
+                    me.cp = '';
+                }
                 var municipiosArray=[];
                 me.municipios.length = 0;
                 this.$conf.get('api/Municipios/ListarPorEstado/'+ me.estadoid,configuracion).then(function(response){
@@ -1118,11 +1090,52 @@
                     municipiosArray=response.data;
                 
                     municipiosArray.map(function(x){
-                    me.municipios.push({text: x.nombre,value: x.idMunicipio});  
+                        me.municipios.push({text: x.nombre,value: x.idMunicipio});  
                     }); 
-                   if (me.idPersona > 0){
-                     me.selectMunicipio(me.municipio);
+                    if (me.idPersona > 0){
+                        me.selectMunicipio(me.municipio);
+                    }
+                }).catch(err => { 
+                    if (err.response.status==400){
+                        me.$notify("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){ 
+                        me.$notify("No esta autorizado para ver esta página", 'error')
+                        me.e403= true
+                        me.showpage= false 
+                    } else if (err.response.status==404){
+                        me.$notify("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.$notify('Error al intentar listar los registros','error')    
+                    } 
+                });    
+            },
+            listarPorMunicipio(){
+                let me=this; 
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                if (!me.municipioid.value== 0){
+                    me.municipio = me.municipioid.text;
+                    me.municipioid = me.municipioid.value;
+                    me.localidad = '';
+                    me.localidadid = '';
+                    me.cp = '';
+                }else if (!me.municipioid) {
+                    return;
                 }
+                var localidadArray=[];
+                me.localidades.length = 0;
+                this.$conf.get('api/Localidads/MostrarPorMPO/' + me.municipioid,configuracion).then(function(response){
+                    localidadArray=response.data;  
+                    localidadArray.map(function(x){
+                        me.localidades.push({text: x.nombre,value: x.idLocalidad});     
+                    });
+                    if (me.idPersona > 0){
+                        me.selectLocalidad(me.localidad);
+                    }
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -1140,34 +1153,20 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-               
-                
-        },
-        listarPorMunicipio(){
-            let me=this; 
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            if (!me.municipioid.value== 0){
-                me.municipio = me.municipioid.text;
-                me.municipioid = me.municipioid.value;
-                me.localidad = '';
-                me.localidadid = '';
-                me.cp = '';
-            }else if (!me.municipioid) {
-                return;
-            }
-
-            var localidadArray=[];
-            me.localidades.length = 0;
-            this.$conf.get('api/Localidads/MostrarPorMPO/' + me.municipioid,configuracion).then(function(response){
-                localidadArray=response.data;  
-                localidadArray.map(function(x){
-                    me.localidades.push({text: x.nombre,value: x.idLocalidad});     
-                });
-                 if (me.idPersona > 0){
-                      me.selectLocalidad(me.localidad);
+            }, 
+            listarPorLocalidad(){
+                let me=this;  
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                if (!me.localidadid.value == 0) {
+                    me.localidad = me.localidadid.text;
+                    me.localidadid = me.localidadid.value;
+                } else if (!me.localidadid) {
+                    return;
                 }
-            }).catch(err => { 
+                this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response){
+                    me.cp=response.data.cp;
+                }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1182,51 +1181,18 @@
                         me.$notify("El recuso no ha sido encontrado", 'error')
                     }else{
                         me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-      
-          
-        }, 
-        listarPorLocalidad(){
-            let me=this;  
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            if (!me.localidadid.value == 0) {
-                me.localidad = me.localidadid.text;
-                me.localidadid = me.localidadid.value;
-            } else if (!me.localidadid) {
-                return;
-            }
-            this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadid,configuracion).then(function(response){
-                  me.cp=response.data.cp;    
-                
-            }).catch(err => { 
-                    if (err.response.status==400){
-                        me.$notify("No es un usuario válido", 'error')
-                    } else if (err.response.status==401){
-                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                        me.e401 = true,
-                        me.showpage= false
-                    } else if (err.response.status==403){ 
-                        me.$notify("No esta autorizado para ver esta página", 'error')
-                        me.e403= true
-                        me.showpage= false 
-                    } else if (err.response.status==404){
-                        me.$notify("El recuso no ha sido encontrado", 'error')
-                    }else{
-                        me.$notify('Error al intentar listar los registros','error')    
-                    } 
-            });
-        }, 
-        buscarPorCP(){
-            let me=this;  
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            this.$conf.get('api/Localidads/MostrarPorCP/' + me.cp,configuracion).then(function(response){ 
-                  me.estadoid=response.data.idEstado;    
-                  me.listarPorEstado();
-                  me.municipioid=response.data.idMunicipio;   
-                  me.buscarPorCpMpo() 
+                    }
+                });
+            }, 
+            buscarPorCP(){
+                let me=this;  
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Localidads/MostrarPorCP/' + me.cp,configuracion).then(function(response){ 
+                    me.estadoid=response.data.idEstado;    
+                    me.listarPorEstado();
+                    me.municipioid=response.data.idMunicipio;   
+                    me.buscarPorCpMpo() 
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -1244,18 +1210,18 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-        }, 
-        buscarPorCpMpo(){ 
-            let me=this; 
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            var localidadArray=[];
-            me.localidades.length = 0;
-             this.$conf.get('api/Localidads/MostrarPorCPMpo/' + me.municipioid +',' + this.cp,configuracion).then(function(response){ 
-                localidadArray=response.data;  
-                localidadArray.map(function(x){
-                    me.localidades.push({text: x.nombre,value: x.idLocalidad}); 
-                });
+            }, 
+            buscarPorCpMpo(){ 
+                let me=this; 
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                var localidadArray=[];
+                me.localidades.length = 0;
+                this.$conf.get('api/Localidads/MostrarPorCPMpo/' + me.municipioid +',' + this.cp,configuracion).then(function(response){ 
+                    localidadArray=response.data;  
+                    localidadArray.map(function(x){
+                        me.localidades.push({text: x.nombre,value: x.idLocalidad}); 
+                    });
                 }).catch(err => { 
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
@@ -1273,46 +1239,45 @@
                         me.$notify('Error al intentar listar los registros','error')    
                     } 
                 });
-        }, 
-        selectEstado: function(val) {  
-            let me=this;    
-            for (var i = 0; i < me.ciudades.length; i++) {
-                if (me.ciudades[i].text === val)
-                {
-                    me.estadoid=  me.ciudades[i].value; 
+            }, 
+            selectEstado: function(val) {  
+                let me=this;    
+                for (var i = 0; i < me.ciudades.length; i++) {
+                    if (me.ciudades[i].text === val)
+                    {
+                        me.estadoid=  me.ciudades[i].value; 
+                    }
                 }
-            }
-            me.listarPorEstado();
-        },
-        selectMunicipio: function(val) { 
+                me.listarPorEstado();
+            },
+            selectMunicipio: function(val) { 
+                let me=this; 
+                for (var i = 0; i < me.municipios.length; i++) {
+                    if (me.municipios[i].text === val){
+                        me.municipioid=  me.municipios[i].value; 
+                    }   
+                } 
+            me.listarPorMunicipio();
+            },
+            selectLocalidad: function(val) { 
             let me=this; 
-            for (var i = 0; i < me.municipios.length; i++) {
-                if (me.municipios[i].text === val){
-                     me.municipioid=  me.municipios[i].value; 
-                }   
-            } 
-          me.listarPorMunicipio();
-        },
-        selectLocalidad: function(val) { 
-           let me=this; 
-            for (var i = 0; i < me.localidades.length; i++) {
-                if (me.localidades[i].text === val)
-                {
-                    me.localidadid=  me.localidades[i].value; 
-                }  
-            } 
-        },
-        
-        listarVialidad(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
-                response.data.forEach(x => {
-                    const item = {text: x.nombre, value: x.clave};
-                    me.vialidades.push(item);
-                });
-            }).catch(err => {
+                for (var i = 0; i < me.localidades.length; i++) {
+                    if (me.localidades[i].text === val)
+                    {
+                        me.localidadid=  me.localidades[i].value; 
+                    }  
+                } 
+            },
+            listarVialidad(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Vialidades/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.vialidades.push(item);
+                    });
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1329,18 +1294,17 @@
                         me.$notify('Error al intentar listar los registros','error')
                     }
                 });
-        },
-
-        listarAsentamiento(){
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-            this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
-                response.data.forEach(x => {
-                    const item = {text: x.nombre, value: x.clave};
-                    me.asentamientos.push(item);
-                });
-            }).catch(err => {
+            },
+            listarAsentamiento(){
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                this.$conf.get('api/Asentamiento/Listar',configuracion).then(function(response){
+                    response.data.forEach(x => {
+                        const item = {text: x.nombre, value: x.clave};
+                        me.asentamientos.push(item);
+                    });
+                }).catch(err => {
                     if (err.response.status==400){
                         me.$notify("No es un usuario válido", 'error')
                     } else if (err.response.status==401){
@@ -1357,73 +1321,67 @@
                         me.$notify('Error al intentar listar los registros','error')
                     }
                 });
-        },
-
-        //--------------------------------------------------------------------
-        btn_geoloc2(){
-            
-            if(this.estado !='' && this.municipio != '' && this.localidad != '' && this.calle != ''){
-                if(this.lat == '' && this.lng == ''){
-                    this.geoloc=2;
-                    this.modalGeolocalizacion = 1;
-                    this.lugar = this.calle+" "+ this.localidad+" "+this.municipio+" "+this.estado
-                    this.listener();
-                    this.addMarkergeocoder();
-                }else{
-                    this.geoloc=2;
-                    this.modalGeolocalizacion = 1;
-                }    
-            }else
-                this.$notify("Los siguientes campos son requeridos para la geolocalización: estado, municipio, localidad, calle",'error')
-
-                   
-        }, 
-        listener(){
-            //input.focus();
-            let me = this;  
-            var map = new google.maps.Map(document.getElementById('mapa'));
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode( { 'address': this.calle+" "+ this.localidad+" "+this.municipio+" "+this.estado}, function(results, status) {
-                if (status == 'OK') {
-                    me.center.lat =+ results[0].geometry.location.lat()
-                    me.center.lng =+ results[0].geometry.location.lng()
-
-                } else {
-                    alert('La dirección no fue encontrada' + status);
-                }
-            })
-        },
-        addMarkergeocoder() {
-                    const marker = {
-                        lat: this.center.lat,
-                        lng: this.center.lng, 
-                    };
-                    this.markers =[]
-                    this.places = []
-                    this.markers.push({ position: marker });
-                    this.places.push(this.currentPlace);
-                    this.center = marker;
-                    this.currentPlace = null;                 
-        },
-        updateCoordinates(location) {
-            this.lataux = location.latLng.lat()
-            this.lngaux = location.latLng.lng()
-        },
-        updatecenter(){
-            this.center.lat = this.lataux;
-            this.center.lng = this.lngaux;
-        },
-        btn_geoloc1(){
-            this.geoloc=1;
-            this.modalGeolocalizacion = 1;
-        },
-        
-        setPlace(place) {
+            },
+            //--------------------------------------------------------------------
+            btn_geoloc2(){
+                if(this.estado !='' && this.municipio != '' && this.localidad != '' && this.calle != ''){
+                    if(this.lat == '' && this.lng == ''){
+                        this.geoloc=2;
+                        this.modalGeolocalizacion = 1;
+                        this.lugar = this.calle+" "+ this.localidad+" "+this.municipio+" "+this.estado
+                        this.listener();
+                        this.addMarkergeocoder();
+                    }else{
+                        this.geoloc=2;
+                        this.modalGeolocalizacion = 1;
+                    }    
+                }else
+                    this.$notify("Los siguientes campos son requeridos para la geolocalización: estado, municipio, localidad, calle",'error')   
+            }, 
+            listener(){
+                //input.focus();
+                let me = this;  
+                var map = new google.maps.Map(document.getElementById('mapa'));
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode( { 'address': this.calle+" "+ this.localidad+" "+this.municipio+" "+this.estado}, function(results, status) {
+                    if (status == 'OK') {
+                        me.center.lat =+ results[0].geometry.location.lat()
+                        me.center.lng =+ results[0].geometry.location.lng()
+                    } else {
+                        alert('La dirección no fue encontrada' + status);
+                    }
+                })
+            },
+            addMarkergeocoder() {
+                const marker = {
+                    lat: this.center.lat,
+                    lng: this.center.lng, 
+                };
+                this.markers =[]
+                this.places = []
+                this.markers.push({ position: marker });
+                this.places.push(this.currentPlace);
+                this.center = marker;
+                this.currentPlace = null;                 
+            },
+            updateCoordinates(location) {
+                this.lataux = location.latLng.lat()
+                this.lngaux = location.latLng.lng()
+            },
+            updatecenter(){
+                this.center.lat = this.lataux;
+                this.center.lng = this.lngaux;
+            },
+            btn_geoloc1(){
+                this.geoloc=1;
+                this.modalGeolocalizacion = 1;
+            },
+            setPlace(place) {
                 this.markers= [],
                 this.places= [],
                 this.currentPlace = place;
-        },
-        addMarker() {
+            },
+            addMarker() {
                 if (this.currentPlace) {
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
@@ -1434,222 +1392,214 @@
                     this.places.push(this.currentPlace);
                     this.center = marker;
                     this.currentPlace = null;
-                    }
-        },     
-        geolocate: function() {
-            navigator.geolocation.getCurrentPosition(position => {
-                this.center = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude, 
-            
-                };
-            });
-        },
-        guardarGeolocalizacion(){
-            if(this.geoloc==2){
-                if(this.lataux != '' && this.lngaux != ''){
-                    this.lat = this.lataux
-                    this.lng = this.lngaux
-                }else{
-                    this.lat = this.markers[0].position.lat
-                    this.lng = this.markers[0].position.lng
                 }
-                
-                this.geoloc=0;
-                this.modalGeolocalizacion=0;
-            }
-        },
-        guardar(){
-             //****************************************************************************** */
-            let me=this;
-            let header={"Authorization" : "Bearer " + this.$store.state.token};
-            let configuracion= {headers : header};
-/*---------------------------------------------------------------------------------------------------------*/
-/*---------------------------------------------------------------------------------------------------------*/
-            me.registro = me.registro.length !== 0? me.registro: false;
-            var listaMediosNotificacion='';
-            if(me.medionotificacion.length<=0)
-            {
-                listaMediosNotificacion='';
-            }
-            else
-            {
-                me.medionotificacion.forEach(function(notificacion)
-                {
-                    listaMediosNotificacion+=notificacion.text+',';                                     
+            },     
+            geolocate: function() {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.center = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
                 });
-                listaMediosNotificacion = listaMediosNotificacion.slice(0, -1);
-            }    
- 
-/*---------------------------------------------------------------------------------------------------------*/
-            var listaDiscapacidades='';
-            if(me.discapacidad.length<=0)
-            {
-                listaDiscapacidades='';
-            }
-            else
-            {
-                me.discapacidad.forEach(function(notificacion)
-                {
-                    listaDiscapacidades+=notificacion.text+';';                                     
-                });
-                listaDiscapacidades = listaDiscapacidades.slice(0, -1);
-            }   
-
-            /*---------------------------------------------------------------------------------------------------------*/
-            if (me.clasificacionpersona === 'Victima directa' || me.clasificacionpersona === 'Victima indirecta') {
-                me.relacion = true;
-            } else {
-                me.relacion = false;
-            }
-
-/*---------------------------------------------------------------------------------------------------------*/
-
-
-            if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
-            if(me.sexo == '') me.sexo = 'LO DESCONOCE'
-            if(me.curp == '') me.curp = 'LO DESCONOCE'
-            if(me.alias == '') me.alias = 'LO DESCONOCE'
-            if(me.abreviacion == '') me.abreviacion = 'LO DESCONOCE'
-            if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
-
-//-------------------------------------------------
-
-            this.$validator.validate().then(async result => {
-                if (result) {
-                    // Se crean las coordenadas cuando el estado tiene algo
-                    if(this.estado != '') {
-                        await this.generarCoordenadas();
+            },
+            guardarGeolocalizacion(){
+                if(this.geoloc==2){
+                    if(this.lataux != '' && this.lngaux != ''){
+                        this.lat = this.lataux
+                        this.lng = this.lngaux
+                    }else{
+                        this.lat = this.markers[0].position.lat
+                        this.lng = this.markers[0].position.lng
                     }
-                    //ARREGLA LA FECHA PARA QUE SE GUARDEN CON /
-                    const fechaParts = me.fnacimiento.split('-');
-                    const dia = fechaParts[2];
-                    const mes = fechaParts[1];
-                    const anio = fechaParts[0];
-                    me.fnacimiento = `${dia}/${mes}/${anio}`;
-                    //direccionvacia.includes('null') == true
-
-                    //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
-                    if(me.fnacimiento.includes('undefined') == true){
-                        me.edadf = 99;
-                        me.fnacimiento = '';
-                    }                           
-                    else  
-                    me.edadf = me.generaredad();
-
-
-                    //ESTE IF VALORA SI EL RANGO DE EDAD CORRESPONDE AL DE UN MENOR DE EDAD SE PROTEGEN LOS DATOS
-                    if(me.edadf < 18 || me.rangoedad == 'INFANCIA (0 A 5 AÑOS)' || me.rangoedad == 'NIÑEZ (6 A 12 AÑOS)'|| me.rangoedad == 'ADOLECENCIA (13 A 17 AÑOS)')
+                    this.geoloc=0;
+                    this.modalGeolocalizacion=0;
+                }
+            },
+            guardar(){
+                //****************************************************************************** */
+                let me=this;
+                let header={"Authorization" : "Bearer " + this.$store.state.token};
+                let configuracion= {headers : header};
+                /*---------------------------------------------------------------------------------------------------------*/
+                /*---------------------------------------------------------------------------------------------------------*/
+                me.registro = me.registro.length !== 0? me.registro: false;
+                var listaMediosNotificacion='';
+                if(me.medionotificacion.length<=0)
+                {
+                    listaMediosNotificacion='';
+                }
+                else
+                {
+                    me.medionotificacion.forEach(function(notificacion)
                     {
-                        me.datosprotegidos = true;
-                    }
+                        listaMediosNotificacion+=notificacion.text+',';                                     
+                    });
+                    listaMediosNotificacion = listaMediosNotificacion.slice(0, -1);
+                }
+                /*---------------------------------------------------------------------------------------------------------*/
+                var listaDiscapacidades='';
+                if(me.discapacidad.length<=0)
+                {
+                    listaDiscapacidades='';
+                }
+                else
+                {
+                    me.discapacidad.forEach(function(notificacion)
+                    {
+                        listaDiscapacidades+=notificacion.text+';';                                     
+                    });
+                    listaDiscapacidades = listaDiscapacidades.slice(0, -1);
+                }
+                /*---------------------------------------------------------------------------------------------------------*/
+                if (me.clasificacionpersona === 'Victima directa' || me.clasificacionpersona === 'Victima indirecta') {
+                    me.relacion = true;
+                } else {
+                    me.relacion = false;
+                }
+                /*---------------------------------------------------------------------------------------------------------*/
+                if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
+                if(me.sexo == '') me.sexo = 'LO DESCONOCE'
+                if(me.curp == '') me.curp = 'LO DESCONOCE'
+                if(me.alias == '') me.alias = 'LO DESCONOCE'
+                if(me.abreviacion == '') me.abreviacion = 'LO DESCONOCE'
+                if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
+                //-------------------------------------------------
+                this.$validator.validate().then(async (result) => {
+                    if (result) {
+                        // Se crean las coordenadas cuando el estado tiene algo
+                        /*if(this.estado != '') {
+                            await this.generarCoordenadas();
+                        }*/
 
-                    //CUANDO SE INTRODUCE LA FECHA DE NACIMIENTO HACE EL CALCULO DE EDAD PARA COLOCAR SU RANGO DE EDAD
-                    if(me.edadf >= 0 && me.edadf <=5 )
-                    me.rangoedad = 'INFANCIA (0 A 5 AÑOS)'
+                        //ARREGLA LA FECHA PARA QUE SE GUARDEN CON /
+                        const fechaParts = me.fnacimiento.split('-');
+                        const dia = fechaParts[2];
+                        const mes = fechaParts[1];
+                        const anio = fechaParts[0];
+                        me.fnacimiento = `${dia}/${mes}/${anio}`;
+                        //me.fnacimiento = `${anio}-${mes}-${dia}`;
+                        //direccionvacia.includes('null') == true
 
-                    if(me.edadf >= 6 && me.edadf <=12)
-                        me.rangoedad = 'NIÑEZ (6 A 12 AÑOS)'
-                    
-                    if(me.edadf >= 13 && me.edadf <=17)
-                        me.rangoedad = 'ADOLECENCIA (13 A 17 AÑOS)'
-                    
-                    if(me.edadf >= 18 && me.edadf <=24)
-                        me.rangoedad = 'JUVENTUD (18 A 24 AÑOS)'
+                        //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
+                        if(me.fnacimiento.includes('undefined') == true){
+                            me.edadf = 99;
+                            me.fnacimiento = '';
+                        }                           
+                        else
+                            me.edadf = me.generaredad();
 
-                    if(me.edadf >= 25 && me.edadf <=45)
-                        me.rangoedad = 'ADULTEZ JOVEN (25 A 45 AÑOS)'
+                        //ESTE IF VALORA SI EL RANGO DE EDAD CORRESPONDE AL DE UN MENOR DE EDAD SE PROTEGEN LOS DATOS
+                        if(me.edadf < 18 || me.rangoedad == 'INFANCIA (0 A 5 AÑOS)' || me.rangoedad == 'NIÑEZ (6 A 12 AÑOS)'|| me.rangoedad == 'ADOLECENCIA (13 A 17 AÑOS)')
+                        {
+                            me.datosprotegidos = true;
+                        }
 
-                    if(me.edadf >= 46 && me.edadf <=59)
-                        me.rangoedad = 'ADULTEZ MADURA (46 A 59 AÑOS)'
+                        //CUANDO SE INTRODUCE LA FECHA DE NACIMIENTO HACE EL CALCULO DE EDAD PARA COLOCAR SU RANGO DE EDAD
+                        if(me.edadf >= 0 && me.edadf <=5 )
+                            me.rangoedad = 'INFANCIA (0 A 5 AÑOS)'
 
-                    if(me.edadf >= 60 && me.edadf <=98)
-                        me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
+                        if(me.edadf >= 6 && me.edadf <=12)
+                            me.rangoedad = 'NIÑEZ (6 A 12 AÑOS)'
+                        
+                        if(me.edadf >= 13 && me.edadf <=17)
+                            me.rangoedad = 'ADOLECENCIA (13 A 17 AÑOS)'
+                        
+                        if(me.edadf >= 18 && me.edadf <=24)
+                            me.rangoedad = 'JUVENTUD (18 A 24 AÑOS)'
 
-                    if(me.edadf >= 100)
-                        me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
-    
-                    var idPoliciaDetuvo='';
+                        if(me.edadf >= 25 && me.edadf <=45)
+                            me.rangoedad = 'ADULTEZ JOVEN (25 A 45 AÑOS)'
 
-                    idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
+                        if(me.edadf >= 46 && me.edadf <=59)
+                            me.rangoedad = 'ADULTEZ MADURA (46 A 59 AÑOS)'
 
-                    if (me.switch2==true){  
-                        me.radios= 'Anonimo'
-                        me.rfc= 'Anonimo'
-                        me.razonsocial='Anonimo'
-                        me.clasificacionpersona='Anonimo'
-                        me.nombres='Anonimo'
-                        me.apaterno='Anonimo'
-                        me.amaterno='Anonimo'
-                        me.alias="Anonimo"
-                        me.fnacimiento='01/01/0001' 
-                        me.abreviacion= 'Anonimo' 
-                        me.docidentificacion = ''
-                        me.curp='XXXX010101XXXXXXX1'
-                        me.sexo='Anonimo'
-                        me.estadocivil='Anonimo'
-                        me.genero='Anonimo'
-                        me.registro = 0
-                        me.verR = 0
-                        me.verI = 0
-                        listaMediosNotificacion='Anonimo'
-                        me.telefono1='Anonimo'
-                        me.telefono2='Anonimo'
-                        me.correo='Anonimo'
-                        me.medionotificacion='Anonimo'
-                        me.nacionalidad='Anonimo'
-                        me.ocupacion='Anonimo'
-                        me.nivelestudio='Anonimo'
-                        me.lengua='Anonimo'
-                        me.religion='Anonimo'
-                        me.vialidad=0
-                        me.switch1= false
-                        me.discapacidad='Anonimo'
-                        me.calle='Anonimo'
-                        me.noExt='Anonimo'
-                        me.noInt='Anonimo'
-                        me.entreCalle1='Anonimo'
-                        me.entreCalle2='Anonimo'
-                        me.referencia='Anonimo'
-                        me.pais='Anonimo'
-                        me.estado='Anonimo'
-                        me.municipio='Anonimo'
-                        me.localidad='Anonimo'
-                        me.asentamiento=0
-                        me.cp= 0
-                    }
-                    var perr = {
-                        'distritoId': me.u_iddistrito,
-                        'agenciaId': me.u_idagencia, 
-                    }
-                    this.$cat.post('api/Racs/GenerarRac',{ 
-                        'distritoId': me.u_iddistrito,
-                        'agenciaId': me.u_idagencia, 
-                    },configuracion).then(function(response){
-                        me.rac = response.data.rac;
-                        me.racid =  response.data.idrac;
-                        if (me.statusActualizar==true)
+                        if(me.edadf >= 60 && me.edadf <=98)
+                            me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
+
+                        if(me.edadf >= 100)
+                            me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
+        
+                        var idPoliciaDetuvo='';
+
+                        idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
+
+                        if (me.switch2==true){  
+                            me.radios= 'Anonimo'
+                            me.rfc= 'Anonimo'
+                            me.razonsocial='Anonimo'
+                            me.clasificacionpersona='Anonimo'
+                            me.nombres='Anonimo'
+                            me.apaterno='Anonimo'
+                            me.amaterno='Anonimo'
+                            me.alias="Anonimo"
+                            me.fnacimiento='01/01/0001' 
+                            me.abreviacion= 'Anonimo' 
+                            me.docidentificacion = ''
+                            me.curp='XXXX010101XXXXXXX1'
+                            me.sexo='Anonimo'
+                            me.estadocivil='Anonimo'
+                            me.genero='Anonimo'
+                            me.registro = 0
+                            me.verR = 0
+                            me.verI = 0
+                            listaMediosNotificacion='Anonimo'
+                            me.telefono1='Anonimo'
+                            me.telefono2='Anonimo'
+                            me.correo='Anonimo'
+                            me.medionotificacion='Anonimo'
+                            me.nacionalidad='Anonimo'
+                            me.ocupacion='Anonimo'
+                            me.nivelestudio='Anonimo'
+                            me.lengua='Anonimo'
+                            me.religion='Anonimo'
+                            me.vialidad=0
+                            me.switch1= false
+                            me.discapacidad='Anonimo'
+                            me.calle='Anonimo'
+                            me.noExt='Anonimo'
+                            me.noInt='Anonimo'
+                            me.entreCalle1='Anonimo'
+                            me.entreCalle2='Anonimo'
+                            me.referencia='Anonimo'
+                            me.pais='Anonimo'
+                            me.estado='Anonimo'
+                            me.municipio='Anonimo'
+                            me.localidad='Anonimo'
+                            me.asentamiento=0
+                            me.cp= 0
+                        }
+                        var perr = {
+                            'distritoId': me.u_iddistrito,
+                            'agenciaId': me.u_idagencia, 
+                        }
+                        this.$cat.post('api/Racs/GenerarRac',{ 
+                            'distritoId': me.u_iddistrito,
+                            'agenciaId': me.u_idagencia, 
+                        },configuracion).then((response) =>{
+                            me.rac = response.data.rac;
+                            me.racid =  response.data.idrac;
+                            if (me.statusActualizar==true)
                             {
                                 if(me.lat =='')
-                                me.lat = 0;
+                                    me.lat = '0';
                                 if(me.lng =='')
-                                me.lng = 0;
-                                this.$cat.post('api/RAPs/CrearRAP',{ 
-                                    'distritoInicial': me.u_distrito,  
-                                    'dirSubProcuInicial': me.u_dirSubPro,
-                                    'agenciaInicial': me.u_agencia, 
+                                    me.lng = '0';
+                                this.$cat.post('api/RAPs/CrearRAP',{
+                                    'DistritoInicial': me.u_distrito,  
+                                    'DirSubProcu': me.u_dirSubPro,
+                                    'AgenciaInicial': me.u_agencia, 
                                     'agenciaId': me.u_idagencia,
-                                    'racId':me.racid,  
-                                    'personaId': me.idPersona, 
-                                    'clasificacionpersona': me.clasificacionpersona,
-                                    'pInicio': true,
-                                    'modulo':me.u_modulo,
-                                },configuracion).then(function(response){ 
+                                    'racId':response.data.idrac,  
+                                    'PersonaId': me.idPersona, 
+                                    'ClasificacionPersona': me.clasificacionpersona,
+                                    'PInicio': true,
+                                    'Modulo':me.u_modulo,
+                                },configuracion).then(function(response){
                                     me.validate = 1
-                                    var rac = "RAC: " +   me.rac 
+                                    var rac = "RAC: " + me.rac 
                                     var fechahora = response.data.fh
                                     var notu = "A-" + response.data.notu
-
+                                    
                                     this.$cat.put('api/Personas/Actualizar',{
                                         'personaId': me.idPersona, 
                                         'statusAnonimo': me.switch2,
@@ -1661,8 +1611,8 @@
                                         'apellidoMaterno' : me.amaterno,
                                         'alias': me.alias,
                                         'statusAlias': false,
-                                        'rangoEdad': me.rangoedad,
-                                        'rangoEdadTF': me.RangoEdadTF,
+                                        'RangoEdad': me.rangoedad,
+                                        'RangoEdadTF': me.RangoEdadTF,
                                         'PoliciaDetuvo' : idPoliciaDetuvo,
                                         'fechaNacimiento' : me.fnacimiento,
                                         'entidadFederativa': me.abreviacion.text,
@@ -1685,11 +1635,11 @@
                                         'religion': me.religion,
                                         'discapacidad': me.switch1,
                                         'tipoDiscapacidad': listaDiscapacidades, 
-                                        'Relacion': me.relacion,
+                                        'relacion': me.relacion,
                                         'PoblacionAfro':me.poblacionafro,
-                                        'Parentesco': me.relacionado,
-                                        'Edad': me.edadf,
-                                        'DocPoderNotarial':me.documentoacredita,
+                                        'parentesco': me.relacionado,
+                                        'edad': Number(me.edadf),
+                                        //'DocPoderNotarial':me.documentoacredita,
                                         //Direccion personal
                                         'tipoVialidad': me.vialidad,
                                         'calle': me.calle,
@@ -1728,6 +1678,7 @@
                                         iframe.src = doc.output('bloburl');
                                         me.limpiar();
                                     }).catch(err => { 
+                                        console.log("Error1", err)
                                         if (err.response.status==400){
                                             me.$notify("No es un usuario válido", 'error')
                                         } else if (err.response.status==401){
@@ -1742,10 +1693,10 @@
                                             me.$notify("El recuso no ha sido encontrado", 'error')
                                         }else{
                                             me.$notify('Error al intentar actualizar el registro!!!','error')   
-                                        } 
+                                        }
                                     });
-
-                                }).catch(err => { 
+                                }).catch(err => {
+                                    console.log("Error2", err)
                                     if (err.response.status==400){
                                         me.$notify("No es un usuario válido", 'error')
                                     } else if (err.response.status==401){
@@ -1755,14 +1706,13 @@
                                     } else if (err.response.status==403){ 
                                         me.$notify("No esta autorizado para ver esta página", 'error')
                                         me.e403= true
-                                        me.showpage= false 
+                                        me.showpage= false
                                     } else if (err.response.status==404){
                                         me.$notify("El recuso no ha sido encontrado", 'error')
                                     }else{
                                         me.$notify('Error al intentar crear el  registro!!!','error')  
-                                    } 
+                                    }
                                 });
-                                
                             }
                             else
                             { 
@@ -1775,221 +1725,217 @@
                                     this.$cat.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
                                         formData,
                                         {
-                                        headers: {
-                                                    'Content-Type': 'multipart/form-data'
-                                                } 
-                                        }  
-                                            
-                                        ).then(function(response){
-                                            me.ruta = response.data.ruta
-
-                                            if(me.cp =='')
-                                            me.cp = 0
-                                            if(me.curp == '')
-                                            me.curp =0
-                                            if(me.lat =='')
-                                            me.lat =0
-                                            if(me.lng == '')
-                                            me.lng=0
-                                            if(me.noInt == '')
-                                            me.noInt = 0
-                                            if(me.telefono1 == '')
-                                            me.telefono1 = 0
-                                            if(me.telefono2 == '')
-                                            me.telefono2 = 0
-                                            if(me.noExt == '')
-                                            me.noExt = 'S/N'
-
-                                            var nombre = ''
-                                            var apaterno =      ''
-                                            var amaterno =  ''
-                                            var fnacimiento =  ''
-                                            var rfc =  ''
-                                            var curp =  ''
-                                            var rutadocumento =  ''
-
-                                            if(me.datosprotegidos){
-                                                nombre = me.nombres;
-                                                apaterno = me.apaterno;
-                                                amaterno = me.amaterno;
-                                                fnacimiento = me.fnacimiento;
-                                                rfc = me.rfc;
-                                                curp = me.curp;
-                                                rutadocumento = me.ruta;
-
-                                                me.nombres = me.alias;
-                                                me.apaterno ="";
-                                                me.amaterno = "";
-                                                me.fnacimiento = "";
-                                                me.rfc = "";
-                                                me.curp = "";
-                                                me.ruta ="";
+                                            headers: {
+                                                'Content-Type': 'multipart/form-data'
                                             }
-                                            var perro = {
-                                                 'distritoInicial': me.u_distrito,  
-                                                'agenciaInicial': me.u_agencia,
-                                                'dirSubProcuInicial': me.u_dirSubPro,
-                                                'agenciaId': me.u_idagencia,
-                                                'racId':me.racid,
-                                                'pInicio': true,
-                                                'Numerooficio': 0,
-                                                //***************************** PERSONA*/  
-                                                'statusAnonimo': me.switch2,
-                                                'tipoPersona': me.radios,
-                                                'rfc': me.rfc,
-                                                'razonsocial': me.razonsocial, 
-                                                'clasificacionpersona': me.clasificacionpersona,
-                                                'nombre': me.nombres,
-                                                'apellidoPaterno' : me.apaterno,
-                                                'apellidoMaterno' : me.amaterno,
-                                                'alias': me.alias,
-                                                'statusAlias': false,
-                                                'rangoEdad': me.rangoedad,
-                                                'rangoEdadTF': me.RangoEdadTF,
-                                                'PoliciaDetuvo' : idPoliciaDetuvo,
-                                                'fechaNacimiento' : me.fnacimiento,
-                                                'entidadFederativa': me.abreviacion.text,
-                                                'docIdentificacion': me.docidentificacion, 
-                                                'curp': me.curp,
-                                                'sexo' : me.sexo,
-                                                'estadoCivil': me.estadocivil,
-                                                'genero': me.genero,
-                                                'registro': me.registro,
-                                                'verR': me.verR,
-                                                'verI': me.verI,
-                                                'telefono1': me.telefono1,
-                                                'telefono2': me.telefono2,
-                                                'correo': me.correo,
-                                                'medioNotificacion': listaMediosNotificacion,
-                                                'nacionalidad': me.nacionalidad,
-                                                'ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
-                                                'nivelEstudio': me.nivelestudio,
-                                                'lengua': me.lengua,
-                                                'religion': me.religion,
-                                                'discapacidad': me.switch1,
-                                                'tipoDiscapacidad': listaDiscapacidades, 
-                                                'DatosProtegidos': me.datosprotegidos,
-                                                'Relacion': me.relacion,
-                                                'PoblacionAfro':me.poblacionafro,
-                                                'Parentesco': me.relacionado,
-                                                'Edad': me.edadf,    
-                                                'DocPoderNotarial':me.documentoacredita,                         
-                                                //***************************** DIRECCION*/ 
-                                                'tipoVialidad': me.vialidad,
-                                                'calle': me.calle,
-                                                'noExt': me.noExt,
-                                                'noInt': me.noInt,
-                                                'entreCalle1': me.entreCalle1,
-                                                'entreCalle2': me.entreCalle2,
-                                                'referencia': me.referencia,
-                                                'pais': me.pais,
-                                                'estado': me.estado,
-                                                'municipio': me.municipio,
-                                                'localidad': me.localidad,
-                                                'tipoAsentamiento': me.asentamiento,
-                                                'cp': me.cp,
-                                                'lat': me.lat,
-                                                'lng': me.lng,
-                                                //************************************ */
-                                                'agencia': me.u_agencia,
-                                                'usuario':me.u_nombre,
-                                                'puesto':me.u_puesto,
-                                                'modulo':me.u_modulo
-                                            }
-                                            this.$cat.post('api/RAtencions/CrearSinTurno',{  
-                                            //***************************** REGISTRO DE ATENCION*/                                   
-                                                'distritoInicial': me.u_distrito,  
-                                                'agenciaInicial': me.u_agencia,
-                                                'dirSubProcuInicial': me.u_dirSubPro,
-                                                'agenciaId': me.u_idagencia,
-                                                'racId':me.racid,
-                                                'pInicio': true,
-                                                'Numerooficio': 0,
-                                                //***************************** PERSONA*/  
-                                                'statusAnonimo': me.switch2,
-                                                'tipoPersona': me.radios,
-                                                'rfc': me.rfc,
-                                                'razonsocial': me.razonsocial, 
-                                                'clasificacionpersona': me.clasificacionpersona,
-                                                'nombre': me.nombres,
-                                                'apellidoPaterno' : me.apaterno,
-                                                'apellidoMaterno' : me.amaterno,
-                                                'alias': me.alias,
-                                                'statusAlias': false,
-                                                'rangoEdad': me.rangoedad,
-                                                'rangoEdadTF':me.RangoEdadTF,
-                                                'PoliciaDetuvo' : idPoliciaDetuvo,
-                                                'fechaNacimiento' : me.fnacimiento,
-                                                'entidadFederativa': me.abreviacion.text,
-                                                'docIdentificacion': me.docidentificacion, 
-                                                'curp': me.curp,
-                                                'sexo' : me.sexo,
-                                                'estadoCivil': me.estadocivil,
-                                                'genero': me.genero,
-                                                'registro': me.registro,
-                                                'verR': me.verR,
-                                                'verI': me.verI,
-                                                'telefono1': me.telefono1,
-                                                'telefono2': me.telefono2,
-                                                'correo': me.correo,
-                                                'medioNotificacion': listaMediosNotificacion,
-                                                'nacionalidad': me.nacionalidad,
-                                                'ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
-                                                'nivelEstudio': me.nivelestudio,
-                                                'lengua': me.lengua,
-                                                'religion': me.religion,
-                                                'discapacidad': me.switch1,
-                                                'tipoDiscapacidad': listaDiscapacidades, 
-                                                'DatosProtegidos': me.datosprotegidos,
-                                                'Relacion': me.relacion,
-                                                'PoblacionAfro':me.poblacionafro,
-                                                'Parentesco': me.relacionado,
-                                                'Edad': me.edadf,    
-                                                'DocPoderNotarial':me.documentoacredita,                         
-                                                //***************************** DIRECCION*/ 
-                                                'tipoVialidad': me.vialidad,
-                                                'calle': me.calle,
-                                                'noExt': me.noExt,
-                                                'noInt': me.noInt,
-                                                'entreCalle1': me.entreCalle1,
-                                                'entreCalle2': me.entreCalle2,
-                                                'referencia': me.referencia,
-                                                'pais': me.pais,
-                                                'estado': me.estado,
-                                                'municipio': me.municipio,
-                                                'localidad': me.localidad,
-                                                'tipoAsentamiento': me.asentamiento,
-                                                'cp': me.cp,
-                                                'lat': me.lat,
-                                                'lng': me.lng,
-                                                //************************************ */
-                                                'agencia': me.u_agencia,
-                                                'usuario':me.u_nombre,
-                                                'puesto':me.u_puesto,
-                                                'modulo':me.u_modulo
+                                        }
+                                    ).then(function(response){
+                                        me.ruta = response.data.ruta
+
+                                        if(me.cp =='')
+                                        me.cp = 0
+                                        if(me.curp == '')
+                                        me.curp = '0'
+                                        if(me.lat =='')
+                                        me.lat = '0'
+                                        if(me.lng == '')
+                                        me.lng = '0'
+                                        if(me.noInt == '')
+                                        me.noInt = '0'
+                                        if(me.telefono1 == '')
+                                        me.telefono1 = '0'
+                                        if(me.telefono2 == '')
+                                        me.telefono2 = '0'
+                                        if(me.noExt == '')
+                                        me.noExt = 'S/N'
+
+                                        var nombre = ''
+                                        var apaterno =      ''
+                                        var amaterno =  ''
+                                        var fnacimiento =  ''
+                                        var rfc =  ''
+                                        var curp =  ''
+                                        var rutadocumento =  ''
+
+                                        if(me.datosprotegidos){
+                                            nombre = me.nombres;
+                                            apaterno = me.apaterno;
+                                            amaterno = me.amaterno;
+                                            fnacimiento = me.fnacimiento;
+                                            rfc = me.rfc;
+                                            curp = me.curp;
+                                            rutadocumento = me.ruta;
+
+                                            me.nombres = me.alias;
+                                            me.apaterno ="";
+                                            me.amaterno = "";
+                                            me.fnacimiento = "";
+                                            me.rfc = "";
+                                            me.curp = "";
+                                            me.ruta ="";
+                                        }
+                                        var perro = {
+                                            'distritoInicial': me.u_distrito,  
+                                            'agenciaInicial': me.u_agencia,
+                                            'dirSubProcuInicial': me.u_dirSubPro,
+                                            'agenciaId': me.u_idagencia,
+                                            'racId':me.racid,
+                                            'pInicio': true,
+                                            'Numerooficio': 0,
+                                            //***************************** PERSONA*/  
+                                            'statusAnonimo': me.switch2,
+                                            'tipoPersona': me.radios,
+                                            'rfc': me.rfc,
+                                            'razonsocial': me.razonsocial, 
+                                            'clasificacionpersona': me.clasificacionpersona,
+                                            'nombre': me.nombres,
+                                            'apellidoPaterno' : me.apaterno,
+                                            'apellidoMaterno' : me.amaterno,
+                                            'alias': me.alias,
+                                            'statusAlias': false,
+                                            'rangoEdad': me.rangoedad,
+                                            'rangoEdadTF': me.RangoEdadTF,
+                                            'PoliciaDetuvo' : idPoliciaDetuvo,
+                                            'fechaNacimiento' : me.fnacimiento,
+                                            'entidadFederativa': me.abreviacion.text,
+                                            'docIdentificacion': me.docidentificacion, 
+                                            'curp': me.curp,
+                                            'sexo' : me.sexo,
+                                            'estadoCivil': me.estadocivil,
+                                            'genero': me.genero,
+                                            'registro': me.registro,
+                                            'verR': me.verR,
+                                            'verI': me.verI,
+                                            'telefono1': me.telefono1,
+                                            'telefono2': me.telefono2,
+                                            'correo': me.correo,
+                                            'medioNotificacion': listaMediosNotificacion,
+                                            'nacionalidad': me.nacionalidad,
+                                            'ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
+                                            'nivelEstudio': me.nivelestudio,
+                                            'lengua': me.lengua,
+                                            'religion': me.religion,
+                                            'discapacidad': me.switch1,
+                                            'tipoDiscapacidad': listaDiscapacidades, 
+                                            'DatosProtegidos': me.datosprotegidos,
+                                            'Relacion': me.relacion,
+                                            'PoblacionAfro':me.poblacionafro,
+                                            'Parentesco': me.relacionado,
+                                            'Edad': me.edadf,    
+                                            'DocPoderNotarial':me.documentoacredita,                         
+                                            //***************************** DIRECCION*/ 
+                                            'tipoVialidad': me.vialidad,
+                                            'calle': me.calle,
+                                            'noExt': me.noExt,
+                                            'noInt': me.noInt,
+                                            'entreCalle1': me.entreCalle1,
+                                            'entreCalle2': me.entreCalle2,
+                                            'referencia': me.referencia,
+                                            'pais': me.pais,
+                                            'estado': me.estado,
+                                            'municipio': me.municipio,
+                                            'localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
+                                            'cp': me.cp,
+                                            'lat': me.lat,
+                                            'lng': me.lng,
                                             //************************************ */
-                                            
+                                            'agencia': me.u_agencia,
+                                            'usuario':me.u_nombre,
+                                            'puesto':me.u_puesto,
+                                            'modulo':me.u_modulo
+                                        }
+
+                                        this.$cat.post('api/RAtencions/CrearSinTurno',{  
+                                        //***************************** REGISTRO DE ATENCION*/                                   
+                                            'DistritoInicial': me.u_distrito,  
+                                            'AgenciaInicial': me.u_agencia,
+                                            'DirSubProcuInicial': me.u_dirSubPro,
+                                            'agenciaId': me.u_idagencia,
+                                            'racid':me.racid,
+                                            'pInicio': true,
+                                            'Numerooficio': '0',
+                                            //***************************** PERSONA*/  
+                                            'StatusAnonimo': me.switch2,
+                                            'TipoPersona': me.radios,
+                                            'RFC': me.rfc,
+                                            'RazonSocial': me.razonsocial, 
+                                            'ClasificacionPersona': me.clasificacionpersona,
+                                            'Nombre': me.nombres,
+                                            'ApellidoPaterno' : me.apaterno,
+                                            'ApellidoMaterno' : me.amaterno,
+                                            'Alias': me.alias,
+                                            'AtatusAlias': false,
+                                            'RangoEdad': me.rangoedad,
+                                            'RangoEdadTF':me.RangoEdadTF,
+                                            'PoliciaDetuvo' : idPoliciaDetuvo,
+                                            'FechaNacimiento' : me.fnacimiento,
+                                            'EntidadFederativa': me.abreviacion.text,
+                                            'DocIdentificacion': me.docidentificacion, 
+                                            'CURP': me.curp,
+                                            'Sexo' : me.sexo,
+                                            'EstadoCivil': me.estadocivil,
+                                            'Genero': me.genero,
+                                            'Registro': me.registro,
+                                            'VerR': me.verR,
+                                            'VerI': me.verI,
+                                            'Telefono1': me.telefono1,
+                                            'Telefono2': me.telefono2,
+                                            'Correo': me.correo,
+                                            'Medionotificacion': listaMediosNotificacion,
+                                            'Nacionalidad': me.nacionalidad,
+                                            'Ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
+                                            'NivelEstudio': me.nivelestudio,
+                                            'Lengua': me.lengua,
+                                            'Religion': me.religion,
+                                            'Discapacidad': me.switch1,
+                                            'TipoDiscapacidad': listaDiscapacidades, 
+                                            'DatosProtegidos': me.datosprotegidos,
+                                            'Relacion': me.relacion,
+                                            'PoblacionAfro':me.poblacionafro,
+                                            'Parentesco': me.relacionado,
+                                            'Edad': Number(me.edadf),    
+                                            'DocPoderNotarial':me.documentoacredita,                         
+                                            //***************************** DIRECCION*/ 
+                                            'tipoVialidad': me.vialidad,
+                                            'Calle': me.calle,
+                                            'NoExt': me.noExt,
+                                            'NoInt': me.noInt,
+                                            'EntreCalle1': me.entreCalle1,
+                                            'EntreCalle2': me.entreCalle2,
+                                            'Referencia': me.referencia,
+                                            'Pais': me.pais,
+                                            'Estado': me.estado,
+                                            'Municipio': me.municipio,
+                                            'Localidad': me.localidad,
+                                            'tipoAsentamiento': me.asentamiento,
+                                            'CP': me.cp,
+                                            'lat': me.lat,
+                                            'lng': me.lng,
+                                            //************************************ */
+                                            'Agencia': me.u_agencia,
+                                            'Usuario':me.u_nombre,
+                                            'Puesto':me.u_puesto,
+                                            'Modulo':me.u_modulo
+                                        //************************************ */
                                         },configuracion).then(function(response){   
-                                            
                                             me.$notify('¡La información se guardo correctamente!','success') 
 
-                                           
-                                            this.$cat.post('api/DocumentosPesonas/Crear',{  
-
+                                            this.$cat.post('api/DocumentosPesonas/Crear',{
                                                 'PersonaId': response.data.personaid, 
-                                                'tipoDocumento': me.docidentificacion,
-                                                'nombreDocumento':me.GUID,
-                                                'descripcion': "",
-                                                'ruta': me.ruta,
-                                                'distrito':me.u_distrito,
-                                                'dirSubProc':me.u_dirSubPro,    
+                                                'TipoDocumento': me.docidentificacion,
+                                                'NombreDocumento':me.GUID,
+                                                'Descripcion': "",
+                                                'Ruta': me.ruta,
+                                                'Distrito':me.u_distrito,
+                                                'DirSubProc':me.u_dirSubPro,    
                                                 'Agencia':me.u_agencia,
                                                 'Usuario': me.u_nombre,
                                                 'Puesto': me.u_puesto,
-                                                
                                             },configuracion).then(function(response){  
                                                 me.$notify('¡La información se guardo correctamente!','success')   
-                                            }).catch(err => { 
+                                            }).catch(err => {
+                                                console.log("Error3", err)
                                                 if (err.response.status==400){
                                                     me.$notify("No es un usuario válido", 'error')
                                                 } else if (err.response.status==401){
@@ -2006,11 +1952,8 @@
                                                     me.$notify('Error al intentar crear el  registro!!!','error')  
                                                 } 
                                             }); 
-                                            
 
-                                            
-                                            if(me.datosprotegidos){           
-
+                                            if(me.datosprotegidos){
                                                 this.$cat.post('api/DatosProtegido/Crear',{
 
                                                     'RAPId': response.data.idrap, 
@@ -2030,7 +1973,8 @@
 
                                                 },configuracion).then(function(response){  
                                                     me.$notify('¡La información se guardo correctamente!','success')   
-                                                }).catch(err => { 
+                                                }).catch(err => {
+                                                    console.log("Error4", err)
                                                     if (err.response.status==400){
                                                         me.$notify("No es un usuario válido", 'error')
                                                     } else if (err.response.status==401){
@@ -2051,8 +1995,9 @@
                                             me.limpiar();
                                             me.$store.state.ratencionid = response.data.idatencion;
                                             me.$router.push('./entrevista') 
-                                            
+                                                
                                         }).catch(err => { 
+                                            console.log("Error5", err)
                                             if (err.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
                                             } else if (err.response.status==401){
@@ -2069,26 +2014,25 @@
                                                 me.$notify('Error al intentar crear el  registro!!!','error')  
                                             } 
                                         });
-
-                                        })
-                                            .catch(function(){
-                                        }); 
+                                    })
+                                    .catch(function(){
+                                    }); 
                                 }else{
 
                                     if(me.cp =='')
                                     me.cp = 0
                                     if(me.curp == '')
-                                    me.curp =0
+                                    me.curp = '0'
                                     if(me.lat =='')
-                                    me.lat =0
+                                    me.lat = '0'
                                     if(me.lng == '')
-                                    me.lng=0
+                                    me.lng= '0'
                                     if(me.noInt == '')
-                                    me.noInt = 0
+                                    me.noInt = '0'
                                     if(me.telefono1 == '')
-                                    me.telefono1 = 0
+                                    me.telefono1 = '0'
                                     if(me.telefono2 == '')
-                                    me.telefono2 = 0
+                                    me.telefono2 = '0'
                                     if(me.noExt == '')
                                     me.noExt = 'S/N'
 
@@ -2118,126 +2062,128 @@
                                         me.ruta ="";
                                     }
 
-                                    this.$cat.post('api/RAtencions/CrearSinTurno',{  
-                                    //***************************** REGISTRO DE ATENCION*/                                   
-                                        'distritoInicial': me.u_distrito,  
-                                        'agenciaInicial': me.u_agencia,
-                                        'dirSubProcuInicial': me.u_dirSubPro,
+                                    this.$cat.post('api/RAtencions/CrearSinTurno',{
+                                        //***************************** REGISTRO DE ATENCION*/                                   
+                                        'DistritoInicial': me.u_distrito,  
+                                        'AgenciaInicial': me.u_agencia,
+                                        'DirSubProcuInicial': me.u_dirSubPro,
                                         'agenciaId': me.u_idagencia,
-                                        'racId':me.racid,
+                                        'racid':me.racid,
                                         'pInicio': true,
-                                        'Numerooficio': 0,
+                                        'Numerooficio': '0',
                                         //***************************** PERSONA AQUI SE INSERTA PERSONA */  
-                                        'statusAnonimo': me.switch2,
-                                        'tipoPersona': me.radios,
-                                        'rfc': me.rfc,
-                                        'razonsocial': me.razonsocial, 
-                                        'clasificacionpersona': me.clasificacionpersona,
-                                        'nombre': me.nombres,
-                                        'apellidoPaterno' : me.apaterno,
-                                        'apellidoMaterno' : me.amaterno,
-                                        'alias': me.alias,
-                                        'statusAlias': false,
-                                        'rangoEdad': me.rangoedad,
-                                        'rangoEdadTF':me.RangoEdadTF,
+                                        'StatusAnonimo': me.switch2,
+                                        'TipoPersona': me.radios,
+                                        'RFC': me.rfc,
+                                        'RazonSocial': me.razonsocial, 
+                                        'ClasificacionPersona': me.clasificacionpersona,
+                                        'Nombre': me.nombres,
+                                        'ApellidoPaterno' : me.apaterno,
+                                        'ApellidoMaterno' : me.amaterno,
+                                        'Alias': me.alias,
+                                        'StatusAlias': false,
+                                        'RangoEdad': me.rangoedad,
+                                        'RangoEdadTF':me.RangoEdadTF,
                                         'PoliciaDetuvo' : idPoliciaDetuvo,
                                         'fechaNacimiento' : me.fnacimiento,
                                         'entidadFederativa': me.abreviacion.text,
                                         'docIdentificacion': me.docidentificacion, 
                                         'curp': me.curp,
-                                        'sexo' : me.sexo,
+                                        'Sexo' : me.sexo,
                                         'estadoCivil': me.estadocivil,
-                                        'genero': me.genero,
-                                        'registro': me.registro,
-                                        'verR': me.verR,
-                                        'verI': me.verI,
-                                        'telefono1': me.telefono1,
-                                        'telefono2': me.telefono2,
-                                        'correo': me.correo,
-                                        'medioNotificacion': listaMediosNotificacion,
-                                        'nacionalidad': me.nacionalidad,
-                                        'ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
-                                        'nivelEstudio': me.nivelestudio,
-                                        'lengua': me.lengua,
-                                        'religion': me.religion,
-                                        'discapacidad': me.switch1,
-                                        'tipoDiscapacidad': listaDiscapacidades, 
+                                        'Genero': me.genero,
+                                        'Registro': me.registro,
+                                        'VerR': me.verR,
+                                        'VerI': me.verI,
+                                        'Telefono1': me.telefono1,
+                                        'Telefono2': me.telefono2,
+                                        'Correo': me.correo,
+                                        'Medionotificacion': listaMediosNotificacion,
+                                        'Nacionalidad': me.nacionalidad,
+                                        'Ocupacion': me.ocupacion === 'Otra' ? me.ocupacion2 : me.ocupacion,
+                                        'NivelEstudio': me.nivelestudio,
+                                        'Lengua': me.lengua,
+                                        'Religion': me.religion,
+                                        'Discapacidad': me.switch1,
+                                        'TipoDiscapacidad': listaDiscapacidades, 
                                         'DatosProtegidos': me.datosprotegidos, 
                                         'Relacion': me.relacion,
                                         'PoblacionAfro':me.poblacionafro,
                                         'Parentesco': me.relacionado,
-                                        'Edad': me.edadf,         
+                                        'Edad': Number(me.edadf),         
                                         'DocPoderNotarial':me.documentoacredita,                   
                                         //***************************** DIRECCION*/ 
                                         'tipoVialidad': me.vialidad,
-                                        'calle': me.calle,
-                                        'noExt': me.noExt,
-                                        'noInt': me.noInt,
-                                        'entreCalle1': me.entreCalle1,
-                                        'entreCalle2': me.entreCalle2,
-                                        'referencia': me.referencia,
-                                        'pais': me.pais,
-                                        'estado': me.estado,
-                                        'municipio': me.municipio,
-                                        'localidad': me.localidad,
+                                        'Calle': me.calle,
+                                        'NoExt': me.noExt,
+                                        'NoInt': me.noInt,
+                                        'EntreCalle1': me.entreCalle1,
+                                        'EntreCalle2': me.entreCalle2,
+                                        'Referencia': me.referencia,
+                                        'Pais': me.pais,
+                                        'Estado': me.estado,
+                                        'Municipio': me.municipio,
+                                        'Localidad': me.localidad,
                                         'tipoAsentamiento': me.asentamiento,
-                                        'cp': me.cp,
+                                        'CP': me.cp,
                                         'lat': me.lat,
                                         'lng': me.lng,
                                         //************************************ */
-                                        'agencia': me.u_agencia,
-                                        'usuario': me.u_nombre,
-                                        'puesto': me.u_puesto,
-                                        'modulo': me.u_modulo
-                                    //************************************ */
-                                },configuracion).then(function(response){   
-                                    
-                                    me.$notify('¡La información se guardo correctamente!','success') 
+                                        'Agencia': me.u_agencia,
+                                        'Usuario': me.u_nombre,
+                                        'Puesto': me.u_puesto,
+                                        'Modulo': me.u_modulo
+                                        //************************************ */
+                                    },configuracion).then((response) => {
+                                        
+                                        me.$notify('¡La información se guardo correctamente!','success') 
 
-                                    if(me.datosprotegidos){           
+                                        if(me.datosprotegidos){           
 
-                                        this.$cat.post('api/DatosProtegido/Crear',{
+                                            this.$cat.post('api/DatosProtegido/Crear',{
 
-                                            'RAPId': response.data.idrap, 
-                                            'Nombre': nombre,
-                                            'APaterno': apaterno,
-                                            'AMaterno': amaterno,
-                                            'FechaNacimiento': fnacimiento,
-                                            'CURP':curp,
-                                            'RFC': rfc,
-                                            'Rutadocumento':"",
-                                            'UDistrito':me.u_distrito,
-                                            'USubproc': me.u_dirSubPro,
-                                            'UAgencia': me.u_agencia,
-                                            'Usuario': me.u_nombre,
-                                            'UPuesto': me.u_puesto,
-                                            'UModulo': me.u_modulo,
+                                                'RAPId': response.data.idrap, 
+                                                'Nombre': nombre,
+                                                'APaterno': apaterno,
+                                                'AMaterno': amaterno,
+                                                'FechaNacimiento': fnacimiento,
+                                                'CURP':curp,
+                                                'RFC': rfc,
+                                                'Rutadocumento':"",
+                                                'UDistrito':me.u_distrito,
+                                                'USubproc': me.u_dirSubPro,
+                                                'UAgencia': me.u_agencia,
+                                                'Usuario': me.u_nombre,
+                                                'UPuesto': me.u_puesto,
+                                                'UModulo': me.u_modulo,
 
-                                        },configuracion).then(function(response){  
-                                            me.$notify('¡La información se guardo correctamente!','success')   
-                                        }).catch(err => { 
-                                            if (err.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (err.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (err.response.status==403){ 
-                                                me.$notify("No esta autorizado para ver esta página", 'error')
-                                                me.e403= true
-                                                me.showpage= false 
-                                            } else if (err.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar crear el  registro!!!','error')  
-                                            } 
-                                        }); 
-                                    }
+                                            },configuracion).then(function(response){  
+                                                me.$notify('¡La información se guardo correctamente!','success')   
+                                            }).catch(err => { 
+                                                console.log("Error6", err)
+                                                if (err.response.status==400){
+                                                    me.$notify("No es un usuario válido", 'error')
+                                                } else if (err.response.status==401){
+                                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                    me.e401 = true,
+                                                    me.showpage= false
+                                                } else if (err.response.status==403){ 
+                                                    me.$notify("No esta autorizado para ver esta página", 'error')
+                                                    me.e403= true
+                                                    me.showpage= false 
+                                                } else if (err.response.status==404){
+                                                    me.$notify("El recuso no ha sido encontrado", 'error')
+                                                }else{
+                                                    me.$notify('Error al intentar crear el  registro!!!','error')  
+                                                } 
+                                            }); 
+                                        }
                                         me.limpiar();
                                         me.$store.state.ratencionid = response.data.idatencion;
-                                        me.$router.push('./entrevista') 
-                                            
+                                        me.$router.push('./umixta-entrevista') 
+                                                
                                     }).catch(err => { 
+                                        console.log("Error7", err)
                                         if (err.response.status==400){
                                             me.$notify("No es un usuario válido", 'error')
                                         } else if (err.response.status==401){
@@ -2254,37 +2200,31 @@
                                             me.$notify('Error al intentar crear el  registro!!!','error')  
                                         } 
                                     });
-
                                 }
-                                
-                                
-                                
                             }
-
-                        
-                    }).catch(err => { 
-                        if (err.response.status==400){
-                            me.$notify("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){ 
-                            me.$notify("No esta autorizado para ver esta página", 'error')
-                            me.e403= true
-                            me.showpage= false 
-                        } else if (err.response.status==404){
-                            me.$notify("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.$notify('Error al intentar crear el  registro!!!','error')  
-                        } 
-                    });  
-               } 
-            }) 
-            //****************************************************************************** */ 
-           
-        },
-        generateUUID: function() { // Public Domain/MIT
+                        }).catch(err => { 
+                            console.log("Error8", err)
+                            if (err.response.status==400){
+                                me.$notify("No es un usuario válido", 'error')
+                            } else if (err.response.status==401){
+                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                me.e401 = true,
+                                me.showpage= false
+                            } else if (err.response.status==403){ 
+                                me.$notify("No esta autorizado para ver esta página", 'error')
+                                me.e403= true
+                                me.showpage= false 
+                            } else if (err.response.status==404){
+                                me.$notify("El recuso no ha sido encontrado", 'error')
+                            }else{
+                                me.$notify('Error al intentar crear el  registro!!!','error')  
+                            } 
+                        });  
+                    } 
+                }) 
+                //****************************************************************************** */
+            },
+            generateUUID: function() { // Public Domain/MIT
                 var d = new Date().getTime();
                 if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
                     d += performance.now(); //use high-precision timer if available
@@ -2297,54 +2237,51 @@
                 
                 return newGuid;
             },
-        
- 
-        pickFile () {
-            this.removeImage()
-            this.$refs.image.click ()
-        }, 
-        removeImage () {
-            this.$refs.image.value = ''
-        },
-        onFilePicked(e) {
-            const files = e.target.files
-            const validImageTypes = ['image/jpeg', 'image/jpg'];
+            pickFile () {
+                this.removeImage()
+                this.$refs.image.click ()
+            }, 
+            removeImage () {
+                this.$refs.image.value = ''
+            },
+            onFilePicked(e) {
+                const files = e.target.files
+                const validImageTypes = ['image/jpeg', 'image/jpg'];
 
-            if (files[0] && validImageTypes.includes(files[0].type)) {
-                this.imageName = files[0].name;
-            } else {
-                alertify.error('Por favor, selecciona un archivo de imagen válido (jpeg, jpg).');
-                this.$refs.image.value = '';
-            }
-
-            if (files[0] !== undefined) {
-                this.imageName = files[0].name
-                if (this.imageName.lastIndexOf('.') <= 0) {
-                return
+                if (files[0] && validImageTypes.includes(files[0].type)) {
+                    this.imageName = files[0].name;
+                } else {
+                    alertify.error('Por favor, selecciona un archivo de imagen válido (jpeg, jpg).');
+                    this.$refs.image.value = '';
                 }
-                const fr = new FileReader()
-                fr.readAsDataURL(files[0])
-                fr.addEventListener('load', () => {
-                this.imageUrl = fr.result
-                this.imageFile = files[0] // this is an image file that can be sent to server
-                })
-            } else {
-                this.imageName = ''
-                this.imageFile = ''
-                this.imageUrl = ''
-            }
+
+                if (files[0] !== undefined) {
+                    this.imageName = files[0].name
+                    if (this.imageName.lastIndexOf('.') <= 0) {
+                    return
+                    }
+                    const fr = new FileReader()
+                    fr.readAsDataURL(files[0])
+                    fr.addEventListener('load', () => {
+                    this.imageUrl = fr.result
+                    this.imageFile = files[0] // this is an image file that can be sent to server
+                    })
+                } else {
+                    this.imageName = ''
+                    this.imageFile = ''
+                    this.imageUrl = ''
+                }
             },
         },
         
-       async generarCoordenadas() 
+        async generarCoordenadas() 
         {
             let tokenData = this.$store.state.tokenCoordenadas;
-
             
             if (!tokenData || !tokenData.token || Date.now() > tokenData.expirationTime) 
             {
-            await generarTokenCoodenadas(this.$store);
-            tokenData = this.$store.state.tokenCoordenadas;
+                await generarTokenCoodenadas(this.$store);
+                tokenData = this.$store.state.tokenCoordenadas;
             }
 
             // Si sigue sin token, abortamos coordenadas pero sin interrumpir
@@ -2353,36 +2290,35 @@
                 this.lng = '';
                 return;
             }
-            
-        try 
-        {
-            // Consultamos la api para generar coordenadas
-            const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+            console.log("Generando coordenadas con token:", tokenData.token);
+            try 
             {
-                id_user: tokenData.idUsuario,
-                street:(this.localidad !== '' ? this.calle : ''),
-                num: (this.localidad !== '' ? this.noExt : ''),
-                suburb: this.localidad || '',
-                zip: (this.localidad !== '' ? this.cp : ''),
-                city: this.municipio || '',
-                state: this.estado || '',
-                systemName: tokenData.systemName,
-            },
-            {
-                headers: {
-                Authorization: `Bearer ${tokenData.token}`,
-                'Content-Type': 'application/json',
+                // Consultamos la api para generar coordenadas
+                const responseCoordenadas = await axios.post('https://apis-backend.pgjhidalgo.gob.mx/latLon/getLocation',
+                {
+                    id_user: tokenData.idUsuario,
+                    street:(this.localidad !== '' ? this.calle : ''),
+                    num: (this.localidad !== '' ? this.noExt : ''),
+                    suburb: this.localidad || '',
+                    zip: (this.localidad !== '' ? this.cp : ''),
+                    city: this.municipio || '',
+                    state: this.estado || '',
+                    systemName: tokenData.systemName,
                 },
+                {
+                    headers: {
+                    Authorization: `Bearer ${tokenData.token}`,
+                    'Content-Type': 'application/json',
+                    },
+                }
+                );
+                this.lat = responseCoordenadas.data.latitude || '';
+                this.lng = responseCoordenadas.data.longitude || '';
+            } catch (error) 
+            {
+                this.lat = '';
+                this.lng = '';
+                this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
             }
-            );
-
-            this.lat = responseCoordenadas.data.latitude || '';
-            this.lng = responseCoordenadas.data.longitude || '';
-        } catch (error) 
-        {
-            this.lat = '';
-            this.lng = '';
-            this.$notify('Hubo un problema al generar las coordenadas, inténtelo más tarde', 'warning');
-        }
         },
    }

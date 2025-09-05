@@ -1,5 +1,6 @@
 <template>
   <v-layout align-start>
+
     <n401 v-if="e401" />
     <n403 v-if="e403" />
 
@@ -749,6 +750,7 @@ export default {
     prioridad: "",
     prioridades: ["Normal", "Urgente"],
     step: 1,
+
     numeromaximo: [],
     //********************************/
     rac: "",
@@ -886,7 +888,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 1", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -977,7 +979,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 2", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1015,7 +1017,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 3", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1081,7 +1083,7 @@ export default {
           })
           .catch((err) => {
             if (err.response.status == 400) {
-              me.$notify("No es un usuario válido", "error");
+              me.$notify("No es un usuario válido 4", "error");
             } else if (err.response.status == 401) {
               me.$notify(
                 "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1132,7 +1134,7 @@ export default {
           })
           .catch((err) => {
             if (err.response.status == 400) {
-              me.$notify("No es un usuario válido", "error");
+              me.$notify("No es un usuario válido 5", "error");
             } else if (err.response.status == 401) {
               me.$notify(
                 "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1167,7 +1169,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 6", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1191,13 +1193,15 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var sparrays = "";
-      console.log("key modulo",me.$store.state)
+      console.log("key modulo", me.$store.state)
+      console.log(me.$store.state.keymodulo)
       me.$conf
         .get(
           "api/SpPiLigaciones/ListarPertenecienteyGeneralSP/" +
-            me.$store.state.keymodulo,
-          configuracion
-        )
+            //me.$store.state.keymodulo,
+            me.rHechoId,
+            configuracion
+          )
         .then(function (response) {
           sparrays = response.data;
           sparrays.map(function (x) {
@@ -1250,7 +1254,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 7", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesión para poder navegar en la aplicación",
@@ -1338,7 +1342,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 8", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1367,7 +1371,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 9", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1400,7 +1404,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 10", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1436,7 +1440,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 11", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1470,7 +1474,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 12", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1544,26 +1548,26 @@ export default {
                   "api/RDiligencias/CrearPI",
                   {
                     rHechoId: me.rHechoId,
-                    fechasolicitud: me.fecha,
-                    dirigidoa: me.responsable,
-                    dirsubpro: me.nombreDirSub,
-                    emitidopor: me.u_nombre,
-                    udirsubpro: me.origenDirSub,
-                    upuesto: me.u_puesto,
-                    statusrespuesta: "Solicitado",
-                    servicio: me.newNombreservicio[i],
-                    especificaciones: me.textolibre,
-                    aspid: me.newASPid[i],
-                    prioridad: me.prioridad,
-                    modulo: me.u_modulo,
-                    agencia: me.u_agencia,
-                    respuestas: " ",
-                    conIndicio: me.conindicio,
-                    nuc: me.nuc,
-                    textofinal: me.textofinal,
-                    numeroOficio: me.numerooficio,
+                    FechaSolicitud: me.fecha,
+                    Dirigidoa: me.responsable,
+                    DirSubPro: me.nombreDirSub,
+                    EmitidoPor: me.u_nombre,
+                    uDirSubPro: me.origenDirSub,
+                    UPuesto: me.u_puesto,
+                    StatusRespuesta: "Solicitado",
+                    Servicio: me.newNombreservicio[i],
+                    Especificaciones: me.textolibre,
+                    ASPId: me.newASPid[i],
+                    Prioridad: me.prioridad,
+                    Modulo: me.u_modulo,
+                    Agencia: me.u_agencia,
+                    Respuestas: " ",
+                    ConIndicio: me.conindicio,
+                    NUC: me.nuc,
+                    Textofinal: me.textofinal,
+                    NumeroOficio: me.numerooficio,
                     NumeroDistrito: array[0].nodistrito,
-                    NodeSolicitud: me.numeromaximo.numeroMaximo,
+                    NodeSolicitud: me.numeromaximo.numeroMaximo+'',
                     Lat: me.lt,
                     Lng: me.lng,
                     Dirigido: me.statusdirigido,
@@ -1599,7 +1603,7 @@ export default {
                         })
                         .catch((err) => {
                           if (err.response.status == 400) {
-                            me.$notify("No es un usuario válido", "error");
+                            me.$notify("No es un usuario válido 13", "error");
                           } else if (err.response.status == 401) {
                             me.$notify(
                               "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -1641,10 +1645,10 @@ export default {
                     me.close();
                   }, 1000);
                   
-                })
+                } )
                 .catch((err) => {
                   if (err.response.status == 400) {
-                    me.$notify("No es un usuario válido", "error");
+                    me.$notify("No es un usuario válido 14", "error");
                   } else if (err.response.status == 401) {
                     me.$notify(
                       "Por favor inicie sesion para poder navegar en la aplicacion",
@@ -2116,7 +2120,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 400) {
-            me.$notify("No es un usuario válido", "error");
+            me.$notify("No es un usuario válido 15", "error");
           } else if (err.response.status == 401) {
             me.$notify(
               "Por favor inicie sesion para poder navegar en la aplicacion",

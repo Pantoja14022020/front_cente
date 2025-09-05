@@ -18,39 +18,39 @@ import Keycloak from "./auth/keycloak";
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'http://localhost:5006/' /*'http://localhost:44313/'*/ /*'https://pccentenario.pgjhidalgo.gob.mx/'*/
+axios.defaults.baseURL = 'http://192.168.100.36:5006/' /*'http://192.168.100.36:44313/'*/ /*'https://pccentenario.pgjhidalgo.gob.mx/'*/
 
 //const keycloakUser = axios.create({ baseURL: 'https://login-admin.pgjhidalgo.gob.mx/'})
 //Vue.prototype.$keycloakUser = keycloakUser
 
-const jrInstance = axios.create({ baseURL: 'http://localhost:44309/' /*'https://jrcentenario.pgjhidalgo.gob.mx/'*/ }) 
+const jrInstance = axios.create({ baseURL: 'http://192.168.100.36:44309/' /*'https://jrcentenario.pgjhidalgo.gob.mx/'*/ }) 
 Vue.prototype.$jr = jrInstance 
 
-const controlaccesoInstance = axios.create({ baseURL: 'http://localhost:44321/' /*'https://controlaccesocentenario.pgjhidalgo.gob.mx/'*/ })
+const controlaccesoInstance = axios.create({ baseURL: 'http://192.168.100.36:44321/' /*'https://controlaccesocentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$controlacceso = controlaccesoInstance 
 
-const confInstance = axios.create({baseURL: 'http://localhost:44360/' /*'https://configuracioncentenario.pgjhidalgo.gob.mx/'*/ })
+const confInstance = axios.create({baseURL: 'http://192.168.100.36:44360/' /*'https://configuracioncentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$conf = confInstance
 
-const catInstance = axios.create({baseURL: 'http://localhost:44394/' /*'https://catcentenario.pgjhidalgo.gob.mx/'*/ })
+const catInstance = axios.create({baseURL: 'http://192.168.100.36:44394/' /*'https://catcentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$cat = catInstance
 
-const CATInstance = axios.create({baseURL: 'http://localhost:44394/' /*'https://catcentenario.pgjhidalgo.gob.mx/'*/ }) 
+const CATInstance = axios.create({baseURL: 'http://192.168.100.36:44394/' /*'https://catcentenario.pgjhidalgo.gob.mx/'*/ }) 
 Vue.prototype.$CAT = CATInstance
 
-const SPInstance = axios.create({baseURL: 'http://localhost:5008/' /*'http://localhost:44336/'*/ /*'https://spcentenario.pgjhidalgo.gob.mx/'*/ })
+const SPInstance = axios.create({baseURL: 'http://192.168.100.36:5008/' /*'http://192.168.100.36:44336/'*/ /*'https://spcentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$SP = SPInstance
 
-const panelInstance = axios.create({baseURL: 'http://localhost:5006/' /*'http://localhost:44313/'*/ /*'https://pccentenario.pgjhidalgo.gob.mx/'*/ })
+const panelInstance = axios.create({baseURL: 'http://192.168.100.36:5006/' /*'http://192.168.100.36:44313/'*/ /*'https://pccentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$panel = panelInstance
 
-const justiciarestaurativaInstance = axios.create({baseURL: 'http://localhost:44309/' /*'https://jrcentenario.pgjhidalgo.gob.mx/'*/ })
+const justiciarestaurativaInstance = axios.create({baseURL: 'http://192.168.100.36:44309/' /*'https://jrcentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$justiciarestaurativa = justiciarestaurativaInstance
 
-const ILInstance = axios.create({baseURL:  'http://localhost:44312/' /*'https://ilcentenario.pgjhidalgo.gob.mx/'*/ })
+const ILInstance = axios.create({baseURL:  'http://192.168.100.36:44312/' /*'https://ilcentenario.pgjhidalgo.gob.mx/'*/ })
 Vue.prototype.$IL = ILInstance
 
-const PIInstance = axios.create({baseURL: 'http://localhost:5007/' /*'http://localhost:44315/'*/ /*'https://picentenario.pgjhidalgo.gob.mx/'*/ }) 
+const PIInstance = axios.create({baseURL: 'http://192.168.100.36:5007/' /*'http://192.168.100.36:44315/'*/ /*'https://picentenario.pgjhidalgo.gob.mx/'*/ }) 
 Vue.prototype.$PI = PIInstance
 
 const smsInstance = axios.create({baseURL: 'https://api.smsmasivos.com.mx/' }) 

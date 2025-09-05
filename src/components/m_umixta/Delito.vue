@@ -135,16 +135,16 @@
                                         <v-text-field
                                             name="descripción de lo robado"
                                             label="*Descripción de lo robado:"
-                                            v-model="tipoRobado" 
-                                            v-show="tipoMontoRobo==true"  
+                                            v-model="tipoRobado"
+                                            v-show="tipoMontoRobo==true"
                                             v-validate="requeridoR"
                                             :error-messages="errors.collect('descripción de lo robado')"
                                         ></v-text-field>
                                         <v-text-field
-                                            v-show="tipoMontoRobo" 
+                                            v-show="tipoMontoRobo"
                                             type="number"
                                             name="monto de lo robado"
-                                            label="*Monto de lo robado:" 
+                                            label="*Monto de lo robado:"
                                             v-model="montoRobado"
                                             v-validate="requeridoMR"
                                             :error-messages="errors.collect('monto de lo robado')"
@@ -389,7 +389,7 @@
                                                                     </v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
-                                                            <v-list-tile v-if="tipoRobado!=0">
+                                                            <v-list-tile v-if="tipoRobado!=''">
                                                                 <v-list-tile-action>
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action>
@@ -398,7 +398,7 @@
                                                                     <v-list-tile-sub-title> <p class="caption font-weight-regular"><a>{{detalledelito.tipoRobado}}</a></p></v-list-tile-sub-title>
                                                                 </v-list-tile-content>
                                                             </v-list-tile>
-                                                            <v-list-tile v-if="tipoRobado!=0">
+                                                            <v-list-tile v-if="tipoRobado!=''">
                                                                 <v-list-tile-action>
                                                                     <v-icon color="success">view_day</v-icon>
                                                                 </v-list-tile-action>
@@ -1118,7 +1118,7 @@
         },
         sinRobo(){
             this.montoRobado = 0;
-            this.tipoRobado = 0;
+            this.tipoRobado = '';
         },
           sinviolencia(){
             this.TViolencia = [];
@@ -1226,7 +1226,7 @@
 
             if (me.tipoMontoRobo==false)
             {
-              me.tipoRobado=0;
+              me.tipoRobado='';
               me.montoRobado=0;
             }
             if(me.violenciaSinViolencia && me.violenciaSinViolencia.value2 == 1){

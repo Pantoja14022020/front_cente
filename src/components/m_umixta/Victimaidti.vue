@@ -2128,7 +2128,7 @@
             referencia:'',
             pais:'Mexico',
 
-            vialidad:'',
+            vialidad:0,
             vialidades:[],
     
             estado:'',
@@ -2144,7 +2144,7 @@
             localidadid:0,
             localidades:[],
 
-            asentamiento:'',
+            asentamiento:0,
             asentamientos:[],
     
             cp:'',
@@ -2160,7 +2160,7 @@
             de_referencia:'',
             de_pais:'Mexico',
 
-            de_vialidad:'',
+            de_vialidad:0,
             de_vialidades:[],
     
             de_estado:'',
@@ -2176,7 +2176,7 @@
             de_localidadid:0,
             de_localidades:[],
 
-            de_asentamiento:'',
+            de_asentamiento:0,
             de_asentamientos:[],
     
             de_cp:'',
@@ -2987,7 +2987,7 @@
                 this.presexuales = "";
                 //************************************************************* */
                 //step no3
-                this.vialidad="";
+                this.vialidad=0;
                 this.calle="";
                 this.noInt="";
                 this.noExt="";
@@ -3003,12 +3003,12 @@
                 this.localidadid=0;
                 this.localidad="";
                 this.localidades=[];
-                this.asentamiento="";
+                this.asentamiento=0;
                 this.cp="";
                 this.lat="";
                 this.lng="";
-                    //step no4
-                    this.de_vialidad="";
+                //step no4
+                this.de_vialidad=0;
                 this.de_calle="";
                 this.de_noInt="";
                 this.de_noExt="";
@@ -3024,7 +3024,7 @@
                 this.de_localidadid=0;
                 this.de_localidad="";
                 this.de_localidades=[];
-                this.de_asentamiento="";
+                this.de_asentamiento=0;
                 this.de_cp="";
                 this.de_lat="";
                 this.de_lng="";
@@ -4679,7 +4679,7 @@
                     me.de_asentamiento=me.asentamiento;
                 }
                 else{
-                    me.de_vialidad="";
+                    me.de_vialidad=0;
                     me.de_calle= "";
                     me.de_noExt="";
                     me.de_noInt="";
@@ -4689,7 +4689,7 @@
                     me.de_estado="";
                     me.de_municipio="";
                     me.de_localidad="";
-                    me.de_asentamiento="";
+                    me.de_asentamiento=0;
                     me.de_cp="";
                     me.de_lat="";
                     me.de_lng="";
@@ -4697,13 +4697,13 @@
     
             },
             guardar(){
-                       this.$validator.validate().then(async result => {
-                        if (result) {
-                            let me=this;
-                            let header={"Authorization" : "Bearer " + this.$store.state.token};
-                            let configuracion= {headers : header};
+                this.$validator.validate().then(async result => {
+                    if (result) {
+                        let me=this;
+                        let header={"Authorization" : "Bearer " + this.$store.state.token};
+                        let configuracion= {headers : header};
 
-                            const camposDireccion = ['calle', 'noExt', 'cp', 'localidad', 'municipio', 'estado'];
+                        const camposDireccion = ['calle', 'noExt', 'cp', 'localidad', 'municipio', 'estado'];
 
                         console.log(this.localidad)
                         /*---------------------------------------------------------------------------------------------------------*/
@@ -4728,7 +4728,6 @@
                                 this.de_lng = CoordenadasN.lng || '';
                             }
                         }
-                            
 
                         // Consultar coordenadas si son nulas o vacias pero que exista el estado
                         const isEmptyCoord = (lat, lng) => 
@@ -4760,27 +4759,26 @@
                             me.medionotificacion.forEach(function(notificacion)
                             {
                                 if (typeof notificacion !== null && typeof notificacion !== undefined){
-                                   if (notificacion == '[object Object]')
-                                      {
-                                          listaMediosNotificacion+=notificacion.text+',';
-                                      }
-                                      else {
-                                             listaMediosNotificacion+=notificacion+',';
-                                           }
+                                    if (notificacion == '[object Object]')
+                                    {
+                                        listaMediosNotificacion+=notificacion.text+',';
+                                    }
+                                    else {
+                                        listaMediosNotificacion+=notificacion+',';
+                                    }
                                 };
                             });
-                            //
+
                             if (listaMediosNotificacion.substring(listaMediosNotificacion.length, listaMediosNotificacion.length - 1)==','){
                                 listaMediosNotificacion = listaMediosNotificacion.substring(0, listaMediosNotificacion.length -1)
                             };
                             //listaMediosNotificacion = listaMediosNotificacion.slice(10, -1);
                         };
-    
-                        /*---------------------------------------------------------------------------------------------------------*/
+
                         //HACER POSIBLE LA SELECCION DE DISCACIDAD
-    
+
                         var listaDiscapacidades='';
-                        
+                
                         if(me.discapacidad.length <=0)
                         {
                             listaDiscapacidades='';
@@ -4790,16 +4788,15 @@
                             me.discapacidad.forEach(function(notificacion)
                             {
                                 if (typeof notificacion !== null && typeof notificacion !== undefined){
-                                   if (notificacion == '[object Object]')
-                                      {
+                                    if (notificacion == '[object Object]')
+                                    {
                                         listaDiscapacidades+=notificacion.text+';';
-                                      }
-                                      else {
+                                    }
+                                    else {
                                         listaDiscapacidades+=notificacion+';';
-                                           }
+                                    }
                                 };
                             });
-                            //
                             if (listaDiscapacidades.substring(listaDiscapacidades.length, listaDiscapacidades.length - 1)==';'){
                                 listaDiscapacidades = listaDiscapacidades.substring(0, listaDiscapacidades.length -1)
                             };
@@ -4811,395 +4808,369 @@
                         } else {
                             me.relacion = false;
                         }
-    
+
                         //ARREGLA LA FECHA PARA QUE SE GUARDEN CON /
-                            const fechaParts = me.fnacimiento.split('-');
-                            const dia = fechaParts[2];
-                            const mes = fechaParts[1];
-                            const anio = fechaParts[0];
-                            me.fnacimiento = `${dia}/${mes}/${anio}`;
-                            //direccionvacia.includes('null') == true
-    
-                            if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
-                            if(me.sexo == '') me.sexo = 'LO DESCONOCE'
-                            if(me.curp == '') me.curp = 'LO DESCONOCE'
-                            if(me.alias == '') me.alias = 'LO DESCONOCE'
-                            if(me.abreviacion == '') me.abreviacion = 'LO DESCONOCE'
-                            if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
-    
+                        const fechaParts = me.fnacimiento.split('-');
+                        const dia = fechaParts[2];
+                        const mes = fechaParts[1];
+                        const anio = fechaParts[0];
+                        me.fnacimiento = `${dia}/${mes}/${anio}`;
+                        //direccionvacia.includes('null') == true
+
+                        if(me.amaterno == '') me.amaterno = 'LO DESCONOCE'
+                        if(me.sexo == '') me.sexo = 'LO DESCONOCE'
+                        if(me.curp == '') me.curp = 'LO DESCONOCE'
+                        if(me.alias == '') me.alias = 'LO DESCONOCE'
+                        if(me.abreviacion == '') me.abreviacion = 'LO DESCONOCE'
+                        if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
+
                         //-------------------------------------------------
-                            if(me.RangoEdadTF == false)
+                        if(me.RangoEdadTF == false)
+                        {
+                            me.edadf = me.generaredad();
+                        } else {
+                            me.edadf = 99;
+                            me.fnacimiento = '';
+                        }
+
+                        //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
+                        if(me.fnacimiento.includes('undefined') == true){
+                            me.edadf = 99;
+                            me.fnacimiento = '';
+                        }                           
+                        //else  
+                            //me.edadf = me.generaredad();
+
+                        //ESTE IF VALORA SI EL RANGO DE EDAD CORRESPONDE AL DE UN MENOR DE EDAD SE PROTEGEN LOS DATOS
+                        if(me.edadf < 18 || me.rangoedad == 'INFANCIA (0 A 5 AÑOS)' || me.rangoedad == 'NIÑEZ (6 A 12 AÑOS)'|| me.rangoedad == 'ADOLECENCIA (13 A 17 AÑOS)')
+                        {
+                            me.datosprotegidos = true
+
+                            if(this.alias == '')
+                                me.alias=this.obtenerIniciales();
+                        }
+
+                        //CUANDO SE INTRODUCE LA FECHA DE NACIMIENTO HACE EL CALCULO DE EDAD PARA COLOCAR SU RANGO DE EDAD
+                        if(me.edadf >= 0 && me.edadf <=5 )
+                            me.rangoedad = 'INFANCIA (0 A 5 AÑOS)'
+
+                        if(me.edadf >= 6 && me.edadf <=12)
+                            me.rangoedad = 'NIÑEZ (6 A 12 AÑOS)'
+                        
+                        if(me.edadf >= 13 && me.edadf <=17)
+                            me.rangoedad = 'ADOLECENCIA (13 A 17 AÑOS)'
+                        
+                        if(me.edadf >= 18 && me.edadf <=24)
+                            me.rangoedad = 'JUVENTUD (18 A 24 AÑOS)'
+
+                        if(me.edadf >= 25 && me.edadf <=45)
+                            me.rangoedad = 'ADULTEZ JOVEN (25 A 45 AÑOS)'
+
+                        if(me.edadf >= 46 && me.edadf <=59)
+                            me.rangoedad = 'ADULTEZ MADURA (46 A 59 AÑOS)'
+
+                        if(me.edadf >= 60 && me.edadf <=98)
+                            me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
+
+                        if(me.edadf >= 100)
+                            me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
+                    
+                        if(me.cp=='') me.cp =0;
+                        if(me.de_cp == '') me.de_cp =0
+                        if(me.noInt == '')
+                                me.noInt = ''
+                        if(me.noExt == '')
+                            me.noExt = 'S/N'
+
+                        //CUANDO NO SE TRATA DE UN IMPUTADO O NO SE REQUIERE GUARDAR UN POLICIA SE COLOCA ESTE VALOR
+                        //PERO CUANDO SI SE REQUIERE GUARDAR CON EL FOR DE COMPONE PARA QUE NO SALGA INDEFINIDO
+                        var idPoliciaDetuvo='';
+
+                        if(me.impuDetenido == false || me.agregarPoli == true)
+                        {
+                            idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
+                        }
+                        else
+                        {
+                            for(var i=0; i<me.policiaDetuvo.length; i++)
                             {
-                                me.edadf = me.generaredad();
-                            } else {
-                                me.edadf = 99;
-                                me.fnacimiento = '';
+                                idPoliciaDetuvo += me.policiaDetuvo[i].value;
+                                if(i+1 != me.policiaDetuvo.length)
+                                idPoliciaDetuvo += "; ";
                             }
-    
-    
-                            //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
-                            if(me.fnacimiento.includes('undefined') == true){
-                                me.edadf = 99;
-                                me.fnacimiento = '';
-                            }                           
-                            //else  
-                              //  me.edadf = me.generaredad();
-                                                    
-    
-                            //ESTE IF VALORA SI EL RANGO DE EDAD CORRESPONDE AL DE UN MENOR DE EDAD SE PROTEGEN LOS DATOS
-                            if(me.edadf < 18 || me.rangoedad == 'INFANCIA (0 A 5 AÑOS)' || me.rangoedad == 'NIÑEZ (6 A 12 AÑOS)'|| me.rangoedad == 'ADOLECENCIA (13 A 17 AÑOS)')
-                            {
-                                me.datosprotegidos = true
-    
-                                if(this.alias == '')
-                                    me.alias=this.obtenerIniciales();
-                            }
-    
-                            //CUANDO SE INTRODUCE LA FECHA DE NACIMIENTO HACE EL CALCULO DE EDAD PARA COLOCAR SU RANGO DE EDAD
-                            if(me.edadf >= 0 && me.edadf <=5 )
-                                me.rangoedad = 'INFANCIA (0 A 5 AÑOS)'
-    
-                            if(me.edadf >= 6 && me.edadf <=12)
-                                me.rangoedad = 'NIÑEZ (6 A 12 AÑOS)'
-                            
-                            if(me.edadf >= 13 && me.edadf <=17)
-                                me.rangoedad = 'ADOLECENCIA (13 A 17 AÑOS)'
-                            
-                            if(me.edadf >= 18 && me.edadf <=24)
-                                me.rangoedad = 'JUVENTUD (18 A 24 AÑOS)'
-    
-                            if(me.edadf >= 25 && me.edadf <=45)
-                                me.rangoedad = 'ADULTEZ JOVEN (25 A 45 AÑOS)'
-    
-                            if(me.edadf >= 46 && me.edadf <=59)
-                                me.rangoedad = 'ADULTEZ MADURA (46 A 59 AÑOS)'
-    
-                            if(me.edadf >= 60 && me.edadf <=98)
-                                me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
-    
-                            if(me.edadf >= 100)
-                                me.rangoedad = 'ADULTOS MAYORES (MAS DE 60 AÑOS)'
-                            
-                            
-                            if(me.cp=='') me.cp =0;
-                            if(me.de_cp == '') me.de_cp =0
-                            if(me.noInt == '')
-                                    me.noInt = 0
-                            if(me.noExt == '')
-                                me.noExt = 'S/N'
-    
-    
-                            //CUANDO NO SE TRATA DE UN IMPUTADO O NO SE REQUIERE GUARDAR UN POLICIA SE COLOCA ESTE VALOR
-                            //PERO CUANDO SI SE REQUIERE GUARDAR CON EL FOR DE COMPONE PARA QUE NO SALGA INDEFINIDO
-                            var idPoliciaDetuvo='';
-    
-                            if(me.impuDetenido == false || me.agregarPoli == true)
-                            {
-                                idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
-                            }
-                            else
-                            {
-                                for(var i=0; i<me.policiaDetuvo.length; i++)
-                                {
-                                    idPoliciaDetuvo += me.policiaDetuvo[i].value;
-                                    if(i+1 != me.policiaDetuvo.length)
-                                    idPoliciaDetuvo += "; ";
-                                }
-                            }     
-                            
-                            var personaPoli = me.idPersona;   
-                            
-                            var nombre = ''
-                            var apaterno =      ''
-                            var amaterno =  ''
-                            var fnacimiento =  ''
-                            var rfc =  ''
-                            var curp =  ''
-                            var rutadocumento =  ''
-    
-                            var descripcionRegTabI = 'Registro de persona ' + me.nombres + " " + me.apaterno + " " + me.amaterno;
-    
-    
-    
-    
-                            if (me.switch2==true){
-                                me.radios= 'Anonimo'
-                                me.rfc= 'Anonimo'
-                                me.razonsocial='Anonimo'
-                                me.clasificacionpersona='Anonimo'
-                                me.nombres='Anonimo'
-                                me.apaterno='Anonimo'
-                                me.amaterno='Anonimo'
-                                me.alias="Anonimo"
-                                me.fnacimiento='Anonimo'
-                                me.abreviacion= {text:'Anonimo'}
-                                me.docidentificacion = 'Anonimo'
-                                me.curp='XXXX010101XXXXXXX1'
-                                me.sexo='Anonimo'
-                                me.estadocivil='Anonimo'
-                                me.genero='Anonimo',
-                                me.registro=0
-                                me.verR=0
-                                me.verI=0
-                                me.telefono1='Anonimo'
-                                me.telefono2='Anonimo'
-                                me.correo='Anonimo'
-                                listaMediosNotificacion='Anonimo'
-                                me.nacionalidad='Anonimo'
-                                me.ocupacion='Anonimo'
-                                me.nivelestudio='Anonimo'
-                                me.lengua='Anonimo'
-                                me.religion='Anonimo'
-                                me.switch1= false
-                                me.discapacidad='Anonimo'
-                                me.vialidad=0
-                                me.calle='Anonimo'
-                                me.noExt='Anonimo'
-                                me.noInt='Anonimo'
-                                me.entreCalle1='Anonimo'
-                                me.entreCalle2='Anonimo'
-                                me.referencia='Anonimo'
-                                me.pais='Anonimo'
-                                me.estado='Anonimo'
-                                me.municipio='Anonimo'
-                                me.localidad='Anonimo'
-                                me.asentamiento=0
-                                me.cp= 0
-                                me.de_vialidad=0
-                                me.de_calle='Anonimo'
-                                me.de_noExt='Anonimo'
-                                me.de_noInt='Anonimo'
-                                me.de_entreCalle1='Anonimo'
-                                me.de_entreCalle2='Anonimo'
-                                me.de_referencia='Anonimo'
-                                me.de_pais='Anonimo'
-                                me.de_estado='Anonimo'
-                                me.de_municipio='Anonimo'
-                                me.de_localidad='Anonimo'
-                                me.de_cp = 0
-                                me.de_lat= 0
-                                me.de_lng= 0
-                                this.$validator.resume();
-                            }
-                            if (this.editedIndex > -1) {
-                                
-    
-    
-                                //debugger
-                                //Código para eactualizar
-                                if (this.imageFile){
-                                        let formData = new FormData();
-                                        formData.append('file', this.imageFile );
-                                        var nombreCarpeta = "C" + me.nuc.substr(1);
-                                        me.GUID = me.generateUUID();
-    
-                                        this.$cat.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
-                                            formData,
-                                            {
-                                            headers: {
-                                                        'Content-Type': 'multipart/form-data'
-                                                    }
-                                            }
-                                        ).then(function(response){
-                                            me.ruta = response.data.ruta
-    
-                                            //---------CUANDO ACTUALIZA
-                                           
-    
-    
-                                            if (me.sindocumento == false)
-                                            {
-                                            this.$cat.post('api/DocumentosPesonas/Crear',{
-                                                        'PersonaId': me.idPersona,
-                                                        'TipoDocumento': me.docidentificacion,
-                                                        'NombreDocumento': me.GUID,
-                                                        'Descripcion': "",
-                                                        'Ruta':me.ruta,
-                                                        'Distrito': me.u_distrito,
-                                                        'DirSubProc':me.u_dirSubPro,
-                                                        'Agencia':me.u_agencia,
-                                                        'Usuario': me.u_nombre,
-                                                        'Puesto': me.u_puesto,
-                                                    },configuracion).then(function(response){
-                                                        me.$notify('¡La información se guardo correctamente!','success')
-                                                    }).catch(err => {
-                                                        if (err.response.status==400){
-                                                            me.$notify("No es un usuario válido", 'error')
-                                                        } else if (err.response.status==401){
-                                                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                            me.e401 = true,
-                                                            me.showpage= false
-                                                        } else if (err.response.status==403){
-                                                            me.$notify("No esta autorizado para ver esta página", 'error')
-                                                            me.e403= true
-                                                            me.showpage= false
-                                                        } else if (err.response.status==404){
-                                                            me.$notify("El recuso no ha sido encontrado", 'error')
-                                                        }else{
-                                                            me.$notify('Error al intentar crear el  registro!!!','error')
-                                                        }
-                                                    });
-                                            }
-                                            else
-                                            {
-                                                this.$cat.put('api/DocumentosPesonas/Actualizar',{
-                                                            'IdDocumentoPersona': me.idDoccumentoPersona,
-                                                            'PersonaId': me.idPersona,
-                                                            'TipoDocumento': me.docidentificacion,
-                                                            'NombreDocumento': me.GUID,
-                                                            'Descripcion': "",
-                                                            'Ruta':me.ruta,
-                                                            'Distrito': me.u_distrito,
-                                                            'DirSubProc':me.u_dirSubPro,
-                                                            'Agencia':me.u_agencia,
-                                                            'Usuario': me.u_nombre,
-                                                            'Puesto': me.u_puesto,
-                                                        },configuracion).then(function(response){
-                                                            me.$notify('¡La información se guardo correctamente!','success')
-                                                        }).catch(err => {
-                                                            if (err.response.status==400){
-                                                                me.$notify("No es un usuario válido", 'error')
-                                                            } else if (err.response.status==401){
-                                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                                me.e401 = true,
-                                                                me.showpage= false
-                                                            } else if (err.response.status==403){
-                                                                me.$notify("No esta autorizado para ver esta página", 'error')
-                                                                me.e403= true
-                                                                me.showpage= false
-                                                            } else if (err.response.status==404){
-                                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                                            }else{
-                                                                me.$notify('Error al intentar crear el  registro!!!','error')
-                                                            }
-                                                        });
-                                            }
-    
-    
-                                        })
-                                        .catch(function(){
-                                        });
-    
-    
+                        }     
+                    
+                        var personaPoli = me.idPersona;
+                        var nombre = ''
+                        var apaterno =      ''
+                        var amaterno =  ''
+                        var fnacimiento =  ''
+                        var rfc =  ''
+                        var curp =  ''
+                        var rutadocumento =  ''
+                        var descripcionRegTabI = 'Registro de persona ' + me.nombres + " " + me.apaterno + " " + me.amaterno;
+
+                        if (me.switch2==true){
+                            me.radios= 'Anonimo'
+                            me.rfc= 'Anonimo'
+                            me.razonsocial='Anonimo'
+                            me.clasificacionpersona='Anonimo'
+                            me.nombres='Anonimo'
+                            me.apaterno='Anonimo'
+                            me.amaterno='Anonimo'
+                            me.alias="Anonimo"
+                            me.fnacimiento='Anonimo'
+                            me.abreviacion= {text:'Anonimo'}
+                            me.docidentificacion = 'Anonimo'
+                            me.curp='XXXX010101XXXXXXX1'
+                            me.sexo='Anonimo'
+                            me.estadocivil='Anonimo'
+                            me.genero='Anonimo',
+                            me.registro=0
+                            me.verR=0
+                            me.verI=0
+                            me.telefono1='Anonimo'
+                            me.telefono2='Anonimo'
+                            me.correo='Anonimo'
+                            listaMediosNotificacion='Anonimo'
+                            me.nacionalidad='Anonimo'
+                            me.ocupacion='Anonimo'
+                            me.nivelestudio='Anonimo'
+                            me.lengua='Anonimo'
+                            me.religion='Anonimo'
+                            me.switch1= false
+                            me.discapacidad='Anonimo'
+                            me.vialidad=0
+                            me.calle='Anonimo'
+                            me.noExt='Anonimo'
+                            me.noInt='Anonimo'
+                            me.entreCalle1='Anonimo'
+                            me.entreCalle2='Anonimo'
+                            me.referencia='Anonimo'
+                            me.pais='Anonimo'
+                            me.estado='Anonimo'
+                            me.municipio='Anonimo'
+                            me.localidad='Anonimo'
+                            me.asentamiento=0
+                            me.cp= 0
+                            me.de_vialidad=0
+                            me.de_calle='Anonimo'
+                            me.de_noExt='Anonimo'
+                            me.de_noInt='Anonimo'
+                            me.de_entreCalle1='Anonimo'
+                            me.de_entreCalle2='Anonimo'
+                            me.de_referencia='Anonimo'
+                            me.de_pais='Anonimo'
+                            me.de_estado='Anonimo'
+                            me.de_municipio='Anonimo'
+                            me.de_localidad='Anonimo'
+                            me.de_cp = 0
+                            me.de_lat= 0
+                            me.de_lng= 0
+                            this.$validator.resume();
+                        }
+                        if (this.editedIndex > -1) {
+                            //debugger
+                            //Código para actualizar
+                            if (this.imageFile){
+                                let formData = new FormData();
+                                formData.append('file', this.imageFile );
+                                var nombreCarpeta = "C" + me.nuc.substr(1);
+                                me.GUID = me.generateUUID();
+
+                                this.$cat.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
+                                    formData,
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
                                         }
-                                //**************************************************** */
-                                //**************************************************** */
+                                    }
+                                ).then(function(response){
+                                    me.ruta = response.data.ruta
+
+                                    //---------CUANDO ACTUALIZA
+                                    if (me.sindocumento == false){
+                                        this.$cat.post('api/DocumentosPesonas/Crear',{
+                                            'PersonaId': me.idPersona,
+                                            'TipoDocumento': me.docidentificacion,
+                                            'NombreDocumento': me.GUID,
+                                            'Descripcion': "",
+                                            'Ruta':me.ruta,
+                                            'Distrito': me.u_distrito,
+                                            'DirSubProc':me.u_dirSubPro,
+                                            'Agencia':me.u_agencia,
+                                            'Usuario': me.u_nombre,
+                                            'Puesto': me.u_puesto,
+                                        },configuracion).then(function(response){
+                                            me.$notify('¡La información se guardo correctamente!','success')
+                                        }).catch(err => {
+                                            if (err.response.status==400){
+                                                me.$notify("No es un usuario válido", 'error')
+                                            } else if (err.response.status==401){
+                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                me.e401 = true,
+                                                me.showpage= false
+                                            } else if (err.response.status==403){
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
+                                                me.e403= true
+                                                me.showpage= false
+                                            } else if (err.response.status==404){
+                                                me.$notify("El recuso no ha sido encontrado", 'error')
+                                            }else{
+                                                me.$notify('Error al intentar crear el  registro!!!','error')
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        this.$cat.put('api/DocumentosPesonas/Actualizar',{
+                                            'IdDocumentoPersona': me.idDoccumentoPersona,
+                                            'PersonaId': me.idPersona,
+                                            'TipoDocumento': me.docidentificacion,
+                                            'NombreDocumento': me.GUID,
+                                            'Descripcion': "",
+                                            'Ruta':me.ruta,
+                                            'Distrito': me.u_distrito,
+                                            'DirSubProc':me.u_dirSubPro,
+                                            'Agencia':me.u_agencia,
+                                            'Usuario': me.u_nombre,
+                                            'Puesto': me.u_puesto,
+                                        },configuracion).then(function(response){
+                                            me.$notify('¡La información se guardo correctamente!','success')
+                                        }).catch(err => {
+                                            if (err.response.status==400){
+                                                me.$notify("No es un usuario válido", 'error')
+                                            } else if (err.response.status==401){
+                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                me.e401 = true,
+                                                me.showpage= false
+                                            } else if (err.response.status==403){
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
+                                                me.e403= true
+                                                me.showpage= false
+                                            } else if (err.response.status==404){
+                                                me.$notify("El recuso no ha sido encontrado", 'error')
+                                            }else{
+                                                me.$notify('Error al intentar crear el  registro!!!','error')
+                                            }
+                                        });
+                                    }
+                                })
+                                .catch(function(){
+                                });
+                            }
+                            //**************************************************** */
+                            //**************************************************** */
+                            if(me.datosprotegidos){
+                                nombre = me.nombres;
+                                apaterno = me.apaterno;
+                                amaterno = me.amaterno;
+                                fnacimiento = me.fnacimiento;
+                                rfc = me.rfc;
+                                curp = me.curp;
+                                rutadocumento = me.ruta;
+                                if(this.alias == '')
+                                me.alias=this.obtenerIniciales();
+
+                                me.nombres = me.alias;
+                                me.apaterno ="";
+                                me.amaterno = "";
+                                me.rfc = "";
+                                me.curp = "";
+                                me.ruta ="";
+                            }
+
+                            this.$cat.put('api/RAPs/Actualizar',{
+                                'rapId': me.rapid,
+                                'clasificacionpersona': me.clasificacionpersona,
+                                'pInicio': false,
+                                //***************************** PERSONA*/
+                                'personaId': me.idPersona,
+                                'statusAnonimo': me.switch2,
+                                'tipoPersona': me.radios,
+                                'rfc': me.rfc,
+                                'razonsocial': me.razonsocial,
+                                'nombre': me.nombres,
+                                'apellidoPaterno' : me.apaterno,
+                                'apellidoMaterno' : me.amaterno,
+                                'alias': me.alias,
+                                'statusAlias': false,
+                                'rangoEdad': me.rangoedad,
+                                'rangoEdadTF': me.RangoEdadTF,
+                                'fechaNacimiento' : me.fnacimiento,
+                                'entidadFederativa': me.abreviacion.text,
+                                'docIdentificacion': me.docidentificacion,
+                                'curp': me.curp,
+                                'PoblacionAfro':me.poblacionafro,
+                                'sexo' : me.sexo,
+                                'estadoCivil': me.estadocivil,
+                                'genero': me.genero,
+                                'registro': me.registro,
+                                'verR': me.verR,
+                                'verI': me.verI,
+                                'telefono1': me.telefono1,
+                                'telefono2': me.telefono2,
+                                'correo': me.correo,
+                                'medioNotificacion': listaMediosNotificacion,
+                                'nacionalidad': me.nacionalidad,
+                                'ocupacion': me.ocupacion,
+                                'nivelEstudio': me.nivelestudio,
+                                'lengua': me.lengua,
+                                'religion': me.religion,
+                                'discapacidad': me.switch1,
+                                //Arregar aqui
+                                'tipoDiscapacidad': listaDiscapacidades,
+                                'DatosProtegidos': me.datosprotegidos,
+                                'Relacion': me.relacion,
+                                'Parentesco': me.relacionado,
+                                'InicioDetenido' : me.impuDetenido, 
+                                'PoliciaDetuvo' : idPoliciaDetuvo,
+                                'Edad': me.edadf,
+                                'DocPoderNotarial':me.documentoacredita,
+                                //***************************** DIRECCION*/
+                                'tipoVialidad': me.vialidad,
+                                'calle': me.calle,
+                                'noExt': me.noExt,
+                                'noInt': me.noInt,
+                                'entreCalle1': me.entreCalle1,
+                                'entreCalle2': me.entreCalle2,
+                                'referencia': me.referencia,
+                                'pais': me.pais,
+                                'estado': me.estado,
+                                'municipio': me.municipio,
+                                'localidad': me.localidad,
+                                'tipoAsentamiento': me.asentamiento,
+                                'cp': me.cp,
+                                'lat': me.lat,
+                                'lng':me.lng,
+                                //************************************ DIRECCION ESCUCHA */
+                                'de_tipoVialidad': me.de_vialidad,
+                                'de_calle': me.de_calle,
+                                'de_noExt': me.de_noExt,
+                                'de_noInt': me.de_noInt,
+                                'de_entreCalle1': me.de_entreCalle1,
+                                'de_entreCalle2': me.de_entreCalle2,
+                                'de_referencia': me.de_referencia,
+                                'de_pais': me.de_pais,
+                                'de_estado': me.de_estado,
+                                'de_municipio': me.de_municipio,
+                                'de_localidad': me.de_localidad,
+                                'de_tipoAsentamiento': me.de_asentamiento,
+                                'de_cp': me.de_cp,
+                                'de_lat': me.de_lat,
+                                'de_lng': me.de_lng,
+                                //*************************************/
+                            },configuracion).then(function(response){
+
                                 if(me.datosprotegidos){
-                                    nombre = me.nombres;
-                                    apaterno = me.apaterno;
-                                    amaterno = me.amaterno;
-                                    fnacimiento = me.fnacimiento;
-                                    rfc = me.rfc;
-                                    curp = me.curp;
-                                    rutadocumento = me.ruta;
-                                    if(this.alias == '')
-                                    me.alias=this.obtenerIniciales();
-    
-    
+                                    //Cuando ingresas un datos protegido el valor de alias pasa a ser el del nombre (tabla persona)
+                                    //Los apellidos quedan vacios pues se han guardado en datos protegidos
                                     
-                                    me.nombres = me.alias;
-                                    me.apaterno ="";
-                                    me.amaterno = "";
-                                    me.rfc = "";
-                                    me.curp = "";
-                                    me.ruta ="";
-                                }
-    
-    
-    
-                                this.$cat.put('api/RAPs/Actualizar',{
-                                    'rapId': me.rapid,
-                                    'clasificacionpersona': me.clasificacionpersona,
-                                    'pInicio': false,
-                                    //***************************** PERSONA*/
-                                    'personaId': me.idPersona,
-                                    'statusAnonimo': me.switch2,
-                                    'tipoPersona': me.radios,
-                                    'rfc': me.rfc,
-                                    'razonsocial': me.razonsocial,
-                                    'nombre': me.nombres,
-                                    'apellidoPaterno' : me.apaterno,
-                                    'apellidoMaterno' : me.amaterno,
-                                    'alias': me.alias,
-                                    'statusAlias': false,
-                                    'rangoEdad': me.rangoedad,
-                                    'rangoEdadTF': me.RangoEdadTF,
-                                    'fechaNacimiento' : me.fnacimiento,
-                                    'entidadFederativa': me.abreviacion.text,
-                                    'docIdentificacion': me.docidentificacion,
-                                    'curp': me.curp,
-                                    'PoblacionAfro':me.poblacionafro,
-                                    'sexo' : me.sexo,
-                                    'estadoCivil': me.estadocivil,
-                                    'genero': me.genero,
-                                    'registro': me.registro,
-                                    'verR': me.verR,
-                                    'verI': me.verI,
-                                    'telefono1': me.telefono1,
-                                    'telefono2': me.telefono2,
-                                    'correo': me.correo,
-                                    'medioNotificacion': listaMediosNotificacion,
-                                    'nacionalidad': me.nacionalidad,
-                                    'ocupacion': me.ocupacion,
-                                    'nivelEstudio': me.nivelestudio,
-                                    'lengua': me.lengua,
-                                    'religion': me.religion,
-                                    'discapacidad': me.switch1,
-                                    //Arregar aqui
-                                    'tipoDiscapacidad': listaDiscapacidades,
-                                    'DatosProtegidos': me.datosprotegidos,
-                                    'Relacion': me.relacion,
-                                    'Parentesco': me.relacionado,
-                                    'InicioDetenido' : me.impuDetenido, 
-                                    'PoliciaDetuvo' : idPoliciaDetuvo,
-                                    'Edad': me.edadf,
-                                    'DocPoderNotarial':me.documentoacredita,
-                                    //***************************** DIRECCION*/
-                                    'tipoVialidad': me.vialidad,
-                                    'calle': me.calle,
-                                    'noExt': me.noExt,
-                                    'noInt': me.noInt,
-                                    'entreCalle1': me.entreCalle1,
-                                    'entreCalle2': me.entreCalle2,
-                                    'referencia': me.referencia,
-                                    'pais': me.pais,
-                                    'estado': me.estado,
-                                    'municipio': me.municipio,
-                                    'localidad': me.localidad,
-                                    'tipoAsentamiento': me.asentamiento,
-                                    'cp': me.cp,
-                                    'lat': me.lat,
-                                    'lng':me.lng,
-                                    //************************************ DIRECCION ESCUCHA */
-                                    'de_tipoVialidad': me.de_vialidad,
-                                    'de_calle': me.de_calle,
-                                    'de_noExt': me.de_noExt,
-                                    'de_noInt': me.de_noInt,
-                                    'de_entreCalle1': me.de_entreCalle1,
-                                    'de_entreCalle2': me.de_entreCalle2,
-                                    'de_referencia': me.de_referencia,
-                                    'de_pais': me.de_pais,
-                                    'de_estado': me.de_estado,
-                                    'de_municipio': me.de_municipio,
-                                    'de_localidad': me.de_localidad,
-                                    'de_tipoAsentamiento': me.de_asentamiento,
-                                    'de_cp': me.de_cp,
-                                    'de_lat': me.de_lat,
-                                    'de_lng': me.de_lng,
-                                    //*************************************/
-                                },configuracion).then(function(response){
-    
-                                    
-    
-                                    if(me.datosprotegidos){
-                                        //Cuando ingresas un datos protegido el valor de alias pasa a ser el del nombre (tabla persona)
-                                        //Los apellidos quedan vacios pues se han guardado en datos protegidos
-                                        
-                                        //La condicion dice que si en esos casos ingresaste valore diferentes a los que se ponen en automatico da por entendido
-                                        //que requieres actualizar esos datos (no solo uno, deben ser los 3) se actualizan los datos protegidos
-                                        if(nombre != me.alias && apaterno != "" && amaterno != "")
-                                        {
-                                            this.$cat.post('api/DatosProtegido/Crear',{
+                                    //La condicion dice que si en esos casos ingresaste valore diferentes a los que se ponen en automatico da por entendido
+                                    //que requieres actualizar esos datos (no solo uno, deben ser los 3) se actualizan los datos protegidos
+                                    if(nombre != me.alias && apaterno != "" && amaterno != "")
+                                    {
+                                        this.$cat.post('api/DatosProtegido/Crear',{
                                             'RAPId': me.rapid,
                                             'Nombre': nombre,
                                             'APaterno': apaterno,
@@ -5214,7 +5185,6 @@
                                             'Usuario': me.u_nombre,
                                             'UPuesto': me.u_puesto,
                                             'UModulo': me.u_modulo,
-    
                                         }
                                         ,configuracion).then(function(response){
                                             me.$notify('¡La información se guardo correctamente!','success')
@@ -5232,15 +5202,15 @@
                                             } else if (err.response.status==404){
                                                 me.$notify("El recuso no ha sido encontrado", 'error')
                                             }else{
-                                                me.$notify('Error al intentar crear el  registro!!!','error')
+                                                me.$notify('¡Error al intentar crear el  registro!','error')
                                             }
                                         });
-                                        }
-                                        else
-                                        {
-                                            //Con respecto al primer if, si no haces cambios en los nombres y apellidos te permite cambiar todo lo demas sin afectar los valores de datos protegidos
-                                            //ACTUALIZACION: La funcion quedo resuelta por medio de front, sin embargo, podria funcionar como un cacheo de errores con las vistas.
-                                            this.$cat.post('api/DatosProtegido/actualizar',{
+                                    }
+                                    else
+                                    {
+                                        //Con respecto al primer if, si no haces cambios en los nombres y apellidos te permite cambiar todo lo demas sin afectar los valores de datos protegidos
+                                        //ACTUALIZACION: La funcion quedo resuelta por medio de front, sin embargo, podria funcionar como un cacheo de errores con las vistas.
+                                        this.$cat.post('api/DatosProtegido/actualizar',{
                                             'RAPId': me.rapid,
                                             'FechaNacimiento': fnacimiento,
                                             'CURP':curp,
@@ -5252,7 +5222,6 @@
                                             'Usuario': me.u_nombre,
                                             'UPuesto': me.u_puesto,
                                             'UModulo': me.u_modulo,
-    
                                         }
                                         ,configuracion).then(function(response){
                                             me.$notify('¡La información se guardo correctamente!','success')
@@ -5270,153 +5239,132 @@
                                             } else if (err.response.status==404){
                                                 me.$notify("El recuso no ha sido encontrado", 'error')
                                             }else{
-                                                me.$notify('Error al intentar crear el  registro!!!','error')
+                                                me.$notify('¡Error al intentar crear el  registro!','error')
                                             }
                                         });
-    
-                                        }
-                                    }   
-    
-                                    //CUANDO SE DESEA AGREGAR UN POLICIA LLAMA A LA FUNCION PARA QUE LO CREE
-                                    if(me.agregarPoli == true){me.crearegistrarpolicias(personaPoli);}
-                                      
-                                    me.$notify('¡La información se guardo correctamente!','success')
-                                    me.listarrap();
-                                    
-                                    me.close();
-                                }).catch(err => {
-                                    if (err.response.status==400){
-                                        me.$notify("No es un usuario válido", 'error')
-                                    } else if (err.response.status==401){
-                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                        me.e401 = true,
-                                        me.showpage= false
-                                    } else if (err.response.status==403){
-                                        me.$notify("No esta autorizado para ver esta página", 'error')
-                                        me.e403= true
-                                        me.showpage= false
-                                    } else if (err.response.status==404){
-                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                    }else{
-                                        me.$notify('Error al intentar actualizar el registro!!!','error')
                                     }
-                                });
-    
-                            } else {
-                                me.alias=this.obtenerIniciales();
-    
-    
-                                if (me.statusActualizar==true)
-                                {
-                                    this.$cat.post('api/RAPs/Insertar',{
-                                        'rAtencionId': me.rAtencionId,
+                                }   
+
+                                //CUANDO SE DESEA AGREGAR UN POLICIA LLAMA A LA FUNCION PARA QUE LO CREE
+                                if(me.agregarPoli == true){me.crearegistrarpolicias(personaPoli);}
+                                    
+                                me.$notify('¡La información se guardo correctamente!','success')
+                                me.listarrap();
+                                me.close();
+
+                            }).catch(err => {
+                                if (err.response.status==400){
+                                    me.$notify("No es un usuario válido", 'error')
+                                } else if (err.response.status==401){
+                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                    me.e401 = true,
+                                    me.showpage= false
+                                } else if (err.response.status==403){
+                                    me.$notify("No esta autorizado para ver esta página", 'error')
+                                    me.e403= true
+                                    me.showpage= false
+                                } else if (err.response.status==404){
+                                    me.$notify("El recuso no ha sido encontrado", 'error')
+                                }else{
+                                    me.$notify('¡Error al intentar actualizar el registro!','error')
+                                }
+                            });
+                        } else {
+
+                            me.alias=this.obtenerIniciales();
+
+                            if (me.statusActualizar==true)
+                            {
+                                this.$cat.post('api/RAPs/Insertar',{
+                                    'rAtencionId': me.rAtencionId,
+                                    'personaId': me.idPersona,
+                                    'clasificacionpersona': me.clasificacionpersona,
+                                    'pInicio': false,
+                                    'de_tipoVialidad': me.de_vialidad,
+                                    'de_calle': me.de_calle,
+                                    'de_noExt': me.de_noExt,
+                                    'de_noInt': me.de_noInt,
+                                    'de_entreCalle1': me.de_entreCalle1,
+                                    'de_entreCalle2': me.de_entreCalle2,
+                                    'de_referencia': me.de_referencia,
+                                    'de_pais': me.de_pais,
+                                    'de_estado': me.de_estado,
+                                    'de_municipio': me.de_municipio,
+                                    'de_localidad': me.de_localidad,
+                                    'de_asentamiento': me.de_asentamiento,
+                                    'de_cp': me.de_cp,
+                                    'de_lat': me.de_lat,
+                                    'de_lng': me.de_lng,
+                                },configuracion).then(function(response){
+                                    var rapid = response.data.rapid;
+                                    this.$cat.put('api/RAPs/ActualizarPersonaDirPer',{
+
+                                        //***************************** PERSONA*/
                                         'personaId': me.idPersona,
-                                        'clasificacionpersona': me.clasificacionpersona,
+                                        'statusAnonimo': me.switch2,
+                                        'tipoPersona': me.radios,
+                                        'rfc': me.rfc,
+                                        'razonsocial': me.razonsocial,
+                                        'nombre': me.nombres,
+                                        'apellidoPaterno' : me.apaterno,
+                                        'apellidoMaterno' : me.amaterno,
+                                        'alias': me.alias,
+                                        'statusAlias': false,
+                                        'rangoEdad': me.rangoedad,
+                                        'rangoEdadTF':me.RangoEdadTF,
+                                        'fechaNacimiento' : me.fnacimiento,
+                                        'entidadFederativa':  me.abreviacion.text,
+                                        'docIdentificacion': me.docidentificacion,
+                                        'curp': me.curp,
+                                        'PoblacionAfro': me.poblacionafro,
+                                        'sexo' : me.sexo,
+                                        'estadoCivil': me.estadocivil,
+                                        'genero': me.genero,
+                                        'registro': me.registro,
+                                        'verR': me.verR,
+                                        'verI': me.verI,
+                                        'telefono1': me.telefono1,
+                                        'telefono2': me.telefono2,
+                                        'correo': me.correo,
+                                        'medioNotificacion': listaMediosNotificacion,
+                                        'nacionalidad': me.nacionalidad,
+                                        'ocupacion': me.ocupacion,
+                                        'nivelEstudio': me.nivelestudio,
+                                        'lengua': me.lengua,
+                                        'religion': me.religion,
+                                        'discapacidad': me.switch1,
+                                        'tipoDiscapacidad': listaDiscapacidades,
                                         'pInicio': false,
-                                        'de_tipoVialidad': me.de_vialidad,
-                                        'de_calle': me.de_calle,
-                                        'de_noExt': me.de_noExt,
-                                        'de_noInt': me.de_noInt,
-                                        'de_entreCalle1': me.de_entreCalle1,
-                                        'de_entreCalle2': me.de_entreCalle2,
-                                        'de_referencia': me.de_referencia,
-                                        'de_pais': me.de_pais,
-                                        'de_estado': me.de_estado,
-                                        'de_municipio': me.de_municipio,
-                                        'de_localidad': me.de_localidad,
-                                        'de_asentamiento': me.de_asentamiento,
-                                        'de_cp': me.de_cp,
-                                        'de_lat': me.de_lat,
-                                        'de_lng': me.de_lng,
+                                        'Relacion': me.relacion,
+                                        'Parentesco': me.relacionado,
+                                        'InicioDetenido' : me.impuDetenido, 
+                                        'PoliciaDetuvo' : idPoliciaDetuvo,
+                                        'Edad': me.edadf,
+                                        'DocPoderNotarial':me.documentoacredita,
+                                        //***************************** DIRECCION*/
+                                        'rapid': rapid,
+                                        'tipoVialidad': me.vialidad,
+                                        'calle': me.calle,
+                                        'noExt': me.noExt,
+                                        'noInt': me.noInt,
+                                        'entreCalle1': me.entreCalle1,
+                                        'entreCalle2': me.entreCalle2,
+                                        'referencia': me.referencia,
+                                        'pais': me.pais,
+                                        'estado': me.estado,
+                                        'municipio': me.municipio,
+                                        'localidad': me.localidad,
+                                        'tipoAsentamiento': me.asentamiento,
+                                        'cp': me.cp,
+                                        'lat': me.lat,
+                                        'lng':me.lng,
+                                        //************************************ DIRECCION ESCUCHA */
+
+                                        //************************************ */
                                     },configuracion).then(function(response){
-                                        var rapid = response.data.rapid;
-                                        this.$cat.put('api/RAPs/ActualizarPersonaDirPer',{
-    
-                                            //***************************** PERSONA*/
-                                            'personaId': me.idPersona,
-                                            'statusAnonimo': me.switch2,
-                                            'tipoPersona': me.radios,
-                                            'rfc': me.rfc,
-                                            'razonsocial': me.razonsocial,
-                                            'nombre': me.nombres,
-                                            'apellidoPaterno' : me.apaterno,
-                                            'apellidoMaterno' : me.amaterno,
-                                            'alias': me.alias,
-                                            'statusAlias': false,
-                                            'rangoEdad': me.rangoedad,
-                                            'rangoEdadTF':me.RangoEdadTF,
-                                            'fechaNacimiento' : me.fnacimiento,
-                                            'entidadFederativa':  me.abreviacion.text,
-                                            'docIdentificacion': me.docidentificacion,
-                                            'curp': me.curp,
-                                            'PoblacionAfro': me.poblacionafro,
-                                            'sexo' : me.sexo,
-                                            'estadoCivil': me.estadocivil,
-                                            'genero': me.genero,
-                                            'registro': me.registro,
-                                            'verR': me.verR,
-                                            'verI': me.verI,
-                                            'telefono1': me.telefono1,
-                                            'telefono2': me.telefono2,
-                                            'correo': me.correo,
-                                            'medioNotificacion': listaMediosNotificacion,
-                                            'nacionalidad': me.nacionalidad,
-                                            'ocupacion': me.ocupacion,
-                                            'nivelEstudio': me.nivelestudio,
-                                            'lengua': me.lengua,
-                                            'religion': me.religion,
-                                            'discapacidad': me.switch1,
-                                            'tipoDiscapacidad': listaDiscapacidades,
-                                            'pInicio': false,
-                                            'Relacion': me.relacion,
-                                            'Parentesco': me.relacionado,
-                                            'InicioDetenido' : me.impuDetenido, 
-                                            'PoliciaDetuvo' : idPoliciaDetuvo,
-                                            'Edad': me.edadf,
-                                            'DocPoderNotarial':me.documentoacredita,
-                                            //***************************** DIRECCION*/
-                                            'rapid': rapid,
-                                            'tipoVialidad': me.vialidad,
-                                            'calle': me.calle,
-                                            'noExt': me.noExt,
-                                            'noInt': me.noInt,
-                                            'entreCalle1': me.entreCalle1,
-                                            'entreCalle2': me.entreCalle2,
-                                            'referencia': me.referencia,
-                                            'pais': me.pais,
-                                            'estado': me.estado,
-                                            'municipio': me.municipio,
-                                            'localidad': me.localidad,
-                                            'tipoAsentamiento': me.asentamiento,
-                                            'cp': me.cp,
-                                            'lat': me.lat,
-                                            'lng':me.lng,
-                                            //************************************ DIRECCION ESCUCHA */
-    
-                                            //************************************ */
-                                        },configuracion).then(function(response){
-                                            me.$notify('¡La información se guardo correctamente!','success')
-                                            me.listarrap();
-                                            me.close();
-                                        }).catch(err => {
-                                            if (err.response.status==400){
-                                                me.$notify("No es un usuario válido", 'error')
-                                            } else if (err.response.status==401){
-                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                me.e401 = true,
-                                                me.showpage= false
-                                            } else if (err.response.status==403){
-                                                me.$notify("No esta autorizado para ver esta página", 'error')
-                                                me.e403= true
-                                                me.showpage= false
-                                            } else if (err.response.status==404){
-                                                me.$notify("El recuso no ha sido encontrado", 'error')
-                                            }else{
-                                                me.$notify('Error al intentar actualizar el registro!!!','error')
-                                            }
-                                        });
-    
-    
+                                        me.$notify('¡La información se guardo correctamente!','success')
+                                        me.listarrap();
+                                        me.close();
                                     }).catch(err => {
                                         if (err.response.status==400){
                                             me.$notify("No es un usuario válido", 'error')
@@ -5431,287 +5379,82 @@
                                         } else if (err.response.status==404){
                                             me.$notify("El recuso no ha sido encontrado", 'error')
                                         }else{
-                                            me.$notify('Error al intentar crear el  registro!!!','error')
+                                            me.$notify('¡Error al intentar actualizar el registro!','error')
                                         }
                                     });
-                                }
-                                else{
-                                     //Código para guardar
-                                    if (this.imageFile){
-                                        let formData = new FormData();
-                                        formData.append('file', this.imageFile );
-                                        var nombreCarpeta = "C" + me.nuc.substr(1);
-                                        me.GUID = me.generateUUID();
-    
-                                        this.$cat.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
-                                            formData,
-                                            {
-                                            headers: {
-                                                        'Content-Type': 'multipart/form-data'
-                                                    }
-                                            }
-                                        ).then(function(response){
-                                            me.ruta = response.data.ruta
-    
-                                            if(me.cp=='') me.cp =0;
-                                            if(me.de_cp == '') me.de_cp =0
-                                            if(me.noInt == '')
-                                            me.noInt = 0
-                                            if(me.noExt == '')
-                                            me.noExt = 'S/N'
-    
-                                            
-    
-                                            if(me.datosprotegidos){
-                                                nombre = me.nombres;
-                                                apaterno = me.apaterno;
-                                                amaterno = me.amaterno;
-                                                fnacimiento = me.fnacimiento;
-                                                rfc = me.rfc;
-                                                curp = me.curp;
-                                                rutadocumento = me.ruta;
-                                                me.alias=this.obtenerIniciales();
-    
-    
-                                                me.nombres = me.alias;
-                                                me.apaterno ="";
-                                                me.amaterno = "";
-                                                me.rfc = "";
-                                                me.curp = "";
-                                                me.ruta ="";
-                                            }
-    
-                                            this.$cat.post('api/RAPs/Crear',{
-    
-                                                //***************************** PERSONA*/
-                                                'rAtencionId': me.rAtencionId,
-                                                'clasificacionpersona': me.clasificacionpersona,
-                                                'pInicio': (me.countPersona === 0 ? true : false),
-    
-                                                'statusAnonimo': me.switch2,
-                                                'tipoPersona': me.radios,
-                                                'rfc': me.rfc,
-                                                'razonsocial': me.razonsocial,
-    
-                                                'nombre': me.nombres,
-                                                'apellidoPaterno' : me.apaterno,
-                                                'apellidoMaterno' : me.amaterno,
-                                                'alias': me.alias,
-                                                'statusAlias': false,
-                                                'rangoEdad': me.rangoedad,
-                                                'rangoEdadTF':me.RangoEdadTF,
-                                                'fechaNacimiento' : me.fnacimiento,
-                                                'entidadFederativa': me.abreviacion.text,
-                                                'docIdentificacion': me.docidentificacion,
-                                                'curp': me.curp,
-                                                'PoblacionAfro': me.poblacionafro,
-                                                'sexo' : me.sexo,
-                                                'estadoCivil': me.estadocivil,
-                                                'genero': me.genero,
-                                                'registro': me.registro,
-                                                'verR': me.verR,
-                                                'verI': me.verI,
-                                                'telefono1': me.telefono1,
-                                                'telefono2': me.telefono2,
-                                                'correo': me.correo,
-                                                'medioNotificacion': listaMediosNotificacion,
-                                                'nacionalidad': me.nacionalidad,
-                                                'ocupacion': me.ocupacion,
-                                                'nivelEstudio': me.nivelestudio,
-                                                'lengua': me.lengua,
-                                                'religion': me.religion,
-                                                'discapacidad': me.switch1,
-                                                'tipoDiscapacidad': listaDiscapacidades,
-                                                'DatosProtegidos': me.datosprotegidos,
-                                                'Relacion': me.relacion,
-                                                'Parentesco': me.relacionado,
-                                                'InicioDetenido' : me.impuDetenido, 
-                                                'PoliciaDetuvo' : idPoliciaDetuvo,
-                                                'Edad': me.edadf,
-                                                'DocPoderNotarial':me.documentoacredita,
-                                                //***************************** DIRECCION PERSONAL */
-                                                'tipoVialidad': me.vialidad,
-                                                'calle': me.calle,
-                                                'noExt': me.noExt,
-                                                'noInt': me.noInt,
-                                                'entreCalle1': me.entreCalle1,
-                                                'entreCalle2': me.entreCalle2,
-                                                'referencia': me.referencia,
-                                                'pais': me.pais,
-                                                'estado': me.estado,
-                                                'municipio': me.municipio,
-                                                'localidad': me.localidad,
-                                                'tipoAsentamiento': me.asentamiento,
-                                                'cp': me.cp,
-                                                'lat': me.lat,
-                                                'lng': me.lng,
-                                                //************************************ DIRECCION ESCUCHA */
-                                                'de_tipoVialidad': me.de_vialidad,
-                                                'de_calle': me.de_calle,
-                                                'de_noExt': me.de_noExt,
-                                                'de_noInt': me.de_noInt,
-                                                'de_entreCalle1': me.de_entreCalle1,
-                                                'de_entreCalle2': me.de_entreCalle2,
-                                                'de_referencia': me.de_referencia,
-                                                'de_pais': me.de_pais,
-                                                'de_estado': me.de_estado,
-                                                'de_municipio': me.de_municipio,
-                                                'de_localidad': me.de_localidad,
-                                                'de_tipoAsentamiento': me.de_asentamiento,
-                                                'de_cp': me.de_cp,
-                                                'de_lat': me.de_lat,
-                                                'de_lng': me.de_lng,
-                                                //******************************************************* */
-    
-                                            },configuracion).then(function(response){
-    
-                                                me.$notify('¡La información se guardo correctamente!','success')
-    
-                                                //GUARDA ID DE PERSONA QUE SE ACABA DE GENERAR
-                                                var personaIdGenerado = response.data.personaid;
-    
-    
-                                                this.$cat.post('api/DocumentosPesonas/Crear',{
-                                                    'PersonaId': response.data.personaid,
-                                                    'TipoDocumento': me.docidentificacion,
-                                                    'NombreDocumento': me.GUID,
-                                                    'Descripcion': "",
-                                                    'Ruta':me.ruta,
-                                                    'Distrito': me.u_distrito,
-                                                    'DirSubProc':me.u_dirSubPro,
-                                                    'Agencia':me.u_agencia,
-                                                    'Usuario': me.u_nombre,
-                                                    'Puesto': me.u_puesto,
-                                                },configuracion).then(function(response){
-                                                    me.$notify('¡La información se guardo correctamente!','success')
-                                                }).catch(err => {
-                                                    if (err.response.status==400){
-                                                        me.$notify("No es un usuario válido", 'error')
-                                                    } else if (err.response.status==401){
-                                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                        me.e401 = true,
-                                                        me.showpage= false
-                                                    } else if (err.response.status==403){
-                                                        me.$notify("No esta autorizado para ver esta página", 'error')
-                                                        me.e403= true
-                                                        me.showpage= false
-                                                    } else if (err.response.status==404){
-                                                        me.$notify("El recuso no ha sido encontrado", 'error')
-                                                    }else{
-                                                        me.$notify('Error al intentar crear el  registro!!!','error')
-                                                    }
-                                                });
-    
-    
-                                                if(me.datosprotegidos){
-                                                    this.$cat.post('api/DatosProtegido/Crear',{
-                                                        'RAPId': response.data.idrap,
-                                                        'Nombre': nombre,
-                                                        'APaterno': apaterno,
-                                                        'AMaterno': amaterno,
-                                                        'FechaNacimiento': fnacimiento,
-                                                        'CURP':curp,
-                                                        'RFC': rfc,
-                                                        'Rutadocumento':rutadocumento,
-                                                        'UDistrito':me.u_distrito,
-                                                        'USubproc': me.u_dirSubPro,
-                                                        'UAgencia': me.u_agencia,
-                                                        'Usuario': me.u_nombre,
-                                                        'UPuesto': me.u_puesto,
-                                                        'UModulo': me.u_modulo,
-    
-                                                    },configuracion).then(function(response){
-                                                        me.$notify('¡La información se guardo correctamente!','success')
-                                                    }).catch(err => {
-                                                        if (err.response.status==400){
-                                                            me.$notify("No es un usuario válido", 'error')
-                                                        } else if (err.response.status==401){
-                                                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                            me.e401 = true,
-                                                            me.showpage= false
-                                                        } else if (err.response.status==403){
-                                                            me.$notify("No esta autorizado para ver esta página", 'error')
-                                                            me.e403= true
-                                                            me.showpage= false
-                                                        } else if (err.response.status==404){
-                                                            me.$notify("El recuso no ha sido encontrado", 'error')
-                                                        }else{
-                                                            me.$notify('Error al intentar crear el  registro!!!','error')
-                                                        }
-                                                    });
-                                                }
-                                                //LLAMA A LA FUNCION DE CREAR UN POLICIA
-                                                if(me.agregarPoli == true){me.crearegistrarpolicias2(personaIdGenerado);}
-                                                me.crearRegistroTableroI(descripcionRegTabI);
-                                                me.listarrap();
-                                                me.close();
-                                        }).catch(err => {
-                                                if (err.response.status==400){
-                                                    me.$notify("No es un usuario válido", 'error')
-                                                } else if (err.response.status==401){
-                                                    me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                    me.e401 = true,
-                                                    me.showpage= false
-                                                } else if (err.response.status==403){
-                                                    me.$notify("No esta autorizado para ver esta página", 'error')
-                                                    me.e403= true
-                                                    me.showpage= false
-                                                } else if (err.response.status==404){
-                                                    me.$notify("El recuso no ha sido encontrado", 'error')
-                                                }else{
-                                                    me.$notify('Error al intentar crear el  registro!!!','error')
-                                                }
-                                            });
-    
-    
-    
-                                        })
-                                        .catch(function(){
-                                        });
+                                }).catch(err => {
+                                    if (err.response.status==400){
+                                        me.$notify("No es un usuario válido", 'error')
+                                    } else if (err.response.status==401){
+                                        me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                        me.e401 = true,
+                                        me.showpage= false
+                                    } else if (err.response.status==403){
+                                        me.$notify("No esta autorizado para ver esta página", 'error')
+                                        me.e403= true
+                                        me.showpage= false
+                                    } else if (err.response.status==404){
+                                        me.$notify("El recuso no ha sido encontrado", 'error')
                                     }else{
-    
-                                            if(me.cp=='') me.cp =0;
-                                            if(me.de_cp == '') me.de_cp =0
-    
-                                            var nombre = ''
-                                            var apaterno =      ''
-                                            var amaterno =  ''
-                                            var fnacimiento =  ''
-                                            var rfc =  ''
-                                            var curp =  ''
-                                            var rutadocumento =  ''
-    
-    
-                                            if(me.datosprotegidos){
-                                                nombre = me.nombres;
-                                                apaterno = me.apaterno;
-                                                amaterno = me.amaterno;
-                                                fnacimiento = me.fnacimiento;
-                                                rfc = me.rfc;
-                                                curp = me.curp;
-                                                rutadocumento = me.ruta;
-                                                me.alias=this.obtenerIniciales();
-    
-    
-                                                me.nombres = me.alias;
-                                                me.apaterno ="";
-                                                me.amaterno = "";
-                                                me.fnacimiento = "";
-                                                me.rfc = "";
-                                                me.curp = "";
-                                                me.ruta ="";
-                                            }
-    
-                                            this.$cat.post('api/RAPs/Crear',{
-    
+                                        me.$notify('Error al intentar crear el  registro!!!','error')
+                                    }
+                                });
+                            }
+                            else{
+                                //Código para guardar
+                            if (this.imageFile){
+                                let formData = new FormData();
+                                formData.append('file', this.imageFile );
+                                var nombreCarpeta = "C" + me.nuc.substr(1);
+                                me.GUID = me.generateUUID();
+
+                                this.$cat.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
+                                    formData,
+                                    {
+                                        headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                        }
+                                    }
+                                ).then(function(response){
+                                    me.ruta = response.data.ruta
+
+                                    if(me.cp=='') me.cp =0;
+                                    if(me.de_cp == '') me.de_cp =0
+                                    if(me.noInt == '')
+                                    me.noInt = ''
+                                    if(me.noExt == '')
+                                    me.noExt = 'S/N'
+
+                                    if(me.datosprotegidos){
+                                        nombre = me.nombres;
+                                        apaterno = me.apaterno;
+                                        amaterno = me.amaterno;
+                                        fnacimiento = me.fnacimiento;
+                                        rfc = me.rfc;
+                                        curp = me.curp;
+                                        rutadocumento = me.ruta;
+                                        me.alias=this.obtenerIniciales();
+
+                                        me.nombres = me.alias;
+                                        me.apaterno ="";
+                                        me.amaterno = "";
+                                        me.rfc = "";
+                                        me.curp = "";
+                                        me.ruta ="";
+                                    }
+
+                                    this.$cat.post('api/RAPs/Crear',{
+
                                         //***************************** PERSONA*/
                                         'rAtencionId': me.rAtencionId,
                                         'clasificacionpersona': me.clasificacionpersona,
-                                        'pInicio': (me.countPersona == 0 ? true : false),
+                                        'pInicio': (me.countPersona === 0 ? true : false),
+
                                         'statusAnonimo': me.switch2,
                                         'tipoPersona': me.radios,
                                         'rfc': me.rfc,
                                         'razonsocial': me.razonsocial,
+
                                         'nombre': me.nombres,
                                         'apellidoPaterno' : me.apaterno,
                                         'apellidoMaterno' : me.amaterno,
@@ -5781,15 +5524,45 @@
                                         'de_lat': me.de_lat,
                                         'de_lng': me.de_lng,
                                         //******************************************************* */
-    
+
                                     },configuracion).then(function(response){
-    
+
                                         me.$notify('¡La información se guardo correctamente!','success')
-    
-                                        //GUARDA EL VALOR DE LA PERSONA QUE SE ACABA DE CREAR
+
+                                        //GUARDA ID DE PERSONA QUE SE ACABA DE GENERAR
                                         var personaIdGenerado = response.data.personaid;
-    
-    
+
+                                        this.$cat.post('api/DocumentosPesonas/Crear',{
+                                            'PersonaId': response.data.personaid,
+                                            'TipoDocumento': me.docidentificacion,
+                                            'NombreDocumento': me.GUID,
+                                            'Descripcion': "",
+                                            'Ruta':me.ruta,
+                                            'Distrito': me.u_distrito,
+                                            'DirSubProc':me.u_dirSubPro,
+                                            'Agencia':me.u_agencia,
+                                            'Usuario': me.u_nombre,
+                                            'Puesto': me.u_puesto,
+                                        },configuracion).then(function(response){
+                                            me.$notify('¡La información se guardo correctamente!','success')
+                                        }).catch(err => {
+                                            if (err.response.status==400){
+                                                me.$notify("No es un usuario válido", 'error')
+                                            } else if (err.response.status==401){
+                                                me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                me.e401 = true,
+                                                me.showpage= false
+                                            } else if (err.response.status==403){
+                                                me.$notify("No esta autorizado para ver esta página", 'error')
+                                                me.e403= true
+                                                me.showpage= false
+                                            } else if (err.response.status==404){
+                                                me.$notify("El recuso no ha sido encontrado", 'error')
+                                            }else{
+                                                me.$notify('Error al intentar crear el  registro!!!','error')
+                                            }
+                                        });
+
                                         if(me.datosprotegidos){
                                             this.$cat.post('api/DatosProtegido/Crear',{
                                                 'RAPId': response.data.idrap,
@@ -5799,14 +5572,14 @@
                                                 'FechaNacimiento': fnacimiento,
                                                 'CURP':curp,
                                                 'RFC': rfc,
-                                                'Rutadocumento':"",
+                                                'Rutadocumento':rutadocumento,
                                                 'UDistrito':me.u_distrito,
                                                 'USubproc': me.u_dirSubPro,
                                                 'UAgencia': me.u_agencia,
                                                 'Usuario': me.u_nombre,
                                                 'UPuesto': me.u_puesto,
                                                 'UModulo': me.u_modulo,
-    
+
                                             },configuracion).then(function(response){
                                                 me.$notify('¡La información se guardo correctamente!','success')
                                             }).catch(err => {
@@ -5827,12 +5600,167 @@
                                                 }
                                             });
                                         }
-    
                                         //LLAMA A LA FUNCION DE CREAR UN POLICIA
                                         if(me.agregarPoli == true){me.crearegistrarpolicias2(personaIdGenerado);}
                                         me.crearRegistroTableroI(descripcionRegTabI);
                                         me.listarrap();
                                         me.close();
+                                    }).catch(err => {
+                                        if (err.response.status==400){
+                                            me.$notify("No es un usuario válido", 'error')
+                                        } else if (err.response.status==401){
+                                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                            me.e401 = true,
+                                            me.showpage= false
+                                        } else if (err.response.status==403){
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
+                                            me.e403= true
+                                            me.showpage= false
+                                        } else if (err.response.status==404){
+                                            me.$notify("El recuso no ha sido encontrado", 'error')
+                                        }else{
+                                            me.$notify('Error al intentar crear el  registro!!!','error')
+                                        }
+                                    });
+                                })
+                                .catch(function(){
+                                });
+                            }else{
+                                if(me.cp=='') me.cp =0;
+                                if(me.de_cp == '') me.de_cp =0
+
+                                var nombre = ''
+                                var apaterno =      ''
+                                var amaterno =  ''
+                                var fnacimiento =  ''
+                                var rfc =  ''
+                                var curp =  ''
+                                var rutadocumento =  ''
+
+                                if(me.datosprotegidos){
+                                    nombre = me.nombres;
+                                    apaterno = me.apaterno;
+                                    amaterno = me.amaterno;
+                                    fnacimiento = me.fnacimiento;
+                                    rfc = me.rfc;
+                                    curp = me.curp;
+                                    rutadocumento = me.ruta;
+                                    me.alias=this.obtenerIniciales();
+
+                                    me.nombres = me.alias;
+                                    me.apaterno ="";
+                                    me.amaterno = "";
+                                    me.fnacimiento = "";
+                                    me.rfc = "";
+                                    me.curp = "";
+                                    me.ruta ="";
+                                }
+
+                                this.$cat.post('api/RAPs/Crear',{
+
+                                    //***************************** PERSONA*/
+                                    'rAtencionId': me.rAtencionId,
+                                    'clasificacionpersona': me.clasificacionpersona,
+                                    'pInicio': (me.countPersona == 0 ? true : false),
+                                    'statusAnonimo': me.switch2,
+                                    'tipoPersona': me.radios,
+                                    'rfc': me.rfc,
+                                    'razonsocial': me.razonsocial,
+                                    'nombre': me.nombres,
+                                    'apellidoPaterno' : me.apaterno,
+                                    'apellidoMaterno' : me.amaterno,
+                                    'alias': me.alias,
+                                    'statusAlias': false,
+                                    'rangoEdad': me.rangoedad,
+                                    'rangoEdadTF':me.RangoEdadTF,
+                                    'fechaNacimiento' : me.fnacimiento,
+                                    'entidadFederativa': me.abreviacion.text,
+                                    'docIdentificacion': me.docidentificacion,
+                                    'curp': me.curp,
+                                    'PoblacionAfro': me.poblacionafro,
+                                    'sexo' : me.sexo,
+                                    'estadoCivil': me.estadocivil,
+                                    'genero': me.genero,
+                                    'registro': me.registro,
+                                    'verR': me.verR,
+                                    'verI': me.verI,
+                                    'telefono1': me.telefono1,
+                                    'telefono2': me.telefono2,
+                                    'correo': me.correo,
+                                    'medioNotificacion': listaMediosNotificacion,
+                                    'nacionalidad': me.nacionalidad,
+                                    'ocupacion': me.ocupacion,
+                                    'nivelEstudio': me.nivelestudio,
+                                    'lengua': me.lengua,
+                                    'religion': me.religion,
+                                    'discapacidad': me.switch1,
+                                    'tipoDiscapacidad': listaDiscapacidades,
+                                    'DatosProtegidos': me.datosprotegidos,
+                                    'Relacion': me.relacion,
+                                    'Parentesco': me.relacionado,
+                                    'InicioDetenido' : me.impuDetenido, 
+                                    'PoliciaDetuvo' : idPoliciaDetuvo,
+                                    'Edad': me.edadf,
+                                    'DocPoderNotarial':me.documentoacredita,
+                                    //***************************** DIRECCION PERSONAL */
+                                    'tipoVialidad': me.vialidad,
+                                    'calle': me.calle,
+                                    'noExt': me.noExt,
+                                    'noInt': me.noInt,
+                                    'entreCalle1': me.entreCalle1,
+                                    'entreCalle2': me.entreCalle2,
+                                    'referencia': me.referencia,
+                                    'pais': me.pais,
+                                    'estado': me.estado,
+                                    'municipio': me.municipio,
+                                    'localidad': me.localidad,
+                                    'tipoAsentamiento': me.asentamiento,
+                                    'cp': me.cp,
+                                    'lat': me.lat,
+                                    'lng': me.lng,
+                                    //************************************ DIRECCION ESCUCHA */
+                                    'de_tipoVialidad': me.de_vialidad,
+                                    'de_calle': me.de_calle,
+                                    'de_noExt': me.de_noExt,
+                                    'de_noInt': me.de_noInt,
+                                    'de_entreCalle1': me.de_entreCalle1,
+                                    'de_entreCalle2': me.de_entreCalle2,
+                                    'de_referencia': me.de_referencia,
+                                    'de_pais': me.de_pais,
+                                    'de_estado': me.de_estado,
+                                    'de_municipio': me.de_municipio,
+                                    'de_localidad': me.de_localidad,
+                                    'de_tipoAsentamiento': me.de_asentamiento,
+                                    'de_cp': me.de_cp,
+                                    'de_lat': me.de_lat,
+                                    'de_lng': me.de_lng,
+                                    //******************************************************* */
+                                },configuracion).then(function(response){
+
+                                    me.$notify('¡La información se guardo correctamente!','success')
+
+                                    //GUARDA EL VALOR DE LA PERSONA QUE SE ACABA DE CREAR
+                                    var personaIdGenerado = response.data.personaid;
+
+                                    if(me.datosprotegidos){
+                                        this.$cat.post('api/DatosProtegido/Crear',{
+                                            'RAPId': response.data.idrap,
+                                            'Nombre': nombre,
+                                            'APaterno': apaterno,
+                                            'AMaterno': amaterno,
+                                            'FechaNacimiento': fnacimiento,
+                                            'CURP':curp,
+                                            'RFC': rfc,
+                                            'Rutadocumento':"",
+                                            'UDistrito':me.u_distrito,
+                                            'USubproc': me.u_dirSubPro,
+                                            'UAgencia': me.u_agencia,
+                                            'Usuario': me.u_nombre,
+                                            'UPuesto': me.u_puesto,
+                                            'UModulo': me.u_modulo,
+
+                                        },configuracion).then(function(response){
+                                            me.$notify('¡La información se guardo correctamente!','success')
                                         }).catch(err => {
                                             if (err.response.status==400){
                                                 me.$notify("No es un usuario válido", 'error')
@@ -5851,10 +5779,34 @@
                                             }
                                         });
                                     }
+
+                                    //LLAMA A LA FUNCION DE CREAR UN POLICIA
+                                    if(me.agregarPoli == true){me.crearegistrarpolicias2(personaIdGenerado);}
+                                    me.crearRegistroTableroI(descripcionRegTabI);
+                                    me.listarrap();
+                                    me.close();
+                                    }).catch(err => {
+                                        if (err.response.status==400){
+                                            me.$notify("No es un usuario válido", 'error')
+                                        } else if (err.response.status==401){
+                                            me.$notify("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                            me.e401 = true,
+                                            me.showpage= false
+                                        } else if (err.response.status==403){
+                                            me.$notify("No esta autorizado para ver esta página", 'error')
+                                            me.e403= true
+                                            me.showpage= false
+                                        } else if (err.response.status==404){
+                                            me.$notify("El recuso no ha sido encontrado", 'error')
+                                        }else{
+                                            me.$notify('Error al intentar crear el  registro!!!','error')
+                                        }
+                                    });
                                 }
                             }
                         }
-                    })
+                    }
+                })
             },
             //ESTA FUNCION GENERA EL POLICIA CUANDO SE TRATA DE UN ACTUALIZACION DE IMPUTADO DONDE SE REQUIERE AGREGAR UN POLICIA QUE LO DETUVO
             crearegistrarpolicias(personaPoli){

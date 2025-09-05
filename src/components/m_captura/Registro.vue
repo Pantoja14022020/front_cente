@@ -2,143 +2,142 @@
     <v-layout align-start>
         <v-navigation-drawer v-model="drawer" app v-if="logueado" class="primary">
             <div class="text-xl-center text-md-center text-xs-center my-4">
-              <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a>
+                <a href="/"><img src="@/assets/Logo.png" height="110px" alt=""></a>
             </div>
     
             <v-list dense dark class="pt-0 primary" >
-              <template>
-                <v-list-tile  :to="{name:'mcaptura'}">
-                  <v-list-tile-action>
-                    <v-icon class="centenarioMenuIcon">home</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
-                </v-list-tile>
-              </template>
+                <template>
+                    <v-list-tile  :to="{name:'mcaptura'}">
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">home</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-title class="white--text">Inicio</v-list-tile-title>
+                    </v-list-tile>
+                </template>
+
+                <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
+                    <v-list-group>
+                        <v-list-tile slot="activator">   
+                            <v-list-tile-content>
+                                <v-list-tile-title class="centenarioMenuAreas">
+                                    Carpetas
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                        <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-registro'== '#' ? '' :  'mcaptura-registro'}"  active-class="secondary">  
+                            <v-list-tile-action>
+                                <v-icon class="centenarioMenuIcon">group</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title class="centenarioMenuModules">
+                                    Registro
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile> 
+                        <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-listacarpetas'== '#' ? '' :  'mcaptura-listacarpetas'}"  active-class="secondary">  
+                            <v-list-tile-action>
+                                <v-icon class="centenarioMenuIcon">view_list</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title class="centenarioMenuModules">
+                                    Lista de carpetas asignadas
+                                </v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile> 
+                    </v-list-group>
+                </template>
     
-              <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
-                <v-list-group>
-                  <v-list-tile slot="activator">   
-                    <v-list-tile-content >
-                      <v-list-tile-title class="centenarioMenuAreas">
-                        Carpetas
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-registro'== '#' ? '' :  'mcaptura-registro'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">group</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Registro
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile> 
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-listacarpetas'== '#' ? '' :  'mcaptura-listacarpetas'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">view_list</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Lista de carpetas asignadas
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile> 
+                <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
+                    <v-list-group>
+                    <v-list-tile slot="activator">   
+                        <v-list-tile-content >
+                            <v-list-tile-title class="centenarioMenuAreas">
+                                Seguimiento a carpeta
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-informaciongeneral'== '#' ? '' :  'mcaptura-informaciongeneral'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Información general.
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-victimaimputado'== '#' ? '' :  'mcaptura-victimaimputado'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">face</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Víctima(s) directa, indirecta, testigo y/o imputado.
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-delito'== '#' ? '' :  'mcaptura-delito'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">dashboard</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Delito
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile> 
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-vehiculo'== '#' ? '' :  'mcaptura-vehiculo'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">commute</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Vehiculo
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-if="esAdministrador || esFacilitador" :to="{ name: 'mcaptura-justiciarestaurativa'== '#' ? '' :  'mcaptura-justiciarestaurativa'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">event_seat</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Justicia restaurativa
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidasproteccion'== '#' ? '' :  'mcaptura-medidasproteccion'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">description</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Medidas de protección
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidascautelares'== '#' ? '' :  'mcaptura-medidascautelares'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">label</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Medidas cautelares
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-resolucion'== '#' ? '' :  'mcaptura-resolucion'}"  active-class="secondary">  
+                        <v-list-tile-action>
+                            <v-icon class="centenarioMenuIcon">verified_user</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title class="centenarioMenuModules">
+                                Resolución
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
                 </v-list-group>
-              </template>
-    
-              <template v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador">
-                <v-list-group>
-                  <v-list-tile slot="activator">   
-                    <v-list-tile-content >
-                      <v-list-tile-title class="centenarioMenuAreas">
-                      Seguimiento a carpeta
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto || esFacilitador" :to="{ name: 'mcaptura-informaciongeneral'== '#' ? '' :  'mcaptura-informaciongeneral'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">perm_contact_calendar</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Información general.
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile> 
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-victimaimputado'== '#' ? '' :  'mcaptura-victimaimputado'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">face</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Víctima(s) directa, indirecta, testigo y/o imputado.
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile> 
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-delito'== '#' ? '' :  'mcaptura-delito'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">dashboard</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Delito
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile> 
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-vehiculo'== '#' ? '' :  'mcaptura-vehiculo'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">commute</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Vehiculo
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esFacilitador" :to="{ name: 'mcaptura-justiciarestaurativa'== '#' ? '' :  'mcaptura-justiciarestaurativa'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">event_seat</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Justicia restaurativa
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidasproteccion'== '#' ? '' :  'mcaptura-medidasproteccion'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">description</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Medidas de protección
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-medidascautelares'== '#' ? '' :  'mcaptura-medidascautelares'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">label</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Medidas cautelares
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                  <v-list-tile v-if="esAdministrador || esAMPOAMP || esAmpoMixto" :to="{ name: 'mcaptura-resolucion'== '#' ? '' :  'mcaptura-resolucion'}"  active-class="secondary">  
-                    <v-list-tile-action>
-                      <v-icon class="centenarioMenuIcon">verified_user</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                      <v-list-tile-title class="centenarioMenuModules">
-                        Resolución
-                      </v-list-tile-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list-group>
-              </template>
-          
+                </template>
             </v-list>
         </v-navigation-drawer>
 
@@ -1665,10 +1664,10 @@
             referencia:'',
             pais:'Mexico',
             
-            vialidad: '',
+            vialidad: 0,
             vialidades: [],
 
-            asentamiento: '',
+            asentamiento: 0,
             asentamientos: [],
 
             estadoP:'',
@@ -1684,7 +1683,7 @@
             localidadidP:0,
             localidadesP:[],
     
-            cp:'',
+            cp:0,
             lat:'',
             lng:'',
 
@@ -1698,10 +1697,10 @@
             de_referencia:'',
             de_pais:'Mexico',
             
-            de_vialidad: '',
+            de_vialidad: 0,
             de_vialidades: [],
 
-            de_asentamiento: '',
+            de_asentamiento: 0,
             de_asentamientos: [],
 
             de_estado:'',
@@ -1717,7 +1716,7 @@
             de_localidadid:0,
             de_localidades:[],
     
-            de_cp:'',
+            de_cp:0,
             de_lat:'',
             de_lng:'',
 
@@ -1882,7 +1881,7 @@
                     this.verR = false;
                 }
                 if (val !== 'Victima directa' && val !== 'Victima indirecta') {
-                    this.relacionado = "";
+                    this.relacionado = '';
                 }
             },
             radios(val) {
@@ -2583,24 +2582,24 @@
                 let me = this;
                 this.$validator.validate().then(result => {
                     if (result) {
-                let header = { "Authorization" : "Bearer " + this.$store.state.token };
-                let configuracion = { headers : header };
-                if (me.consultadenuc && me.nucdisponible) {
-                    // Bloquea pantalla para no se tenga problema de duplicidad
+                        let header = { "Authorization" : "Bearer " + this.$store.state.token };
+                        let configuracion = { headers : header };
+                        if (me.consultadenuc && me.nucdisponible) {
+                            // Bloquea pantalla para no se tenga problema de duplicidad
                             me.textoCargando = 'Por favor espere, se está creando la carpeta';
                             me.cargando = true;
-
-                    me.$validator.validate().then(result => {
-                        me.registro = me.registro.length !== 0? me.registro: false;
+                            me.$validator.validate().then(result => {
+                                me.registro = me.registro.length !== 0? me.registro: false;
 
                                 if (me.clasificacionpersona != "Victima indirecta" && me.clasificacionpersona != "Victima directa")
                                 {
-                                    me.relacionado = " ";
+                                    me.relacionado = '';
                                     me.registro = false;
                                     me.relacion = false;
                                 } else { me.relacion = true }
         
                                 var listaMediosNotificacion='';
+
                                 if(me.medionotificacion.length <=0)
                                 {
                                     listaMediosNotificacion='';
@@ -2615,7 +2614,7 @@
                                                 listaMediosNotificacion+=notificacion.text+',';
                                             }
                                             else {
-                                                    listaMediosNotificacion+=notificacion+',';
+                                                listaMediosNotificacion+=notificacion+',';
                                             }
                                         };
                                     });
@@ -2663,7 +2662,6 @@
                                     me.edadf = 99
                                 }
         
-        
                                 //SI LA FECHA TIENE UN VALOR INDEFINIDO POR CUARLQUIER ERROR, SE AGREGA 99
                                 if(me.fnacimiento.includes('undefined') == true){
                                     me.edadf = 99;
@@ -2704,110 +2702,115 @@
                                 if(me.docidentificacion == '') me.docidentificacion = 'LO DESCONOCE'
                                 if(me.cp=='') me.cp =0;
                                 if(me.de_cp == '') me.de_cp =0
-                                if(me.noInt == '') me.noInt = 0
-                                if(me.de_noInt == '') me.de_noInt = 0
+                                if(me.noInt == '') me.noInt = '0'
+                                if(me.de_noInt == '') me.de_noInt = '0'
                                 if(me.noExt == '') me.noExt = 'S/N'
                                 if(me.de_noExt == '') me.de_noExt = 'S/N'
-                        //CREACION DE RAC
-                        me.$cat.post('api/Racs/GenerarRacModuloCaptura', { 
-                            'distritoId': me.distritoinicia.value,
-                            'agenciaId': me.agenciainicia.value,  
-                            'FechaCreacion': me.fechainicio
-                        }, configuracion).then(function(response) { 
-                            //CREACION DE RATENCION
-                            let idRac = response.data.idrac;
-                            me.$cat.post('api/RAtencions/CrearMCaptura',{ 
-                                'distritoInicial': me.distritoinicia.text,  
-                                'agenciaInicial': me.agenciainicia.text,
-                                'dirSubProcuInicial': me.subprocinicia.text,
-                                'agenciaId': me.agenciainicia.value,
-                                'racId': response.data.idrac,
-                                'pInicio': true,
-                                'Numerooficio': 0,
-                                'MedioLlegada': me.mediodenuncia == "Noticia de hechos" ? me.medioreporte : "",
-                                'MedioDenuncia': me.mediodenuncia,
-                                'FechaRegistro': me.mediodenuncia == "Con detenido" ? me.fechadetencion : me.fechainicio
-                            }, configuracion).then(function(response) { 
-                                me.rAtencionId = response.data.idRatencion;
-                                //CREACION DE RHECHO
-                                me.$cat.post('api/RHechoes/CrearPI', {  
-                                    'agenciaid': me.agenciaintegraid,
-                                    'ratencionid': response.data.idRatencion,
-                                    'moduloServicioId': me.modulointegraid,
-                                    'status': true,
-                                    'rbreve': me.narrativa,
-                                    'fechaReporte': me.fechai,
-                                },configuracion).then(function(response) {
-                                    me.rHechoId = response.data.idRH
-                                    me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {  
-                                        'RHechoId': response.data.idRH,
-                                        'Detalle': "Inicio de la investigación",
-                                        'Modulo': me.moduloinicia.text,
-                                        'Agencia':me.agenciainicia.text,
-                                        'UDistrito': me.u_distrito,  
-                                        'USubproc': me.u_dirSubPro,
-                                        'UAgencia': me.u_agencia,
-                                        'Usuario': me.u_nombre,
-                                        'UPuesto': me.u_puesto,
-                                        'UModulo': me.u_modulo,
-                                        'Fechasys': me.fechainicio
-                                    }, configuracion).then(function(response) {
-                                        //CREACION DEL NUC
-                                        me.$cat.post('api/Nucs/GenerarNucMCaptura', { 
-                                            'distritoId': me.distritoinicia.value,
-                                            'agenciaId': me.agenciainicia.value, 
-                                            'FechaCreacion': me.fechainicio,
-                                            'NUC': me.nuc
-                                        }, configuracion).then(function(response) {
-                                            //ELEVACION DEL RHECHO A NUC
-                                            me.$store.state.rhechoid = me.rHechoId;
-                                            me.$store.state.nuc = response.data.nuc;
-                                            me.$store.state.ratencionid = me.rAtencionId
-                                            me.$cat.put('api/RHechoes/ActualizarNUCMCaptura',{ 
-                                                'idrhecho': me.rHechoId,
-                                                'ratencionid': me.rAtencionId, 
-                                                'nucid': response.data.idnuc,
-                                                'FechaElevacion': me.fechainicio
+
+                                //CREACION DE RAC
+                                me.$cat.post('api/Racs/GenerarRacModuloCaptura', { 
+                                    'distritoId': me.distritoinicia.value,
+                                    'agenciaId': me.agenciainicia.value,
+                                    'FechaCreacion': me.fechainicio
+                                }, configuracion).then(function(response) { 
+                                    //CREACION DE RATENCION
+                                    let idRac = response.data.idrac;
+                                    me.$cat.post('api/RAtencions/CrearMCaptura',{
+                                        'distritoInicial': me.distritoinicia.text,  
+                                        'agenciaInicial': me.agenciainicia.text,
+                                        'dirSubProcuInicial': me.subprocinicia.text,
+                                        'agenciaId': me.agenciainicia.value,
+                                        'racid': response.data.idrac,
+                                        'pInicio': true,
+                                        'Numerooficio': "",
+                                        'MedioLlegada': me.mediodenuncia == "Noticia de hechos" ? me.medioreporte : "",
+                                        'MedioDenuncia': me.mediodenuncia,
+                                        //'FechaRegistro': me.mediodenuncia == "Con detenido" ? me.fechadetencion : me.fechainicio
+                                        'FechaRegistro': new Date(
+                                            me.mediodenuncia == "Con detenido" ? me.fechadetencion : me.fechainicio
+                                        ).toISOString()
+                                    }, configuracion).then(function(response) { 
+                                        me.rAtencionId = response.data.idRatencion;
+                                        //CREACION DE RHECHO
+                                        me.$cat.post('api/RHechoes/CrearPI', {  
+                                            'agenciaid': me.agenciaintegraid,
+                                            'ratencionid': response.data.idRatencion,
+                                            'moduloServicioId': me.modulointegraid,
+                                            'status': true,
+                                            'rbreve': me.narrativa,
+                                            'fechaReporte': me.fechai,
+                                        },configuracion).then(function(response) {
+                                            me.rHechoId = response.data.idRH
+                                            me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {  
+                                                'RHechoId': response.data.idRH,
+                                                'Detalle': "Inicio de la investigación",
+                                                'Modulo': me.moduloinicia.text,
+                                                'Agencia':me.agenciainicia.text,
+                                                'UDistrito': me.u_distrito,  
+                                                'USubproc': me.u_dirSubPro,
+                                                'UAgencia': me.u_agencia,
+                                                'Usuario': me.u_nombre,
+                                                'UPuesto': me.u_puesto,
+                                                'UModulo': me.u_modulo,
+                                                'Fechasys': me.fechainicio
                                             }, configuracion).then(function(response) {
-                                                //CREACION DIRECCION DEL HECHO
-                                                me.$cat.post('api/DireccionDelitoes/Crear', {
-                                                    'idrhecho':  me.rHechoId,
-                                                    'lugarEspecifico': "",
-                                                    'calle': "",
-                                                    'noExt': "",
-                                                    'noInt': "",
-                                                    'entrecalle1': "",
-                                                    'entrecalle2': "",
-                                                    'referencia': "",
-                                                    'pais': 'México',
-                                                    'estado': me.entidad.text,
-                                                    'municipio': me.municipio.text,
-                                                    'localidad': me.localidad.text,
-                                                    'cp': "",
-                                                    'lat': "",
-                                                    'lng': "",
-                                                    'tipoVialidad': 0, 
-                                                    'tipoAsentamiento': 0,
-                                                }, configuracion).then(function(response) { 
-                                                    //CREACION DE LA HORA, FECHA DEL SUCESO
-                                                    me.$cat.put('api/RHechoes/ActualizarFHS',{ 
-                                                        'idRHecho': me.rHechoId,
+                                                //CREACION DEL NUC
+                                                me.$cat.post('api/Nucs/GenerarNucMCaptura', { 
+                                                    'distritoId': me.distritoinicia.value,
+                                                    'agenciaId': me.agenciainicia.value, 
+                                                    'FechaCreacion': me.fechainicio,
+                                                    'NUC': me.nuc
+                                                }, configuracion).then(function(response) {
+                                                    //ELEVACION DEL RHECHO A NUC
+                                                    me.$store.state.rhechoid = me.rHechoId;
+                                                    me.$store.state.nuc = response.data.nuc;
+                                                    me.$store.state.ratencionid = me.rAtencionId
+                                                    me.$cat.put('api/RHechoes/ActualizarNUCMCaptura',{ 
+                                                        'IdRHecho': me.rHechoId,
                                                         'ratencionid': me.rAtencionId, 
-                                                        'fechaHoraSuceso': me.fechahechos + ' ' + me.horas,
-                                                    }, configuracion).then(async function(response) {
-                                                        // Inicializar el policia como default
+                                                        'nucId': response.data.idnuc,
+                                                        'FechaElevacion': me.fechainicio
+                                                    }, configuracion).then(function(response) {
+                                                        //CREACION DIRECCION DEL HECHO
+                                                        me.$cat.post('api/DireccionDelitoes/Crear', {
+                                                            'IdRHecho':  me.rHechoId,
+                                                            'LugarEspecifico': "",
+                                                            'Calle': "",
+                                                            'NoExt': "",
+                                                            'NoInt': "",
+                                                            'EntreCalle1': "",
+                                                            'EntreCalle2': "",
+                                                            'Referencia': "",
+                                                            'Pais': 'México',
+                                                            'Estado': me.entidad.text,
+                                                            'Municipio': me.municipio.text,
+                                                            'Localidad': me.localidad.text,
+                                                            'CP': null,
+                                                            'lat': "",
+                                                            'lng': "",
+                                                            'tipoVialidad': 0, 
+                                                            'tipoAsentamiento': 0,
+                                                        }, configuracion).then(function(response) { 
+                                                            //CREACION DE LA HORA, FECHA DEL SUCESO
+                                                            me.$cat.put('api/RHechoes/ActualizarFHS',{ 
+                                                                'IdRHecho': me.rHechoId,
+                                                                'ratencionId': me.rAtencionId, 
+                                                                'fechaHoraSuceso': new Date(me.fechahechos + ' ' + me.horas).toISOString()
+                                                            }, configuracion).then(async function(response) {
+                                                                // Inicializar el policia como default
                                                                 let idPoliciaDetuvo = '00000000-0000-0000-0000-000000000000';
+                                                                //let idPoliciaDetuvo = null;
         
                                                                 // Consultar si es con detenido registrar el policia
                                                                 if (me.mediodenuncia == 'Con detenido') {
                                                                     const responsePolicia = await axios.post('api/RAPs/CrearPoliciaModuloCaptura', {
                                                                         'RAtencionId': me.rAtencionId,
-                                                                        'nombre': me.nombrep,
-                                                                        'apellidoPaterno': me.apaternop,
-                                                                        'apellidoMaterno': me.amaternop,
+                                                                        'Nombre': me.nombrep,
+                                                                        'ApellidoPaterno': me.apaternop,
+                                                                        'ApellidoMaterno': me.amaternop,
                                                                         'InstitutoPolicial': me.institucionp,
                                                                         'PoliciaDetuvo' : idPoliciaDetuvo,
-                                                                        'informePolicial': me.informep
+                                                                        'InformePolicial': me.informep
                                                                     }, configuracion).catch(err => { 
                                                                         if (err.response.status == 400) {
                                                                             me.mostrarToast("No es un usuario válido", 'error')
@@ -2824,8 +2827,7 @@
                                                                         } else {
                                                                             me.mostrarToast('Error al intentar crear el  registro!!!','error')  
                                                                         } 
-                                                                    });
-        
+                                                                    });        
                                                                     idPoliciaDetuvo = responsePolicia.data.personaId;
                                                                 }
         
@@ -2836,100 +2838,93 @@
                                                                     var nombreCarpeta = "C" + me.nuc.substr(1);
                                                                     me.GUID = me.generateUUID();
                                 
-                                                                    const responseImagen = await axios.post('api/RAtencions/Post/'+nombreCarpeta+'/'+me.GUID,
-                                                                        formData,
-                                                                        {
-                                                                        headers: {
-                                                                                    'Content-Type': 'multipart/form-data'
-                                                                                }
+                                                                    const responseImagen = await axios.post('api/RAtencions/Post/'+nombreCarpeta+'/' + me.GUID,
+                                                                        formData, {
+                                                                            headers: { 'Content-Type': 'multipart/form-data' }
                                                                         }
                                                                     );
-        
                                                                     me.ruta = responseImagen.data.ruta;
                                                                 }
-        
                                                                 // Crear a la persona 
-                                                                axios.post('api/RAPs/Crear',{
+                                                                axios.post('http://localhost:44394/api/RAPs/Crear',{
                                                                     //***************************** PERSONA*/
-                                                                    'rAtencionId': me.rAtencionId,
-                                                                    'clasificacionpersona': me.clasificacionpersona,
-                                                                    'pInicio': true,
-                                                                    'statusAnonimo': false,
-                                                                    'tipoPersona': me.radios,
-                                                                    'rfc': me.rfc,
-                                                                    'razonsocial': me.razonsocial,
-                                                                    'nombre': me.nombres,
-                                                                    'apellidoPaterno' : me.apaterno,
-                                                                    'apellidoMaterno' : me.amaterno,
-                                                                    'alias': me.alias,
-                                                                    'statusAlias': false,
-                                                                    'rangoEdad': me.rangoedad,
-                                                                    'rangoEdadTF':me.RangoEdadTF,
-                                                                    'fechaNacimiento' : me.fnacimiento,
-                                                                    'entidadFederativa': me.abreviacion.text,
-                                                                    'docIdentificacion': me.docidentificacion,
-                                                                    'curp': me.curp,
+                                                                    'StatusAnonimo': false,
+                                                                    'TipoPersona': me.radios,
+                                                                    'RFC': me.rfc,
+                                                                    'RazonSocial': me.razonsocial,
+                                                                    'Nombre': me.nombres,
+                                                                    'ApellidoPaterno' : me.apaterno,
+                                                                    'ApellidoMaterno' : me.amaterno,
+                                                                    'Alias': me.alias,
+                                                                    'StatusAlias': false,
+                                                                    'FechaNacimiento' : me.fnacimiento,
+                                                                    'RangoEdad': me.rangoedad,
+                                                                    'RangoEdadTF':me.RangoEdadTF,
+                                                                    'EntidadFederativa': me.abreviacion.text,
+                                                                    'DocIdentificacion': me.docidentificacion,
+                                                                    'CURP': me.curp,
                                                                     'PoblacionAfro': me.poblacionafro,
-                                                                    'sexo' : me.sexo,
-                                                                    'estadoCivil': me.estadocivil,
-                                                                    'genero': me.genero,
-                                                                    'registro': me.registro,
-                                                                    'verR': me.verR,
-                                                                    'verI': me.verI,
-                                                                    'telefono1': me.telefono1,
-                                                                    'telefono2': me.telefono2,
-                                                                    'correo': me.correo,
-                                                                    'medioNotificacion': listaMediosNotificacion,
-                                                                    'nacionalidad': me.nacionalidad,
-                                                                    'ocupacion': me.ocupacion,
-                                                                    'nivelEstudio': me.nivelestudio,
-                                                                    'lengua': me.lengua,
-                                                                    'religion': me.religion,
-                                                                    'discapacidad': me.switch1,
-                                                                    'tipoDiscapacidad': listaDiscapacidades,
+                                                                    'Sexo' : me.sexo,
+                                                                    'Genero': me.genero,
+                                                                    'Registro': me.registro,
+                                                                    'VerR': me.verR,
+                                                                    'VerI': me.verI,
+                                                                    'EstadoCivil': me.estadocivil,
+                                                                    'Telefono1': me.telefono1,
+                                                                    'Telefono2': me.telefono2,
+                                                                    'Correo': me.correo,
+                                                                    'Medionotificacion': listaMediosNotificacion,
+                                                                    'Nacionalidad': me.nacionalidad,
+                                                                    'Ocupacion': me.ocupacion,
+                                                                    'NivelEstudio': me.nivelestudio,
+                                                                    'Lengua': me.lengua,
+                                                                    'Religion': me.religion,
+                                                                    'Discapacidad': me.switch1,
+                                                                    'TipoDiscapacidad': listaDiscapacidades,
+                                                                    'Parentesco': me.relacionado,
                                                                     'DatosProtegidos': me.datosprotegidos,
                                                                     'Relacion': me.relacion,
-                                                                    'Parentesco': me.relacionado,
-                                                                    'InicioDetenido' : me.impuDetenido, 
-                                                                    'PoliciaDetuvo' : idPoliciaDetuvo,
                                                                     'Edad': me.edadf,
+                                                                    'InicioDetenido' : me.impuDetenido, 
+                                                                    'PoliciaDetuvo' : idPoliciaDetuvo,                                                                    
                                                                     'DocPoderNotarial':me.documentoacredita,
-                                                                    //***************************** DIRECCION PERSONAL */
-                                                                    'tipoVialidad': me.vialidad,
-                                                                    'calle': me.calle,
-                                                                    'noExt': me.noExt,
-                                                                    'noInt': me.noInt,
-                                                                    'entreCalle1': me.entreCalle1,
-                                                                    'entreCalle2': me.entreCalle2,
-                                                                    'referencia': me.referencia,
-                                                                    'pais': me.pais,
-                                                                    'estado': me.estadoP,
-                                                                    'municipio': me.municipioP,
-                                                                    'localidad': me.localidadP,
-                                                                    'tipoAsentamiento': me.asentamiento,
-                                                                    'cp': me.cp,
+                                                                //************************************ RAPs */
+                                                                    'RAtencionId': me.rAtencionId,
+                                                                    'ClasificacionPersona': me.clasificacionpersona,
+                                                                    'PInicio': true,
+                                                                //***************************** DIRECCION PERSONAL */
+                                                                    'Calle': me.calle,
+                                                                    'NoExt': me.noExt,
+                                                                    'NoInt': me.noInt,
+                                                                    'EntreCalle1': me.entreCalle1,
+                                                                    'EntreCalle2': me.entreCalle2,
+                                                                    'Referencia': me.referencia,
+                                                                    'Pais': me.pais,
+                                                                    'Estado': me.estadoP,
+                                                                    'Municipio': me.municipioP,
+                                                                    'Localidad': me.localidadP,
+                                                                    'CP': me.cp,
                                                                     'lat': me.lat,
                                                                     'lng': me.lng,
-                                                                    'tipoAsentamiento': me.asentamiento,
-                                                                    //************************************ DIRECCION ESCUCHA */
-                                                                    'de_tipoVialidad': me.de_vialidad,
-                                                                    'de_calle': me.de_calle,
-                                                                    'de_noExt': me.de_noExt,
-                                                                    'de_noInt': me.de_noInt,
-                                                                    'de_entreCalle1': me.de_entreCalle1,
-                                                                    'de_entreCalle2': me.de_entreCalle2,
-                                                                    'de_referencia': me.de_referencia,
-                                                                    'de_pais': me.de_pais,
-                                                                    'de_estado': me.de_estado,
-                                                                    'de_municipio': me.de_municipio,
-                                                                    'de_localidad': me.de_localidad,
-                                                                    'de_tipoAsentamiento': me.de_asentamiento,
-                                                                    'de_cp': me.de_cp,
+                                                                    'TipoVialidad': me.vialidad,
+                                                                    'TipoAsentamiento': me.asentamiento,
+                                                                //************************************ DIRECCION ESCUCHA */
+                                                                    'de_Calle': me.de_calle,
+                                                                    'de_NoExt': me.de_noExt,
+                                                                    'de_NoInt': me.de_noInt,
+                                                                    'de_EntreCalle1': me.de_entreCalle1,
+                                                                    'de_EntreCalle2': me.de_entreCalle2,
+                                                                    'de_Referencia': me.de_referencia,
+                                                                    'de_Pais': me.de_pais,
+                                                                    'de_Estado': me.de_estado,
+                                                                    'de_Municipio': me.de_municipio,
+                                                                    'de_Localidad': me.de_localidad,
+                                                                    'de_CP': me.de_cp,
                                                                     'de_lat': me.de_lat,
                                                                     'de_lng': me.de_lng,
-                                                                    'de_tipoAsentamiento': me.de_asentamiento,
-                                                                    //******************************************************* */
-                                                                },configuracion).then(function(response){
+                                                                    'de_tipoVialidad': me.de_vialidad,
+                                                                    'de_tipoAsentamiento': me.de_asentamiento                          
+                                                                },configuracion).then(function(response){ 
                                                                     me.mostrarToast('¡La información se guardo correctamente!','success')
         
                                                                     var personaIdGenerado = response.data.personaid;
@@ -2962,60 +2957,58 @@
                                                                             } else if (err.response.status==404){
                                                                                 me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                                             }else{
-                                                                                me.mostrarToast('Error al intentar crear el  registro!!!','error')
+                                                                                me.mostrarToast('Error al intentar crear el  registro','error')
                                                                             }
                                                                         });
-
                                                                         promesas.push(promDoc);
                                                                     }
-                                                        //GUARDAR HISTORICO DE REMISION UI EN CASO DE SELECCIONAR UNA FECHA DE RADICACCION
-                                                        if (me.diferenteRadicacion === true) {
-                                                            me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {
-                                                                'RHechoId': me.rHechoId,
-                                                                'Detalle': "Remision UI",
-                                                                'Modulo': me.modulointegra,
-                                                                'Agencia':me.agenciaintegra,
-                                                                'UDistrito': me.u_distrito,  
-                                                                'USubproc': me.u_dirSubPro,
-                                                                'UAgencia': me.u_agencia,
-                                                                'Usuario': me.u_nombre,
-                                                                'UPuesto': me.u_puesto,
-                                                                'UModulo': me.u_modulo,
-                                                                'Fechasys': me.fecharadicacion
-                                                            }, configuracion).catch(err => { 
-                                                                if (err.response.status == 400) {
-                                                                    me.mostrarToast("No es un usuario válido", 'error')
-                                                                } else if (err.response.status == 401) {
-                                                                    me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                                                                    me.e401 = true,
-                                                                    me.showpage = false
-                                                                } else if (err.response.status == 403) { 
-                                                                    me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                                                                    me.e403 = true
-                                                                    me.showpage = false 
-                                                                } else if (err.response.status == 404) {
-                                                                    me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                                                                } else {
-                                                                    me.mostrarToast('Error al intentar crear el  registro!!!', 'error')
-                                                                } 
-                                                            })
 
-                                                            promesas.push(promHistorial);
-                                                        }
+                                                                    //GUARDAR HISTORICO DE REMISION UI EN CASO DE SELECCIONAR UNA FECHA DE RADICACCION
+                                                                    if (me.diferenteRadicacion === true) {
+                                                                        const promHistorial = me.$cat.post('api/Historialcarpeta/CrearModuloCaptura', {
+                                                                            'RHechoId': me.rHechoId,
+                                                                            'Detalle': "Remision UI",
+                                                                            'Modulo': me.modulointegra,
+                                                                            'Agencia':me.agenciaintegra,
+                                                                            'UDistrito': me.u_distrito,  
+                                                                            'USubproc': me.u_dirSubPro,
+                                                                            'UAgencia': me.u_agencia,
+                                                                            'Usuario': me.u_nombre,
+                                                                            'UPuesto': me.u_puesto,
+                                                                            'UModulo': me.u_modulo,
+                                                                            'Fechasys': me.fecharadicacion
+                                                                        }, configuracion).catch(err => { 
+                                                                            if (err.response.status == 400) {
+                                                                                me.mostrarToast("No es un usuario válido", 'error')
+                                                                            } else if (err.response.status == 401) {
+                                                                                me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                                                me.e401 = true,
+                                                                                me.showpage = false
+                                                                            } else if (err.response.status == 403) { 
+                                                                                me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                                                                                me.e403 = true
+                                                                                me.showpage = false 
+                                                                            } else if (err.response.status == 404) {
+                                                                                me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                                                                            } else {
+                                                                                me.mostrarToast('Error al intentar crear el  registro', 'error')
+                                                                            } 
+                                                                        })
+                                                                        promesas.push(promHistorial);
+                                                                    }
                                                         
-                                                        /*if ( me.mediodenuncia == 'Con detenido') {
-                                                            me.$cat.post('api/RAPs/CrearPoliciaModuloCaptura', {                                                    
-                                                                'RAtencionId': me.rAtencionId,
-                                                                'nombre': me.institucionp.text,
-                                                                'apellidoPaterno': "",
-                                                                'apellidoMaterno': "",
-                                                                'InstitutoPolicial': me.institucionp.text
-                                                            }, configuracion).then(function(response) {
-
-                                                            })*/
-                                                           // Guardar registro para el tablero de inactividad 
+                                                                    /*if ( me.mediodenuncia == 'Con detenido') {
+                                                                        me.$cat.post('api/RAPs/CrearPoliciaModuloCaptura', {                                                    
+                                                                            'RAtencionId': me.rAtencionId,
+                                                                            'nombre': me.institucionp.text,
+                                                                            'apellidoPaterno': "",
+                                                                            'apellidoMaterno': "",
+                                                                            'InstitutoPolicial': me.institucionp.text
+                                                                        }, configuracion).then(function(response) {
+                                                                    })*/
+                                                                    // Guardar registro para el tablero de inactividad 
                                                                     me.$cat.post('api/RegistroTableroI/Crear',{
-                                                                        'RhechoId': me.rHechoId,
+                                                                        'RHechoId': me.rHechoId,
                                                                         'TipoRegistroTableroI': `Registro de alta de la carpeta ${me.nuc} en captura`,
                                                                         'Distrito': me.u_distrito,
                                                                         'DirSub': me.u_dirSubPro,
@@ -3029,16 +3022,17 @@
 
                                                                         // Guardar registro en la tabla de captura
                                                                         const promCaptura = me.$cat.post('api/Captura/Crear',{
-                                                                            'RhechoId': me.rHechoId,
-                                                                            'RegistroTableroId': promTablero,
+                                                                            'RHechoId': me.RHechoId,
+                                                                            //'RegistroTableroId': promTablero,
+                                                                            'RegistroTableroId': respTablero.data.idTablero,
                                                                             'UsuarioId':me.u_idusuario,
                                                                             'UModuloServicioId': me.u_idmoduloservicio,
                                                                             'RemitioModuloServicioId': me.modulointegraid,
                                                                         }, configuracion).catch(err => { 
-                                                                if (err.response.status == 400) {
-                                                                                me.mostrarToast("No es un usuario válido", 'error')
+                                                                            if (err.response.status == 400) {
+                                                                                    me.mostrarToast("No es un usuario válido", 'error')
                                                                             } else if (err.response.status == 401) {
-                                                                                me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                                                                               me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
                                                                                 me.e401 = true,
                                                                                 me.showpage = false
                                                                             } else if (err.response.status == 403) { 
@@ -3048,12 +3042,12 @@
                                                                             } else if (err.response.status == 404) {
                                                                                 me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                                             } else {
-                                                                                me.mostrarToast('Error al intentar crear el  registro!!!', 'error')
-                                                                            } 
-                                                            }); 
-                                                            promesas.push(promCaptura);
-                                                    }).catch(err => { 
-                                                        if (err.response.status == 400) {
+                                                                                me.mostrarToast('Error al intentar crear el  registro', 'error')
+                                                                            }  
+                                                                        }); 
+                                                                        promesas.push(promCaptura);
+                                                                    }).catch(err => { 
+                                                                        if (err.response.status == 400) {
                                                                             me.mostrarToast("No es un usuario válido", 'error')
                                                                         } else if (err.response.status == 401) {
                                                                             me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
@@ -3066,21 +3060,21 @@
                                                                         } else if (err.response.status == 404) {
                                                                             me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                                         } else {
-                                                                            me.mostrarToast('Error al intentar crear el  registro!!!', 'error')
-                                                                        } 
-                                                    }); 
+                                                                            me.mostrarToast('Error al intentar crear el  registro', 'error')
+                                                                        }
+                                                                    }); 
 
-                                                    Promise.all(promesas)
+                                                                    Promise.all(promesas)
                                                                     .then(() => {
-                                                                        me.mostrarToast('La información se guardó correctamente !!!', 'success');
+                                                                        me.mostrarToast('La información se guardó correctamente', 'success');
                                                                     })
                                                                     .finally(() => {
                                                                         // Desbloquea pantalla para culminar proceso
                                                                         me.cargando = false;
-    
+
                                                                         Swal.fire({
                                                                             title: 'Registro exitoso',
-                                                                            text: 'Ya no es necesario continuar con este proceso desde aquí. Puedes darle seguimiento en la unidad donde se encuentra la carpeta.',
+                                                                            text: 'Ya no es necesario continuar con el proceso desde aquí. Puedes darle seguimiento en la unidad donde se encuentra la carpeta.',
                                                                             icon: 'success',
                                                                             confirmButtonText: 'Entendido',
                                                                             allowOutsideClick: false,
@@ -3093,16 +3087,18 @@
                                                                                 confirmButton: 'v-btn primary custom-button'
                                                                             }
                                                                         }).then(() => {
-                                                                            me.$router.push('./listacarpetas');
+                                                                            me.$router.push('/mcaptura-listacarpetas');
                                                                         });
                                                                     });
-                                                }).catch(err => { 
-                                                    me.cargando = false;
+                                                                }).catch(err => { 
+                                                                    me.cargando = false;
                                                                     me.errorRegistro(8);
+                                                                    console.log("Error 1" + err)
                                                                 });
                                                             }).catch(err => { 
                                                                 me.cargando = false;
                                                                 me.errorRegistro();
+                                                                console.log("Error 2")
                                                                 if (err.response.status == 400) {
                                                                     me.mostrarToast("No es un usuario válido", 'error')
                                                                 } else if (err.response.status == 401) {
@@ -3116,12 +3112,13 @@
                                                                 } else if (err.response.status == 404) {
                                                                     me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                                 } else {
-                                                                    me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                                    me.mostrarToast('Error al intentar crear el  registro','error')  
                                                                 } 
-                                                }); 
-                                            }).catch(err => {
-                                                me.cargando = false;
+                                                            }); 
+                                                        }).catch(err => {
+                                                            me.cargando = false;
                                                             me.errorRegistro();
+                                                            console.log("Error 3")
                                                             if (err.response.status == 400) {
                                                                 me.mostrarToast("No es un usuario válido", 'error')
                                                             } else if (err.response.status == 401) {
@@ -3135,12 +3132,13 @@
                                                             } else if (err.response.status == 404) {
                                                                 me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                             } else {
-                                                                me.mostrarToast('Error al intentar crear el  registro!!!', 'error')
+                                                                me.mostrarToast('Error al intentar crear el  registro', 'error')
                                                             }
-                                            }); 
-                                        }).catch(err => {
-                                            me.cargando = false;
+                                                        }); 
+                                                    }).catch(err => {
+                                                        me.cargando = false;
                                                         me.errorRegistro();
+                                                        console.log("Error 4")
                                                         if (err.response.status == 400) {
                                                             me.mostrarToast("No es un usuario válido", 'error')
                                                         } else if (err.response.status == 401) {
@@ -3154,12 +3152,13 @@
                                                         } else if (err.response.status == 404) {
                                                             me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                         } else {
-                                                            me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                            me.mostrarToast('Error al intentar crear el  registro','error')  
                                                         }
-                                        });
-                                    }).catch(err => { 
-                                        me.cargando = false;
+                                                    });
+                                                }).catch(err => { 
+                                                    me.cargando = false;
                                                     me.errorRegistro();
+                                                    console.log("Error 5")
                                                     if (err.response.status == 400) {
                                                         me.mostrarToast("No es un usuario válido", 'error')
                                                     } else if (err.response.status == 401) {
@@ -3173,12 +3172,13 @@
                                                     } else if (err.response.status == 404) {
                                                         me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                     } else {
-                                                        me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                        me.mostrarToast('Error al intentar crear el  registro','error')  
                                                     }
-                                    });
-                                }).catch(err => { 
-                                    me.cargando = false;
+                                                });
+                                            }).catch(err => { 
+                                                me.cargando = false;
                                                 me.errorRegistro();
+                                                console.log("Error 6")
                                                 if (err.response.status == 400) {
                                                     me.mostrarToast("No es un usuario válido", 'error')
                                                 } else if (err.response.status == 401) {
@@ -3192,12 +3192,13 @@
                                                 } else if (err.response.status == 404) {
                                                     me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                                 } else {
-                                                    me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                    me.mostrarToast('Error al intentar crear el  registro','error')  
                                                 } 
-                                });
-                                }).catch(err => { 
+                                            });
+                                        }).catch(err => { 
                                             me.cargando = false;
                                             me.errorRegistro();
+                                            console.log("Error 7")
                                             if (err.response.status == 400) {
                                                 me.mostrarToast("No es un usuario válido", 'error')
                                             } else if (err.response.status == 401) {
@@ -3211,19 +3212,19 @@
                                             } else if (err.response.status == 404) {
                                                 me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                             } else {
-                                                me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                me.mostrarToast('Error al intentar crear el  registro','error')  
                                             }
                                         });
 
-                                me.$cat.patch(`api/RAtencions/modNANDP/${me.rAtencionId}`, {
-                                    'nombre': me.p_nombre,
-                                    'puesto': me.p_puesto
-                                }, configuracion)
-                                .then((response) => {
-                                    
-                                })
-                                .catch((e) => {
-                                    if (err.response.status == 400) {
+                                        me.$cat.patch(`api/RAtencions/modNANDP/${me.rAtencionId}`, {
+                                            'nombre': me.p_nombre,
+                                            'puesto': me.p_puesto
+                                        }, configuracion)
+                                        .then((response) => {
+                                            
+                                        })
+                                        .catch((e) => {
+                                            if (err.response.status == 400) {
                                                 me.mostrarToast("No es un usuario válido", 'error')
                                             } else if (err.response.status == 401) {
                                                 me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
@@ -3236,12 +3237,13 @@
                                             } else if (err.response.status == 404) {
                                                 me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                             } else {
-                                                me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                                me.mostrarToast('Error al intentar crear el  registro','error')  
                                             } 
-                                })
-                            }).catch(err => { 
-                                me.cargando = false;
+                                        })
+                                    }).catch(err => { 
+                                        me.cargando = false;
                                         me.errorRegistro();
+                                        console.log("Error 8")
                                         if (err.response.status == 400) {
                                             me.mostrarToast("No es un usuario válido", 'error')
                                         } else if (err.response.status == 401) {
@@ -3255,12 +3257,13 @@
                                         } else if (err.response.status == 404) {
                                             me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                         } else {
-                                            me.mostrarToast('Error al intentar crear el  registro!!!','error')  
+                                            me.mostrarToast('Error al intentar crear el  registro','error')  
                                         } 
-                            });
-                        }).catch(err => {
-                            me.cargando = false;
+                                    });
+                                }).catch(err => {
+                                    me.cargando = false;
                                     me.errorRegistro();
+                                    console.log("Error 9")
                                     if (err.response.status == 400) {
                                         me.mostrarToast("No es un usuario válido", 'error')
                                     } else if (err.response.status == 401) {
@@ -3274,12 +3277,12 @@
                                     } else if (err.response.status == 404) {
                                         me.mostrarToast("El recuso no ha sido encontrado", 'error')
                                     } else {
-                                        me.mostrarToast('Error al intentar crear el  registro!!!','error')  
-                                    } 
-                        });
-                    })                        
-                } else {   
-                    Swal.fire({
+                                        me.mostrarToast('Error al intentar crear el  registro','error')  
+                                    }
+                                });
+                            })                        
+                        } else {   
+                            Swal.fire({
                                 title: 'NUC no válido',
                                 text: 'Antes de guardar, favor de validar el número de carpeta.',
                                 icon: 'error',
@@ -3296,12 +3299,13 @@
                             }).then(() => {
                                 this.$validator.validate();
                             });
-                            }
+                        }
                     } else {
                         me.mostrarToast('Llene todos los campos que son obligatorios','error')
                     }
                 });
             },
+
             listarcvedistritos() {
                 let me = this;
                 let header = { "Authorization" : "Bearer " + this.$store.state.token };
@@ -3369,8 +3373,6 @@
     
                     // Buscamos en el distrito origen
                     try {
-
-                        console.log(distritoOrigen)
                         const respuestaOrigen = await this.$cat.get(`api/RHechoes/ValidarNuc/${this.nuc}/${distritoOrigen}`, configuracion);
                         
                         if (respuestaOrigen.data.nucActivo) {
@@ -3402,7 +3404,6 @@
                             continue;
                         }
                     }
-    
                     if (this.nucdisponible) {
                         this.cargando = false;
                         this.mostrarToast('El NUC se encuentra disponible para su uso', 'success');
@@ -3534,22 +3535,22 @@
                         me.sexos.push({text: x.nombre,value: x.clave});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarEstados(){
                 let me=this;
@@ -3563,21 +3564,21 @@
     
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarIdentificacion(){
@@ -3590,23 +3591,23 @@
                     docIdentificaionArray.map(function(x){
                         me.docsidentificaciones.push({text: x.nombre,value: x.nombre});
                     });
-                    }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                }).catch(err => {
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarTipoPersona(){
                 let me=this;
@@ -3619,29 +3620,29 @@
                 this.$conf.get('api/ClasificacionPersonas/Listar',configuracion).then(function(response){
                     clasificacionpersonaArray=response.data;
                     clasificacionpersonaArray.map(function(x){
-                        // Filtrar "Imputado" si la selección es "Denuncia" o "Noticia de hechos"
+                        //Filtrar "Imputado" si la selección es "Denuncia" o "Noticia de hechos"
                         if ((me.mediodenuncia === 'Denuncia' || me.mediodenuncia === 'Noticia de hechos') && x.nombre === 'Imputado') {
-                            return; // Salta esta clasificación
+                            return; //Salta esta clasificación
                         }
                         me.clasificacionpersonas.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarRangoEdad(){
                 let me=this;
@@ -3654,22 +3655,22 @@
                         me.rangosedad.push({text: x.rango,value: x.rango,value2: x.ordenEdad});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarMedionotificacion(){
                 let me=this;
@@ -3682,21 +3683,21 @@
                         me.medionotificaciones.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarNacionalidad(){
@@ -3710,21 +3711,21 @@
                         me.nacionalidades.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarEstadoCivil(){
@@ -3738,21 +3739,21 @@
                         me.estadosciviles.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarOcupacion(){
@@ -3766,21 +3767,21 @@
                         me.ocupaciones.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarNivelEstudio(){
@@ -3794,21 +3795,21 @@
                         me.nivelestudios.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarLengua(){
@@ -3822,21 +3823,21 @@
                         me.lenguas.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarReligion(){
@@ -3850,22 +3851,22 @@
                         me.religiones.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarGenero(){
                 let me=this;
@@ -3878,21 +3879,21 @@
                         me.generos.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarDiscapacidad(){
@@ -3906,22 +3907,22 @@
                         me.discapaciodades.push({text: x.nombre,value: x.nombre});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarCiudades(){
                 let me=this;
@@ -3934,22 +3935,22 @@
                         me.ciudadesP.push({text: x.nombre, value:x.idEstado});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarPorEstado(){
                 let me=this;
@@ -3996,6 +3997,7 @@
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
+
                 if (!me.municipioidP.value == 0) {
                     me.municipioP = me.municipioidP.text;
                     me.municipioidP = me.municipioidP.value;
@@ -4014,23 +4016,23 @@
                     localidadArray.map(function(x){
                         me.localidadesP.push({text: x.nombre,value: x.idLocalidad});
                     });
-                  }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                }).catch(err => {
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             listarPorLocalidad(){
                 let me=this;
@@ -4044,50 +4046,49 @@
                 }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.localidadidP,configuracion).then(function(response){
                       me.cp=response.data.cp;
-    
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                }); 
             },
             buscarPorCP(){
                 let me=this;
                 let header={"Authorization" : "Bearer " + this.$store.state.token};
                 let configuracion= {headers : header};
                 this.$conf.get('api/Localidads/MostrarPorCP/' + me.cp,configuracion).then(function(response){
-                      me.estadoidP=response.data.idEstado;
-                      me.listarPorEstado();
-                      me.municipioidP=response.data.idMunicipio;
-                      me.buscarPorCpMpo()
+                    me.estadoidP=response.data.idEstado;
+                    me.listarPorEstado();
+                    me.municipioidP=response.data.idMunicipio;
+                    me.buscarPorCpMpo()
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             buscarPorCpMpo(){
@@ -4102,21 +4103,21 @@
                         me.localidadesP.push({text: x.nombre,value: x.idLocalidad});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             listarVialidad(){
@@ -4184,21 +4185,21 @@
                         me.de_ciudades.push({text: x.nombre, value:x.idEstado});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             de_listarPorEstado () {
@@ -4216,38 +4217,36 @@
                     me.de_localidades = [];
                     me.de_cp = '';
                 }
-                    var municipiosArray=[];
-                    me.de_municipios.length = 0;
-                    this.$conf.get('api/Municipios/ListarPorEstado/'+ me.de_estadoid,configuracion).then(function(response){
-    
-                        municipiosArray=response.data;
-    
-                        municipiosArray.map(function(x){
-                        me.de_municipios.push({text: x.nombre,value: x.idMunicipio});
-                        });
-                        me.de_selectMunicipio(me.de_municipio);
-                        if (me.duplicarDireccion==true){
-                             me.de_selectMunicipio(me.municipioP);
-                        }
-                    }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                var municipiosArray=[];
+                me.de_municipios.length = 0;
+                this.$conf.get('api/Municipios/ListarPorEstado/'+ me.de_estadoid,configuracion).then(function(response){
+
+                    municipiosArray=response.data;
+
+                    municipiosArray.map(function(x){
+                    me.de_municipios.push({text: x.nombre,value: x.idMunicipio});
                     });
-    
-    
+                    me.de_selectMunicipio(me.de_municipio);
+                    if (me.duplicarDireccion==true){
+                            me.de_selectMunicipio(me.municipioP);
+                    }
+                }).catch(err => {
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             de_listarPorMunicipio(){
                 let me=this;
@@ -4292,8 +4291,6 @@
                             me.mostrarToast('Error al intentar listar los registros!!!','error')
                         }
                 });
-    
-    
             },
             de_listarPorLocalidad(){
                 let me=this;
@@ -4306,25 +4303,23 @@
                     return;
                 }
                 this.$conf.get('api/Localidads/MostrarPorLocalidad/' + me.de_localidadid,configuracion).then(function(response){
-    
                       me.de_cp=response.data.cp;
-    
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             de_buscarPorCP(){
@@ -4337,21 +4332,21 @@
                       me.de_municipioid=response.data.idMunicipio;
                       me.de_buscarPorCpMpo()
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
                 });
             },
             de_buscarPorCpMpo(){
@@ -4366,22 +4361,22 @@
                         me.de_localidades.push({text: x.nombre,value: x.idLocalidad});
                     });
                 }).catch(err => {
-                        if (err.response.status==400){
-                            me.mostrarToast("No es un usuario válido", 'error')
-                        } else if (err.response.status==401){
-                            me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
-                            me.e401 = true,
-                            me.showpage= false
-                        } else if (err.response.status==403){
-                            me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
-                            me.e403= true
-                            me.showpage= false
-                        } else if (err.response.status==404){
-                            me.mostrarToast("El recuso no ha sido encontrado", 'error')
-                        }else{
-                            me.mostrarToast('Error al intentar listar los registros!!!','error')
-                        }
-                    });
+                    if (err.response.status==400){
+                        me.mostrarToast("No es un usuario válido", 'error')
+                    } else if (err.response.status==401){
+                        me.mostrarToast("Por favor inicie sesion para poder navegar en la aplicacion", 'error')
+                        me.e401 = true,
+                        me.showpage= false
+                    } else if (err.response.status==403){
+                        me.mostrarToast("No esta autorizado para ver esta pagina", 'error')
+                        me.e403= true
+                        me.showpage= false
+                    } else if (err.response.status==404){
+                        me.mostrarToast("El recuso no ha sido encontrado", 'error')
+                    }else{
+                        me.mostrarToast('Error al intentar listar los registros!!!','error')
+                    }
+                });
             },
             de_selectEstado: function(val) {
                 let me=this;
@@ -4446,7 +4441,6 @@
                     me.de_vialidad="";
                     me.de_asentamiento="";
                 }
-    
             },
             onFilePicked(e) {
                 const files = e.target.files
@@ -4462,13 +4456,13 @@
                 if (files[0] !== undefined) {
                     this.imageName = files[0].name
                     if (this.imageName.lastIndexOf('.') <= 0) {
-                    return
+                        return
                     }
                     const fr = new FileReader()
                     fr.readAsDataURL(files[0])
                     fr.addEventListener('load', () => {
-                    this.imageUrl = fr.result
-                    this.imageFile = files[0] // this is an image file that can be sent to server
+                        this.imageUrl = fr.result
+                        this.imageFile = files[0] // this is an image file that can be sent to server
                     })
                 } else {
                     this.imageName = ''
@@ -4482,7 +4476,6 @@
                var file = new File([blob], 'Documento.jpg', {type: 'image/jpg', lastModified: Date.now()});
                this.imageFile = file
                this.imageName = this.imageFile.name;
-    
             },
             dataURItoBlob(dataURI, type) {
                 // convertir base64 to raw binary data held in a string
@@ -4547,7 +4540,6 @@
                     d = Math.floor(d / 16);
                     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
                 });
-                
                 return newGuid;
             },
             validarAgencias() {

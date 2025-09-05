@@ -90,7 +90,7 @@
                   class="mr-2"
                   v-on="on"
                   color="warning"
-                  @click="listarrHecho3(props.item)"
+                  @click="ttarrHecho3(props.item)"
                 >
                   menu_book
                 </v-icon>
@@ -3617,7 +3617,7 @@ export default {
                   {
                     HechoId: me.rHechoId,
                     PersonaId: me.personaId.value,
-                    Tipo: me.tipo2,
+                    Tipo: me.tipo2.toString(),
                     ClasificacionPersona: me.personaId.value1,
                     Manifestacion:
                       (me.personaId.value1 == "Testigo" &&
@@ -3635,7 +3635,7 @@ export default {
                         : me.manifesto,
                     Hechos: me.hechos,
                     TRepresentantes: me.representantesf,
-                    Edad: me.personaId.value2,
+                    Edad: me.personaId.value2.toString(),
                     TipoEA: me.tipo,
                     HoraS: me.horas,
                     FechaS: me.fechas,

@@ -909,6 +909,7 @@ export default {
       let header = { Authorization: "Bearer " + this.$store.state.token };
       let configuracion = { headers: header };
       var sparrays = "";
+      console.log("key modulo", me.$store.state)
       me.$conf
         .get(
           "api/SpPiLigaciones/ListarPertenecienteyGeneralPI/" +

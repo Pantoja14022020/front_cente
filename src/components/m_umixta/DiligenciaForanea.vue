@@ -836,7 +836,7 @@ export default {
     if (me.rHechoId == null) {
       me.$alert(
         "Notificación",
-        "Aun no ha abierto ninguna carpeta por favor ingrese al menu Carpeta y luego en Listar carpeta y   ahi abra la carpeta que usted elija!. En este momento sera redireccionado al menu correspondiente.",
+        "Aún no ha abierto ninguna carpeta. Por favor vaya al menu -> Carpeta -> Listar carpeta y ahí abra la carpeta que usted necesite. En este momento sera redireccionado al apartado correspondiente.",
         function () {
           me.$router.push("./umixta-carpetas");
         }
@@ -1019,7 +1019,7 @@ export default {
         }
       });
     },
-    //Se lsitan diligencias que ya se habian hecho
+    //Se listan diligencias que ya se habian hecho
     listardiligencias()
     {
       let me = this;

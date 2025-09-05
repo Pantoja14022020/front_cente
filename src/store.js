@@ -21,11 +21,10 @@ Vue.use(VueGoogleMaps, {
     }
 });
 
-
-
 export default new Vuex.Store({
     state: 
     {        
+        keymodulo: null,
         loader:false,
         token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
         usuario: null,

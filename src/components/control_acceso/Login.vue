@@ -1,80 +1,74 @@
 <template> 
-    
-        <v-container transition="scale-transition" fluid fill-height class="my-5 py-5 "  > 
-                    <v-layout align-center justify-center class="my-5 py-5"> 
-                        <div  class="text-xl-center text-md-center text-xs-center my-5">
-                            <img src="@/assets/Logo.png"  height="250px"  alt=""> 
-                             <v-flex>
-                            <v-card  >  
-                                
-                               <v-spacer></v-spacer>
-                                <v-navigation-drawer  
-                                    v-model="drawer"
-                                left
-                                width="450"
-                                class="primary"
-                                app
-                                dark
-                                permanent
+    <v-container transition="scale-transition" fluid fill-height class="my-5 py-5 "> 
+        <v-layout align-center justify-center class="my-5 py-5"> 
+            <div  class="text-xl-center text-md-center text-xs-center my-5">
+                <img src="@/assets/Logo.png" height="250px" alt=""> 
+                <v-flex>
+                    <v-card>  
+                        <v-spacer></v-spacer>
+                        <v-navigation-drawer  
+                            v-model="drawer"
+                            left
+                            width="450"
+                            class="primary"
+                            app
+                            dark
+                            permanent
+                        >
+                            <div class="my-5 mx-5">
+                                <v-card-title class="white--text  display-2">SISTEMA CENTENARIO</v-card-title> 
+                                <v-card-title class="white--text subtitle-1 text-md-left font-weight-light">Bienvenido al Sistema Informático Integral de Gestión Procesal Penal</v-card-title>  
+                                <v-card-text id="icon">
+                                    <v-text-field id="icon" 
+                                        prepend-icon="person" 
+                                        v-model="usuario"  
+                                        color="white"   
+                                        name="nombre de usuario" 
+                                        label="Usuario"
+                                        v-validate="'required'" 
+                                        :error-messages="errors.collect('nombre de usuario')"
+                                        type="text">
+                                    </v-text-field>
+                                    <v-text-field
+                                        prepend-icon="lock" 
+                                        v-model="password"  
+                                        color="white" 
+                                        name="contraseña" 
+                                        label="Contraseña" 
+                                        id="password" 
+                                        @keydown.enter="ingresar()"
+                                        v-validate="'required'" 
+                                        :error-messages="errors.collect('contraseña')"
+                                        type="password">
+                                    </v-text-field>
+                                    <v-alert
+                                        :value="error"
+                                        color="error"
+                                        icon="warning"
+                                        outline
                                     >
-                                    
-                                    <div   class="my-5 mx-5">
-                                         <v-card-title    class="white--text  display-2">SISTEMA CENTENARIO</v-card-title> 
-                                           <v-card-title    class="white--text subtitle-1 text-md-left font-weight-light">Bienvenido al Sistema Informático Integral de Gestión Procesal Penal</v-card-title>  
-                                          <v-card-text >
-                                           
-                                                <v-text-field 
-                                                  prepend-icon="person" 
-                                                  v-model="usuario"  
-                                                  color="white"   
-                                                  name="nombre de usuario" 
-                                                  label="Usuario"
-                                                  v-validate="'required'" 
-                                                 :error-messages="errors.collect('nombre de usuario')">
-                                                  type="text">
-                                                </v-text-field>
-                                                <v-text-field 
-                                                  prepend-icon="lock" 
-                                                  v-model="password"  
-                                                  color="white" 
-                                                  name="contraseña" 
-                                                  label="Contraseña" 
-                                                  id="password" 
-                                                  @keydown.enter="ingresar()"
-                                                  v-validate="'required'" 
-                                                  :error-messages="errors.collect('contraseña')"
-                                                  type="password">
-                                                </v-text-field>
-                                                 <v-alert
-                                                  :value="error"
-                                                  color="error"
-                                                  icon="warning"
-                                                  outline
-                                                >
-                                                {{error}}
-                                                </v-alert>
-                                               
-                                         
-                                          </v-card-text>
-                                         <v-card-actions>
-                                            <v-btn block @click="ingresar" color="#BC955C">Entrar</v-btn> 
-                                         </v-card-actions>
-                                           <v-card-title    class="white--text subtitle-2 text-md-left font-weight-light"> © Todos los derechos reservados PGJEH 2019-2022</v-card-title>
-                                           <v-card-title    class="white--text subtitle-2 text-md-left font-weight-light"> Ver 1.5 compilación 405</v-card-title>  
-                                    </div> 
-                                </v-navigation-drawer>
-                            </v-card>
-                        </v-flex>
-                        </div> 
-                    </v-layout>
-                    
-       </v-container>  
-     
+                                    {{error}}
+                                    </v-alert>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn block @click="ingresar" color="#BC955C">Entrar</v-btn> 
+                                </v-card-actions>
+                                <v-card-title class="white--text subtitle-2 text-md-left font-weight-light"> © Todos los derechos reservados PGJEH 2019-2022</v-card-title>
+                                <v-card-title class="white--text subtitle-2 text-md-left font-weight-light"> Ver 1.5 compilación 405</v-card-title>  
+                            </div> 
+                        </v-navigation-drawer>
+                    </v-card>
+                </v-flex>
+            </div> 
+        </v-layout>                    
+    </v-container>  
 </template>
+
 <script>
 import axios from 'axios'
 import VeeValidate from 'vee-validate'  
 import { error } from 'util';
+
 export default {
     data(){
         return {

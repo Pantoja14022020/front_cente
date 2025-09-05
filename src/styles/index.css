@@ -128,3 +128,7 @@ label.v-label.theme--dark
 #filtros{
     background-color: #ffffff !important; /*Color de fondo en el apartado de filtrado*/
 }
+
+#icon .v-icon.material-icons.theme--dark{
+    color: #ffffff !important;
+}

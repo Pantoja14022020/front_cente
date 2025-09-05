@@ -357,8 +357,7 @@
         return Promise.reject(error)
       })
     },
-    methods: {
-     
+    methods: {      
       fechainif () {
         if (this.menu1) {
           this.generarfecha2()
@@ -399,26 +398,13 @@
         this.fechahasta = ""
         this.menu2 = false
       },
-      listar () {
+      listar() {
         let me = this
-
-        //Verificar si ya hay datos en cache
-        /*const cacheKey = "carpetas_" + me.u_idmoduloservicio;
-        const datosCache = localStorage.getItem(cacheKey);
-
-        if (datosCache) {
-            console.log("Datos obtenidos desde cache");
-            me.carpetas = JSON.parse(datosCache);
-            return; // Salir para no llamar la API
-        }*/
-
-        //Si no hay cache, llamar a la API
         let header = { "Authorization" : "Bearer " + this.$store.state.token }
         let configuracion = { headers : header }
 
         this.$cat.get('api/RHechoes/ListarPorModuloCarpetas/' + me.u_idmoduloservicio, configuracion).then(function(response) {
-          me.carpetas=response.data;          
-          //localStorage.setItem(cacheKey, JSON.stringify(response.data)); //Guardar en cache para futuras llamadas
+          me.carpetas=response.data;
         }).catch(err => {
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", 'error')
@@ -437,7 +423,6 @@
           }
         });
       },
-
       listarconfiltro () {
         let me = this
         let header = { "Authorization" : "Bearer " + this.$store.state.token }

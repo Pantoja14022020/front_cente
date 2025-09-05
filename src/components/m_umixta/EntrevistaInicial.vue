@@ -597,7 +597,7 @@
         </v-toolbar>
         <v-card-text>
           <v-form ref="form">
-            <v-layout wrap justify-space-between>
+            <v-layout style="padding-top: 20px; padding-right: 20px; padding-left: 20px;" wrap justify-space-between>
               <v-flex xs12 md5 lg5>
                 <v-autocomplete
                   label="*Lugar especifico:"
@@ -694,7 +694,7 @@
                 >-->
               </v-flex>
             </v-layout>
-            <div class="text-xs-right">
+            <div style="padding-bottom: 20px; padding-right: 20px; padding-left: 20px;" class="text-xs-right">
               <v-btn @click.native="cerrarDS">Cancelar</v-btn>
               <v-btn @click.native="guardarDS" class="success">Guardar</v-btn>
             </div>
@@ -3281,7 +3281,7 @@ export default {
           {
             idRHecho: me.rHechoId,
             ratencionid: me.rAtencionId,
-            fechaHoraSuceso: me.fecha + " " + me.hora,
+            fechaHoraSuceso: me.fecha + "T" + me.hora + ":00",
           },
           configuracion
         )
