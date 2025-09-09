@@ -62,6 +62,7 @@
         :search="search"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
+        :loading="loading"
       >
         <template slot="items" class="white" slot-scope="props">
           <td class="justify-center layout px-0">
@@ -80,8 +81,7 @@
           <td>{{ props.item.dirSubProcuInicial }}</td>
           <td>{{ props.item.agenciaInicial }}</td>
           <td>{{ props.item.u_Nombre }}</td>
-          <td>{{ props.item.fechaElevaNuc.substring(8, 10) + " de " + obtenermes(props.item.fechaElevaNuc.substring(5, 7) - 1) + " del " + props.item.fechaElevaNuc.substring(0, 4) }}
-          </td>
+          <td>{{ props.item.fechaElevaNuc.substring(8, 10) + " de " + obtenermes(props.item.fechaElevaNuc.substring(5, 7) - 1) + " del " + props.item.fechaElevaNuc.substring(0, 4) }}</td>
         </template>
         <template slot="no-data">
           <v-btn color="primary" @click="listar">Resetear</v-btn>
@@ -297,10 +297,12 @@
         search: '',
         rowsPerPageItems: [ 10, 20, 30, 40, 50 ],
         pagination: {
-          rowsPerPage: 20
+          rowsPerPage: 20,
         },
-        editedIndex: -1,
+        editedIndex: 0,
         carpetas: [],
+        carpetaSeleccionada: null,
+        loading: false,
         rHechoId: '',
       }
     },
@@ -400,12 +402,15 @@
       },
       listar() {
         let me = this
+        me.loading = true
         let header = { "Authorization" : "Bearer " + this.$store.state.token }
         let configuracion = { headers : header }
 
         this.$cat.get('api/RHechoes/ListarPorModuloCarpetas/' + me.u_idmoduloservicio, configuracion).then(function(response) {
           me.carpetas=response.data;
+          me.loading = false
         }).catch(err => {
+          me.loading = false
           if (err.response.status == 400) {
             me.$notify("No es un usuario válido", 'error')
           } else if (err.response.status == 401) {
@@ -492,13 +497,29 @@
           }
         });
       },
-      abrircarpeta (item) {
-        this.rHechoId = item.rHechoId
-        this.$store.state.nuc= item.nuc
-        this.$store.state.ratencionid = item.rAtencionId
-        this.$store.state.rhechoid = item.rHechoId
-        this.$store.state.distritoCarpeta = item.distritoInicial
-        this.$router.push('./umixta-entrevistainicial')
+      async abrircarpeta(item) {
+        this.loading = true;
+
+        let header = { "Authorization" : "Bearer " + this.$store.state.token }
+        let configuracion = { headers : header }
+
+        try {
+          const res = await this.$cat.get(`/api/RHechoes/DetalleCarpeta/${item.rHechoId}`, configuracion);
+          this.carpetaSeleccionada = res.data;
+
+          this.rHechoId = item.rHechoId;
+          this.$store.state.nuc = item.nuc;
+          this.$store.state.ratencionid = item.rAtencionId;
+          this.$store.state.rhechoid = item.rHechoId;
+          this.$store.state.distritoCarpeta = item.distritoInicial;
+
+          this.$router.push('./umixta-entrevistainicial');
+        } catch (error) {
+          console.error("Error cargando detalle", error);
+          this.$notify('Error al cargar la carpeta', 'error');
+        } finally {
+          this.loading = false;
+        }
       },
       close () {
         this.dialog = false;
@@ -600,6 +621,9 @@
           });
         }
       },
+      mounted() {
+        this.listar();
+      }
     }
   }
 </script>
