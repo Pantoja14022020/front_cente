@@ -10,6 +10,7 @@ import  VueEditor  from "vue2-editor";
 import WebCam from 'vue-web-cam'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import 'typeface-roboto/index.css';
+import './centenario.css'
 import keycloak from './auth/keycloak'
 import './styles/panel_control/index.css'
 import './styles/control_acceso/index.css'
