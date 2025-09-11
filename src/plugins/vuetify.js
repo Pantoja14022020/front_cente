@@ -1,7 +1,15 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
+import VeeValidate from 'vee-validate' 
 
+const VueValidationEs = require('vee-validate/dist/locale/es'); 
+Vue.use(VeeValidate, {
+    locale: 'es',
+    dictionary: {
+      es: VueValidationEs
+    }
+});  
 
 Vue.use(Vuetify, {
   theme: {

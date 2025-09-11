@@ -132,3 +132,31 @@ label.v-label.theme--dark
 #icon .v-icon.material-icons.theme--dark{
     color: #ffffff !important;
 }
+
+.v-datatable {
+    background-color: #691c32 !important; /*Color de los iconos de las tablas*/
+}
+
+.v-datatable__actions {
+    background-color: #691c32 !important; /*Color de los iconos de las tablas*/
+}
+
+.v-dialog > .v-card > div.v-card__text {
+    background-color: #691c32 !important;
+}
+
+span.v-stepper__step__step.primary {
+    background: #ffffff30 !important;
+}
+
+.px-4.v-sheet.theme--dark.elevation-0{
+    background: #691c32 !important;
+}
+
+.theme--dark.v-table tbody tr:hover:not(.v-datatable__expand-row) {
+    background: #ffffff40;
+}
+
+.theme--dark.v-stepper{
+    background: #691c32 !important;
+}

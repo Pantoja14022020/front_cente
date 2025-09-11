@@ -485,31 +485,31 @@
                                         />
                                     </v-flex>
                                     <v-flex xs12 sm12 md12 lg12>
-                                        <v-card auto-grow elevation="0">                                
+                                        <v-card auto-grow elevation="0">
                                             <v-card-text>
                                                 <v-list one-line>
                                                     <p class="text-lg-center font-weight-bold"><a>Descripción.</a></p> 
                                                     <v-list-tile>
                                                         <v-list-tile-action>
                                                             <v-icon color="success">info</v-icon>
-                                                        </v-list-tile-action> 
-                                                        <v-list-tile-content>  
-                                                            <v-list-tile-title> 
-                                                                <p class="body-2 font-weight-bold"><a></a></p> 
-                                                            </v-list-tile-title> 
-                                                            <v-list-tile-sub-title> 
-                                                                <p color="accent" class="caption font-weight-regular" v-html="descripcion">
-                                                                    <a>{{ descripcion }}</a>
-                                                                </p>  
-                                                            </v-list-tile-sub-title>  
-                                                        </v-list-tile-content> 
-                                                    </v-list-tile>                                                                                                        
-                                                </v-list>           
-                                            </v-card-text>                                           
+                                                        </v-list-tile-action>
+                                                        <v-list-tile-content>
+                                                            <v-list-tile-title>
+                                                                <p class="body-2 font-weight-bold"><a></a></p>
+                                                            </v-list-tile-title>
+                                                            <v-list-tile-sub-title>
+                                                                <p color="accent" class="caption font-weight-regular">
+                                                                    <span v-html="descripcion"></span><a>{{ descripcion }}</a>
+                                                                </p>
+                                                            </v-list-tile-sub-title>
+                                                        </v-list-tile-content>
+                                                    </v-list-tile>
+                                                </v-list>
+                                            </v-card-text>
                                         </v-card>
                                     </v-flex>
                                 </v-layout>
-                            </v-container> 
+                            </v-container>
                             <br>
                             <v-card-actions>
                                 <v-spacer />

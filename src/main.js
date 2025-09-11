@@ -1,20 +1,21 @@
-import Vue from 'vue'
-import '@babel/polyfill'
-import './plugins/vuetify'
-import App from './App.vue'
-import router from './router'
-import store from './store' 
-import axios from 'axios'   
-import VeeValidate from 'vee-validate'  
+import Vue from 'vue';
+import '@babel/polyfill';
+import './plugins/vuetify';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import axios from 'axios';
+import VeeValidate from 'vee-validate';
 import  VueEditor  from "vue2-editor";
-import WebCam from 'vue-web-cam'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import WebCam from 'vue-web-cam';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'typeface-roboto/index.css';
-import './centenario.css'
-import keycloak from './auth/keycloak'
-import './styles/panel_control/index.css'
-import './styles/control_acceso/index.css'
-import './styles/index.css'
+import keycloak from './auth/keycloak';
+import './styles/panel_control/index.css';
+import './styles/control_acceso/index.css';
+import './styles/index.css';
+//import './styles/centenario.css';
+import './plugins/vuetify.js';
 import Keycloak from "./auth/keycloak";
 
 Vue.config.productionTip = false
